@@ -1,0 +1,38 @@
+<div class="container">
+    <h1>Deportes Disponibles</h1>
+    
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="loading" class="alert alert-info">
+      Cargando datos...
+    </div>
+  
+    <div *ngFor="let sport of sports" class="card mb-3">
+      <div class="card-body">
+        <h2 class="card-title">{{ sport.title }}</h2>
+        <button (click)="loadOdds(sport.key)" class="btn btn-primary">
+          Ver Cuotas
+        </button>
+        
+        <div *ngIf="selectedSportKey === sport.key && odds.length" class="mt-3">
+          <h3>Cuotas para {{ sport.title }}</h3>
+          <div *ngFor="let event of odds" class="card mt-2">
+            <div class="card-header">
+              {{ event.home_team }} vs {{ event.away_team }}
+            </div>
+            <div class="card-body">
+              <div *ngFor="let bookmaker of event.bookmakers">
+                <div *ngFor="let outcome of bookmaker.markets[0].outcomes">
+                  <span>{{ outcome.name }}: </span>
+                  <strong>{{ outcome.price }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
