@@ -22,6 +22,10 @@ export class LoginComponent {
     });
   }
 
+  handleImageError(event: any) {
+    console.error('Error loading image:', event);
+  }
+
   togglePassword() {
     this.showPassword = !this.showPassword;
   }

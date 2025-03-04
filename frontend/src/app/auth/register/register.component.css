@@ -7,13 +7,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: 
-      linear-gradient(to top, 
-        rgba(0, 179, 65, 0.1) 0%,
-        rgba(0, 255, 94, 0.05) 35%,
-        rgba(26, 26, 26, 0.95) 50%
-      ),
-      #1a1a1a url('../../../assets/FONDO.jpg') center/cover no-repeat fixed;
+    background: linear-gradient(to top, 
+      rgba(0, 179, 65, 0.1) 0%,
+      rgba(0, 255, 94, 0.05) 35%,
+      rgba(26, 26, 26, 0.95) 50%
+    ),
+    #1a1a1a url('../../../assets/FONDO.jpg') center/cover no-repeat fixed;
     position: absolute;
     top: 0;
     left: 0;
@@ -40,25 +39,25 @@
   }
   
   .logo {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1.5rem;
+    width: 150px;
+    height: auto;
     display: block;
+    margin: 0 auto 20px;
     object-fit: contain;
-    filter: brightness(1.2);
+  }
+  
+  h1, .subtitle {
+    color: white;
+    text-align: center;
   }
   
   h1 {
-    color: white;
-    text-align: center;
     margin-bottom: 0.5rem;
     font-size: 24px;
     font-weight: 600;
   }
   
   .subtitle {
-    color: #666;
-    text-align: center;
     margin-bottom: 2rem;
     font-size: 14px;
   }

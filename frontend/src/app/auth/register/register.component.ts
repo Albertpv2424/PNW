@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   showPassword = false;
+  logoPath: string = '/assets/logo.png';
 
   constructor(
     private fb: FormBuilder,

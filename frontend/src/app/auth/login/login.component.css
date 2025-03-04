@@ -35,6 +35,14 @@
     box-shadow: 0 0 30px rgba(0, 179, 65, 0.15);
   }
   
+  .logo {
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
+    object-fit: contain;
+  }
+  
   .input-container {
     position: relative;
     margin-bottom: 1.2rem;
