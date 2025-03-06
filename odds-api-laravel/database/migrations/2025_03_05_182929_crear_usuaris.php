@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->enum('tipus_acc', ['Usuari', 'Usuari_premium', 'Administrador']);
             $table->string('pswd');
             $table->decimal('saldo', 10, 2)->default(0);
-            $table->date('creat_at')->default(DB::raw('CURRENT_DATE'));
+            $table->timestamp('creat_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('actualitzat_el')->nullable();
             $table->integer('apostes_realitzades')->default(0);
             $table->integer('temps_diari')->default(3600); 
