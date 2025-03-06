@@ -18,6 +18,9 @@ return new class extends Migration {
             $table->integer('apostes_realitzades')->default(0);
             $table->integer('temps_diari')->default(3600); 
             $table->boolean('bloquejat')->default(false);
+            $table->string('dni', 9)->unique();
+            $table->string('telefon', 15)->nullable();
+            $table->date('data_naixement');
         });
     }
 
