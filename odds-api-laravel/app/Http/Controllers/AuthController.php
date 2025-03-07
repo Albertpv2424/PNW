@@ -11,20 +11,16 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nick' => 'required|unique:usuaris,nick',
-            'email' => 'required|email|unique:usuaris,email',
-            'pswd' => 'required|min:6',
-            'dni' => 'required|unique:usuaris,dni|regex:/^[0-9]{8}[A-Z]$/',
-            'telefon' => 'nullable|regex:/^[0-9]{9,15}$/',
-            'data_naixement' => 'required|date'
+        $request->validate([
+            'nick' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:usuaris,email',
+            'pswd' => 'required|string|min:8',
+            'dni' => 'required|string|size:9|unique:usuaris,dni',
+            'telefon' => 'nullable|string|max:15',
+            'data_naixement' => 'required|date',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $user = User::create([
+        $user = new User([
             'nick' => $request->nick,
             'email' => $request->email,
             'pswd' => Hash::make($request->pswd),
@@ -35,15 +31,11 @@ class AuthController extends Controller
             'saldo' => 0,
             'temps_diari' => 3600,
             'bloquejat' => false,
-            'apostes_realitzades' => 0
+            'apostes_realitzades' => 0,
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $user->save();
 
-        return response()->json([
-            'message' => 'Registration successful',
-            'user' => $user,
-            'token' => $token
-        ], 201);
+        return response()->json(['message' => 'User registered successfully'], 201);
     }
 }

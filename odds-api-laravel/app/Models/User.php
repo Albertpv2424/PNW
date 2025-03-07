@@ -1,17 +1,16 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
-    public $timestamps = false;  // Add this line to disable timestamps
+    use Notifiable;
+
+    public $timestamps = false;
     protected $table = 'usuaris';
-    
+
     protected $primaryKey = 'nick';
     public $incrementing = false;
     protected $keyType = 'string';

@@ -38,30 +38,21 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      const userData = {
-        ...this.registerForm.value,
-        tipus_acc: 'Usuari',
-        saldo: 0,
-        temps_diari: 3600,
-        bloquejat: false,
-        apostes_realitzades: 0
-      };
-
+      const userData = this.registerForm.value;
       this.authService.register(userData).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login']);  // Redirigeix a la pàgina de login
         },
         error: (error) => {
           console.error('Registration failed', error);
-          console.log('Error details:', error.error); // Add this to see detailed error
         }
       });
     } else {
       console.log('Form validation errors:', this.registerForm.errors);
-      console.log('Form values:', this.registerForm.value);
     }
   }
+  
   // Add this method
   togglePassword() {
     this.showPassword = !this.showPassword;
