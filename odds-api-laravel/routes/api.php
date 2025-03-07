@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OddsController;
+use App\Http\Controllers\AuthController; // Añade esta línea
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/sports', [OddsController::class, 'getSportsJson']);
 Route::get('/odds/{sportKey}', [OddsController::class, 'getOddsJson']);
+
+Route::post('/register', [AuthController::class, 'register']);
