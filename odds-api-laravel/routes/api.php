@@ -24,3 +24,5 @@ Route::get('/sports', [OddsController::class, 'getSportsJson']);
 Route::get('/odds/{sportKey}', [OddsController::class, 'getOddsJson']);
 
 Route::post('/register', [AuthController::class, 'register']);
+// Add the login route
+Route::post('/login', [AuthController::class, 'login']);

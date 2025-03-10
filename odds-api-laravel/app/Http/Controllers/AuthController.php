@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -37,5 +38,51 @@ class AuthController extends Controller
         $user->save();
 
         return response()->json(['message' => 'User registered successfully'], 201);
+    }
+    
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (! $user) {
+            throw ValidationException::withMessages([
+                'email' => ['Las credenciales proporcionadas son incorrectas.'],
+            ]);
+        }
+
+        // Try to verify with Bcrypt first
+        $passwordValid = false;
+        
+        try {
+            $passwordValid = Hash::check($request->password, $user->pswd);
+        } catch (\Exception $e) {
+            // If Bcrypt check fails, try direct comparison (for plain text passwords)
+            $passwordValid = ($request->password === $user->pswd);
+            
+            // If password is valid, update it to use Bcrypt
+            if ($passwordValid) {
+                $user->pswd = Hash::make($request->password);
+                $user->save();
+            }
+        }
+        
+        if (!$passwordValid) {
+            throw ValidationException::withMessages([
+                'email' => ['Las credenciales proporcionadas son incorrectas.'],
+            ]);
+        }
+
+        // Instead of creating a token, just return the user
+        return response()->json([
+            'message' => 'Login exitoso',
+            'user' => $user,
+            // Generate a simple session identifier instead of a Sanctum token
+            'token' => md5($user->nick . time())
+        ]);
     }
 }
