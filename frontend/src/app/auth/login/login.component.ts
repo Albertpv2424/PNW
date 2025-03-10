@@ -22,7 +22,8 @@ export class LoginComponent {
     private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      // Change from email validator to just required
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]],
       remember: [false]
     });

@@ -42,16 +42,19 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData);
   }
 
+  // Update the login method to accept either nick or email
   login(credentials: { email: string; password: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials)
-      .pipe(
-        tap(response => {
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-          localStorage.setItem('token', response.token);
-          this.currentUserSubject.next(response.user);
-        })
-      );
-  }
+  // We keep the parameter name as 'email' for backward compatibility
+  // but the backend will handle it as either email or nick
+  return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials)
+    .pipe(
+      tap(response => {
+        localStorage.setItem('currentUser', JSON.stringify(response.user));
+        localStorage.setItem('token', response.token);
+        this.currentUserSubject.next(response.user);
+      })
+    );
+}
 
   logout(): void {
     localStorage.removeItem('currentUser');

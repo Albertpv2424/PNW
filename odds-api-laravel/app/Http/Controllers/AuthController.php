@@ -43,18 +43,22 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|string', // Changed from 'required|email'
             'password' => 'required',
         ]);
-
-        $user = User::where('email', $request->email)->first();
-
+    
+        // Check if input is an email or a nick
+        $field = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'nick';
+        
+        $user = User::where($field, $request->email)->first();
+    
         if (! $user) {
             throw ValidationException::withMessages([
                 'email' => ['Las credenciales proporcionadas son incorrectas.'],
             ]);
         }
-
+    
+        // Rest of the login method remains the same
         // Try to verify with Bcrypt first
         $passwordValid = false;
         
