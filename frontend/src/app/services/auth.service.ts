@@ -39,12 +39,7 @@ export class AuthService {
   }
 
   register(userData: any): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData)
-      .pipe(
-        tap(response => {
-          console.log('Register response:', response);
-        })
-      );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData);
   }
 
   login(credentials: { email: string; password: string }): Observable<AuthResponse> {

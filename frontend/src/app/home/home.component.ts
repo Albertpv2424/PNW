@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OddsService } from '../services/odds.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
+import { RouterModule } from '@angular/router';
 
 interface Sport {
   key: string;
@@ -14,13 +16,14 @@ interface OddEvent {
   home_team: string;
   away_team: string;
   bookmakers: any[];
+  commence_time?: string; // Add this property
   // ... otros campos que vengan de la API
 }
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -30,6 +33,7 @@ export class HomeComponent implements OnInit {
   selectedSportKey: string = '';
   loading: boolean = true;
   error: string = '';
+  username: string = '';
 
   // Lista de ligas permitidas
   allowedLeagues = [
@@ -56,10 +60,25 @@ export class HomeComponent implements OnInit {
     'soccer_england_league1',
   ];
 
-  constructor(private oddsService: OddsService) {}
+  constructor(
+    private oddsService: OddsService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.loadSports();
+    this.loadUserInfo();
+  }
+
+  loadUserInfo() {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.username = user.nick;
+    }
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
   loadSports() {
@@ -87,14 +106,12 @@ export class HomeComponent implements OnInit {
     this.selectedSportKey = sportKey;
     this.oddsService.getOdds(sportKey).subscribe({
       next: (data: OddEvent[]) => {
-        console.log("Datos completos de la API:", data);
         this.odds = data.filter(event => 
           this.allowedLeagues.some(league => 
             event.sport_title?.includes(league) || 
             event.league?.includes(league)
           )
         );
-        console.log("Datos después de filtrar:", this.odds);
         this.loading = false;
       },
       error: (error) => {
