@@ -1,534 +1,125 @@
+/* 📌 Contenedor principal */
 .home-container {
-  padding: 2rem;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  min-height: 100vh;
+  margin-left: 270px;
+  padding: 20px;
   color: white;
 }
 
-/* Estilos para la barra de búsqueda */
-.search-section {
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.search-input {
-  width: 100%;
-  max-width: 600px;
-  padding: 1rem 1.5rem;
-  border-radius: 50px;
-  border: 2px solid #00b341;
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 179, 65, 0.1);
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #00ff5e;
-  box-shadow: 0 0 20px rgba(0, 255, 94, 0.2);
-  transform: scale(1.02);
-}
-
-/* Estilos para la sección de predicciones */
-.predictions-grid {
-  margin-bottom: 3rem;
-}
-
-.predictions-grid h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  color: #00b341;
-  text-shadow: 0 0 10px rgba(0, 179, 65, 0.3);
-}
-
-.match-cards {
+/* 📌 Contenedor de ligas en una sola columna */
+.leagues-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem;
+  grid-template-columns: 1fr; /* 🔹 Todas las ligas en una sola columna */
+  gap: 20px;
+  align-items: flex-start;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.match-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 179, 65, 0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.match-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+/* 📌 Sección de cada liga */
+.league-section {
+  background: #1e1e2d;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #00b341, #00ff5e);
+}
+
+/* 📌 Botón de Ver Cuotas */
+.btn-primary {
+  background: #00b341;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  background: #00ff5e;
+}
+
+/* 📌 Contenedor de cuotas */
+.odds-container {
+  margin-top: 15px;
+}
+
+/* 📌 Tarjetas de partidos */
+.match-card {
+  background: #23272f;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-in-out;
 }
 
 .match-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  border-color: #00b341;
+  transform: scale(1.05);
 }
 
-.match-date {
-  color: #00b341;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+/* 📌 Encabezado del partido */
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
 }
 
+/* 📌 Equipos */
 .match-teams {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin: 1.5rem 0;
-  padding: 0.5rem;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-}
-
-.team {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.team img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 5px rgba(0, 179, 65, 0.3));
-  transition: transform 0.3s ease;
-}
-
-.match-card:hover .team img {
-  transform: scale(1.1);
-}
-
-.team span {
-  color: white;
-  font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
+  font-weight: bold;
   text-align: center;
 }
 
 .vs {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #00b341;
-  text-shadow: 0 0 10px rgba(0, 179, 65, 0.3);
+  font-size: 1.5rem;
+  color: #00ffcc;
 }
 
+/* 📌 Cuotas */
 .odds {
   display: flex;
-  justify-content: space-around;
-  margin: 1.5rem 0;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
 }
 
-.odd {
-  flex: 1;
-  text-align: center;
-  background: rgba(0, 179, 65, 0.1);
-  padding: 0.5rem;
-  border-radius: 8px;
-  color: #00b341;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.odd:hover {
-  background: rgba(0, 179, 65, 0.2);
-  transform: scale(1.05);
-}
-
-.bet-button {
-  width: 100%;
-  padding: 0.8rem;
+.odd-button {
   background: #00b341;
   border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.bet-button:hover {
-  background: #00ff5e;
-  box-shadow: 0 0 20px rgba(0, 255, 94, 0.3);
-  transform: scale(1.02);
-}
-
-/* Estilos para los filtros */
-.filters-section {
-  margin: 2rem 0;
-  display: flex;
-  justify-content: center;
-}
-
-.filter-buttons {
-  display: flex;
-  gap: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.5rem;
-  border-radius: 50px;
-}
-
-.filter-buttons button {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 25px;
-  background: transparent;
   color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-}
-
-.filter-buttons button.active {
-  background: #00b341;
-  color: white;
-  box-shadow: 0 0 15px rgba(0, 179, 65, 0.3);
-}
-
-.filter-buttons button:hover:not(.active) {
-  background: rgba(0, 179, 65, 0.2);
-}
-
-/* Estilos para las promociones */
-.promotions-section {
-  margin: 3rem 0;
-}
-
-.promotions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  padding: 1rem;
-}
-
-.promo-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 179, 65, 0.2);
-}
-
-.promo-card:hover {
-  transform: translateY(-5px);
-  border-color: #00b341;
-  box-shadow: 0 10px 20px rgba(0, 179, 65, 0.2);
-}
-
-.promo-image img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  transition: all 0.3s ease;
-}
-
-.promo-content {
-  padding: 1.5rem;
-}
-
-.promo-content h3 {
-  color: #00b341;
-  margin-bottom: 0.5rem;
-}
-
-.promo-button {
-  margin-top: 1rem;
-  padding: 0.8rem 1.5rem;
-  background: #00b341;
-  border: none;
-  border-radius: 25px;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.promo-button:hover {
-  background: #00ff5e;
-  transform: scale(1.05);
-}
-
-/* Estilos para los premios */
-.prizes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 1rem;
-}
-
-.prize-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 179, 65, 0.2);
-}
-
-.prize-card:hover {
-  transform: translateY(-5px);
-  border-color: #00b341;
-  box-shadow: 0 10px 20px rgba(0, 179, 65, 0.2);
-}
-
-.prize-image img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-
-.prize-content {
-  padding: 1.5rem;
-}
-
-.prize-points {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-}
-
-.points {
-  color: #00b341;
   font-weight: bold;
-}
-
-.claim-button {
-  padding: 0.6rem 1.2rem;
-  background: #00b341;
-  border: none;
-  border-radius: 20px;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.claim-button:hover {
-  background: #00ff5e;
-  transform: scale(1.05);
-}
-
-/* Estilos para la galería */
-.gallery-section {
-  margin: 3rem 0;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem;
-}
-
-.gallery-item {
-  position: relative;
-  border-radius: 15px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.gallery-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-}
-
-.gallery-item img {
+  transition: background 0.3s;
   width: 100%;
-  height: 180px;
-  object-fit: cover;
-  transition: all 0.3s ease;
 }
 
-.image-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
-  color: white;
-  font-size: 0.9rem;
-  transform: translateY(100%);
-  transition: all 0.3s ease;
+.odd-button:hover {
+  background: #00ff5e;
 }
 
-.gallery-item:hover .image-caption {
-  transform: translateY(0);
-}
-
-/* Estilos para el loading spinner */
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
-
-/* Estilos para mensajes de error */
-.error-message {
+/* 📌 Cuando no hay cuotas */
+.no-odds-message {
   text-align: center;
-  color: #ff4444;
-  padding: 1rem;
-  background: rgba(255, 68, 68, 0.1);
-  border-radius: 8px;
-  margin: 1rem 0;
+  font-style: italic;
+  color: gray;
 }
 
-/* Media queries para responsividad */
+/* 📌 Responsive */
 @media (max-width: 768px) {
   .home-container {
-    padding: 1rem;
+      margin-left: 0;
+      padding: 10px;
   }
-
-  .match-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .match-teams {
-    padding: 0.3rem;
-  }
-
-  .team img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .filter-buttons {
-    flex-direction: column;
-    border-radius: 15px;
-  }
-  
-  .promotions-grid,
-  .prizes-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .predictions-grid h2 {
-    font-size: 1.5rem;
-  }
-}
-
-.leagues-nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  margin-bottom: 2rem;
-}
-
-.main-leagues {
-  display: flex;
-  gap: 1rem;
-}
-
-.league-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.league-button img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-.league-button.active {
-  background: #00b341;
-  box-shadow: 0 0 15px rgba(0, 179, 65, 0.3);
-}
-
-.league-button:hover:not(.active) {
-  background: rgba(0, 179, 65, 0.2);
-}
-
-/* Estilos del desplegable */
-.other-leagues-dropdown {
-  position: relative;
-}
-
-.dropdown-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.dropdown-button:hover {
-  background: rgba(0, 179, 65, 0.2);
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: #1a1a1a;
-  min-width: 200px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  margin-top: 0.5rem;
-}
-
-.dropdown-content.show {
-  display: block;
-}
-
-.league-option {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: none;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.league-option:hover {
-  background: rgba(0, 179, 65, 0.2);
-}
-
-.league-option img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
 }

@@ -1,38 +1,63 @@
-<div class="container">
-    <h1>Deportes Disponibles</h1>
-    
-    <div *ngIf="error" class="alert alert-danger">
+<div class="home-container">
+  <h1>Deportes Disponibles</h1>
+
+  <div *ngIf="error" class="alert alert-danger">
       {{ error }}
-    </div>
-  
-    <div *ngIf="loading" class="alert alert-info">
-      Cargando datos...
-    </div>
-  
-    <div *ngFor="let sport of sports" class="card mb-3">
-      <div class="card-body">
-        <h2 class="card-title">{{ sport.title }}</h2>
-        <button (click)="loadOdds(sport.key)" class="btn btn-primary">
-          Ver Cuotas
-        </button>
-        
-        <div *ngIf="selectedSportKey === sport.key && odds.length" class="mt-3">
-          <h3>Cuotas para {{ sport.title }}</h3>
-          <div *ngFor="let event of odds" class="card mt-2">
-            <div class="card-header">
-              {{ event.home_team }} vs {{ event.away_team }}
-            </div>
-            <div class="card-body">
-              <div *ngFor="let bookmaker of event.bookmakers">
-                <div *ngFor="let outcome of bookmaker.markets[0].outcomes">
-                  <span>{{ outcome.name }}: </span>
-                  <strong>{{ outcome.price }}</strong>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
-  
+
+  <div *ngIf="loading" class="alert alert-info">
+      Cargando datos...
+  </div>
+
+  <div class="leagues-container">
+      @for (sport of sports; track sport.key) {
+          <div class="league-section">
+              <h2>{{ sport.title }}</h2>
+              <button (click)="loadOdds(sport.key)" class="btn-primary">
+                  Ver Cuotas
+              </button>
+
+              @if (selectedSportKey === sport.key) {
+                  <div class="odds-container">
+                      <h3>Cuotas para {{ sport.title }}</h3>
+
+                      @for (event of odds; track event.home_team) {
+                          <div class="match-card">
+                              <div class="match-header">
+                                  <h3>{{ event.home_team }} vs {{ event.away_team }}</h3>
+                                  <span>Hora del partido</span>
+                              </div>
+                              <div class="match-teams">
+                                  <div class="team">
+                                      <span>{{ event.home_team }}</span>
+                                  </div>
+                                  <div class="vs">VS</div>
+                                  <div class="team">
+                                      <span>{{ event.away_team }}</span>
+                                  </div>
+                              </div>
+                              <div class="odds">
+                                  @if (event.bookmakers.length > 0) {
+                                      @for (bookmaker of event.bookmakers; track bookmaker.name) {
+                                          @if (bookmaker.markets && bookmaker.markets.length > 0) {
+                                              @for (outcome of bookmaker.markets[0].outcomes; track outcome.name) {
+                                                  <button class="odd-button">
+                                                      {{ outcome.name }}: {{ outcome.price }}
+                                                  </button>
+                                              }
+                                          }
+                                      }
+                                  } @else {
+                                      <div class="no-odds-message">
+                                          No hay cuotas disponibles para este partido.
+                                      </div>
+                                  }
+                              </div>
+                          </div>
+                      }
+                  </div>
+              }
+          </div>
+      }
+  </div>
+</div>

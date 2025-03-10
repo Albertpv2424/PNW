@@ -22,11 +22,7 @@ interface OddEvent {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styles: [`
-    .container { padding: 20px; }
-    .card { margin-bottom: 10px; }
-    .btn { margin: 5px; }
-  `]
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   sports: Sport[] = [];
@@ -91,13 +87,14 @@ export class HomeComponent implements OnInit {
     this.selectedSportKey = sportKey;
     this.oddsService.getOdds(sportKey).subscribe({
       next: (data: OddEvent[]) => {
-        // Filtramos solo las ligas que queremos mostrar
+        console.log("Datos completos de la API:", data);
         this.odds = data.filter(event => 
           this.allowedLeagues.some(league => 
             event.sport_title?.includes(league) || 
             event.league?.includes(league)
           )
         );
+        console.log("Datos después de filtrar:", this.odds);
         this.loading = false;
       },
       error: (error) => {
