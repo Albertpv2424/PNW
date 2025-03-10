@@ -2,28 +2,17 @@
   <div class="login-card">
     <img src="../../../assets/logo.jpg" alt="Logo" class="logo" (error)="handleImageError($event)">
     <h1 style="color: white;">Bienvenido!</h1>
-    <p style="color: white;">Página inicio sesión</p>
-
-    <!-- Add status message display -->
-    <div *ngIf="loginStatus" class="status-message" 
-         [ngClass]="{'success-message': loginStatus.type === 'success', 'error-message': loginStatus.type === 'error'}">
-      {{ loginStatus.message }}
-    </div>
 
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="input-container">
-        <input type="email" formControlName="email" placeholder="Correo electrónico">
-        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-text">
-          Email inválido
-        </div>
+        <input type="email" formControlName="email" placeholder="">
+        <label>Correo electrónico</label>
       </div>
 
       <div class="input-container">
-        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Contraseña">
-        <span class="eye-icon" (click)="togglePassword()">{{showPassword ? '👁️' : '👁️‍🗨️'}}</span>
-        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-text">
-          Contraseña requerida
-        </div>
+        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="">
+        <label>Contraseña</label>
+        <span class="eye-icon" (click)="togglePassword()">👁️</span>
       </div>
 
       <div class="options-container">

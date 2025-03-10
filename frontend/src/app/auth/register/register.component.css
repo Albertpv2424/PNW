@@ -67,42 +67,74 @@
     max-width: 100%;
   }
   
+  /* Update input container to support floating labels */
   .input-container {
     position: relative;
     margin-bottom: 1.2rem;
     width: 100%;
   }
   
+  /* Style for the floating label */
+  .input-container label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background: transparent;
+  }
+  
+  /* Move label up when input is focused or has value */
+  .input-container input:focus ~ label,
+  .input-container input:not(:placeholder-shown) ~ label {
+    top: 0;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #00b341;
+    background: rgba(26, 26, 26, 0.95);
+    padding: 0 5px;
+  }
+  
   .input-container input {
     width: 100%;
     height: 45px;
-    padding: 0 40px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(0, 179, 65, 0.2);
-    border-radius: 8px;
+    padding: 0 15px;
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid #333;
+    border-radius: 4px;
     color: white;
     font-size: 14px;
     transition: all 0.3s ease;
     box-sizing: border-box;
   }
   
+  /* Make placeholder transparent to avoid showing both label and placeholder */
+  .input-container input::placeholder {
+    color: transparent;
+  }
+  
   .input-container input:hover {
-    border-color: rgba(0, 255, 94, 0.3);
-    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 179, 65, 0.5);
   }
   
   .input-container input:focus {
     outline: none;
     border-color: #00b341;
-    box-shadow: 0 0 0 2px rgba(0, 179, 65, 0.1);
-    background: rgba(0, 0, 0, 0.4);
-    transform: translateY(-1px);
+    box-shadow: 0 0 0 1px #00b341;
   }
   
-  .input-container input::placeholder {
-    color: #888;
-    opacity: 1;
-    transition: all 0.3s ease;
+  .input-container input:focus::placeholder {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  
+  /* Add a glowing effect on focus similar to Bet365 */
+  .input-container:focus-within {
+    box-shadow: 0 0 8px rgba(0, 179, 65, 0.4);
   }
   
   .input-container input:focus::placeholder {
@@ -213,4 +245,27 @@
     .register-card {
       margin: 0.5rem auto;
     }
+  }
+  
+  /* Login link section */
+  /* Replace the login-link section with register-link to match login component */
+  .register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 14px;
+  }
+  
+  .register-link span {
+    color: #666;
+  }
+  
+  .register-link a {
+    color: #00b341;
+    text-decoration: none;
+    margin-left: 8px;
+    font-weight: 600;
+  }
+  
+  .register-link a:hover {
+    color: #00ff5e;
   }

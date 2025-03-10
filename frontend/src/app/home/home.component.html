@@ -37,12 +37,10 @@
 
                       @for (event of odds; track event.home_team) {
                           <div class="match-card">
-                              <!-- No changes needed above this line -->
-                                                                <div class="match-header">
-                                                                    <h3>{{ event.home_team }} vs {{ event.away_team }}</h3>
-                                                                    <span>{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
-                                                                </div>
-                              <!-- No changes needed below this line -->
+                            <div class="match-header">
+                               <h3>{{ event.home_team }} vs {{ event.away_team }}</h3>
+                                <span>{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
+                             </div>
                               <div class="match-teams">
                                   <div class="team">
                                       <span>{{ event.home_team }}</span>
