@@ -12,32 +12,43 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
-            'nick' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:usuaris,email',
-            'pswd' => 'required|string|min:8',
-            'dni' => 'required|string|size:9|unique:usuaris,dni',
-            'telefon' => 'nullable|string|max:15',
-            'data_naixement' => 'required|date',
-        ]);
-
-        $user = new User([
-            'nick' => $request->nick,
-            'email' => $request->email,
-            'pswd' => Hash::make($request->pswd),
-            'dni' => $request->dni,
-            'telefon' => $request->telefon,
-            'data_naixement' => $request->data_naixement,
-            'tipus_acc' => 'Usuari',
-            'saldo' => 0,
-            'temps_diari' => 3600,
-            'bloquejat' => false,
-            'apostes_realitzades' => 0,
-        ]);
-
-        $user->save();
-
-        return response()->json(['message' => 'User registered successfully'], 201);
+        try {
+            $request->validate([
+                'nick' => 'required|string|max:255|unique:usuaris,nick',
+                'email' => 'required|string|email|max:255|unique:usuaris,email',
+                'pswd' => 'required|string|min:8',
+                'dni' => 'required|string|size:9|unique:usuaris,dni',
+                'telefon' => 'nullable|string|max:15|unique:usuaris,telefon',
+                'data_naixement' => 'required|date',
+            ]);
+    
+            $user = new User([
+                'nick' => $request->nick,
+                'email' => $request->email,
+                'pswd' => Hash::make($request->pswd),
+                'dni' => $request->dni,
+                'telefon' => $request->telefon,
+                'data_naixement' => $request->data_naixement,
+                'tipus_acc' => 'Usuari',
+                'saldo' => 0,
+                'temps_diari' => 3600,
+                'bloquejat' => false,
+                'apostes_realitzades' => 0,
+            ]);
+    
+            $user->save();
+    
+            return response()->json(['message' => 'Usuario registrado correctamente'], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al registrar el usuario: ' . $e->getMessage()
+            ], 500);
+        }
     }
     
     public function login(Request $request)
@@ -92,26 +103,52 @@ class AuthController extends Controller
     
     public function resetPassword(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
-    
-        // Find the user by email
-        $user = User::where('email', $request->email)->first();
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+            ]);
+            
+            // Si password es 'verification_only', solo verificamos si el email existe
+            if ($request->password === 'verification_only') {
+                $user = User::where('email', $request->email)->first();
+                
+                if (!$user) {
+                    return response()->json([
+                        'message' => 'No se encontró ningún usuario con este correo electrónico.'
+                    ], 404);
+                }
+                
+                return response()->json([
+                    'message' => 'Email verificado con éxito.'
+                ]);
+            }
         
-        if (!$user) {
+            // Find the user by email
+            $user = User::where('email', $request->email)->first();
+            
+            if (!$user) {
+                return response()->json([
+                    'message' => 'No se encontró ningún usuario con este correo electrónico.'
+                ], 404);
+            }
+            
+            // Update the password
+            $user->pswd = Hash::make($request->password);
+            $user->save();
+            
             return response()->json([
-                'message' => 'No se encontró ningún usuario con este correo electrónico.'
-            ], 404);
+                'message' => 'Contraseña actualizada con éxito.'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al restablecer la contraseña: ' . $e->getMessage()
+            ], 500);
         }
-        
-        // Update the password
-        $user->pswd = Hash::make($request->password);
-        $user->save();
-        
-        return response()->json([
-            'message' => 'Contraseña actualizada con éxito.'
-        ]);
     }
 }

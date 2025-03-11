@@ -67,10 +67,22 @@ export class LoginComponent {
         },
         error: (error) => {
           console.error('Login failed', error);
+          let errorMessage = 'Error al iniciar sesión.';
+          
+          if (error.status === 401 || error.status === 422) {
+            errorMessage = 'Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.';
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else {
+            errorMessage = 'Error al iniciar sesión. Por favor, verifica tus credenciales.';
+          }
+          
           this.loginStatus = { 
             type: 'error', 
-            message: error.error?.message || 'Error al iniciar sesión. Por favor, verifica tus credenciales.'
+            message: errorMessage
           };
+          
+          alert(errorMessage);
         }
       });
     } else {
@@ -79,6 +91,8 @@ export class LoginComponent {
         type: 'error', 
         message: 'Por favor, completa todos los campos correctamente.' 
       };
+      
+      alert('Por favor, completa todos los campos correctamente.');
     }
   }
 }

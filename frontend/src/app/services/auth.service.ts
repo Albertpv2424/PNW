@@ -76,6 +76,7 @@ export class AuthService {
   }
 
   // Add this method to your AuthService
+  // Añadir este método para el restablecimiento de contraseña
   resetPassword(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/reset-password`, {
       email: email,

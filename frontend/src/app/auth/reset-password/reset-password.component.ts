@@ -45,11 +45,28 @@ export class ResetPasswordComponent {
   verifyEmail() {
     if (this.emailForm.valid) {
       this.userEmail = this.emailForm.value.email;
-      // Here you would typically call an API to verify the email exists
-      // and send a verification code or token
       
-      // For now, we'll just move to step 2
-      this.currentStep = 2;
+      // Verificar si el email existe antes de continuar
+      this.authService.resetPassword(this.userEmail, 'verification_only').subscribe({
+        next: () => {
+          // Si llegamos aquí, el email existe
+          this.currentStep = 2;
+        },
+        error: (error) => {
+          console.error('Email verification failed:', error);
+          let errorMessage = 'No se pudo verificar el correo electrónico.';
+          
+          if (error.status === 404) {
+            errorMessage = 'No existe ninguna cuenta con este correo electrónico.';
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          }
+          
+          alert(errorMessage);
+        }
+      });
+    } else {
+      alert('Por favor, introduce un correo electrónico válido.');
     }
   }
 
@@ -57,9 +74,12 @@ export class ResetPasswordComponent {
     if (this.resetForm.valid) {
       // Check if passwords match
       if (this.resetForm.value.password !== this.resetForm.value.confirmPassword) {
-        // Handle password mismatch
-        console.error('Las contraseñas no coinciden');
-        alert('Las contraseñas no coinciden');
+        alert('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
+        return;
+      }
+      
+      if (this.resetForm.value.password.length < 8) {
+        alert('La contraseña debe tener al menos 8 caracteres.');
         return;
       }
       
@@ -68,15 +88,24 @@ export class ResetPasswordComponent {
         .subscribe({
           next: (response) => {
             console.log('Password reset successful:', response);
-            alert('Contraseña restablecida con éxito. Ahora puedes iniciar sesión con tu nueva contraseña.');
+            alert('¡Contraseña restablecida con éxito! Ahora puedes iniciar sesión con tu nueva contraseña.');
             this.router.navigate(['/login']);
           },
           error: (error) => {
             console.error('Password reset failed:', error);
-            alert('Error al restablecer la contraseña: ' + 
-              (error.error?.message || 'Por favor, inténtalo de nuevo más tarde.'));
+            let errorMessage = 'Error al restablecer la contraseña.';
+            
+            if (error.status === 404) {
+              errorMessage = 'No existe ninguna cuenta con este correo electrónico.';
+            } else if (error.error?.message) {
+              errorMessage = error.error.message;
+            }
+            
+            alert(errorMessage);
           }
         });
+    } else {
+      alert('Por favor, completa todos los campos correctamente.');
     }
   }
 }
