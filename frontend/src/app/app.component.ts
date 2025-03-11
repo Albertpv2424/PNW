@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { NotificationComponent } from './auth/notification/notification.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HomeComponent],
+  imports: [RouterOutlet, NotificationComponent],
   templateUrl: './app.component.html',
-  styles: [`
-    .container { padding: 20px; }
-    .card { margin-bottom: 10px; }
-    .btn { margin: 5px; }
-  `]
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'frontend';
+}

@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router'; // Make sure RouterLink is imported
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
+import { NotificationComponent } from '../../auth/notification/notification.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink], // Add RouterLink to imports
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NotificationComponent], // Add NotificationComponent
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -19,7 +21,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {
     this.registerForm = this.fb.group({
       nick: ['', Validators.required],  // Changed from username
@@ -36,16 +39,21 @@ export class RegisterComponent implements OnInit {
     // Remove the throw error
   }
 
+  // Add this method to fix the error
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
   onSubmit() {
     if (this.registerForm.valid) {
       // Validaciones adicionales
       if (this.registerForm.value.pswd.length < 8) {
-        alert('La contraseña debe tener al menos 8 caracteres.');
+        this.notificationService.showError('La contraseña debe tener al menos 8 caracteres.');
         return;
       }
       
       if (!this.registerForm.value.terms) {
-        alert('Debes aceptar los términos y condiciones para continuar.');
+        this.notificationService.showError('Debes aceptar los términos y condiciones para continuar.');
         return;
       }
       
@@ -53,8 +61,10 @@ export class RegisterComponent implements OnInit {
       this.authService.register(userData).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
-          alert('¡Registro exitoso! Ahora puedes iniciar sesión con tus credenciales.');
-          this.router.navigate(['/login']);
+          this.notificationService.showSuccess('¡Registro exitoso! Ahora puedes iniciar sesión con tus credenciales.');
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
         },
         error: (error) => {
           console.error('Registration failed', error);
@@ -108,7 +118,7 @@ export class RegisterComponent implements OnInit {
             errorMessage = 'Error al registrar usuario. Por favor, verifica tus datos e intenta nuevamente.';
           }
           
-          alert(errorMessage);
+          this.notificationService.showError(errorMessage);
         }
       });
     } else {
@@ -133,12 +143,7 @@ export class RegisterComponent implements OnInit {
         errorMessage += '\n- La fecha de nacimiento es obligatoria.';
       }
       
-      alert(errorMessage);
+      this.notificationService.showError(errorMessage);
     }
-  }
-  
-  // Add this method
-  togglePassword() {
-    this.showPassword = !this.showPassword;
   }
 }

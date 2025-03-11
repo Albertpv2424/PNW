@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
+import { NotificationComponent } from '../../auth/notification/notification.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NotificationComponent], // Add NotificationComponent
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -19,7 +21,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService // Add this
   ) {
     this.loginForm = this.fb.group({
       // Change from email validator to just required
@@ -56,33 +59,23 @@ export class LoginComponent {
           
           // Check if response and user exist before accessing properties
           if (response && response.user && response.user.nick) {
-            alert('¡Login exitoso! Bienvenido ' + response.user.nick);
+            this.notificationService.showSuccess('¡Login exitoso! Bienvenido ' + response.user.nick);
           } else {
-            alert('¡Login exitoso!');
+            this.notificationService.showSuccess('¡Login exitoso!');
           }
           
           setTimeout(() => {
             this.router.navigate(['/']);
-          }, 1500);
+          }, 2000);
         },
         error: (error) => {
           console.error('Login failed', error);
-          let errorMessage = 'Error al iniciar sesión.';
-          
-          if (error.status === 401 || error.status === 422) {
-            errorMessage = 'Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.';
-          } else if (error.error?.message) {
-            errorMessage = error.error.message;
-          } else {
-            errorMessage = 'Error al iniciar sesión. Por favor, verifica tus credenciales.';
-          }
-          
           this.loginStatus = { 
             type: 'error', 
-            message: errorMessage
+            message: error.error?.message || 'Error al iniciar sesión. Por favor, verifica tus credenciales.'
           };
           
-          alert(errorMessage);
+          this.notificationService.showError(this.loginStatus.message);
         }
       });
     } else {
@@ -92,7 +85,7 @@ export class LoginComponent {
         message: 'Por favor, completa todos los campos correctamente.' 
       };
       
-      alert('Por favor, completa todos los campos correctamente.');
+      this.notificationService.showError(this.loginStatus.message);
     }
   }
 }

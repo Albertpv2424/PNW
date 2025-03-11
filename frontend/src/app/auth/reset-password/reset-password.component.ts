@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
+import { NotificationComponent } from '../../auth/notification/notification.component';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NotificationComponent], // Add RouterLink and NotificationComponent
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })
@@ -22,7 +24,8 @@ export class ResetPasswordComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService // Add this
   ) {
     this.emailForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -50,6 +53,7 @@ export class ResetPasswordComponent {
       this.authService.resetPassword(this.userEmail, 'verification_only').subscribe({
         next: () => {
           // Si llegamos aquí, el email existe
+          this.notificationService.showSuccess('Email verificado correctamente.');
           this.currentStep = 2;
         },
         error: (error) => {
@@ -62,11 +66,11 @@ export class ResetPasswordComponent {
             errorMessage = error.error.message;
           }
           
-          alert(errorMessage);
+          this.notificationService.showError(errorMessage);
         }
       });
     } else {
-      alert('Por favor, introduce un correo electrónico válido.');
+      this.notificationService.showError('Por favor, introduce un correo electrónico válido.');
     }
   }
 
@@ -74,12 +78,12 @@ export class ResetPasswordComponent {
     if (this.resetForm.valid) {
       // Check if passwords match
       if (this.resetForm.value.password !== this.resetForm.value.confirmPassword) {
-        alert('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
+        this.notificationService.showError('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.');
         return;
       }
       
       if (this.resetForm.value.password.length < 8) {
-        alert('La contraseña debe tener al menos 8 caracteres.');
+        this.notificationService.showError('La contraseña debe tener al menos 8 caracteres.');
         return;
       }
       
@@ -88,8 +92,10 @@ export class ResetPasswordComponent {
         .subscribe({
           next: (response) => {
             console.log('Password reset successful:', response);
-            alert('¡Contraseña restablecida con éxito! Ahora puedes iniciar sesión con tu nueva contraseña.');
-            this.router.navigate(['/login']);
+            this.notificationService.showSuccess('¡Contraseña restablecida con éxito! Ahora puedes iniciar sesión con tu nueva contraseña.');
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
           },
           error: (error) => {
             console.error('Password reset failed:', error);
@@ -101,11 +107,11 @@ export class ResetPasswordComponent {
               errorMessage = error.error.message;
             }
             
-            alert(errorMessage);
+            this.notificationService.showError(errorMessage);
           }
         });
     } else {
-      alert('Por favor, completa todos los campos correctamente.');
+      this.notificationService.showError('Por favor, completa todos los campos correctamente.');
     }
   }
 }
