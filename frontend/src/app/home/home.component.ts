@@ -3,6 +3,9 @@ import { OddsService } from '../services/odds.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { RouterModule } from '@angular/router';
+import { BetPopupComponent } from '../bet-popup/bet-popup.component';
+import { BetSelectionsService } from '../services/bet-selections.service';
+import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
 
 interface Sport {
   key: string;
@@ -11,19 +14,20 @@ interface Sport {
 }
 
 interface OddEvent {
+  id?: string;  // Add this property
   sport_title?: string;
   league?: string;
   home_team: string;
   away_team: string;
   bookmakers: any[];
-  commence_time?: string; // Add this property
+  commence_time?: string;
   // ... otros campos que vengan de la API
 }
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, BetPopupComponent, CombinedBetComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -62,7 +66,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private oddsService: OddsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private betSelectionsService: BetSelectionsService
   ) {}
 
   ngOnInit() {
@@ -106,7 +111,13 @@ export class HomeComponent implements OnInit {
     this.selectedSportKey = sportKey;
     this.oddsService.getOdds(sportKey).subscribe({
       next: (data: OddEvent[]) => {
-        this.odds = data.filter(event => 
+        // Add unique IDs to events if they don't have one
+        const eventsWithIds = data.map((event, index) => ({
+          ...event,
+          id: event.id || `${sportKey}_${index}`
+        }));
+        
+        this.odds = eventsWithIds.filter(event => 
           this.allowedLeagues.some(league => 
             event.sport_title?.includes(league) || 
             event.league?.includes(league)
@@ -120,5 +131,73 @@ export class HomeComponent implements OnInit {
         console.error('Error:', error);
       }
     });
+  }
+
+  // Nuevas propiedades para el pop-up de apuesta
+  showBetPopup = false;
+  // Update the selectedBet property
+  selectedBet = {
+    teamName: '',
+    betType: '',
+    odds: 0,
+    matchInfo: ''
+  };
+  
+  // Nuevo método para abrir el pop-up de apuesta
+  // Update the openBetPopup method to accept the matchId parameter
+  // Modificar el método openBetPopup para que use el servicio de selecciones
+  openBetPopup(teamName: string, betType: string, odds: number, homeTeam: string, awayTeam: string, matchId: string) {
+    console.log('Abriendo popup para:', teamName, betType, odds);
+    
+    // Desactivamos el popup individual y solo usamos el servicio de selecciones
+    // this.selectedBet = {
+    //   teamName,
+    //   betType,
+    //   odds,
+    //   matchInfo: `${homeTeam} vs ${awayTeam}`
+    // };
+    // this.showBetPopup = true;
+    
+    // Usamos el servicio de selecciones para apuestas combinadas
+    this.betSelectionsService.addSelection({
+      matchId,
+      teamName,
+      betType,
+      odds,
+      matchInfo: `${homeTeam} vs ${awayTeam}`
+    });
+  }
+
+  // Método para cerrar el pop-up
+  closeBetPopup() {
+    this.showBetPopup = false;
+  }
+
+  // Método para procesar la apuesta
+  placeBet(betData: {amount: number, odds: number}) {
+    console.log('Apuesta realizada:', {
+      ...this.selectedBet,
+      amount: betData.amount,
+      potentialWin: betData.amount * betData.odds
+    });
+    
+    // Aquí implementarías la lógica para enviar la apuesta al backend
+    // Por ejemplo:
+    // this.betService.placeBet({
+    //   teamName: this.selectedBet.teamName,
+    //   betType: this.selectedBet.betType,
+    //   odds: this.selectedBet.odds,
+    //   amount: betData.amount
+    // }).subscribe(...)
+  }
+
+  // Añadir este método para verificar si una selección está activa
+  isSelectionActive(matchId: string, outcomeName: string): boolean {
+    const selections = this.betSelectionsService.getCurrentSelections();
+    return selections.some(s => 
+      s.matchId === matchId && 
+      (s.teamName === outcomeName || 
+       (outcomeName === 'Draw' && s.teamName === 'Empate'))
+    );
   }
 }

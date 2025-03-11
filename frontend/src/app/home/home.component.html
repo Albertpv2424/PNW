@@ -55,7 +55,17 @@
                                       @for (bookmaker of event.bookmakers; track bookmaker.name) {
                                           @if (bookmaker.markets && bookmaker.markets.length > 0) {
                                               @for (outcome of bookmaker.markets[0].outcomes; track outcome.name) {
-                                                  <button class="odd-button">
+                                                  <button 
+                                                    class="odd-button"
+                                                    (click)="openBetPopup(
+                                                      outcome.name === 'Draw' ? 'Empate' : (outcome.name === event.home_team ? event.home_team : event.away_team), 
+                                                      outcome.name === 'Draw' ? 'Empate' : 'Ganador', 
+                                                      outcome.price,
+                                                      event.home_team,
+                                                      event.away_team,
+                                                      event.id || ''
+                                                    )"
+                                                  >
                                                       {{ outcome.name }}: {{ outcome.price }}
                                                   </button>
                                               }
@@ -75,3 +85,17 @@
       }
   </div>
 </div>
+
+<!-- Componente de pop-up de apuesta -->
+<app-bet-popup
+  [visible]="showBetPopup"
+  [teamName]="selectedBet.teamName"
+  [betType]="selectedBet.betType"
+  [odds]="selectedBet.odds"
+  [matchInfo]="selectedBet.matchInfo"
+  (close)="closeBetPopup()"
+  (placeBet)="placeBet($event)"
+></app-bet-popup>
+
+<!-- Añadir el componente de apuesta combinada al final -->
+<app-combined-bet></app-combined-bet>

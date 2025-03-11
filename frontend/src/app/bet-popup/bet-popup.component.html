@@ -1,0 +1,41 @@
+<div class="bet-popup-overlay" *ngIf="visible" (click)="closePopup()">
+  <div class="bet-popup" (click)="$event.stopPropagation()">
+    <div class="bet-popup-header">
+      <button class="close-button" (click)="closePopup()">×</button>
+      <div class="bet-info">
+        <div class="match-info">{{ matchInfo }}</div>
+        <div class="selection-info">
+          <span class="team-name">{{ teamName }}</span>
+          <span class="bet-type">{{ betType }}</span>
+          <span class="odds">{{ odds }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bet-popup-content">
+      <div class="bet-amount-container">
+        <label for="betAmount">Establecer cantidad</label>
+        <input 
+          type="number" 
+          id="betAmount" 
+          [(ngModel)]="betAmount" 
+          min="1" 
+          step="1"
+          class="bet-amount-input"
+        >
+      </div>
+      
+      <div class="potential-win">
+        <span>Ganancia potencial: {{ (betAmount * odds).toFixed(2) }} puntos</span>
+      </div>
+      
+      <div class="bet-actions">
+        <label class="remember-toggle">
+          <input type="checkbox">
+          <span class="toggle-label">Recordar</span>
+        </label>
+        <button class="place-bet-button" (click)="submitBet()">Apostar</button>
+      </div>
+    </div>
+  </div>
+</div>
