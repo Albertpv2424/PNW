@@ -93,21 +93,20 @@
 
 .bet-amount-input {
   width: 100%;
-  padding: 12px;
+  padding: 15px;  /* Aumentado de 12px a 15px */
   background-color: #333;
   border: 1px solid #444;
   border-radius: 4px;
   color: white;
-  font-size: 16px;
+  font-size: 18px;  /* Aumentado de 16px a 18px */
+  text-align: center;  /* Centrar el texto */
 }
 
 .potential-win {
   color: #ccc;
   margin-bottom: 20px;
   font-size: 14px;
-  padding: 10px;
-  background-color: #2a2a2a;
-  border-radius: 4px;
+  text-align: center;  /* Centrar el texto */
 }
 
 .bet-actions {
@@ -132,11 +131,12 @@
   background-color: #00b341;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;  /* Aumentado el padding */
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-size: 16px;  /* Aumentado el tamaño de fuente */
 }
 
 .place-bet-button:hover {

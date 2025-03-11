@@ -1,1 +1,39 @@
-<p>combined-bet works!</p>
+<div class="combined-bet-panel" *ngIf="selections.length > 0" [class.minimized]="isMinimized">
+  <div class="panel-header">
+    <button class="toggle-panel" (click)="toggleMinimize()">
+      {{ isMinimized ? '▼' : '▲' }}
+    </button>
+    <h3>APUESTA COMBINADA</h3>
+    <button class="clear-button" (click)="clearSelections()">Limpiar</button>
+  </div>
+  
+  <div class="selections-list">
+    @for (selection of selections; track selection.matchId) {
+      <div class="selection-item">
+        <button class="remove-button" (click)="removeSelection(selection.matchId)">×</button>
+        <div class="match-info">{{ selection.matchInfo }}</div>
+        <div class="bet-info">
+          <span>{{ selection.teamName }}</span>
+          <span class="odds">{{ selection.odds }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="total-section">
+    <div class="total-odds">
+      <span>Cuota total:</span>
+      <span>{{ totalOdds | number:'1.2-2' }}</span>
+    </div>
+    <div class="bet-amount">
+      <label>Cantidad:</label>
+      <input type="number" [(ngModel)]="betAmount" min="1" step="1">
+    </div>
+    <div class="potential-win">
+      Ganancia potencial: {{ betAmount * totalOdds | number:'1.2-2' }}€
+    </div>
+    <button class="place-bet-button" (click)="placeBet()" [disabled]="!betAmount || betAmount <= 0">
+      REALIZAR APUESTA
+    </button>
+  </div>
+</div>
