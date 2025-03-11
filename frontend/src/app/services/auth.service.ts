@@ -74,4 +74,12 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
+
+  // Add this method to your AuthService
+  resetPassword(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password`, {
+      email: email,
+      password: password
+    });
+  }
 }

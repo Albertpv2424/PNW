@@ -38,18 +38,47 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      const userData = this.registerForm.value;
+      // Crear una copia del objeto userData para asegurarnos de que tiene el formato correcto
+      const userData = {
+        nick: this.registerForm.value.nick,
+        email: this.registerForm.value.email,
+        pswd: this.registerForm.value.pswd,
+        dni: this.registerForm.value.dni,
+        telefon: this.registerForm.value.telefon || '',  // Asegurarse de que no sea null/undefined
+        data_naixement: this.registerForm.value.data_naixement
+        // No enviamos terms ya que el backend probablemente no lo espera
+      };
+      
+      console.log('Sending registration data:', userData);
+      
       this.authService.register(userData).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
-          this.router.navigate(['/login']);  // Redirigeix a la pàgina de login
+          alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
+          this.router.navigate(['/login']);
         },
         error: (error) => {
           console.error('Registration failed', error);
+          let errorMessage = 'Error en el registro. ';
+          
+          // Mostrar mensajes de error específicos si están disponibles
+          if (error.error && error.error.errors) {
+            const errors = error.error.errors;
+            for (const field in errors) {
+              errorMessage += `${errors[field].join(', ')} `;
+            }
+          } else if (error.error && error.error.message) {
+            errorMessage += error.error.message;
+          } else {
+            errorMessage += 'Por favor, verifica tus datos e intenta nuevamente.';
+          }
+          
+          alert(errorMessage);
         }
       });
     } else {
       console.log('Form validation errors:', this.registerForm.errors);
+      alert('Por favor, completa todos los campos correctamente.');
     }
   }
   

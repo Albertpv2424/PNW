@@ -89,4 +89,29 @@ class AuthController extends Controller
             'token' => md5($user->nick . time())
         ]);
     }
+    
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+    
+        // Find the user by email
+        $user = User::where('email', $request->email)->first();
+        
+        if (!$user) {
+            return response()->json([
+                'message' => 'No se encontró ningún usuario con este correo electrónico.'
+            ], 404);
+        }
+        
+        // Update the password
+        $user->pswd = Hash::make($request->password);
+        $user->save();
+        
+        return response()->json([
+            'message' => 'Contraseña actualizada con éxito.'
+        ]);
+    }
 }
