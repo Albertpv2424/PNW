@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { BetPopupComponent } from '../bet-popup/bet-popup.component';
 import { BetSelectionsService } from '../services/bet-selections.service';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
+import { TeamBadgeService } from '../services/team-badge.service';
 
 interface Sport {
   key: string;
@@ -67,7 +68,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private oddsService: OddsService,
     private authService: AuthService,
-    private betSelectionsService: BetSelectionsService
+    private betSelectionsService: BetSelectionsService,
+    public teamBadgeService: TeamBadgeService  // Change from private to public
   ) {}
 
   ngOnInit() {
@@ -205,5 +207,24 @@ export class HomeComponent implements OnInit {
   getSelectedSportTitle(): string {
     const sport = this.sports.find(s => s.key === this.selectedSportKey);
     return sport ? sport.title : '';
+  }
+
+  /**
+   * Obtiene la URL del escudo de un equipo
+   */
+  getTeamLogo(teamName: string): string {
+    try {
+      return this.teamBadgeService.getTeamBadgeUrl(teamName);
+    } catch (error) {
+      // Si falla, usar el método de respaldo
+      return this.teamBadgeService.getFallbackBadge(teamName);
+    }
+  }
+
+  /**
+   * Fallback method for team logo errors
+   */
+  handleTeamLogoError(event: any, teamName: string): void {
+    event.target.src = this.teamBadgeService.getFallbackBadge(teamName);
   }
 }

@@ -52,8 +52,25 @@
                 </div>
                 
                 <div class="match-teams">
-                  <div class="team home-team">{{ event.home_team }}</div>
-                  <div class="team away-team">{{ event.away_team }}</div>
+                  <div class="team home-team">
+                    <div class="team-logo">
+                      <img [src]="getTeamLogo(event.home_team)" 
+                           alt="{{ event.home_team }}" 
+                           class="team-badge" 
+                           (error)="handleTeamLogoError($event, event.home_team)">
+                    </div>
+                    <div class="team-name">{{ event.home_team }}</div>
+                  </div>
+                  <div class="vs">VS</div>
+                  <div class="team away-team">
+                    <div class="team-logo">
+                      <img [src]="getTeamLogo(event.away_team)" 
+                           alt="{{ event.away_team }}" 
+                           class="team-badge"
+                           (error)="handleTeamLogoError($event, event.away_team)">
+                    </div>
+                    <div class="team-name">{{ event.away_team }}</div>
+                  </div>
                 </div>
                 
                 <div class="match-odds">
