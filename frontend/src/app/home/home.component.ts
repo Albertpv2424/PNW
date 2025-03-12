@@ -200,4 +200,10 @@ export class HomeComponent implements OnInit {
        (outcomeName === 'Draw' && s.teamName === 'Empate'))
     );
   }
+
+  // Añade este método a tu clase HomeComponent
+  getSelectedSportTitle(): string {
+    const sport = this.sports.find(s => s.key === this.selectedSportKey);
+    return sport ? sport.title : '';
+  }
 }

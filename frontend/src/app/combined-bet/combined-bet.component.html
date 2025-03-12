@@ -3,7 +3,7 @@
     <button class="toggle-panel" (click)="toggleMinimize()">
       {{ isMinimized ? '▼' : '▲' }}
     </button>
-    <h3>APUESTA COMBINADA</h3>
+    <h3>{{ selections.length === 1 ? 'APUESTA SIMPLE' : 'APUESTA COMBINADA' }}</h3>
     <button class="clear-button" (click)="clearSelections()">Limpiar</button>
   </div>
   

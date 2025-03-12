@@ -1,8 +1,8 @@
 <!-- Background div -->
 <div class="background-container"></div>
 
-<div class="home-container">
-  <!-- Header section with user information -->
+<div class="main-layout">
+  <!-- Header section -->
   <header class="header">
     <div class="logo-container">
       <img src="../../assets/logo.jpg" alt="Logo" class="logo">
@@ -13,76 +13,85 @@
     </div>
   </header>
 
-  <h1>Deportes Disponibles</h1>
-
-  <div *ngIf="error" class="alert alert-danger">
-      {{ error }}
-  </div>
-
-  <div *ngIf="loading" class="alert alert-info">
-      Cargando datos...
-  </div>
-
-  <div class="leagues-container">
-      @for (sport of sports; track sport.key) {
-          <div class="league-section">
-              <h2>{{ sport.title }}</h2>
-              <button (click)="loadOdds(sport.key)" class="btn-primary">
-                  Ver Cuotas
-              </button>
-
-              @if (selectedSportKey === sport.key) {
-                  <div class="odds-container">
-                      <h3>Cuotas para {{ sport.title }}</h3>
-
-                      @for (event of odds; track event.home_team) {
-                          <div class="match-card">
-                            <div class="match-header">
-                               <h3>{{ event.home_team }} vs {{ event.away_team }}</h3>
-                                <span>{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
-                             </div>
-                              <div class="match-teams">
-                                  <div class="team">
-                                      <span>{{ event.home_team }}</span>
-                                  </div>
-                                  <div class="vs">VS</div>
-                                  <div class="team">
-                                      <span>{{ event.away_team }}</span>
-                                  </div>
-                              </div>
-                              <div class="odds">
-                                  @if (event.bookmakers.length > 0) {
-                                      @for (bookmaker of event.bookmakers; track bookmaker.name) {
-                                          @if (bookmaker.markets && bookmaker.markets.length > 0) {
-                                              @for (outcome of bookmaker.markets[0].outcomes; track outcome.name) {
-                                                  <button 
-                                                    class="odd-button"
-                                                    (click)="openBetPopup(
-                                                      outcome.name === 'Draw' ? 'Empate' : (outcome.name === event.home_team ? event.home_team : event.away_team), 
-                                                      outcome.name === 'Draw' ? 'Empate' : 'Ganador', 
-                                                      outcome.price,
-                                                      event.home_team,
-                                                      event.away_team,
-                                                      event.id || ''
-                                                    )"
-                                                  >
-                                                      {{ outcome.name }}: {{ outcome.price }}
-                                                  </button>
-                                              }
-                                          }
-                                      }
-                                  } @else {
-                                      <div class="no-odds-message">
-                                          No hay cuotas disponibles para este partido.
-                                      </div>
-                                  }
-                              </div>
-                          </div>
-                      }
-                  </div>
-              }
+  <div class="content-container">
+    <!-- Left sidebar with leagues -->
+    <aside class="sidebar">
+      <h2>Competiciones destacadas</h2>
+      <div class="leagues-list">
+        @for (sport of sports; track sport.key) {
+          <div class="league-item" [class.active]="selectedSportKey === sport.key" (click)="loadOdds(sport.key)">
+            <span class="league-name">{{ sport.title }}</span>
+            <span class="chevron">›</span>
           </div>
+        }
+      </div>
+    </aside>
+
+    <!-- Main content with matches -->
+    <main class="main-content">
+      <h1>Deportes Disponibles</h1>
+
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+
+      <div *ngIf="loading" class="alert alert-info">
+        Cargando datos...
+      </div>
+
+      @if (selectedSportKey) {
+        <div class="selected-league">
+          <h3>Cuotas para {{ getSelectedSportTitle() }}</h3>
+          
+          <div class="matches-grid">
+            @for (event of odds; track event.home_team) {
+              <div class="match-card">
+                <div class="match-header">
+                  <span class="match-league">{{ event.league || getSelectedSportTitle() }}</span>
+                  <span class="match-date">{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
+                </div>
+                
+                <div class="match-teams">
+                  <div class="team home-team">{{ event.home_team }}</div>
+                  <div class="team away-team">{{ event.away_team }}</div>
+                </div>
+                
+                <div class="match-odds">
+                  @if (event.bookmakers.length > 0) {
+                    @for (bookmaker of event.bookmakers; track bookmaker.name) {
+                      @if (bookmaker.markets && bookmaker.markets.length > 0) {
+                        <div class="odds-container">
+                          @for (outcome of bookmaker.markets[0].outcomes; track outcome.name) {
+                            <button 
+                              class="odd-button"
+                              (click)="openBetPopup(
+                                outcome.name === 'Draw' ? 'Empate' : (outcome.name === event.home_team ? event.home_team : event.away_team), 
+                                outcome.name === 'Draw' ? 'Empate' : 'Ganador', 
+                                outcome.price,
+                                event.home_team,
+                                event.away_team,
+                                event.id || ''
+                              )"
+                            >
+                              <div class="odd-label">{{ outcome.name === 'Draw' ? 'Empate' : outcome.name }}</div>
+                              <div class="odd-value">{{ outcome.price }}</div>
+                            </button>
+                          }
+                        </div>
+                      }
+                    }
+                  } @else {
+                    <div class="no-odds-message">
+                      No hay cuotas disponibles para este partido.
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
       }
+    </main>
   </div>
 </div>
 
