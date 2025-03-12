@@ -78,11 +78,12 @@
                     @for (bookmaker of event.bookmakers; track bookmaker.name) {
                       @if (bookmaker.markets && bookmaker.markets.length > 0) {
                         <div class="odds-container">
-                          @for (outcome of bookmaker.markets[0].outcomes; track outcome.name) {
+                          <!-- Ordenamos las cuotas: Local, Empate, Visitante -->
+                          @for (outcome of getOrderedOutcomes(bookmaker.markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
                             <button 
                               class="odd-button"
                               (click)="openBetPopup(
-                                outcome.name === 'Draw' ? 'Empate' : (outcome.name === event.home_team ? event.home_team : event.away_team), 
+                                outcome.name === 'Draw' ? 'Empate' : outcome.name, 
                                 outcome.name === 'Draw' ? 'Empate' : 'Ganador', 
                                 outcome.price,
                                 event.home_team,

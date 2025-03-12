@@ -227,4 +227,28 @@ export class HomeComponent implements OnInit {
   handleTeamLogoError(event: any, teamName: string): void {
     event.target.src = this.teamBadgeService.getFallbackBadge(teamName);
   }
+
+  /**
+   * Ordena las cuotas para mostrar: Local, Empate, Visitante
+   */
+  getOrderedOutcomes(outcomes: any[], homeTeam: string, awayTeam: string): any[] {
+    if (!outcomes || outcomes.length === 0) return [];
+    
+    const ordered = [];
+    
+    // Buscar la cuota del equipo local
+    const homeOutcome = outcomes.find(o => o.name === homeTeam);
+    if (homeOutcome) ordered.push(homeOutcome);
+    
+    // Buscar la cuota de empate
+    const drawOutcome = outcomes.find(o => o.name === 'Draw');
+    if (drawOutcome) ordered.push(drawOutcome);
+    
+    // Buscar la cuota del equipo visitante
+    const awayOutcome = outcomes.find(o => o.name === awayTeam);
+    if (awayOutcome) ordered.push(awayOutcome);
+    
+    // Si por alguna razón no encontramos alguna cuota, devolvemos el array original
+    return ordered.length === outcomes.length ? ordered : outcomes;
+  }
 }
