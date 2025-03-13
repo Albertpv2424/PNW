@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-03-2025 a las 16:04:48
+-- Tiempo de generación: 13-03-2025 a las 15:39:23
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -220,15 +220,21 @@ CREATE TABLE `usuaris` (
   `actualitzat_el` date DEFAULT NULL,
   `apostes_realitzades` int(11) NOT NULL DEFAULT 0,
   `temps_diari` int(11) NOT NULL DEFAULT 3600,
-  `bloquejat` tinyint(1) NOT NULL DEFAULT 0
+  `bloquejat` tinyint(1) NOT NULL DEFAULT 0,
+  `dni` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefon` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data_naixement` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `usuaris`
 --
 
-INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`) VALUES
-('Admin', 'admin@admin.com', 'Administrador', '123456789', '0.00', '2025-03-06 15:02:42', NULL, 0, 3600, 0);
+INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`, `dni`, `telefon`, `data_naixement`) VALUES
+('Admin', 'admin@admin.com', 'Administrador', '$2y$12$uy1WMMbJWKPxGHaG3HSVj.yNDyckbZjOyLffVFa7RV7TNol.we9uW', '0.00', '2025-03-06 15:11:59', '2025-03-10', 0, 3600, 0, '111111111A', '111111111', '2025-03-01'),
+('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$4PKIG9.88Udoav6fqciuKuqKmByF.F7oqacLsddVVDDJWBx3FVzBG', '0.00', '2025-03-07 16:01:54', '2025-03-11', 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
+('DaniGay', 'dani@gay.com', 'Usuari', '$2y$12$BMeVs9XmG5t..5hraNR83ug1dtuDZ/mndiHElDss59aLpDQrpMmLC', '0.00', '2025-03-12 13:42:06', '2025-03-12', 0, 3600, 0, '76767676A', '767676767', '2025-03-12'),
+('WithPau44', 'pau@gmail.com', 'Usuari', '$2y$12$hv5rfs/1uFGqXARAVn1nFu9pS/J3H4sbgApR8tZY1SqKvvZ.cnZXe', '0.00', '2025-03-11 14:28:06', '2025-03-11', 0, 3600, 0, '77777777B', '789789789', '2025-03-11');
 
 --
 -- Índices para tablas volcadas
@@ -322,7 +328,8 @@ ALTER TABLE `user_sist`
 --
 ALTER TABLE `usuaris`
   ADD PRIMARY KEY (`nick`),
-  ADD UNIQUE KEY `usuaris_email_unique` (`email`);
+  ADD UNIQUE KEY `usuaris_email_unique` (`email`),
+  ADD UNIQUE KEY `usuaris_dni_unique` (`dni`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
