@@ -15,11 +15,22 @@ export class TeamBadgeService {
   getTeamBadgeUrl(teamName: string): string {
     // Normalizar el nombre del equipo
     const normalizedName = teamName.toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Eliminar acentos
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       .replace(/\s+/g, '-');
     
-    // Usar API pública de escudos de equipos
-    return `https://media.api-sports.io/football/teams/${this.getTeamId(normalizedName)}.png`;
+    // Check if it's an NBA team
+    if (this.isNBATeam(normalizedName)) {
+      return `https://a.espncdn.com/i/teamlogos/nba/500/${this.getNBATeamAbbreviation(normalizedName)}.png`;
+    }
+    
+    // For soccer teams, use the existing API
+    const teamId = this.getTeamId(normalizedName);
+    if (teamId !== 0) {
+      return `https://media.api-sports.io/football/teams/${teamId}.png`;
+    }
+    
+    // Si no se encuentra el ID, usar el fallback
+    return this.getFallbackBadge(teamName);
   }
   
   /**
@@ -193,7 +204,37 @@ export class TeamBadgeService {
       'fc-copenhagen': 400,
       'molde': 329,
       'bodo-glimt': 327,
-      
+      // NBA Teams
+      'boston-celtics': 2,
+      'brooklyn-nets': 3,
+      'new-york-knicks': 24,
+      'philadelphia-76ers': 27,
+      'toronto-raptors': 38,
+      'chicago-bulls': 6,
+      'cleveland-cavaliers': 7,
+      'detroit-pistons': 10,
+      'indiana-pacers': 15,
+      'milwaukee-bucks': 21,
+      'atlanta-hawks': 1,
+      'charlotte-hornets': 5,
+      'miami-heat': 20,
+      'orlando-magic': 26,
+      'washington-wizards': 41,
+      'denver-nuggets': 9,
+      'minnesota-timberwolves': 22,
+      'oklahoma-city-thunder': 25,
+      'portland-trail-blazers': 29,
+      'utah-jazz': 40,
+      'golden-state-warriors': 14,
+      'la-clippers': 16,
+      'los-angeles-lakers': 17,
+      'phoenix-suns': 28,
+      'sacramento-kings': 30,
+      'dallas-mavericks': 8,
+      'houston-rockets': 14,
+      'memphis-grizzlies': 19,
+      'new-orleans-pelicans': 23,
+      'san-antonio-spurs': 31,
     };
     
     // Buscar coincidencias parciales
@@ -259,6 +300,60 @@ export class TeamBadgeService {
     const color = `#${Math.abs(hash).toString(16).substring(0, 6).padStart(6, '0')}`;
     
     // Crear SVG data URL
-    return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='${color.replace('#', '%23')}'/%3E%3Ctext x='20' y='25' font-family='Arial' font-size='14' fill='white' text-anchor='middle'%3E${initials}%3C/text%3E%3C/svg%3E`;
+    return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='${color.replace('#', '%23')}'/%3E%3Ctext x='20' y='25' font-family='Arial' font-size='14' fill='white' text-anchor='middle'%3E${initials}%3E%3E`;
+  }
+
+  private isNBATeam(normalizedName: string): boolean {
+    const nbaTeams = [
+      'celtics', 'nets', 'knicks', '76ers', 'raptors', 'bulls', 'cavaliers',
+      'pistons', 'pacers', 'bucks', 'hawks', 'hornets', 'heat', 'magic',
+      'wizards', 'nuggets', 'timberwolves', 'thunder', 'trail-blazers', 'jazz',
+      'warriors', 'clippers', 'lakers', 'suns', 'kings', 'mavericks',
+      'rockets', 'grizzlies', 'pelicans', 'spurs'
+    ];
+    
+    return nbaTeams.some(team => normalizedName.includes(team));
+  }
+
+  private getNBATeamAbbreviation(normalizedName: string): string {
+    const teamAbbreviations: { [key: string]: string } = {
+      'celtics': 'bos',
+      'nets': 'bkn',
+      'knicks': 'ny',
+      '76ers': 'phi',
+      'raptors': 'tor',
+      'bulls': 'chi',
+      'cavaliers': 'cle',
+      'pistons': 'det',
+      'pacers': 'ind',
+      'bucks': 'mil',
+      'hawks': 'atl',
+      'hornets': 'cha',
+      'heat': 'mia',
+      'magic': 'orl',
+      'wizards': 'wsh',
+      'nuggets': 'den',
+      'timberwolves': 'min',
+      'thunder': 'okc',
+      'trail-blazers': 'por',
+      'jazz': 'utah',
+      'warriors': 'gs',
+      'clippers': 'lac',
+      'lakers': 'lal',
+      'suns': 'phx',
+      'kings': 'sac',
+      'mavericks': 'dal',
+      'rockets': 'hou',
+      'grizzlies': 'mem',
+      'pelicans': 'no',
+      'spurs': 'sa'
+    };
+  
+    for (const [key, abbr] of Object.entries(teamAbbreviations)) {
+      if (normalizedName.includes(key)) {
+        return abbr;
+      }
+    }
+    return 'nba'; // Default fallback
   }
 }

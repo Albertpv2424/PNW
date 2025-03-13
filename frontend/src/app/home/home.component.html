@@ -20,7 +20,13 @@
       <div class="leagues-list">
         @for (sport of sports; track sport.key) {
           <div class="league-item" [class.active]="selectedSportKey === sport.key" (click)="loadOdds(sport.key)">
-            <span class="league-name">{{ sport.title }}</span>
+            <div class="league-info">
+              <img [src]="getCountryFlag(sport.country)" 
+                   [alt]="sport.country" 
+                   class="league-flag"
+                   (error)="handleFlagError($event, sport.country)">
+              <span class="league-name">{{ sport.title }}</span>
+            </div>
             <span class="chevron">›</span>
           </div>
         }

@@ -11,7 +11,7 @@ import { TeamBadgeService } from '../services/team-badge.service';
 interface Sport {
   key: string;
   title: string;
-  // ... otros campos que pueda tener
+  country?: string;  // Add the country property as optional
 }
 
 interface OddEvent {
@@ -44,9 +44,9 @@ export class HomeComponent implements OnInit {
   allowedLeagues = [
     'La Liga',
     'Serie A',
-    'Ligue 1',
     'Bundesliga',
     'Premier League',
+    'NBA', // Added NBA and removed Ligue 1
     'UEFA Champions League',
     'UEFA Europa League',
     'UEFA Europa Conference League'
@@ -55,14 +55,14 @@ export class HomeComponent implements OnInit {
   // Lista de deportes permitidos
   allowedSports = [
     'soccer', // Para fútbol
+    'basketball_nba', // Changed from 'basketball' to 'basketball_nba'
     'soccer_uefa_champs_league',
     'soccer_uefa_europa_league',
     'soccer_uefa_europa_conference_league',
     'soccer_spain_la_liga',
     'soccer_italy_serie_a',
-    'soccer_france_ligue_one',
     'soccer_germany_bundesliga',
-    'soccer_england_league1',
+    // Removed soccer_france_ligue_one
   ];
 
   constructor(
@@ -94,8 +94,27 @@ export class HomeComponent implements OnInit {
 
     this.oddsService.getSports().subscribe({
       next: (data: Sport[]) => {
-        // Filtramos solo los deportes que queremos mostrar
-        this.sports = data.filter(sport => 
+        // Map sports with their corresponding countries
+        const sportsWithCountries = data.map(sport => {
+          const countryMap: { [key: string]: string } = {
+            'soccer_spain_la_liga': 'Spain',
+            'soccer_italy_serie_a': 'Italy',
+            'soccer_germany_bundesliga': 'Germany',
+            'basketball_nba': 'USA', // Updated to match the new key
+            'soccer': 'Europe',
+            'soccer_uefa_champs_league': 'Europe',
+            'soccer_uefa_europa_league': 'Europe',
+            'soccer_uefa_europa_conference_league': 'Europe'
+          };
+
+          return {
+            ...sport,
+            country: countryMap[sport.key] || 'Europe'  // Default to Europe if no specific country
+          };
+        });
+
+        // Filter allowed sports
+        this.sports = sportsWithCountries.filter(sport => 
           this.allowedSports.includes(sport.key)
         );
         this.loading = false;
@@ -250,5 +269,52 @@ export class HomeComponent implements OnInit {
     
     // Si por alguna razón no encontramos alguna cuota, devolvemos el array original
     return ordered.length === outcomes.length ? ordered : outcomes;
+  }
+
+  /**
+   * Gets the country flag URL using the country-flags API
+   */
+  getCountryFlag(country?: string): string {
+    if (!country) return '';
+    
+    const countryMap: { [key: string]: string } = {
+      'Spain': 'es',
+      'England': 'gb',
+      'Italy': 'it',
+      'Germany': 'de',
+      'USA': 'us',  // Added for NBA
+      'Europe': 'eu',
+      'France': 'fr', // Added for European competitions
+      'Portugal': 'pt',
+      'Netherlands': 'nl',
+      'Belgium': 'be',
+      'Scotland': 'gb-sct',
+      'Turkey': 'tr',
+      'Greece': 'gr',
+      'Austria': 'at',
+      'Switzerland': 'ch',
+      'Croatia': 'hr',
+      'Czech Republic': 'cz',
+      'Denmark': 'dk',
+      'Norway': 'no',
+      'Sweden': 'se',
+      'Poland': 'pl',
+      'Ukraine': 'ua',
+      'Serbia': 'rs',
+      'Romania': 'ro',
+      'Bulgaria': 'bg',
+      'Hungary': 'hu'
+    };
+  
+    const countryCode = countryMap[country] || country.toLowerCase();
+    return `https://flagcdn.com/24x18/${countryCode}.png`;
+  }
+
+  /**
+   * Handles flag loading errors
+   */
+  handleFlagError(event: any, country?: string): void {
+    // Set a default flag icon or hide the element
+    event.target.style.display = 'none';
   }
 }
