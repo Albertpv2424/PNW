@@ -1,0 +1,68 @@
+version: '3'
+services:
+  # Laravel Backend
+  laravel:
+    image: sail-8.2/app
+    build:
+      context: ./odds-api-laravel
+      dockerfile: Dockerfile
+      args:
+        WWWGROUP: 1000
+    ports:
+      - "8000:80"
+    volumes:
+      - ./odds-api-laravel:/var/www/html
+    networks:
+      - pnw-network
+    depends_on:
+      - mysql
+    environment:
+      - ODDS_API_KEY=af0ee3e1921925ef421c1349100fb4ae
+
+  # Angular Frontend
+  angular:
+    image: node:20
+    working_dir: /app
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+    command: >
+      bash -c "npm install && npm start -- --host 0.0.0.0"
+    networks:
+      - pnw-network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: pnw
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./pnw.sql:/docker-entrypoint-initdb.d/pnw.sql
+    networks:
+      - pnw-network
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ''
+    depends_on:
+      - mysql
+    networks:
+      - pnw-network
+
+networks:
+  pnw-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
