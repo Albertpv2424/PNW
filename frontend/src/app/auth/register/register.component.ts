@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router'; // Make sure RouterLink is imported
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
-import { NotificationComponent } from '../../auth/notification/notification.component';
+import { NotificationComponent } from '../notification/notification.component';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, NotificationComponent], // Add NotificationComponent
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NotificationComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -17,31 +18,63 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   showPassword = false;
   logoPath: string = '/assets/logo.jpg';
+  imagePreview: SafeUrl | null = null;
+  selectedImage: File | null = null;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private sanitizer: DomSanitizer
   ) {
     this.registerForm = this.fb.group({
-      nick: ['', Validators.required],  // Changed from username
+      nick: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      pswd: ['', Validators.required],  // Changed from password
+      pswd: ['', Validators.required],
       dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}[A-Z]$')]],
-      telefon: ['', Validators.pattern('^[0-9]{9,15}$')],  // Changed from phone
-      data_naixement: ['', Validators.required],  // Changed from birthDate
+      telefon: ['', Validators.pattern('^[0-9]{9,15}$')],
+      data_naixement: ['', Validators.required],
+      profile_image: [''], // This will be handled separately
       terms: [false, Validators.requiredTrue]
     });
   }
 
   ngOnInit(): void {
-    // Remove the throw error
+    // No initialization needed
   }
 
-  // Add this method to fix the error
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  // Add this method to handle image selection
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      
+      // Check file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        this.notificationService.showError('La imagen no debe superar los 2MB');
+        return;
+      }
+      
+      // Check file type
+      if (!file.type.match(/image\/(jpeg|jpg|png|gif)$/)) {
+        this.notificationService.showError('Solo se permiten imágenes (JPEG, PNG, GIF)');
+        return;
+      }
+      
+      this.selectedImage = file;
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   onSubmit() {
@@ -57,13 +90,33 @@ export class RegisterComponent implements OnInit {
         return;
       }
       
-      const userData = this.registerForm.value;
-      this.authService.register(userData).subscribe({
+      // Create FormData object to send the image
+      const formData = new FormData();
+      
+      // Add all form fields to FormData
+      Object.keys(this.registerForm.value).forEach(key => {
+        if (key !== 'profile_image' && key !== 'terms') {
+          formData.append(key, this.registerForm.value[key]);
+        }
+      });
+      
+      // Add the image file if selected
+      if (this.selectedImage) {
+        formData.append('profile_image', this.selectedImage, this.selectedImage.name);
+      }
+      
+      this.authService.register(formData).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
           this.notificationService.showSuccess('¡Registro exitoso! Ahora puedes iniciar sesión con tus credenciales.');
+          
+          // Force navigation after a short delay to ensure the notification is seen
           setTimeout(() => {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/login']).then(() => {
+              console.log('Navigation to login completed');
+            }).catch(err => {
+              console.error('Navigation error:', err);
+            });
           }, 2000);
         },
         error: (error) => {

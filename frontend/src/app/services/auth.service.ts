@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+// Update the User interface to include profile_image
 interface User {
   nick: string;
   email: string;
@@ -12,6 +13,7 @@ interface User {
   dni: string;
   telefon?: string;
   data_naixement: string;
+  profile_image?: string; // Make sure this field is included
 }
 
 interface AuthResponse {
@@ -39,6 +41,15 @@ export class AuthService {
   }
 
   register(userData: any): Observable<AuthResponse> {
+    // Check if userData is FormData or regular object
+    if (!(userData instanceof FormData)) {
+      const formData = new FormData();
+      Object.keys(userData).forEach(key => {
+        formData.append(key, userData[key]);
+      });
+      userData = formData;
+    }
+    
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData);
   }
 
@@ -56,11 +67,14 @@ export class AuthService {
     );
 }
 
-  logout(): void {
+  logout(navigateToLogin: boolean = true): void {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    
+    if (navigateToLogin) {
+      this.router.navigate(['/login']);
+    }
   }
 
   getToken(): string | null {

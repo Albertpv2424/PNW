@@ -312,3 +312,55 @@
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
+
+/* Add these styles to your existing CSS */
+.user-profile-section {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e63946;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-text {
+  font-size: 14px;
+  color: #888;
+}
+
+.username {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Add this to the top of your home component CSS */
+.content-container {
+  padding-top: 70px; /* Adjust this value based on your header height */
+}

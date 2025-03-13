@@ -7,6 +7,7 @@ import { BetPopupComponent } from '../bet-popup/bet-popup.component';
 import { BetSelectionsService } from '../services/bet-selections.service';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
 import { TeamBadgeService } from '../services/team-badge.service';
+import { HeaderComponent } from '../header/header.component';
 
 interface Sport {
   key: string;
@@ -28,7 +29,7 @@ interface OddEvent {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, BetPopupComponent, CombinedBetComponent],
+  imports: [CommonModule, RouterModule, BetPopupComponent, CombinedBetComponent, HeaderComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -39,6 +40,8 @@ export class HomeComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
   username: string = '';
+  profileImage: string | null = null; // Add this property
+  featuredMatches: OddEvent[] = [];
 
   // Lista de ligas permitidas
   allowedLeagues = [
@@ -81,6 +84,19 @@ export class HomeComponent implements OnInit {
     const user = this.authService.getCurrentUser();
     if (user) {
       this.username = user.nick;
+      this.profileImage = user.profile_image || null; // Get the profile image
+    }
+  }
+
+  // Add this method to get user initials for the profile image placeholder
+  getUserInitials(): string {
+    if (!this.username) return '';
+    
+    const names = this.username.split(' ');
+    if (names.length === 1) {
+      return names[0].charAt(0).toUpperCase();
+    } else {
+      return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
     }
   }
 

@@ -36,6 +36,18 @@
           <label>Fecha de nacimiento</label>
         </div>
 
+        <!-- Add profile image upload field -->
+        <div class="profile-image-container">
+          <label for="profile-image" class="profile-image-label">Foto de perfil (opcional)</label>
+          <div class="profile-preview" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Vista previa" class="preview-image">
+          </div>
+          <div class="profile-upload">
+            <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*">
+            <label for="profile-image" class="upload-button">Seleccionar imagen</label>
+          </div>
+        </div>
+
         <div class="checkbox-container">
           <input type="checkbox" id="terms" formControlName="terms">
           <label for="terms">He leído y acepto los Términos y Condiciones.</label>

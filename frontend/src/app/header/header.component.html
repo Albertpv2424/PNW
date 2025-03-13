@@ -1,0 +1,42 @@
+<header class="header">
+  <div class="logo-container">
+    <img src="../../assets/logo.jpg" alt="Logo" class="logo">
+  </div>
+  
+  <div class="nav-links">
+    <a href="#" class="nav-item active">Deportes</a>
+    <a href="#" class="nav-item">En Vivo</a>
+    <a href="#" class="nav-item">Casino</a>
+    <a href="#" class="nav-item">Promociones</a>
+  </div>
+  
+  <div class="search-container">
+    <input type="text" placeholder="Buscar eventos, equipos..." class="search-input">
+    <button class="search-button">
+      <i class="search-icon">🔍</i>
+    </button>
+  </div>
+  
+  <div class="user-section">
+    <div class="balance" *ngIf="username">
+      <span class="currency">€</span>
+      <span class="amount">0</span>
+    </div>
+    
+    <div class="user-info">
+      <div class="profile-container" *ngIf="username">
+        <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
+          <span *ngIf="!profileImage">{{ getInitials() }}</span>
+        </div>
+        <span class="username">{{ username }}</span>
+      </div>
+      <button (click)="logout()" class="logout-button" *ngIf="username">Cerrar sesión</button>
+      
+      <!-- Auth buttons for non-logged in users -->
+      <div class="auth-buttons" *ngIf="!username">
+        <a routerLink="/login" class="login-button">Iniciar sesión</a>
+        <a routerLink="/register" class="register-button">Registrarse</a>
+      </div>
+    </div>
+  </div>
+</header>

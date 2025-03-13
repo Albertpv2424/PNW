@@ -10,6 +10,37 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    // Method to handle file uploads and store the profile image
+    private function handleProfileImage($request)
+    {
+        if (!$request->hasFile('profile_image')) {
+            return null;
+        }
+    
+        $file = $request->file('profile_image');
+        
+        // Validate the file
+        if (!$file->isValid() || !in_array($file->getClientMimeType(), ['image/jpeg', 'image/png', 'image/gif'])) {
+            return null;
+        }
+        
+        // Generate a unique filename
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        
+        // Create directory if it doesn't exist
+        $uploadPath = public_path('uploads/profiles');
+        if (!file_exists($uploadPath)) {
+            mkdir($uploadPath, 0755, true);
+        }
+        
+        // Store the file in the public/uploads/profiles directory
+        $file->move($uploadPath, $filename);
+        
+        // Return the path to be stored in the database
+        return 'uploads/profiles/' . $filename;
+    }
+    
+    // Update the register method to handle the profile image
     public function register(Request $request)
     {
         try {
@@ -20,8 +51,12 @@ class AuthController extends Controller
                 'dni' => 'required|string|size:9|unique:usuaris,dni',
                 'telefon' => 'nullable|string|max:15|unique:usuaris,telefon',
                 'data_naixement' => 'required|date',
+                'profile_image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
     
+            // Process the profile image
+            $profileImagePath = $this->handleProfileImage($request);
+            
             $user = new User([
                 'nick' => $request->nick,
                 'email' => $request->email,
@@ -29,6 +64,7 @@ class AuthController extends Controller
                 'dni' => $request->dni,
                 'telefon' => $request->telefon,
                 'data_naixement' => $request->data_naixement,
+                'profile_image' => $profileImagePath, // Add the profile image path
                 'tipus_acc' => 'Usuari',
                 'saldo' => 0,
                 'temps_diari' => 3600,
@@ -38,7 +74,10 @@ class AuthController extends Controller
     
             $user->save();
     
-            return response()->json(['message' => 'Usuario registrado correctamente'], 201);
+            return response()->json([
+                'message' => 'Usuario registrado correctamente',
+                'user' => $user
+            ], 201);
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Error de validación',

@@ -58,6 +58,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    // Make sure the fillable array includes 'profile_image'
     protected $fillable = [
         'nick',
         'email',
@@ -65,6 +66,7 @@ class User extends Authenticatable
         'dni',
         'telefon',
         'data_naixement',
+        'profile_image', // Add this field
         'tipus_acc',
         'saldo',
         'temps_diari',
