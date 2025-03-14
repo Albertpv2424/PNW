@@ -8,23 +8,36 @@
   <div class="content-container">
     <main class="main-content">
       <div class="promociones-container">
-        <h2>Promociones Disponibles</h2>
-        
-        <div class="promociones-grid">
-          @for (promocion of promocionesActivas; track promocion.id) {
-            <div class="promocion-card">
-              <div class="promocion-image">
-                <img [src]="promocion.image" [alt]="promocion.name">
-              </div>
-              <div class="promocion-info">
-                <h3>{{ promocion.name }}</h3>
-                <p class="description">{{ promocion.description }}</p>
-                <p class="points">{{ promocion.points }} puntos</p>
-                <button class="canjear-button" (click)="onCanjear(promocion.id)">{{ promocion.buttonText }}</button>
-              </div>
-            </div>
-          }
+        <div class="promociones-header">
+          <h2>Promociones Activas</h2>
         </div>
+        
+        @if (isLoading) {
+          <div class="loading-spinner">Cargando promociones...</div>
+        } @else if (errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        } @else if (promociones.length === 0) {
+          <div class="empty-message">No hay promociones disponibles en este momento.</div>
+        } @else {
+          <div class="promociones-grid">
+            @for (promocion of promociones; track promocion.id) {
+              <div class="promocion-card">
+                <div class="promocion-image">
+                  <img [src]="promocion.image" [alt]="promocion.title">
+                </div>
+                <div class="promocion-info">
+                  <div class="promocion-type">{{ promocion.type }}</div>
+                  <h3>{{ promocion.title }}</h3>
+                  <p class="description">{{ promocion.description }}</p>
+                  <div class="promocion-dates">
+                    <span>Válido: {{ formatDate(promocion.startDate) }} - {{ formatDate(promocion.endDate) }}</span>
+                  </div>
+                  <button class="inscribir-button" (click)="onInscribir(promocion.id)">{{ promocion.buttonText }}</button>
+                </div>
+              </div>
+            }
+          </div>
+        }
       </div>
     </main>
   </div>

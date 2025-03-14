@@ -21,20 +21,29 @@
           </div>
         </div>
         
-        <div class="premios-grid">
-          @for (premio of premiosFiltrados; track premio.id) {
-            <div class="premio-card">
-              <div class="premio-image">
-                <img [src]="premio.image" [alt]="premio.name">
+        @if (isLoading) {
+          <div class="loading-spinner">Cargando premios...</div>
+        } @else if (errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        } @else if (premiosFiltrados.length === 0) {
+          <div class="empty-message">No hay premios disponibles en este momento.</div>
+        } @else {
+          <div class="premios-grid">
+            @for (premio of premiosFiltrados; track premio.id) {
+              <div class="premio-card">
+                <div class="premio-image">
+                  <img [src]="premio.image" [alt]="premio.name">
+                </div>
+                <div class="premio-info">
+                  <h3>{{ premio.name }}</h3>
+                  <p *ngIf="premio.description" class="description">{{ premio.description }}</p>
+                  <p class="points">{{ premio.points }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></p>
+                  <button class="canjear-button" (click)="onCanjear(premio.id)">{{ premio.buttonText }}</button>
+                </div>
               </div>
-              <div class="premio-info">
-                <h3>{{ premio.name }}</h3>
-                <p class="points">{{ premio.points }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></p>
-                <button class="canjear-button" (click)="onCanjear(premio.id)">{{ premio.buttonText }}</button>
-              </div>
-            </div>
-          }
-        </div>
+            }
+          </div>
+        }
       </div>
     </main>
   </div>

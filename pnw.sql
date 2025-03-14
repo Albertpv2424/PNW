@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-03-2025 a las 17:01:42
+-- Tiempo de generación: 14-03-2025 a las 20:16:21
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -76,7 +76,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2025_03_05_183033_crear_prediccio_proposada', 1),
 (11, '2025_03_05_183036_crear_resultat_prediccio', 1),
 (12, '2025_03_05_183042_crear_prediccions_sist', 1),
-(13, 'add_profile_image_to_usuaris_table', 2);
+(13, 'add_image_to_premis_and_promos', 1),
+(14, 'add_profile_image_to_usuaris_table', 1);
 
 -- --------------------------------------------------------
 
@@ -136,8 +137,19 @@ CREATE TABLE `premis` (
   `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cost` decimal(10,2) NOT NULL,
-  `condicio` decimal(10,2) NOT NULL
+  `condicio` decimal(10,2) NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ;
+
+--
+-- Volcado de datos para la tabla `premis`
+--
+
+INSERT INTO `premis` (`id`, `titol`, `descripcio`, `cost`, `condicio`, `image`) VALUES
+(1, 'Tour Per Lleida', 'Visita guiada por los lugares más emblemáticos de Lleida', '1500.00', '1.00', 'storage/premios/tour.png'),
+(2, 'Karting Alpicat', 'Sesión de karting en el circuito de Alpicat', '2000.00', '1.00', 'storage/premios/karting.png'),
+(3, 'Cena Gourmet', 'Cena para dos personas en un restaurante de alta cocina', '3000.00', '1.00', 'storage/premios/cena.png'),
+(4, 'Entradas VIP Lleida Esportiu', 'Dos entradas VIP para un partido del Lleida Esportiu', '1000.00', '1.00', 'storage/premios/entradas.png');
 
 -- --------------------------------------------------------
 
@@ -166,8 +178,18 @@ CREATE TABLE `promos` (
   `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data_inici` date NOT NULL,
   `data_final` date NOT NULL,
-  `tipus_promocio` bigint(20) UNSIGNED DEFAULT NULL
+  `tipus_promocio` bigint(20) UNSIGNED DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ;
+
+--
+-- Volcado de datos para la tabla `promos`
+--
+
+INSERT INTO `promos` (`id`, `titol`, `descripcio`, `data_inici`, `data_final`, `tipus_promocio`, `image`) VALUES
+(1, 'Bono de Bienvenida', 'Recibe 500 puntos al registrarte', '2023-01-01', '2025-12-31', 1, 'storage/promociones/bienvenida.png'),
+(2, 'Apuesta Sin Riesgo', 'Recupera tu apuesta si pierdes (hasta 200 puntos)', '2023-06-01', '2023-12-31', 2, 'storage/promociones/sinriesgo.png'),
+(3, 'Champions League Final', 'Gana el doble en tus apuestas a la final de Champions', '2023-05-01', '2023-06-10', 3, 'storage/promociones/champions.png');
 
 -- --------------------------------------------------------
 
@@ -192,6 +214,15 @@ CREATE TABLE `tipus_promocio` (
   `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `tipus_promocio`
+--
+
+INSERT INTO `tipus_promocio` (`id`, `titol`, `descripcio`) VALUES
+(1, 'Bienvenida', 'Promociones para nuevos usuarios'),
+(2, 'Temporada', 'Promociones por temporada deportiva'),
+(3, 'Evento Especial', 'Promociones para eventos deportivos especiales');
 
 -- --------------------------------------------------------
 
@@ -223,21 +254,10 @@ CREATE TABLE `usuaris` (
   `apostes_realitzades` int(11) NOT NULL DEFAULT 0,
   `temps_diari` int(11) NOT NULL DEFAULT 3600,
   `bloquejat` tinyint(1) NOT NULL DEFAULT 0,
-  `dni` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dni` varchar(9) COLLATE utf8mb4_unicode_ci NOT NULL,
   `telefon` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data_naixement` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `usuaris`
---
-
-INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `profile_image`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`, `dni`, `telefon`, `data_naixement`) VALUES
-('Admin', 'admin@admin.com', 'Administrador', '$2y$12$uy1WMMbJWKPxGHaG3HSVj.yNDyckbZjOyLffVFa7RV7TNol.we9uW', NULL, '0.00', '2025-03-06 15:11:59', '2025-03-10', 0, 3600, 0, '111111111A', '111111111', '2025-03-01'),
-('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$u/vjLAtdkCYNPAFZncxomOZIu5Sm2mFgjAhdgKXXAnVCtAVWmpH/6', 'uploads/profiles/profile_1741966009_67d44ab910b0b.png', '0.00', '2025-03-13 18:13:55', '2025-03-13', 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
-('DaniGay', 'dani@gay.com', 'Usuari', '$2y$12$BMeVs9XmG5t..5hraNR83ug1dtuDZ/mndiHElDss59aLpDQrpMmLC', NULL, '0.00', '2025-03-12 13:42:06', '2025-03-12', 0, 3600, 0, '76767676A', '767676767', '2025-03-12'),
-('DeividCopper', 'deivid@coper.com', 'Usuari', '$2y$12$dUD07r0Ogi1DEghW198j3uaUr7Pf1z.Hxvz8tvmGxPXOe7t/JIEzK', 'uploads/profiles/1741892318_67d32ade3bc50.png', '0.00', '2025-03-13 17:58:38', '2025-03-13', 0, 3600, 0, '45454545C', '456456456', '2025-03-13'),
-('WithPau44', 'pau@gmail.com', 'Usuari', '$2y$12$hv5rfs/1uFGqXARAVn1nFu9pS/J3H4sbgApR8tZY1SqKvvZ.cnZXe', NULL, '0.00', '2025-03-11 14:28:06', '2025-03-11', 0, 3600, 0, '77777777B', '789789789', '2025-03-11');
 
 --
 -- Índices para tablas volcadas
@@ -342,7 +362,7 @@ ALTER TABLE `usuaris`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -390,7 +410,7 @@ ALTER TABLE `resultat_prediccio`
 -- AUTO_INCREMENT de la tabla `tipus_promocio`
 --
 ALTER TABLE `tipus_promocio`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `user_sist`

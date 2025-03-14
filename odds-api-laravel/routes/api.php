@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OddsController;
-use App\Http\Controllers\AuthController; // Añade esta línea
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PremioController;
+use App\Http\Controllers\PromocionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +36,13 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Por esta línea (sin middleware de autenticación)
 Route::post('/update-profile', [AuthController::class, 'updateProfile']);
+
+// Rutas para premios
+Route::get('/premios', [PremioController::class, 'index']);
+Route::get('/premios/{id}', [PremioController::class, 'show']);
+Route::post('/premios/{id}/canjear', [PremioController::class, 'canjear'])->middleware('auth:sanctum');
+
+// Rutas para promociones
+Route::get('/promociones', [PromocionController::class, 'index']);
+Route::get('/promociones/{id}', [PromocionController::class, 'show']);
+Route::post('/promociones/{id}/inscribir', [PromocionController::class, 'inscribir'])->middleware('auth:sanctum');

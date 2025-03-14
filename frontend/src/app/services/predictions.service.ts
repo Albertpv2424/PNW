@@ -22,4 +22,21 @@ export class PredictionsService {
   getGalleryImages(): Observable<any> {
     return this.http.get(`${this.apiUrl}/gallery`);
   }
-} 
+
+  // Actualizar el método existente o añadir uno nuevo
+  getPremios(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/premios`);
+  }
+
+  canjearPremio(premioId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/premios/${premioId}/canjear`, {});
+  }
+
+  getPromociones(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/promociones`);
+  }
+
+  inscribirPromocion(promocionId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/promociones/${promocionId}/inscribir`, {});
+  }
+}
