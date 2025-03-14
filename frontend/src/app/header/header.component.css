@@ -305,3 +305,19 @@
   background-color: #00b341;
   font-weight: bold;
 }
+
+/* Cambiar el emoji de moneda por la imagen */
+/* Estilo para la moneda en el header */
+.coin-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  object-fit: contain;
+}
+
+/* Eliminar el estilo anterior de la moneda */
+.currency {
+  display: none;
+}

@@ -25,7 +25,8 @@
       </div>
       
       <div class="potential-win">
-        <span>Ganancia potencial: {{ (betAmount * odds).toFixed(2) }} puntos</span>
+        <span>Ganancia potencial:</span>
+        <span class="win-amount">{{ betAmount * odds | number:'1.2-2' }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></span>
       </div>
       
       <div class="bet-actions">

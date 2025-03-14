@@ -13,7 +13,7 @@
       <p class="profile-email">{{ email }}</p>
       <div class="profile-balance">
         <span class="balance-label">Saldo:</span>
-        <span class="balance-amount">{{ saldo }}💎</span>
+        <span class="balance-amount">{{ saldo }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></span>
       </div>
     </div>
     <!-- Botón para volver al home -->
@@ -154,7 +154,6 @@
 
           <div class="form-actions">
             <button type="submit" class="save-button" [disabled]="profileForm.invalid">Guardar cambios</button>
-            <a routerLink="/profile" class="cancel-button">Cancelar</a>
           </div>
         </form>
       </div>

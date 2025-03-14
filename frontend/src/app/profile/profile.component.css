@@ -422,6 +422,21 @@
   margin-right: 8px;
 }
 
+/* Ajustar el estilo para la imagen de la moneda */
+.coin-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-left: 5px;
+  position: relative;
+  top: -1px;
+  object-fit: contain;
+}
+
+.coin-icon:hover {
+  transform: scale(1.1); /* Pequeña animación al pasar el cursor */
+}
+
 .balance-amount {
   font-size: 18px;
   font-weight: bold;
@@ -660,14 +675,71 @@
   font-size: 18px;
 }
 
-/* Ajuste para la disposición del header */
-.profile-header {
-  display: flex;
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-info h1 {
+  font-size: 32px;
+  margin: 0 0 5px 0;
+  color: white;
+}
+
+.profile-email {
+  color: #ccc;
+  margin: 0 0 15px 0;
+  font-size: 16px;
+}
+
+.profile-balance {
+  display: inline-flex;
   align-items: center;
-  padding: 20px;
-  background-color: rgba(26, 26, 26, 0.7);
-  border-radius: 8px 8px 0 0;
-  flex-wrap: wrap;
+  background-color: rgba(42, 42, 64, 0.7);
+  padding: 10px 15px;
+  border-radius: 6px;
+}
+
+.balance-label {
+  color: #ccc;
+  margin-right: 8px;
+}
+
+.balance-amount {
+  font-size: 18px;
+  font-weight: bold;
+  color: #00b341;
+}
+
+.profile-navigation {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.profile-navigation .nav-item {
+  padding: 10px 20px;
+  color: #ccc;
+  text-decoration: none;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.2s ease;
+}
+
+.profile-navigation .nav-item:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.profile-navigation .nav-item.active {
+  color: white;
+  background-color: #00b341;
+  font-weight: 500;
+}
+
+.profile-content {
+  display: grid;
+  gap: 30px;
 }
 
 .profile-section {

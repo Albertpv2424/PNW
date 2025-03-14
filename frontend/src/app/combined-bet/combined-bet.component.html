@@ -33,7 +33,8 @@
       <input type="number" [(ngModel)]="betAmount" min="1" step="1">
     </div>
     <div class="potential-win">
-      Ganancia potencial: {{ betAmount * totalOdds | number:'1.2-2' }}💎
+      <span>Ganancia potencial:</span>
+      <span class="win-amount">{{ betAmount * totalOdds | number:'1.2-2' }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></span>
     </div>
     <button class="place-bet-button" (click)="placeBet()" [disabled]="!betAmount || betAmount <= 0">
       REALIZAR APUESTA
