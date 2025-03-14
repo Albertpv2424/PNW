@@ -1,0 +1,33 @@
+<div class="background-container"></div>
+
+<div class="main-layout">
+  <header class="header">
+    <app-header></app-header>
+  </header>
+
+  <div class="content-container">
+    <main class="main-content">
+      <div class="promociones-container">
+        <h2>Promociones Disponibles</h2>
+        
+        <div class="promociones-grid">
+          @for (promocion of promocionesActivas; track promocion.id) {
+            <div class="promocion-card">
+              <div class="promocion-image">
+                <img [src]="promocion.image" [alt]="promocion.name">
+              </div>
+              <div class="promocion-info">
+                <h3>{{ promocion.name }}</h3>
+                <p class="description">{{ promocion.description }}</p>
+                <p class="points">{{ promocion.points }} puntos</p>
+                <button class="canjear-button" (click)="onCanjear(promocion.id)">{{ promocion.buttonText }}</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<app-combined-bet></app-combined-bet>

@@ -1,0 +1,121 @@
+/* Import the same base styles as home */
+@import '../home/home.component.css';
+
+/* Add any additional specific styles for premios */
+.premios-container {
+  padding: 50px;
+  color: white;
+}
+
+.premios-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+/* Add these styles to center the premio cards */
+.premios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  justify-items: center; /* Centers items horizontally */
+}
+
+.premio-card {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%; /* Ensures the card takes full width of its grid cell */
+  max-width: 320px; /* Limits the maximum width */
+  background-color: #2a2a40; /* Adding a background color for better visibility */
+}
+
+.premio-info {
+  padding: 15px;
+  text-align: center; /* Centers the text inside the card */
+}
+
+/* Center the button */
+.canjear-button {
+  display: block;
+  margin: 0 auto;
+}
+
+.premio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.premio-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.premio-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.premio-info {
+  padding: 15px;
+}
+
+.premio-info h3 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: white;
+}
+
+.canjear-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #00b341;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.canjear-button:hover {
+  background-color: #009935;
+}
+
+.points {
+  color: #00b341;
+  font-weight: bold;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+
+/* Añade estos estilos a tu archivo CSS existente */
+
+.premios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filtros {
+  display: flex;
+  gap: 10px;
+}
+
+.filtro-button {
+  background-color: #2a2a40;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filtro-button:hover {
+  background-color: #e63946;
+}

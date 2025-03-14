@@ -1,0 +1,43 @@
+<div class="background-container"></div>
+
+<div class="main-layout">
+  <header class="header">
+    <app-header></app-header>
+  </header>
+
+  <div class="content-container">
+    <main class="main-content">
+      <div class="premios-container">
+        <div class="premios-header">
+          <h2>Premios Disponibles</h2>
+          <div class="filtros">
+            <button class="filtro-button" (click)="ordenarPorPuntos()">
+              @if (ordenAscendente) {
+                Ordenar: Menos a más puntos
+              } @else {
+                Ordenar: Más a menos puntos
+              }
+            </button>
+          </div>
+        </div>
+        
+        <div class="premios-grid">
+          @for (premio of premiosFiltrados; track premio.id) {
+            <div class="premio-card">
+              <div class="premio-image">
+                <img [src]="premio.image" [alt]="premio.name">
+              </div>
+              <div class="premio-info">
+                <h3>{{ premio.name }}</h3>
+                <p class="points">{{ premio.points }} puntos</p>
+                <button class="canjear-button" (click)="onCanjear(premio.id)">{{ premio.buttonText }}</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<app-combined-bet></app-combined-bet>
