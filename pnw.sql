@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-03-2025 a las 15:39:23
+-- Tiempo de generación: 14-03-2025 a las 17:01:42
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -75,7 +75,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2025_03_05_183028_crear_premis_usuaris', 1),
 (10, '2025_03_05_183033_crear_prediccio_proposada', 1),
 (11, '2025_03_05_183036_crear_resultat_prediccio', 1),
-(12, '2025_03_05_183042_crear_prediccions_sist', 1);
+(12, '2025_03_05_183042_crear_prediccions_sist', 1),
+(13, 'add_profile_image_to_usuaris_table', 2);
 
 -- --------------------------------------------------------
 
@@ -215,6 +216,7 @@ CREATE TABLE `usuaris` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tipus_acc` enum('Usuari','Usuari_premium','Administrador') COLLATE utf8mb4_unicode_ci NOT NULL,
   `pswd` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `saldo` decimal(10,2) NOT NULL DEFAULT 0.00,
   `creat_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `actualitzat_el` date DEFAULT NULL,
@@ -230,11 +232,12 @@ CREATE TABLE `usuaris` (
 -- Volcado de datos para la tabla `usuaris`
 --
 
-INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`, `dni`, `telefon`, `data_naixement`) VALUES
-('Admin', 'admin@admin.com', 'Administrador', '$2y$12$uy1WMMbJWKPxGHaG3HSVj.yNDyckbZjOyLffVFa7RV7TNol.we9uW', '0.00', '2025-03-06 15:11:59', '2025-03-10', 0, 3600, 0, '111111111A', '111111111', '2025-03-01'),
-('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$4PKIG9.88Udoav6fqciuKuqKmByF.F7oqacLsddVVDDJWBx3FVzBG', '0.00', '2025-03-07 16:01:54', '2025-03-11', 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
-('DaniGay', 'dani@gay.com', 'Usuari', '$2y$12$BMeVs9XmG5t..5hraNR83ug1dtuDZ/mndiHElDss59aLpDQrpMmLC', '0.00', '2025-03-12 13:42:06', '2025-03-12', 0, 3600, 0, '76767676A', '767676767', '2025-03-12'),
-('WithPau44', 'pau@gmail.com', 'Usuari', '$2y$12$hv5rfs/1uFGqXARAVn1nFu9pS/J3H4sbgApR8tZY1SqKvvZ.cnZXe', '0.00', '2025-03-11 14:28:06', '2025-03-11', 0, 3600, 0, '77777777B', '789789789', '2025-03-11');
+INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `profile_image`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`, `dni`, `telefon`, `data_naixement`) VALUES
+('Admin', 'admin@admin.com', 'Administrador', '$2y$12$uy1WMMbJWKPxGHaG3HSVj.yNDyckbZjOyLffVFa7RV7TNol.we9uW', NULL, '0.00', '2025-03-06 15:11:59', '2025-03-10', 0, 3600, 0, '111111111A', '111111111', '2025-03-01'),
+('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$u/vjLAtdkCYNPAFZncxomOZIu5Sm2mFgjAhdgKXXAnVCtAVWmpH/6', 'uploads/profiles/profile_1741966009_67d44ab910b0b.png', '0.00', '2025-03-13 18:13:55', '2025-03-13', 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
+('DaniGay', 'dani@gay.com', 'Usuari', '$2y$12$BMeVs9XmG5t..5hraNR83ug1dtuDZ/mndiHElDss59aLpDQrpMmLC', NULL, '0.00', '2025-03-12 13:42:06', '2025-03-12', 0, 3600, 0, '76767676A', '767676767', '2025-03-12'),
+('DeividCopper', 'deivid@coper.com', 'Usuari', '$2y$12$dUD07r0Ogi1DEghW198j3uaUr7Pf1z.Hxvz8tvmGxPXOe7t/JIEzK', 'uploads/profiles/1741892318_67d32ade3bc50.png', '0.00', '2025-03-13 17:58:38', '2025-03-13', 0, 3600, 0, '45454545C', '456456456', '2025-03-13'),
+('WithPau44', 'pau@gmail.com', 'Usuari', '$2y$12$hv5rfs/1uFGqXARAVn1nFu9pS/J3H4sbgApR8tZY1SqKvvZ.cnZXe', NULL, '0.00', '2025-03-11 14:28:06', '2025-03-11', 0, 3600, 0, '77777777B', '789789789', '2025-03-11');
 
 --
 -- Índices para tablas volcadas
@@ -339,7 +342,7 @@ ALTER TABLE `usuaris`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
