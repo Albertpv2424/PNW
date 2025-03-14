@@ -1,7 +1,7 @@
 .combined-bet-panel {
   position: fixed;
   right: 20px;
-  top: 120px;
+  top: 120px; /* Posición inicial */
   width: 280px;
   max-height: 80vh;
   overflow-y: auto;
@@ -11,6 +11,11 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   z-index: 1000;
   border: none;
+  transition: top 0.3s ease; /* Añadir transición suave */
+}
+
+.combined-bet-panel.menu-open {
+  top: 35%;
 }
 
 .panel-header {

@@ -1,4 +1,7 @@
-<div class="combined-bet-panel" *ngIf="selections.length > 0" [class.minimized]="isMinimized">
+<div class="combined-bet-panel" 
+     *ngIf="selections.length > 0" 
+     [class.minimized]="isMinimized"
+     [class.menu-open]="menuOpen">
   <div class="panel-header">
     <button class="toggle-panel" (click)="toggleMinimize()">
       {{ isMinimized ? '▼' : '▲' }}

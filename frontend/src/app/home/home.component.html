@@ -1,4 +1,4 @@
-<!-- Background div -->
+<!-- Mantener el div de fondo -->
 <div class="background-container"></div>
 
 <div class="main-layout">
@@ -81,7 +81,7 @@
                             <button 
                               class="odd-button"
                               (click)="openBetPopup(
-                                outcome.name === 'Draw' ? 'Empate' : outcome.name, 
+                                outcome.name === 'Draw' ? 'Empate' : 'Ganador', 
                                 outcome.name === 'Draw' ? 'Empate' : 'Ganador', 
                                 outcome.price,
                                 event.home_team,

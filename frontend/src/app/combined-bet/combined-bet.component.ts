@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BetSelectionsService, BetSelection } from '../services/bet-selections.service';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-combined-bet',
@@ -15,13 +16,23 @@ export class CombinedBetComponent implements OnInit {
   totalOdds: number = 1;
   betAmount: number = 10;
   isMinimized = false;
+  menuOpen = false;
 
-  constructor(private betSelectionsService: BetSelectionsService) {}
+  constructor(
+    private betSelectionsService: BetSelectionsService,
+    private renderer: Renderer2,
+    private el: ElementRef
+  ) { }
 
   ngOnInit() {
     this.betSelectionsService.getSelections().subscribe(selections => {
       this.selections = selections;
       this.totalOdds = this.betSelectionsService.calculateTotalOdds();
+    });
+    
+    // Suscribirse a eventos del menú desplegable
+    window.addEventListener('profile-menu-toggle', (event: any) => {
+      this.menuOpen = event.detail.isOpen;
     });
   }
 

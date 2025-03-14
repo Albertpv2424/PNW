@@ -7,8 +7,7 @@
   height: 100%;
   background: linear-gradient(to top, 
     rgba(0, 179, 65, 0.1) 0%,
-    rgba(0, 255, 94, 0.05) 35%,
-    rgba(26, 26, 26, 0.95) 50%
+    rgba(26, 26, 26, 0.5) 80%
   ),
   #1a1a1a url('../../assets/FONDO.jpg') center/cover no-repeat fixed;
   z-index: -1;
@@ -16,9 +15,9 @@
 
 /* Main layout */
 .main-layout {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   color: white;
   padding-right: 320px; /* Añadido margen a la derecha para el popup */
 }
@@ -113,7 +112,6 @@
 .main-content {
   flex: 1;
   padding: 20px;
-  background-color: rgba(26, 26, 26, 0.8);
 }
 
 .main-content h1 {

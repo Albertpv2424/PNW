@@ -33,12 +33,26 @@ export class HeaderComponent {
            (route === '/' && (this.router.url === '/home' || this.router.url === ''));
   }
 
-  toggleProfileMenu(): void {
+  toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
+    
+    // Emitir un evento personalizado cuando el menú cambia
+    const event = new CustomEvent('profile-menu-toggle', {
+      detail: { isOpen: this.isProfileMenuOpen }
+    });
+    window.dispatchEvent(event);
   }
 
-  closeProfileMenu(): void {
-    this.isProfileMenuOpen = false;
+  closeProfileMenu() {
+    if (this.isProfileMenuOpen) {
+      this.isProfileMenuOpen = false;
+      
+      // Emitir un evento personalizado cuando el menú se cierra
+      const event = new CustomEvent('profile-menu-toggle', {
+        detail: { isOpen: false }
+      });
+      window.dispatchEvent(event);
+    }
   }
 
   logout(): void {
