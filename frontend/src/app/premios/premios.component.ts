@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-premios',
@@ -9,7 +10,8 @@ import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
   imports: [
     CommonModule,
     HeaderComponent,
-    CombinedBetComponent
+    CombinedBetComponent,
+    RouterLink
   ],
   templateUrl: './premios.component.html',
   styleUrls: ['./premios.component.css']

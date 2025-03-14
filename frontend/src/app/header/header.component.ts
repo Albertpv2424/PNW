@@ -27,6 +27,12 @@ export class HeaderComponent {
     }
   }
 
+  // Método para verificar si la ruta actual está activa
+  isActive(route: string): boolean {
+    return this.router.url === route || 
+           (route === '/' && (this.router.url === '/home' || this.router.url === ''));
+  }
+
   toggleProfileMenu(): void {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }

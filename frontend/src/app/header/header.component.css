@@ -299,3 +299,9 @@
   font-weight: bold;
   margin-right: 4px;
 }
+
+.nav-links a.active {
+  color: white;
+  background-color: #00b341;
+  font-weight: bold;
+}
