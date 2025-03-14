@@ -1,0 +1,163 @@
+<!-- Background div -->
+<div class="background-container"></div>
+
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
+        <span *ngIf="!profileImage">{{ getInitials() }}</span>
+      </div>
+    </div>
+    <div class="profile-info">
+      <h1>{{ username }}</h1>
+      <p class="profile-email">{{ email }}</p>
+      <div class="profile-balance">
+        <span class="balance-label">Saldo:</span>
+        <span class="balance-amount">{{ saldo }}💎</span>
+      </div>
+    </div>
+    <!-- Botón para volver al home -->
+    <a routerLink="/" class="home-button">
+      <span class="home-icon">🏠</span>
+      <span>Volver al inicio</span>
+    </a>
+  </div>
+
+  <div class="profile-navigation">
+    <a routerLink="/profile" class="nav-item" [class.active]="!editMode">Perfil</a>
+    <a routerLink="/profile/bets" class="nav-item">Mis Apuestas</a>
+    <a routerLink="/profile/history" class="nav-item">Historial</a>
+    <a routerLink="/profile/edit" class="nav-item" [class.active]="editMode">Editar Perfil</a>
+  </div>
+
+  <div class="profile-content">
+    <!-- Vista de perfil normal -->
+    <ng-container *ngIf="!editMode">
+      <div class="profile-section">
+        <h2>Información Personal</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">DNI/NIE:</span>
+            <span class="info-value">{{ dni }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Teléfono:</span>
+            <span class="info-value">{{ telefon || 'No especificado' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Fecha de Nacimiento:</span>
+            <span class="info-value">{{ dataNaixement | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h2>Resumen de Actividad</h2>
+        <div class="activity-summary">
+          <div class="activity-card">
+            <div class="activity-icon">🎮</div>
+            <div class="activity-count">0</div>
+            <div class="activity-label">Apuestas Activas</div>
+          </div>
+          <div class="activity-card">
+            <div class="activity-icon">✅</div>
+            <div class="activity-count">0</div>
+            <div class="activity-label">Apuestas Ganadas</div>
+          </div>
+          <div class="activity-card">
+            <div class="activity-icon">❌</div>
+            <div class="activity-count">0</div>
+            <div class="activity-label">Apuestas Perdidas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h2>Últimas Apuestas</h2>
+        <div class="recent-bets">
+          <div class="empty-state">
+            <div class="empty-icon">📊</div>
+            <p>No tienes apuestas recientes</p>
+            <a routerLink="/" class="action-button">Realizar una apuesta</a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Vista de edición de perfil mejorada -->
+    <ng-container *ngIf="editMode">
+      <div class="profile-section">
+        <h2>Editar Perfil</h2>
+        <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="edit-form">
+          <div class="profile-image-section">
+            <h3>Foto de perfil</h3>
+            <div class="image-preview-container">
+              <div class="image-preview" [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : (profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none')">
+                <span *ngIf="!imagePreview && !profileImage">{{ getInitials() }}</span>
+              </div>
+              <div class="image-upload">
+                <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*" class="file-input">
+                <label for="profile-image" class="file-label">Cambiar imagen</label>
+                <p *ngIf="selectedFile" class="selected-file-name">{{ selectedFile.name }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="nick">Nombre de usuario</label>
+              <input type="text" id="nick" formControlName="nick" class="form-control">
+              <div class="form-error" *ngIf="profileForm.get('nick')?.invalid && profileForm.get('nick')?.touched">
+                El nombre de usuario es obligatorio
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" formControlName="email" class="form-control">
+              <div class="form-error" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+                Introduce un correo electrónico válido
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="telefon">Teléfono</label>
+              <input type="tel" id="telefon" formControlName="telefon" class="form-control">
+            </div>
+          </div>
+
+          <div class="password-section">
+            <h3>Cambiar contraseña</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="current_password">Contraseña actual</label>
+                <input type="password" id="current_password" formControlName="current_password" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="new_password">Nueva contraseña</label>
+                <input type="password" id="new_password" formControlName="new_password" class="form-control">
+                <div class="form-error" *ngIf="profileForm.get('new_password')?.value && profileForm.get('new_password')?.value.length < 8">
+                  La contraseña debe tener al menos 8 caracteres
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="confirm_password">Confirmar nueva contraseña</label>
+                <input type="password" id="confirm_password" formControlName="confirm_password" class="form-control">
+                <div class="form-error" *ngIf="profileForm.get('new_password')?.value !== profileForm.get('confirm_password')?.value && profileForm.get('confirm_password')?.value">
+                  Las contraseñas no coinciden
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="save-button" [disabled]="profileForm.invalid">Guardar cambios</button>
+            <a routerLink="/profile" class="cancel-button">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </ng-container>
+  </div>
+</div>

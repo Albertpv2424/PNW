@@ -30,7 +30,7 @@
       <input type="number" [(ngModel)]="betAmount" min="1" step="1">
     </div>
     <div class="potential-win">
-      Ganancia potencial: {{ betAmount * totalOdds | number:'1.2-2' }}€
+      Ganancia potencial: {{ betAmount * totalOdds | number:'1.2-2' }}💎
     </div>
     <button class="place-bet-button" (click)="placeBet()" [disabled]="!betAmount || betAmount <= 0">
       REALIZAR APUESTA

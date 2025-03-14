@@ -124,16 +124,3 @@
 
 <!-- Añadir el componente de apuesta combinada al final -->
 <app-combined-bet></app-combined-bet>
-
-<!-- Add this section to your home component HTML where you want to display the user profile -->
-<div class="user-profile-section" *ngIf="username">
-  <div class="profile-container">
-    <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
-      <span *ngIf="!profileImage">{{ getUserInitials() }}</span>
-    </div>
-    <div class="user-info">
-      <span class="welcome-text">Bienvenido,</span>
-      <span class="username">{{ username }}</span>
-    </div>
-  </div>
-</div>

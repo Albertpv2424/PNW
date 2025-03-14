@@ -88,6 +88,11 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
+  
+  // Add this method if it doesn't exist
+  updateCurrentUser(user: User): void {
+    this.currentUserSubject.next(user);
+  }
 
   // Add this method to your AuthService
   // Añadir este método para el restablecimiento de contraseña

@@ -27,3 +27,10 @@ Route::post('/register', [AuthController::class, 'register']);
 // Add the login route
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+
+// Añadir esta ruta para la actualización del perfil
+// Cambiar esta línea
+// Route::middleware('auth:sanctum')->post('/update-profile', [AuthController::class, 'updateProfile']);
+
+// Por esta línea (sin middleware de autenticación)
+Route::post('/update-profile', [AuthController::class, 'updateProfile']);

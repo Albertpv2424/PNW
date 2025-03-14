@@ -19,18 +19,46 @@
   
   <div class="user-section">
     <div class="balance" *ngIf="username">
-      <span class="currency">€</span>
+      <span class="currency">💎</span>
       <span class="amount">0</span>
     </div>
     
     <div class="user-info">
-      <div class="profile-container" *ngIf="username">
-        <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
-          <span *ngIf="!profileImage">{{ getInitials() }}</span>
+      <!-- Perfil con menú desplegable para usuarios logueados -->
+      <div class="profile-dropdown" *ngIf="username" (click)="toggleProfileMenu()" (clickOutside)="closeProfileMenu()">
+        <div class="profile-container">
+          <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
+            <span *ngIf="!profileImage">{{ getInitials() }}</span>
+          </div>
+          <span class="username">{{ username }}</span>
+          <span class="dropdown-arrow" [class.open]="isProfileMenuOpen">▼</span>
         </div>
-        <span class="username">{{ username }}</span>
+        
+        <!-- Menú desplegable -->
+        <div class="profile-menu" *ngIf="isProfileMenuOpen">
+          <a routerLink="/profile" class="menu-item">
+            <i class="menu-icon">👤</i>
+            <span>Mi Perfil</span>
+          </a>
+          <a routerLink="/profile/bets" class="menu-item">
+            <i class="menu-icon">🎮</i>
+            <span>Mis Apuestas</span>
+          </a>
+          <a routerLink="/profile/history" class="menu-item">
+            <i class="menu-icon">📜</i>
+            <span>Historial</span>
+          </a>
+          <a routerLink="/profile/edit" class="menu-item">
+            <i class="menu-icon">✏️</i>
+            <span>Editar Perfil</span>
+          </a>
+          <div class="menu-divider"></div>
+          <button (click)="logout()" class="menu-item logout-item">
+            <i class="menu-icon">🚪</i>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
       </div>
-      <button (click)="logout()" class="logout-button" *ngIf="username">Cerrar sesión</button>
       
       <!-- Auth buttons for non-logged in users -->
       <div class="auth-buttons" *ngIf="!username">

@@ -10,34 +10,46 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // Method to handle file uploads and store the profile image
-    private function handleProfileImage($request)
+    /**
+     * Maneja la subida de imágenes de perfil
+     *
+     * @param Request $request
+     * @return string|null Ruta de la imagen guardada o null si hay error
+     */
+    private function handleProfileImage(Request $request)
     {
-        if (!$request->hasFile('profile_image')) {
-            return null;
-        }
+        try {
+            if (!$request->hasFile('profile_image')) {
+                return null;
+            }
     
-        $file = $request->file('profile_image');
-        
-        // Validate the file
-        if (!$file->isValid() || !in_array($file->getClientMimeType(), ['image/jpeg', 'image/png', 'image/gif'])) {
+            $image = $request->file('profile_image');
+            
+            // Validar que es una imagen válida
+            if (!$image->isValid()) {
+                return null;
+            }
+    
+            // Crear un nombre único para la imagen
+            $fileName = 'profile_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            
+            // Definir la ruta donde se guardará la imagen
+            $path = 'uploads/profiles';
+            
+            // Asegurarse de que el directorio existe
+            if (!file_exists(public_path($path))) {
+                mkdir(public_path($path), 0755, true);
+            }
+            
+            // Mover la imagen al directorio de destino
+            $image->move(public_path($path), $fileName);
+            
+            // Devolver la ruta relativa para guardar en la base de datos
+            return $path . '/' . $fileName;
+        } catch (\Exception $e) {
+            \Log::error('Error al procesar la imagen de perfil: ' . $e->getMessage());
             return null;
         }
-        
-        // Generate a unique filename
-        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        
-        // Create directory if it doesn't exist
-        $uploadPath = public_path('uploads/profiles');
-        if (!file_exists($uploadPath)) {
-            mkdir($uploadPath, 0755, true);
-        }
-        
-        // Store the file in the public/uploads/profiles directory
-        $file->move($uploadPath, $filename);
-        
-        // Return the path to be stored in the database
-        return 'uploads/profiles/' . $filename;
     }
     
     // Update the register method to handle the profile image
@@ -187,6 +199,120 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error al restablecer la contraseña: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    public function updateProfile(Request $request)
+    {
+        try {
+            $request->validate([
+                'nick' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+                'telefon' => 'nullable|string|max:15',
+                'current_password' => 'nullable|string',
+                'new_password' => 'nullable|string|min:8',
+                'profile_image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+    
+            // Obtener el usuario por email
+            $user = User::where('email', $request->email)->first();
+            
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Usuario no encontrado'
+                ], 404);
+            }
+    
+            // Verificar si el nick ya está en uso por otro usuario
+            // Cambiar 'id' por 'nick' en la condición where
+            $existingUser = User::where('nick', $request->nick)
+                ->where('nick', '!=', $user->nick)
+                ->first();
+                
+            if ($existingUser) {
+                return response()->json([
+                    'message' => 'El nombre de usuario ya está en uso'
+                ], 422);
+            }
+    
+            // Verificar si el email ya está en uso por otro usuario
+            // Cambiar 'id' por 'nick' en la condición where
+            $existingUser = User::where('email', $request->email)
+                ->where('nick', '!=', $user->nick)
+                ->first();
+                
+            if ($existingUser) {
+                return response()->json([
+                    'message' => 'El correo electrónico ya está en uso'
+                ], 422);
+            }
+    
+            // Verificar si el teléfono ya está en uso por otro usuario (si se proporciona)
+            if ($request->telefon) {
+                // Cambiar 'id' por 'nick' en la condición where
+                $existingUser = User::where('telefon', $request->telefon)
+                    ->where('nick', '!=', $user->nick)
+                    ->first();
+                    
+                if ($existingUser) {
+                    return response()->json([
+                        'message' => 'El número de teléfono ya está en uso'
+                    ], 422);
+                }
+            }
+    
+            // Verificar contraseña actual si se está cambiando la contraseña
+            if ($request->current_password && $request->new_password) {
+                $passwordValid = false;
+                
+                try {
+                    $passwordValid = Hash::check($request->current_password, $user->pswd);
+                } catch (\Exception $e) {
+                    // Si falla la verificación con Bcrypt, intentar comparación directa
+                    $passwordValid = ($request->current_password === $user->pswd);
+                }
+                
+                if (!$passwordValid) {
+                    return response()->json([
+                        'message' => 'La contraseña actual es incorrecta'
+                    ], 422);
+                }
+                
+                // Actualizar la contraseña
+                $user->pswd = Hash::make($request->new_password);
+            }
+    
+            // Procesar la imagen de perfil si se proporciona
+            if ($request->hasFile('profile_image')) {
+                $profileImagePath = $this->handleProfileImage($request);
+                if ($profileImagePath) {
+                    // Eliminar la imagen anterior si existe
+                    if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+                        unlink(public_path($user->profile_image));
+                    }
+                    $user->profile_image = $profileImagePath;
+                }
+            }
+    
+            // Actualizar los datos del usuario
+            $user->nick = $request->nick;
+            $user->email = $request->email;
+            $user->telefon = $request->telefon;
+            $user->save();
+    
+            return response()->json([
+                'message' => 'Perfil actualizado correctamente',
+                'user' => $user
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al actualizar el perfil: ' . $e->getMessage()
             ], 500);
         }
     }

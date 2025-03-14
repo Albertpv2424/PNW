@@ -329,11 +329,12 @@
   gap: 15px;
 }
 
+/* Cambiar el color del perfil */
 .profile-image {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #e63946;
+  background-color: #00b341; /* Cambiado de #e63946 a #00b341 */
   background-size: cover;
   background-position: center;
   display: flex;

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,67 +12,36 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
+    // Specify the table name
     protected $table = 'usuaris';
-
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
+    
+    // Specify the primary key
     protected $primaryKey = 'nick';
-
-    /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
+    
+    // Specify that the primary key is not an integer
     public $incrementing = false;
-
-    /**
-     * The name of the "created at" column.
-     *
-     * @var string|null
-     */
-    const CREATED_AT = 'creat_at';
-
-    /**
-     * The name of the "updated at" column.
-     *
-     * @var string|null
-     */
-    const UPDATED_AT = 'actualitzat_el';
+    
+    // Specify the primary key type
+    protected $keyType = 'string';
+    
+    // Disable timestamps
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    // Make sure the fillable array includes 'profile_image'
     protected $fillable = [
         'nick',
         'email',
         'pswd',
+        'tipus_acc',
+        'saldo',
         'dni',
         'telefon',
         'data_naixement',
-        'profile_image', // Add this field
-        'tipus_acc',
-        'saldo',
-        'temps_diari',
-        'bloquejat',
-        'apostes_realitzades',
+        'profile_image',
     ];
 
     /**
@@ -91,16 +61,10 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'data_naixement' => 'date',
-        'bloquejat' => 'boolean',
-        'actualitzat_el' => 'date',
+        'pswd' => 'hashed',
     ];
-
-    /**
-     * Get the password for the user.
-     *
-     * @return string
-     */
+    
+    // Override the getAuthPassword method to use 'pswd' instead of 'password'
     public function getAuthPassword()
     {
         return $this->pswd;
