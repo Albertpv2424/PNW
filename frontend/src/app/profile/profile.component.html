@@ -72,6 +72,39 @@
         </div>
       </div>
 
+      <!-- Add this section to your profile component template -->
+      <div class="profile-section">
+        <h3>Premios Canjeados</h3>
+
+        @if (loadingPrizes) {
+          <div class="loading-spinner">Cargando premios...</div>
+        } @else if (prizesError) {
+          <div class="error-message">{{ prizesError }}</div>
+        } @else if (redeemedPrizes.length === 0) {
+          <div class="empty-message">No has canjeado ningún premio todavía.</div>
+        } @else {
+          <div class="prizes-grid">
+            @for (prize of redeemedPrizes; track prize.id) {
+              <div class="prize-card">
+                <div class="prize-image">
+                  <img [src]="prize.image ? 'http://localhost:8000/' + prize.image : 'assets/premios/default.png'" [alt]="prize.titulo">
+                </div>
+                <div class="prize-info">
+                  <h4>{{ prize.titulo }}</h4>
+                  <p *ngIf="prize.descripcion" class="description">{{ prize.descripcion }}</p>
+                  <div class="prize-details">
+                    <p class="prize-date">Canjeado: {{ prize.fecha_canje | date:'dd/MM/yyyy' }}</p>
+                    <p class="prize-date">Válido hasta: {{ prize.fecha_limite | date:'dd/MM/yyyy' }}</p>
+                    <p class="prize-status" [class.used]="prize.usado">
+                      {{ prize.usado ? 'Usado' : 'Disponible' }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
       <div class="profile-section">
         <h2>Últimas Apuestas</h2>
         <div class="recent-bets">

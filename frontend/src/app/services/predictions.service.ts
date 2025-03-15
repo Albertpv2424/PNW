@@ -94,4 +94,37 @@ export class PredictionsService {
     // Use HttpClient instead of XMLHttpRequest for better integration with Angular
     return this.http.post(`${this.apiUrl}/promociones/${promocionId}/inscribir`, {}, { headers });
   }
+
+  // Add this method to your PredictionsService
+  
+  getUserPremios(): Observable<any> {
+    // Get the authentication token
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      console.error('No authentication token found');
+      return new Observable(observer => {
+        observer.error({ error: { message: 'No estás autenticado. Por favor, inicia sesión.' } });
+      });
+    }
+  
+    // Create headers with the token
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+  
+    // Include the headers in the request
+    return this.http.get(`${this.apiUrl}/user/premios`, { headers })
+      .pipe(
+        tap(response => {
+          console.log('User prizes response:', response);
+        }),
+        catchError(error => {
+          console.error('Error fetching user prizes:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 }

@@ -140,4 +140,38 @@ class PremioController extends Controller
             return response()->json(['message' => 'Error al canjear el premio: ' . $e->getMessage()], 500);
         }
     }
+
+    // Add this new method to the PremioController class
+    
+    public function userPremios()
+    {
+        // Get authenticated user
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no autenticado'], 401);
+        }
+    
+        // Get all prizes redeemed by the user with related prize information
+        $premiosUsuario = PremioUsuario::where('usuari_nick', $user->nick)
+            ->with('premio')
+            ->orderBy('data_reclamat', 'desc')
+            ->get();
+    
+        // Transform the data to include all necessary information
+        $premiosData = $premiosUsuario->map(function($premioUsuario) {
+            return [
+                'id' => $premioUsuario->id,
+                'premio_id' => $premioUsuario->premi_id,
+                'titulo' => $premioUsuario->premio->titol,
+                'descripcion' => $premioUsuario->premio->descripcio,
+                'image' => $premioUsuario->premio->image,
+                'cost' => $premioUsuario->premio->cost,
+                'fecha_canje' => $premioUsuario->data_reclamat,
+                'fecha_limite' => $premioUsuario->data_limit,
+                'usado' => $premioUsuario->usat ? true : false
+            ];
+        });
+    
+        return response()->json($premiosData);
+    }
 }

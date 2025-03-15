@@ -46,3 +46,6 @@ Route::post('/premios/{id}/canjear', [PremioController::class, 'canjear'])->midd
 Route::get('/promociones', [PromocionController::class, 'index']);
 Route::get('/promociones/{id}', [PromocionController::class, 'show']);
 Route::post('/promociones/{id}/inscribir', [PromocionController::class, 'inscribir'])->middleware('auth:sanctum');
+
+// Add this route to your api.php file
+Route::middleware('auth:sanctum')->get('/user/premios', [App\Http\Controllers\PremioController::class, 'userPremios']);
