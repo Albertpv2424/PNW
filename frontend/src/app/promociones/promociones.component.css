@@ -1,8 +1,7 @@
 /* Import the same base styles as home */
 @import '../home/home.component.css';
 
-/* Add any additional specific styles for promociones */
-/* Asegúrate de que el contenedor esté centrado */
+/* Estilos unificados para promociones y premios */
 .promociones-container {
   padding: 50px;
   color: white;
@@ -48,6 +47,12 @@
   text-align: center;
 }
 
+.promocion-type {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
 .promocion-info h3 {
   margin: 0 0 10px 0;
   font-size: 18px;
@@ -60,14 +65,14 @@
   font-size: 14px;
 }
 
-.points {
-  color: #00b341;
-  font-weight: bold;
+.promocion-dates {
+  color: #ccc;
+  font-size: 12px;
   margin-bottom: 15px;
-  font-size: 18px;
 }
 
-.canjear-button {
+/* Cambiar el botón para que coincida con el estilo de premios */
+.inscribir-button {
   width: 100%;
   padding: 10px;
   background-color: #00b341;
@@ -79,6 +84,25 @@
   transition: background-color 0.2s;
 }
 
-.canjear-button:hover {
+.inscribir-button:hover {
   background-color: #009935;
+}
+
+/* Añadir estilos de header como en premios */
+.promociones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Estilos para la moneda (por si se necesita en el futuro) */
+.coin-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-left: 5px;
+  position: relative;
+  top: -1px;
+  object-fit: contain;
 }

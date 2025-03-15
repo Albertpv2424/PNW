@@ -27,6 +27,7 @@ interface AuthResponse {
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8000/api';
+  //private apiUrl = 'http://localhost/odds-api-laravel/public/api';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser = this.currentUserSubject.asObservable();
 
@@ -49,7 +50,7 @@ export class AuthService {
       });
       userData = formData;
     }
-    
+
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData);
   }
 
@@ -71,7 +72,7 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
     this.currentUserSubject.next(null);
-    
+
     if (navigateToLogin) {
       this.router.navigate(['/login']);
     }
@@ -88,7 +89,7 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
-  
+
   // Add this method if it doesn't exist
   updateCurrentUser(user: User): void {
     this.currentUserSubject.next(user);

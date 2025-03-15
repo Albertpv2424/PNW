@@ -44,17 +44,17 @@ export class PremiosComponent implements OnInit {
   ordenAscendente = true;
   isLoading = true;
   errorMessage = '';
-  
+
   constructor(
     private predictionsService: PredictionsService,
     private authService: AuthService,
     private notificationService: NotificationService
   ) {}
-  
+
   ngOnInit() {
     this.loadPremios();
   }
-  
+
   loadPremios() {
     this.isLoading = true;
     this.predictionsService.getPremios().subscribe({
@@ -64,6 +64,7 @@ export class PremiosComponent implements OnInit {
           name: premio.titol,
           description: premio.descripcio,
           points: premio.cost,
+          // Actualizar la URL para usar el servidor de desarrollo de Laravel
           image: premio.image ? `http://localhost:8000/${premio.image}` : 'assets/premios/default.png',
           buttonText: 'CANJEAR'
         }));
@@ -77,33 +78,33 @@ export class PremiosComponent implements OnInit {
       }
     });
   }
-  
+
   ordenarPorPuntos() {
     this.ordenAscendente = !this.ordenAscendente;
-    
+
     if (this.ordenAscendente) {
       this.premiosFiltrados.sort((a, b) => a.points - b.points);
     } else {
       this.premiosFiltrados.sort((a, b) => b.points - a.points);
     }
   }
-  
+
   onCanjear(premioId: number) {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
       this.notificationService.showError('Debes iniciar sesión para canjear premios');
       return;
     }
-    
+
     const premio = this.premios.find(p => p.id === premioId);
     if (!premio) return;
-    
+
     // Use saldo instead of points for the user's balance
     if (currentUser.saldo < premio.points) {
       this.notificationService.showError('No tienes suficientes puntos para canjear este premio');
       return;
     }
-    
+
     this.predictionsService.canjearPremio(premioId).subscribe({
       next: (response) => {
         this.notificationService.showSuccess('Premio canjeado con éxito');

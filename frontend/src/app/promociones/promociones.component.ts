@@ -46,17 +46,17 @@ export class PromocionesComponent implements OnInit {
   promociones: PromocionUI[] = [];
   isLoading = true;
   errorMessage = '';
-  
+
   constructor(
     private predictionsService: PredictionsService,
     private authService: AuthService,
     private notificationService: NotificationService
   ) {}
-  
+
   ngOnInit() {
     this.loadPromociones();
   }
-  
+
   loadPromociones() {
     this.isLoading = true;
     this.predictionsService.getPromociones().subscribe({
@@ -68,6 +68,7 @@ export class PromocionesComponent implements OnInit {
           startDate: new Date(promo.data_inici),
           endDate: new Date(promo.data_final),
           type: promo.tipoPromocion ? promo.tipoPromocion.titol : 'General',
+          // Corregir el formato de la URL
           image: promo.image ? `http://localhost:8000/${promo.image}` : 'assets/promociones/default.png',
           buttonText: 'INSCRIBIRSE'
         }));
@@ -80,14 +81,14 @@ export class PromocionesComponent implements OnInit {
       }
     });
   }
-  
+
   onInscribir(promocionId: number) {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
       this.notificationService.showError('Debes iniciar sesión para inscribirte en promociones');
       return;
     }
-    
+
     this.predictionsService.inscribirPromocion(promocionId).subscribe({
       next: (response) => {
         this.notificationService.showSuccess('Te has inscrito a la promoción con éxito');
@@ -98,7 +99,7 @@ export class PromocionesComponent implements OnInit {
       }
     });
   }
-  
+
   formatDate(date: Date): string {
     return date.toLocaleDateString('es-ES', {
       day: '2-digit',
