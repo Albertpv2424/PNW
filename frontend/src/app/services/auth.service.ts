@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { tap, catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 // Update the User interface to include profile_image
@@ -95,6 +95,16 @@ export class AuthService {
     this.currentUserSubject.next(user);
   }
 
+  // Add this method for updating user balance
+  updateUserSaldo(newSaldo: number): void {
+    const currentUser = this.getCurrentUser();
+    if (currentUser) {
+      currentUser.saldo = newSaldo;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      this.currentUserSubject.next(currentUser);
+    }
+  }
+
   // Add this method to your AuthService
   // Añadir este método para el restablecimiento de contraseña
   resetPassword(email: string, password: string): Observable<any> {
@@ -102,5 +112,56 @@ export class AuthService {
       email: email,
       password: password
     });
+  }
+
+  // Add this method to check if the token is valid
+  checkTokenValidity(): Observable<boolean> {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return of(false);
+    }
+
+    // Create a simple endpoint in your backend to validate tokens
+    return this.http.get<{valid: boolean}>(`${this.apiUrl}/validate-token`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }).pipe(
+      map(response => response.valid),
+      catchError(() => {
+        // If there's an error, the token is invalid
+        this.logout();
+        return of(false);
+      })
+    );
+  }
+
+  // Añade este método para refrescar el token
+  refreshToken(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/refresh-token`, {
+      headers: {
+        'Authorization': `Bearer ${this.getToken()}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      withCredentials: true
+    }).pipe(
+      tap((response: any) => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+        }
+      })
+    );
+  }
+
+  // Añade este método para obtener los headers de autenticación
+  getAuthHeaders() {
+    const token = this.getToken();
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
   }
 }

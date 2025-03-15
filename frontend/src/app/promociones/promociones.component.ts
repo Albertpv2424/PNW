@@ -89,15 +89,65 @@ export class PromocionesComponent implements OnInit {
       return;
     }
 
-    this.predictionsService.inscribirPromocion(promocionId).subscribe({
-      next: (response) => {
-        this.notificationService.showSuccess('Te has inscrito a la promoción con éxito');
-      },
-      error: (error) => {
-        console.error('Error al inscribirse en la promoción:', error);
-        this.notificationService.showError('Error al inscribirse en la promoción. Por favor, intenta de nuevo.');
+    // Verificar que el token existe
+    const token = this.authService.getToken();
+    if (!token) {
+      this.notificationService.showError('No se encontró tu token de autenticación. Por favor, inicia sesión nuevamente.');
+      this.authService.logout();
+      return;
+    }
+
+    console.log('Token antes de la solicitud:', token);
+    console.log('Usuario actual:', currentUser);
+
+    // Intentar una solicitud directa al backend
+    const url = `http://localhost:8000/api/promociones/${promocionId}/inscribir`;
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json');
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          const response = JSON.parse(xhr.responseText);
+          this.notificationService.showSuccess(response.message || 'Te has inscrito a la promoción con éxito');
+
+          // Update user balance if it was changed (e.g., welcome bonus)
+          if (response.saldo_actual !== undefined) {
+            this.authService.updateUserSaldo(response.saldo_actual);
+          }
+
+          // Actualizar el texto del botón
+          const promocionIndex = this.promociones.findIndex(p => p.id === promocionId);
+          if (promocionIndex !== -1) {
+            this.promociones[promocionIndex].buttonText = 'INSCRITO';
+          }
+        } catch (e) {
+          this.notificationService.showError('Error al procesar la respuesta del servidor');
+        }
+      } else {
+        console.error('Error en la solicitud:', xhr.status, xhr.statusText);
+        if (xhr.status === 401) {
+          this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          this.authService.logout();
+        } else {
+          try {
+            const errorResponse = JSON.parse(xhr.responseText);
+            this.notificationService.showError(errorResponse.message || 'Error al inscribirse en la promoción');
+          } catch (e) {
+            this.notificationService.showError('Error al inscribirse en la promoción. Por favor, intenta de nuevo.');
+          }
+        }
       }
-    });
+    };
+
+    xhr.onerror = () => {
+      this.notificationService.showError('Error de red al realizar la solicitud');
+    };
+
+    xhr.send(JSON.stringify({}));
   }
 
   formatDate(date: Date): string {
