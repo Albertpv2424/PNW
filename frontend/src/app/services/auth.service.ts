@@ -92,16 +92,27 @@ export class AuthService {
 
   // Add this method if it doesn't exist
   updateCurrentUser(user: User): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
+    console.log('User updated:', user);
   }
 
-  // Add this method for updating user balance
-  updateUserSaldo(newSaldo: number): void {
+  // Update the updateUserSaldo method
+  updateUserSaldo(saldo: number): void {
+    // Get current user
     const currentUser = this.getCurrentUser();
     if (currentUser) {
-      currentUser.saldo = newSaldo;
+      // Update saldo
+      currentUser.saldo = saldo;
+      console.log('Updating user saldo to:', saldo);
+
+      // Update in localStorage
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
-      this.currentUserSubject.next(currentUser);
+
+      // Update in the subject - create a new object to ensure change detection
+      this.currentUserSubject.next({...currentUser});
+    } else {
+      console.error('Cannot update saldo: No current user found');
     }
   }
 

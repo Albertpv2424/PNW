@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -46,8 +47,23 @@ export class PredictionsService {
       'Accept': 'application/json'
     };
 
+    console.log(`Sending redemption request for prize ID: ${premioId}`);
+
     // Include the headers in the request
-    return this.http.post(`${this.apiUrl}/premios/${premioId}/canjear`, {}, { headers });
+    return this.http.post(`${this.apiUrl}/premios/${premioId}/canjear`, {}, { headers })
+      .pipe(
+        tap(response => {
+          console.log('Prize redemption response:', response);
+          // Ensure we have a valid response object
+          if (typeof response !== 'object' || response === null) {
+            console.error('Invalid response format:', response);
+          }
+        }),
+        catchError(error => {
+          console.error('Prize redemption error:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   getPromociones(): Observable<any> {

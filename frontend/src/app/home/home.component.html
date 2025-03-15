@@ -1,4 +1,4 @@
-<!-- Mantener el div de fondo -->
+<!-- Background div -->
 <div class="background-container"></div>
 
 <div class="main-layout">
@@ -13,8 +13,8 @@
         @for (sport of sports; track sport.key) {
           <div class="league-item" [class.active]="selectedSportKey === sport.key" (click)="loadOdds(sport.key)">
             <div class="league-info">
-              <img [src]="getCountryFlag(sport.country)" 
-                   [alt]="sport.country" 
+              <img [src]="getCountryFlag(sport.country)"
+                   [alt]="sport.country"
                    class="league-flag"
                    (error)="handleFlagError($event, sport.country)">
               <span class="league-name">{{ sport.title }}</span>
@@ -40,7 +40,7 @@
       @if (selectedSportKey) {
         <div class="selected-league">
           <h3>Cuotas para {{ getSelectedSportTitle() }}</h3>
-          
+
           <div class="matches-grid">
             @for (event of odds; track event.home_team) {
               <div class="match-card">
@@ -48,13 +48,13 @@
                   <span class="match-league">{{ event.league || getSelectedSportTitle() }}</span>
                   <span class="match-date">{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
                 </div>
-                
+
                 <div class="match-teams">
                   <div class="team home-team">
                     <div class="team-logo">
-                      <img [src]="getTeamLogo(event.home_team)" 
-                           alt="{{ event.home_team }}" 
-                           class="team-badge" 
+                      <img [src]="getTeamLogo(event.home_team)"
+                           alt="{{ event.home_team }}"
+                           class="team-badge"
                            (error)="handleTeamLogoError($event, event.home_team)">
                     </div>
                     <div class="team-name">{{ event.home_team }}</div>
@@ -62,15 +62,15 @@
                   <div class="vs">VS</div>
                   <div class="team away-team">
                     <div class="team-logo">
-                      <img [src]="getTeamLogo(event.away_team)" 
-                           alt="{{ event.away_team }}" 
+                      <img [src]="getTeamLogo(event.away_team)"
+                           alt="{{ event.away_team }}"
                            class="team-badge"
                            (error)="handleTeamLogoError($event, event.away_team)">
                     </div>
                     <div class="team-name">{{ event.away_team }}</div>
                   </div>
                 </div>
-                
+
                 <div class="match-odds">
                   @if (event.bookmakers.length > 0) {
                     @for (bookmaker of event.bookmakers; track bookmaker.name) {
@@ -78,11 +78,11 @@
                         <div class="odds-container">
                           <!-- Ordenamos las cuotas: Local, Empate, Visitante -->
                           @for (outcome of getOrderedOutcomes(bookmaker.markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
-                            <button 
+                            <button
                               class="odd-button"
                               (click)="openBetPopup(
-                                outcome.name === 'Draw' ? 'Empate' : 'Ganador', 
-                                outcome.name === 'Draw' ? 'Empate' : 'Ganador', 
+                                outcome.name === 'Draw' ? 'Empate' : outcome.name,
+                                outcome.name === 'Draw' ? 'Empate' : 'Ganador',
                                 outcome.price,
                                 event.home_team,
                                 event.away_team,
@@ -124,3 +124,16 @@
 
 <!-- Añadir el componente de apuesta combinada al final -->
 <app-combined-bet></app-combined-bet>
+
+<!-- Add this section to your home component HTML where you want to display the user profile -->
+<div class="user-profile-section" *ngIf="username">
+  <div class="profile-container">
+    <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
+      <span *ngIf="!profileImage">{{ getUserInitials() }}</span>
+    </div>
+    <div class="user-info">
+      <span class="welcome-text">Bienvenido,</span>
+      <span class="username">{{ username }}</span>
+    </div>
+  </div>
+</div>

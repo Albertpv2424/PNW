@@ -12,10 +12,10 @@ import { ClickOutsideDirective } from '../directives/click-outside.directive';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  username: string | null = null;
+  @Input() username: string | null = null; // Add this Input decorator
   profileImage: string | null = null;
   isProfileMenuOpen = false;
-  saldo: number = 0; // Add this property
+  saldo: number = 0;
 
   constructor(
     private authService: AuthService,
@@ -24,10 +24,13 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
-      this.username = user ? user.nick : null;
+      // Only set username from service if not provided via input
+      if (!this.username) {
+        this.username = user ? user.nick : null;
+      }
       this.profileImage = user && user.profile_image ? user.profile_image : null;
-      this.saldo = user ? user.saldo : 0; // Set the saldo from the user object
-      console.log('Current user saldo:', this.saldo); // Add this line to debug
+      this.saldo = user ? user.saldo : 0;
+      console.log('Current user saldo:', this.saldo);
     });
   }
   // Método para verificar si la ruta actual está activa

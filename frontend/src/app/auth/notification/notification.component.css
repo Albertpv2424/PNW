@@ -42,3 +42,9 @@
 .form-field-valid {
   border: 1px solid #4CAF50 !important;
 }
+
+/* Add this to your existing styles */
+.notification.info {
+  background-color: #2196F3;
+  color: white;
+}
