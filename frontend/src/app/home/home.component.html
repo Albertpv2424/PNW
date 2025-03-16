@@ -37,6 +37,83 @@
         Cargando datos...
       </div>
 
+      <!-- Partidos destacados - Nueva sección -->
+      <!-- Partidos destacados - Solo se muestran cuando no hay liga seleccionada -->
+      <div class="featured-matches" *ngIf="!selectedSportKey && featuredMatches.length > 0">
+        <h3>Partidos Destacados</h3>
+
+        <div class="matches-grid">
+          @for (event of featuredMatches; track event.home_team) {
+            <div class="match-card">
+              <div class="match-header">
+                <span class="match-league">{{ event.league || event.sport_title }}</span>
+                <span class="match-date">{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+
+              <div class="match-teams">
+                <div class="team home-team">
+                  <div class="team-logo">
+                    <img [src]="getTeamLogo(event.home_team)"
+                         alt="{{ event.home_team }}"
+                         class="team-badge"
+                         (error)="handleTeamLogoError($event, event.home_team)">
+                  </div>
+                  <div class="team-name">{{ event.home_team }}</div>
+                </div>
+                <div class="vs">VS</div>
+                <div class="team away-team">
+                  <div class="team-logo">
+                    <img [src]="getTeamLogo(event.away_team)"
+                         alt="{{ event.away_team }}"
+                         class="team-badge"
+                         (error)="handleTeamLogoError($event, event.away_team)">
+                  </div>
+                  <div class="team-name">{{ event.away_team }}</div>
+                </div>
+              </div>
+
+              <!-- Aplicando el nuevo diseño de cuotas a los partidos destacados -->
+              <div class="match-odds-new">
+                @if (event.bookmakers && event.bookmakers.length > 0 && event.bookmakers[0].markets && event.bookmakers[0].markets.length > 0) {
+                  <div class="odds-container-new">
+                    @for (outcome of getOrderedOutcomes(event.bookmakers[0].markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
+                      <div class="odd-column">
+                        <div class="odd-label-new">{{ outcome.name === 'Draw' ? 'EMPATE' : (outcome.name === event.home_team ? 'LOCAL' : 'VISITANTE') }}</div>
+                        <button
+                          class="odd-button-new"
+                          [class.active]="isSelectionActive(event.id || '', outcome.name)"
+                          (click)="openBetPopup(
+                            outcome.name === 'Draw' ? 'Empate' : outcome.name,
+                            event.bookmakers[0].markets[0].key,
+                            outcome.price,
+                            event.home_team,
+                            event.away_team,
+                            event.id || ''
+                          )"
+                        >
+                          {{ outcome.price }}
+                        </button>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <div class="no-odds-message">
+                    No hay cuotas disponibles para este partido.
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Mensaje cuando no hay partidos seleccionados ni destacados -->
+      <div class="welcome-message" *ngIf="!selectedSportKey && featuredMatches.length === 0">
+        <h3>¡Bienvenido a PNW!</h3>
+        <p>Selecciona una competición de la izquierda para ver los partidos disponibles.</p>
+      </div>
+
+      <!-- Partidos de la liga seleccionada -->
       @if (selectedSportKey) {
         <div class="selected-league">
           <h3>Cuotas para {{ getSelectedSportTitle() }}</h3>
@@ -45,7 +122,7 @@
             @for (event of odds; track event.home_team) {
               <div class="match-card">
                 <div class="match-header">
-                  <span class="match-league">{{ event.league || getSelectedSportTitle() }}</span>
+                  <span class="match-league">{{ event.league || event.sport_title }}</span>
                   <span class="match-date">{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
                 </div>
 
@@ -71,31 +148,30 @@
                   </div>
                 </div>
 
-                <div class="match-odds">
-                  @if (event.bookmakers.length > 0) {
-                    @for (bookmaker of event.bookmakers; track bookmaker.name) {
-                      @if (bookmaker.markets && bookmaker.markets.length > 0) {
-                        <div class="odds-container">
-                          <!-- Ordenamos las cuotas: Local, Empate, Visitante -->
-                          @for (outcome of getOrderedOutcomes(bookmaker.markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
-                            <button
-                              class="odd-button"
-                              (click)="openBetPopup(
-                                outcome.name === 'Draw' ? 'Empate' : outcome.name,
-                                outcome.name === 'Draw' ? 'Empate' : 'Ganador',
-                                outcome.price,
-                                event.home_team,
-                                event.away_team,
-                                event.id || ''
-                              )"
-                            >
-                              <div class="odd-label">{{ outcome.name === 'Draw' ? 'Empate' : outcome.name }}</div>
-                              <div class="odd-value">{{ outcome.price }}</div>
-                            </button>
-                          }
+                <!-- Nueva sección de cuotas mejorada -->
+                <div class="match-odds-new">
+                  @if (event.bookmakers && event.bookmakers.length > 0 && event.bookmakers[0].markets && event.bookmakers[0].markets.length > 0) {
+                    <div class="odds-container-new">
+                      @for (outcome of getOrderedOutcomes(event.bookmakers[0].markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
+                        <div class="odd-column">
+                          <div class="odd-label-new">{{ outcome.name === 'Draw' ? 'EMPATE' : (outcome.name === event.home_team ? 'LOCAL' : 'VISITANTE') }}</div>
+                          <button
+                            class="odd-button-new"
+                            [class.active]="isSelectionActive(event.id || '', outcome.name)"
+                            (click)="openBetPopup(
+                              outcome.name === 'Draw' ? 'Empate' : outcome.name,
+                              event.bookmakers[0].markets[0].key,
+                              outcome.price,
+                              event.home_team,
+                              event.away_team,
+                              event.id || ''
+                            )"
+                          >
+                            {{ outcome.price }}
+                          </button>
                         </div>
                       }
-                    }
+                    </div>
                   } @else {
                     <div class="no-odds-message">
                       No hay cuotas disponibles para este partido.
@@ -124,16 +200,3 @@
 
 <!-- Añadir el componente de apuesta combinada al final -->
 <app-combined-bet></app-combined-bet>
-
-<!-- Add this section to your home component HTML where you want to display the user profile -->
-<div class="user-profile-section" *ngIf="username">
-  <div class="profile-container">
-    <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
-      <span *ngIf="!profileImage">{{ getUserInitials() }}</span>
-    </div>
-    <div class="user-info">
-      <span class="welcome-text">Bienvenido,</span>
-      <span class="username">{{ username }}</span>
-    </div>
-  </div>
-</div>

@@ -75,9 +75,62 @@ export class HomeComponent implements OnInit {
     public teamBadgeService: TeamBadgeService  // Change from private to public
   ) {}
 
+  // Añadir este método al componente HomeComponent
+  loadFeaturedMatches() {
+    // Cargar partidos destacados de diferentes ligas
+    const featuredSports = ['soccer_spain_la_liga', 'soccer_uefa_champs_league', 'basketball_nba'];
+
+    this.featuredMatches = []; // Limpiar los partidos destacados existentes
+    let loadedCount = 0;
+    const maxFeaturedMatches = 6; // Aumentamos a 6 partidos destacados
+
+    // Cargar partidos de cada liga destacada hasta llegar al máximo
+    featuredSports.forEach(sportKey => {
+      if (loadedCount >= maxFeaturedMatches) return; // Ya tenemos suficientes partidos
+
+      this.oddsService.getOdds(sportKey).subscribe({
+        next: (data: OddEvent[]) => {
+          if (data && data.length > 0 && loadedCount < maxFeaturedMatches) {
+            // Añadir IDs a los eventos
+            const eventsWithIds = data.map((event, index) => ({
+              ...event,
+              id: event.id || `${sportKey}_${index}`
+            }));
+
+            // Filtrar por ligas permitidas
+            const filteredEvents = eventsWithIds.filter(event =>
+              this.allowedLeagues.some(league =>
+                event.sport_title?.includes(league) ||
+                event.league?.includes(league)
+              )
+            );
+
+            // Mezclar aleatoriamente los partidos para mostrar diferentes cada vez
+            const shuffledEvents = this.shuffleArray([...filteredEvents]);
+
+            // Tomar solo los partidos necesarios para llegar al máximo
+            const matchesToAdd = Math.min(2, maxFeaturedMatches - loadedCount);
+            const leagueEvents = shuffledEvents.slice(0, matchesToAdd);
+
+            // Actualizar contador
+            loadedCount += leagueEvents.length;
+
+            // Añadir a los partidos destacados
+            this.featuredMatches = [...this.featuredMatches, ...leagueEvents];
+          }
+        },
+        error: (error) => {
+          console.error('Error cargando partidos destacados:', error);
+        }
+      });
+    });
+  }
+
+  // Modificar el método ngOnInit para cargar los partidos destacados
   ngOnInit() {
     this.loadSports();
     this.loadUserInfo();
+    this.loadFeaturedMatches(); // Añadir esta línea
   }
 
   loadUserInfo() {
@@ -91,7 +144,7 @@ export class HomeComponent implements OnInit {
   // Add this method to get user initials for the profile image placeholder
   getUserInitials(): string {
     if (!this.username) return '';
-    
+
     const names = this.username.split(' ');
     if (names.length === 1) {
       return names[0].charAt(0).toUpperCase();
@@ -130,7 +183,7 @@ export class HomeComponent implements OnInit {
         });
 
         // Filter allowed sports
-        this.sports = sportsWithCountries.filter(sport => 
+        this.sports = sportsWithCountries.filter(sport =>
           this.allowedSports.includes(sport.key)
         );
         this.loading = false;
@@ -143,9 +196,20 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // Método para mezclar un array aleatoriamente (algoritmo Fisher-Yates)
+  shuffleArray(array: any[]): any[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
   loadOdds(sportKey: string) {
     this.loading = true;
     this.selectedSportKey = sportKey;
+    this.error = ''; // Limpiar errores anteriores
+
     this.oddsService.getOdds(sportKey).subscribe({
       next: (data: OddEvent[]) => {
         // Add unique IDs to events if they don't have one
@@ -153,10 +217,11 @@ export class HomeComponent implements OnInit {
           ...event,
           id: event.id || `${sportKey}_${index}`
         }));
-        
-        this.odds = eventsWithIds.filter(event => 
-          this.allowedLeagues.some(league => 
-            event.sport_title?.includes(league) || 
+
+        // Filtrar por ligas permitidas
+        this.odds = eventsWithIds.filter(event =>
+          this.allowedLeagues.some(league =>
+            event.sport_title?.includes(league) ||
             event.league?.includes(league)
           )
         );
@@ -179,13 +244,13 @@ export class HomeComponent implements OnInit {
     odds: 0,
     matchInfo: ''
   };
-  
+
   // Nuevo método para abrir el pop-up de apuesta
   // Update the openBetPopup method to accept the matchId parameter
   // Modificar el método openBetPopup para que use el servicio de selecciones
   openBetPopup(teamName: string, betType: string, odds: number, homeTeam: string, awayTeam: string, matchId: string) {
     console.log('Abriendo popup para:', teamName, betType, odds);
-    
+
     // Desactivamos el popup individual y solo usamos el servicio de selecciones
     // this.selectedBet = {
     //   teamName,
@@ -194,7 +259,7 @@ export class HomeComponent implements OnInit {
     //   matchInfo: `${homeTeam} vs ${awayTeam}`
     // };
     // this.showBetPopup = true;
-    
+
     // Usamos el servicio de selecciones para apuestas combinadas
     this.betSelectionsService.addSelection({
       matchId,
@@ -217,7 +282,7 @@ export class HomeComponent implements OnInit {
       amount: betData.amount,
       potentialWin: betData.amount * betData.odds
     });
-    
+
     // Aquí implementarías la lógica para enviar la apuesta al backend
     // Por ejemplo:
     // this.betService.placeBet({
@@ -231,9 +296,9 @@ export class HomeComponent implements OnInit {
   // Añadir este método para verificar si una selección está activa
   isSelectionActive(matchId: string, outcomeName: string): boolean {
     const selections = this.betSelectionsService.getCurrentSelections();
-    return selections.some(s => 
-      s.matchId === matchId && 
-      (s.teamName === outcomeName || 
+    return selections.some(s =>
+      s.matchId === matchId &&
+      (s.teamName === outcomeName ||
        (outcomeName === 'Draw' && s.teamName === 'Empate'))
     );
   }
@@ -268,21 +333,21 @@ export class HomeComponent implements OnInit {
    */
   getOrderedOutcomes(outcomes: any[], homeTeam: string, awayTeam: string): any[] {
     if (!outcomes || outcomes.length === 0) return [];
-    
+
     const ordered = [];
-    
+
     // Buscar la cuota del equipo local
     const homeOutcome = outcomes.find(o => o.name === homeTeam);
     if (homeOutcome) ordered.push(homeOutcome);
-    
+
     // Buscar la cuota de empate
     const drawOutcome = outcomes.find(o => o.name === 'Draw');
     if (drawOutcome) ordered.push(drawOutcome);
-    
+
     // Buscar la cuota del equipo visitante
     const awayOutcome = outcomes.find(o => o.name === awayTeam);
     if (awayOutcome) ordered.push(awayOutcome);
-    
+
     // Si por alguna razón no encontramos alguna cuota, devolvemos el array original
     return ordered.length === outcomes.length ? ordered : outcomes;
   }
@@ -292,7 +357,7 @@ export class HomeComponent implements OnInit {
    */
   getCountryFlag(country?: string): string {
     if (!country) return '';
-    
+
     const countryMap: { [key: string]: string } = {
       'Spain': 'es',
       'England': 'gb',
@@ -321,7 +386,7 @@ export class HomeComponent implements OnInit {
       'Bulgaria': 'bg',
       'Hungary': 'hu'
     };
-  
+
     const countryCode = countryMap[country] || country.toLowerCase();
     return `https://flagcdn.com/24x18/${countryCode}.png`;
   }
