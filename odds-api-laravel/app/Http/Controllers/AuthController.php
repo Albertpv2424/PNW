@@ -449,4 +449,49 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    public function deleteAccount(Request $request)
+{
+    try {
+        // Obtener el usuario autenticado
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Usuario no autenticado'
+            ], 401);
+        }
+
+        // Guardar el nick para el log
+        $userNick = $user->nick;
+
+        // Eliminar registros relacionados (ajustar según tu estructura de BD)
+        // Por ejemplo, eliminar apuestas, premios canjeados, etc.
+
+        // Eliminar la imagen de perfil si existe
+        if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+            unlink(public_path($user->profile_image));
+        }
+
+        // Eliminar el usuario
+        $user->delete();
+
+        // Registrar la eliminación en el log
+        \Illuminate\Support\Facades\Log::info('Cuenta eliminada', [
+            'user_nick' => $userNick
+        ]);
+
+        return response()->json([
+            'message' => 'Cuenta eliminada correctamente'
+        ]);
+
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('Error al eliminar cuenta: ' . $e->getMessage());
+
+        return response()->json([
+            'message' => 'Error al eliminar la cuenta: ' . $e->getMessage()
+        ], 500);
+    }
+}
+
 }

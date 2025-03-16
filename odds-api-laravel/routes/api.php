@@ -61,3 +61,9 @@ Route::options('/{any}', function() {
         ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 })->where('any', '.*');
+
+// Cambia la ruta de delete-account para que acepte el método DELETE
+Route::middleware('auth:sanctum')->delete('/delete-account', [App\Http\Controllers\AuthController::class, 'deleteAccount']);
+
+// Alternativamente, si el método DELETE sigue dando problemas, podemos usar POST con un parámetro _method
+Route::middleware('auth:sanctum')->post('/delete-account', [App\Http\Controllers\AuthController::class, 'deleteAccount']);

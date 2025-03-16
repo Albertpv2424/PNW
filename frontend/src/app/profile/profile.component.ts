@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+// Update the imports at the top of the file
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service';
-import { RouterLink, ActivatedRoute, Router } from '@angular/router'; // Add Router here
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NotificationService } from '../services/notification.service';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 import { PredictionsService } from '../services/predictions.service';
+import { NotificationService } from '../services/notification.service';
+import { FormsModule } from '@angular/forms';
 
-// Add this interface to your profile component
+// Añadir la interfaz RedeemedPrize que falta
 interface RedeemedPrize {
   id: number;
   premio_id: number;
@@ -20,10 +22,11 @@ interface RedeemedPrize {
   usado: boolean;
 }
 
+// Update the component imports
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -205,6 +208,63 @@ export class ProfileComponent implements OnInit {
           }
 
           this.notificationService.showError(errorMessage);
+        }
+      });
+  }
+
+  // Add these properties to your ProfileComponent class
+  // (Add this near the top of the class with other property declarations)
+  // Properties for the modal de eliminación de cuenta
+  showDeleteModal: boolean = false;
+  deleteConfirmText: string = '';
+
+  // Add these methods to your ProfileComponent class
+  // (Add these methods near the bottom of the class)
+
+  // Método para mostrar el modal de confirmación
+  showDeleteConfirmation(): void {
+    this.showDeleteModal = true;
+    this.deleteConfirmText = '';
+  }
+
+  // Método para cancelar la eliminación
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+  }
+
+  // Método para eliminar la cuenta - modificado para usar POST en lugar de DELETE
+  deleteAccount(): void {
+    if (this.deleteConfirmText !== 'ELIMINAR') {
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+
+    // Usar POST en lugar de DELETE
+    this.http.post('http://localhost:8000/api/delete-account', {}, { headers })
+      .subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Tu cuenta ha sido eliminada correctamente');
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Error al eliminar la cuenta:', error);
+          let errorMessage = 'Error al eliminar la cuenta.';
+
+          if (error.status === 401) {
+            errorMessage = 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.';
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          }
+
+          this.notificationService.showError(errorMessage);
+          this.showDeleteModal = false;
         }
       });
   }
