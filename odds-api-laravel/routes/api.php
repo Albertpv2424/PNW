@@ -67,3 +67,7 @@ Route::middleware('auth:sanctum')->delete('/delete-account', [App\Http\Controlle
 
 // Alternativamente, si el método DELETE sigue dando problemas, podemos usar POST con un parámetro _method
 Route::middleware('auth:sanctum')->post('/delete-account', [App\Http\Controllers\AuthController::class, 'deleteAccount']);
+
+// Añade esta ruta junto con las demás rutas protegidas por auth:sanctum
+
+Route::middleware('auth:sanctum')->post('/add-points', [AuthController::class, 'addPoints']);

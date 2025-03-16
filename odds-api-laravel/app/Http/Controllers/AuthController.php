@@ -494,4 +494,36 @@ class AuthController extends Controller
     }
 }
 
+public function addPoints(Request $request)
+{
+    try {
+        $request->validate([
+            'points' => 'required|integer|min:1|max:100',
+        ]);
+
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no autenticado'], 401);
+        }
+
+        // Actualizar el saldo del usuario
+        $newSaldo = $user->saldo + $request->points;
+        $user->saldo = $newSaldo;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Puntos añadidos correctamente',
+            'saldo' => $newSaldo
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Error al añadir puntos: ' . $e->getMessage());
+        return response()->json(['message' => 'Error al procesar la solicitud'], 500);
+    }
 }
+
+
+}
+
+// Añade este método al final de la clase AuthController
+

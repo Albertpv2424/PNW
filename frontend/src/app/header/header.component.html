@@ -8,6 +8,8 @@
     <a class="nav-item" routerLink="/live" [class.active]="isActive('/live')">En Vivo</a>
     <a class="nav-item" routerLink="/premios" [class.active]="isActive('/premios')">Premios</a>
     <a class="nav-item" routerLink="/promociones" [class.active]="isActive('/promociones')">Promociones</a>
+    <!-- Añade este enlace en la sección de nav-links -->
+    <a class="nav-item" routerLink="/rewards" [class.active]="isActive('/rewards')">Ganar Puntos</a>
   </div>
 
   <div class="search-container">
@@ -18,9 +20,17 @@
   </div>
 
   <div class="user-section">
-    <div class="balance" *ngIf="username" style="display: flex; align-items: center;">
-      <span class="amount">{{ saldo }}</span>
-      <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
+    <!-- Reemplazamos el balance con el estilo del perfil -->
+    <div class="balance" *ngIf="username">
+      <div class="profile-balance">
+        <div class="balance-icon">
+          <img src="assets/monedapnw.png" alt="Moneda">
+        </div>
+        <span class="balance-amount">
+          <span class="integer-part">{{ saldo | number:'1.0-0' }}</span>
+          <span class="decimal-part">.{{ (saldo.toString().split('.')[1] || '00').padEnd(2, '0') }}</span>
+        </span>
+      </div>
     </div>
 
     <div class="user-info">

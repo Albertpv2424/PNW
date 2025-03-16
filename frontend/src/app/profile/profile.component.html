@@ -11,9 +11,15 @@
     <div class="profile-info">
       <h1>{{ username }}</h1>
       <p class="profile-email">{{ email }}</p>
+      <!-- Reemplaza la sección del saldo con este código -->
       <div class="profile-balance">
-        <span class="balance-label">Saldo:</span>
-        <span class="balance-amount">{{ saldo }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></span>
+        <div class="balance-icon">
+          <img src="assets/monedapnw.png" alt="Moneda">
+        </div>
+        <span class="balance-amount">
+          <span class="integer-part">{{ saldo | number:'1.0-0' }}</span>
+          <span class="decimal-part">.{{ (saldo.toString().split('.')[1] || '00').padEnd(2, '0') }}</span>
+        </span>
       </div>
     </div>
     <!-- Botón para volver al home -->
