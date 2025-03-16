@@ -49,3 +49,15 @@ Route::post('/promociones/{id}/inscribir', [PromocionController::class, 'inscrib
 
 // Add this route to your api.php file
 Route::middleware('auth:sanctum')->get('/user/premios', [App\Http\Controllers\PremioController::class, 'userPremios']);
+
+// Add these routes to your api.php file
+Route::post('/request-password-reset', [App\Http\Controllers\AuthController::class, 'requestPasswordReset']);
+Route::post('/reset-password-with-token', [App\Http\Controllers\AuthController::class, 'resetPasswordWithToken']);
+
+// Add this at the top of your routes file
+Route::options('/{any}', function() {
+    return response('', 200)
+        ->header('Access-Control-Allow-Origin', 'http://localhost:4200')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+})->where('any', '.*');

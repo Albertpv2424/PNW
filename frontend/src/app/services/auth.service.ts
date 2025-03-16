@@ -175,4 +175,18 @@ export class AuthService {
       'Accept': 'application/json'
     };
   }
+
+  // Request a password reset email
+  // Add these methods to your auth.service.ts file if they don't exist
+  requestPasswordReset(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/request-password-reset`, { email });
+  }
+
+  resetPasswordWithToken(email: string, password: string, token: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password-with-token`, {
+      email,
+      password,
+      token
+    });
+  }
 }

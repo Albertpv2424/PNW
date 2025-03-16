@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; // Add this import
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PasswordResetMail;
 
 class AuthController extends Controller
 {
@@ -48,7 +53,7 @@ class AuthController extends Controller
             // Devolver la ruta relativa para guardar en la base de datos
             return $path . '/' . $fileName;
         } catch (\Exception $e) {
-            Log::error('Error al procesar la imagen de perfil: ' . $e->getMessage()); // Remove the backslash
+            Log::error('Error al procesar la imagen de perfil: ' . $e->getMessage());
             return null;
         }
     }
@@ -317,6 +322,130 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error al actualizar el perfil: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function requestPasswordReset(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email',
+            ]);
+
+            // Find the user by email
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'No se encontró ningún usuario con este correo electrónico.'
+                ], 404);
+            }
+
+            // Generate a unique token
+            $token = Str::random(60);
+
+            // Store the token in the password_resets table
+            DB::table('password_resets')->updateOrInsert(
+                ['email' => $user->email],
+                [
+                    'token' => $token,
+                    'created_at' => now()
+                ]
+            );
+
+            // Generate the reset URL
+            $resetUrl = env('FRONTEND_URL', 'http://localhost:4200') . '/reset-password?token=' . $token . '&email=' . $user->email;
+
+            // Log the URL for development purposes
+            Log::info('Password reset URL for ' . $user->email . ': ' . $resetUrl);
+
+            // In the requestPasswordReset method, update the email sending part:
+
+            // Send the email
+            try {
+                Log::info('Attempting to send password reset email to: ' . $user->email);
+                Mail::to($user->email)->send(new PasswordResetMail($resetUrl));
+                Log::info('Password reset email sent successfully');
+            } catch (\Exception $e) {
+                Log::error('Failed to send password reset email: ' . $e->getMessage());
+                Log::error('Error details: ' . $e->getTraceAsString());
+                // Even if email fails, we return success to prevent email enumeration attacks
+            }
+
+            return response()->json([
+                'message' => 'Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al enviar el correo electrónico: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Restablece la contraseña utilizando el token enviado por correo electrónico
+     */
+    public function resetPasswordWithToken(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+                'token' => 'required'
+            ]);
+
+            // Find the token in the password_resets table
+            $passwordReset = DB::table('password_resets')
+                ->where('email', $request->email)
+                ->where('token', $request->token)
+                ->first();
+
+            if (!$passwordReset) {
+                return response()->json([
+                    'message' => 'El enlace de restablecimiento no es válido.'
+                ], 401);
+            }
+
+            // Check if the token is expired (e.g., 60 minutes)
+            if (Carbon::parse($passwordReset->created_at)->addMinutes(60)->isPast()) {
+                return response()->json([
+                    'message' => 'El enlace de restablecimiento ha expirado.'
+                ], 401);
+            }
+
+            // Find the user by email
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'No se encontró ningún usuario con este correo electrónico.'
+                ], 404);
+            }
+
+            // Update the password
+            $user->pswd = Hash::make($request->password);
+            $user->save();
+
+            // Delete the token
+            DB::table('password_resets')->where('email', $request->email)->delete();
+
+            return response()->json([
+                'message' => 'Contraseña actualizada con éxito.'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al restablecer la contraseña: ' . $e->getMessage()
             ], 500);
         }
     }
