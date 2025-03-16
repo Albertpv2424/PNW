@@ -393,3 +393,43 @@
   color: rgba(255, 255, 255, 0.6); /* Decimales en un tono más oscuro */
   font-size: 14px; /* Ligeramente más pequeño que la parte entera */
 }
+
+.rewards-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  position: relative;
+  cursor: pointer;
+  color: #1a1a2e; /* Color dorado para el regalo */
+  transition: transform 0.2s ease;
+}
+
+.rewards-icon:hover {
+  transform: scale(1.2);
+}
+
+.rewards-icon:hover::after {
+  content: "Recompensas diarias";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+
+
+/* Modificar el balance para que incluya el icono de recompensas */
+.balance {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

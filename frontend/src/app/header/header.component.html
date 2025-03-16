@@ -8,8 +8,6 @@
     <a class="nav-item" routerLink="/live" [class.active]="isActive('/live')">En Vivo</a>
     <a class="nav-item" routerLink="/premios" [class.active]="isActive('/premios')">Premios</a>
     <a class="nav-item" routerLink="/promociones" [class.active]="isActive('/promociones')">Promociones</a>
-    <!-- Añade este enlace en la sección de nav-links -->
-    <a class="nav-item" routerLink="/rewards" [class.active]="isActive('/rewards')">Ganar Puntos</a>
   </div>
 
   <div class="search-container">
@@ -31,6 +29,10 @@
           <span class="decimal-part">.{{ (saldo.toString().split('.')[1] || '00').padEnd(2, '0') }}</span>
         </span>
       </div>
+      <!-- Añadimos el icono de recompensas aquí -->
+      <a class="rewards-icon" routerLink="/rewards" [class.active]="isActive('/rewards')" title="Recompensas diarias">
+        🎁
+      </a>
     </div>
 
     <div class="user-info">
