@@ -1,10 +1,15 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { ClickOutsideDirective } from '../directives/click-outside.directive';
 import { DailyWheelComponent } from '../daily-wheel/daily-wheel.component';
 import { RouterLinkActive } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { debounceTime, distinctUntilChanged, filter, switchMap, catchError, timeout } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
@@ -14,39 +19,100 @@ import { RouterLinkActive } from '@angular/router';
     RouterLink,
     RouterLinkActive,
     ClickOutsideDirective,
-    DailyWheelComponent  // Add this import
+    DailyWheelComponent,
+    FormsModule
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  @Input() username: string | null = null; // Add this Input decorator
+export class HeaderComponent implements OnInit, OnDestroy {
+  @Input() username: string | null = null;
   profileImage: string | null = null;
   isProfileMenuOpen = false;
   saldo: number = 0;
-
+  
+  // Search functionality
+  searchQuery: string = '';
+  searchResults: any[] = [];
+  showSearchResults: boolean = false;
+  private searchSubject = new Subject<string>();
+  private apiUrl = environment.apiUrl;
+  
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
-      // Only set username from service if not provided via input
       if (!this.username) {
         this.username = user ? user.nick : null;
       }
       this.profileImage = user && user.profile_image ? user.profile_image : null;
       this.saldo = user ? user.saldo : 0;
-      console.log('Current user saldo:', this.saldo);
+    });
+    
+    // Set up search with debounce and error handling
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      filter(term => term.length >= 3),
+      switchMap(term => {
+        console.log('Searching for:', term);
+        return this.http.get(`${this.apiUrl}/search?q=${term}`)
+          .pipe(
+            timeout(10000),
+            catchError(error => {
+              console.error('Search error:', error);
+              return of({ results: [] });
+            })
+          );
+      })
+    ).subscribe({
+      next: (response: any) => {
+        console.log('Search results:', response);
+        this.searchResults = response.results || [];
+        this.showSearchResults = this.searchResults.length > 0;
+      },
+      error: (error) => {
+        console.error('Search subscription error:', error);
+        this.searchResults = [];
+        this.showSearchResults = false;
+      }
     });
   }
-  // Método para verificar si la ruta actual está activa
+  
   isActive(route: string): boolean {
     return this.router.url === route ||
            (route === '/' && (this.router.url === '/home' || this.router.url === ''));
   }
-
+  
+  onSearch() {
+    console.log('Search query:', this.searchQuery);
+    if (this.searchQuery.length >= 3) {
+      this.searchSubject.next(this.searchQuery);
+    } else {
+      this.searchResults = [];
+      this.showSearchResults = false;
+    }
+  }
+  
+  selectResult(result: any) {
+    console.log('Selected result:', result);
+    // Navigate to the event details page
+    this.router.navigate(['/sports', result.sport_key, result.id]);
+    this.searchQuery = '';
+    this.searchResults = [];
+    this.showSearchResults = false;
+  }
+  
+  closeSearchResults() {
+    setTimeout(() => {
+      this.showSearchResults = false;
+    }, 200);
+  }
+  
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
 
@@ -86,5 +152,9 @@ export class HeaderComponent implements OnInit {
     } else {
       return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
     }
+  }
+  
+  ngOnDestroy() {
+    this.searchSubject.complete();
   }
 }

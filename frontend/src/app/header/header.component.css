@@ -433,3 +433,101 @@
   align-items: center;
   gap: 5px;
 }
+
+/* Updated search container styles */
+.search-container {
+  position: relative;
+  width: 300px;
+  margin: 0 15px;
+}
+
+
+
+/* Add a search icon using a different approach */
+.search-container::before {
+  content: "🔍";
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Adjust padding to accommodate the icon */
+.search-input {
+  padding-left: 40px;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #1e1e2d;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-height: 350px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-result-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: rgba(0, 179, 65, 0.15);
+}
+
+.result-title {
+  font-weight: 500;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.result-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.no-results {
+  padding: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Custom scrollbar for search results */
+.search-results::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

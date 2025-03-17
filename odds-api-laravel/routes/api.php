@@ -84,3 +84,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/video-rewards/add-points', [VideoRewardsController::class, 'addPoints']);
     Route::get('/video-rewards/status', [VideoRewardsController::class, 'checkStatus']);
 });
+// Add this line to your existing routes
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'search']);

@@ -10,11 +10,26 @@
     <a class="nav-item" routerLink="/promociones" [class.active]="isActive('/promociones')">Promociones</a>
   </div>
 
+  <!-- Enhanced search container -->
   <div class="search-container">
-    <input type="text" placeholder="Buscar eventos, equipos..." class="search-input">
-    <button class="search-button">
-      <i class="search-icon">🔍</i>
-    </button>
+    <input 
+      type="text" 
+      placeholder="Buscar equipos o partidos..." 
+      [(ngModel)]="searchQuery" 
+      (input)="onSearch()" 
+      (blur)="closeSearchResults()"
+      class="search-input">
+    
+    <!-- Search results dropdown with improved styling -->
+    <div class="search-results" *ngIf="showSearchResults">
+      <div *ngFor="let result of searchResults" class="search-result-item" (click)="selectResult(result)">
+        <div class="result-title">{{ result.home_team }} vs {{ result.away_team }}</div>
+        <div class="result-subtitle">{{ result.sport_title }}</div>
+      </div>
+      <div *ngIf="searchResults.length === 0 && searchQuery.length >= 3" class="no-results">
+        No se encontraron resultados
+      </div>
+    </div>
   </div>
 
   <div class="user-section">
