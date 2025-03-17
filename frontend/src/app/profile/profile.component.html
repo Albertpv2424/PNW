@@ -11,9 +11,15 @@
     <div class="profile-info">
       <h1>{{ username }}</h1>
       <p class="profile-email">{{ email }}</p>
+      <!-- Reemplaza la sección del saldo con este código -->
       <div class="profile-balance">
-        <span class="balance-label">Saldo:</span>
-        <span class="balance-amount">{{ saldo }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></span>
+        <div class="balance-icon">
+          <img src="assets/monedapnw.png" alt="Moneda">
+        </div>
+        <span class="balance-amount">
+          <span class="integer-part">{{ saldo | number:'1.0-0' }}</span>
+          <span class="decimal-part">.{{ (saldo.toString().split('.')[1] || '00').padEnd(2, '0') }}</span>
+        </span>
       </div>
     </div>
     <!-- Botón para volver al home -->
@@ -72,6 +78,39 @@
         </div>
       </div>
 
+      <!-- Add this section to your profile component template -->
+      <div class="profile-section">
+        <h3>Premios Canjeados</h3>
+
+        @if (loadingPrizes) {
+          <div class="loading-spinner">Cargando premios...</div>
+        } @else if (prizesError) {
+          <div class="error-message">{{ prizesError }}</div>
+        } @else if (redeemedPrizes.length === 0) {
+          <div class="empty-message">No has canjeado ningún premio todavía.</div>
+        } @else {
+          <div class="prizes-grid">
+            @for (prize of redeemedPrizes; track prize.id) {
+              <div class="prize-card">
+                <div class="prize-image">
+                  <img [src]="prize.image ? 'http://localhost:8000/' + prize.image : 'assets/premios/default.png'" [alt]="prize.titulo">
+                </div>
+                <div class="prize-info">
+                  <h4>{{ prize.titulo }}</h4>
+                  <p *ngIf="prize.descripcion" class="description">{{ prize.descripcion }}</p>
+                  <div class="prize-details">
+                    <p class="prize-date">Canjeado: {{ prize.fecha_canje | date:'dd/MM/yyyy' }}</p>
+                    <p class="prize-date">Válido hasta: {{ prize.fecha_limite | date:'dd/MM/yyyy' }}</p>
+                    <p class="prize-status" [class.used]="prize.usado">
+                      {{ prize.usado ? 'Usado' : 'Disponible' }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
       <div class="profile-section">
         <h2>Últimas Apuestas</h2>
         <div class="recent-bets">
@@ -156,7 +195,34 @@
             <button type="submit" class="save-button" [disabled]="profileForm.invalid">Guardar cambios</button>
           </div>
         </form>
+
+        <!-- Sección para borrar cuenta -->
+        <div class="delete-account-section">
+          <h3>Eliminar cuenta</h3>
+          <p class="warning-text">Esta acción es irreversible. Todos tus datos serán eliminados permanentemente.</p>
+          <button class="delete-button" (click)="showDeleteConfirmation()">Eliminar mi cuenta</button>
+        </div>
       </div>
     </ng-container>
+
+    <!-- Modal de confirmación para borrar cuenta -->
+    <div class="confirmation-modal" *ngIf="showDeleteModal">
+      <div class="modal-content">
+        <h3>¿Estás seguro?</h3>
+        <p>Esta acción eliminará permanentemente tu cuenta y todos tus datos asociados. No podrás recuperarlos.</p>
+
+        <div class="confirmation-input">
+          <label for="confirm-delete">Para confirmar, escribe "ELIMINAR"</label>
+          <input type="text" id="confirm-delete" [(ngModel)]="deleteConfirmText">
+        </div>
+
+        <div class="modal-actions">
+          <button class="cancel-button" (click)="cancelDelete()">Cancelar</button>
+          <button class="confirm-button" [disabled]="deleteConfirmText !== 'ELIMINAR'" (click)="deleteAccount()">
+            Confirmar eliminación
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

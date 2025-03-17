@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, 
+  background: linear-gradient(to top,
     rgba(0, 179, 65, 0.1) 0%,
     rgba(26, 26, 26, 0.5) 80%
   ),
@@ -231,46 +231,132 @@
   text-align: left;
 }
 
-.match-odds {
-  padding: 15px;
+/* Estilos mejorados para las cuotas */
+.match-odds-improved {
+  padding: 0;
   background-color: #2a2a3c;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  overflow: hidden;
+  margin-top: 10px;
 }
 
-.odds-container {
+.odds-container-improved {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.odd-button {
+.odd-button-improved {
   flex: 1;
   background-color: #23232f;
   border: none;
-  border-radius: 4px;
-  padding: 10px;
+  padding: 15px 10px;
   color: white;
   cursor: pointer;
   text-align: center;
-  transition: background-color 0.2s;
-}
-
-.odd-button:hover {
-  background-color: #3a3a4c;
-}
-
-.odd-label {
-  font-size: 12px;
-  margin-bottom: 5px;
-  color: #ccc;
-  white-space: nowrap;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0;
+  position: relative;
   overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0 1px;
 }
 
-.odd-value {
-  font-size: 16px;
+.odd-button-improved:hover {
+  background-color: #2d2d3d;
+  transform: translateY(-2px);
+}
+
+.odd-button-improved.active {
+  background-color: #00b341;
+}
+
+/* Ocultar los nombres de equipos en los botones de cuotas */
+.odd-label-improved {
+  font-size: 0;
+  color: transparent;
+  position: relative;
+}
+
+/* Mostrar solo los valores de las cuotas con tamaño más equilibrado */
+.odd-value-improved {
+  font-size: 18px;
   font-weight: bold;
   color: #00b341;
+  transition: all 0.3s ease;
+}
+
+/* Añadir indicadores visuales para identificar cada cuota */
+.odd-button-improved:first-child::before {
+  content: 'LOCAL';
+  font-size: 10px;
+  color: #ccc;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.odd-button-improved:nth-child(2)::before {
+  content: 'EMPATE';
+  font-size: 10px;
+  color: #ccc;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.odd-button-improved:last-child::before {
+  content: 'VISITANTE';
+  font-size: 10px;
+  color: #ccc;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.odd-button-improved:hover .odd-value-improved {
+  transform: scale(1.05);
+}
+
+.odd-button-improved:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mejora para el mensaje de no cuotas */
+.no-odds-message {
+  text-align: center;
+  color: #999;
+  padding: 15px;
+  font-style: italic;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Mejora para los nombres de equipos en la cabecera */
+.team-name {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 8px;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .no-odds-message {
@@ -362,4 +448,134 @@
 /* Add this to the top of your home component CSS */
 .content-container {
   padding-top: 70px; /* Adjust this value based on your header height */
+}
+
+/* Nuevo diseño de cuotas similar a la imagen */
+.match-odds-new {
+  background-color: #1e1e2d;
+  border-top: 1px solid #2a2a3c;
+  padding: 0;
+  margin-top: 0;
+}
+
+.odds-container-new {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.odd-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid #2a2a3c;
+  padding: 8px 0;
+}
+
+.odd-column:last-child {
+  border-right: none;
+}
+
+.odd-label-new {
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.odd-button-new {
+  background: transparent;
+  border: none;
+  color: #00b341;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.odd-button-new:hover {
+  transform: scale(1.1);
+}
+
+.odd-button-new.active {
+  color: #fff;
+  background-color: #00b341;
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+/* Ajustes para el diseño de equipos */
+.match-teams {
+  padding: 15px;
+  background-color: #23232f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+}
+
+.vs {
+  color: #666;
+  font-size: 14px;
+}
+
+.team-name {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.team-logo {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.team-badge {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Estilos para partidos en vivo */
+.live-match-card {
+  border: 1px solid #00b341;
+  box-shadow: 0 0 10px rgba(0, 179, 65, 0.3);
+}
+
+.match-status.live {
+  color: #00b341;
+  font-weight: bold;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+.team-score {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  margin-top: 5px;
+}
+
+.live-matches {
+  margin-bottom: 30px;
 }

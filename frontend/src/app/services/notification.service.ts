@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 
 export interface Notification {
   message: string;
-  type: 'success' | 'error';
+  type: 'success' | 'error' | 'info';  // Add 'info' type
   duration?: number;
 }
 
@@ -20,6 +20,14 @@ export class NotificationService {
     this.notificationSubject.next({
       message,
       type: 'success',
+      duration
+    });
+  }
+
+  showInfo(message: string, duration: number = 3000) {
+    this.notificationSubject.next({
+      message,
+      type: 'info',
       duration
     });
   }

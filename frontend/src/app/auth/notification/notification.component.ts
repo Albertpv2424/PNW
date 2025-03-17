@@ -13,7 +13,7 @@ import { NotificationService } from '../../services/notification.service';
 export class NotificationComponent implements OnInit, OnDestroy {
   visible = false;
   message = '';
-  type: 'success' | 'error' = 'success';
+  type: 'success' | 'error' | 'info' = 'success';  // Update type to include 'info'
   private subscription: Subscription | null = null;
   private timeout: any;
 

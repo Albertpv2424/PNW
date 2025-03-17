@@ -321,3 +321,115 @@
 .currency {
   display: none;
 }
+
+/* Estilos para el balance en el header (igual que en el perfil) */
+.profile-balance {
+  display: flex;
+  align-items: center;
+  background-color: rgba(30, 30, 40, 0.9);
+  padding: 8px 12px;
+  border-radius: 20px;
+  margin-right: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.balance-icon {
+  margin-right: 8px;
+}
+
+.balance-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.balance-amount {
+  display: flex;
+  align-items: baseline;
+}
+
+.integer-part {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.decimal-part {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+/* Eliminar estilos anteriores que puedan interferir */
+.balance {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+}
+
+.user-balance {
+  display: none;
+}
+
+.coin-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.balance-amount {
+  display: flex;
+  align-items: baseline;
+}
+
+.integer-part {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.decimal-part {
+  color: rgba(255, 255, 255, 0.6); /* Decimales en un tono más oscuro */
+  font-size: 14px; /* Ligeramente más pequeño que la parte entera */
+}
+
+.rewards-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  position: relative;
+  cursor: pointer;
+  color: #1a1a2e; /* Color dorado para el regalo */
+  transition: transform 0.2s ease;
+}
+
+.rewards-icon:hover {
+  transform: scale(1.2);
+}
+
+.rewards-icon:hover::after {
+  content: "Recompensas diarias";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+
+
+/* Modificar el balance para que incluya el icono de recompensas */
+.balance {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

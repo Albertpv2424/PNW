@@ -7,6 +7,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { PremiosComponent } from './premios/premios.component';
 import { PromocionesComponent } from './promociones/promociones.component';
 
+// Añade esta importación al principio del archivo
+import { VideoRewardsComponent } from './video-rewards/video-rewards.component';
+
+// Añade esta ruta al array de rutas
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
@@ -19,6 +23,7 @@ export const routes: Routes = [
   { path: 'premios', component: PremiosComponent },
   { path: 'promociones', component: PromocionesComponent },
   { path: 'live', component: HomeComponent }, // Temporalmente redirige a Home
+  { path: 'rewards', component: VideoRewardsComponent },
   // Ruta comodín para manejar rutas no encontradas
   { path: '**', redirectTo: '' }
 ];

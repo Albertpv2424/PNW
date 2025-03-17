@@ -90,7 +90,22 @@ export class PremiosComponent implements OnInit {
   }
 
   onCanjear(premioId: number) {
-    const currentUser = this.authService.getCurrentUser();
+    // Force refresh the user data from localStorage
+    const storedUser = localStorage.getItem('currentUser');
+    let currentUser = this.authService.getCurrentUser();
+
+    if (storedUser) {
+      // Parse the stored user data to ensure we have the latest
+      const parsedUser = JSON.parse(storedUser);
+      if (parsedUser && parsedUser.saldo !== undefined) {
+        // If the stored saldo is different, update the current user
+        if (!currentUser || currentUser.saldo !== parsedUser.saldo) {
+          currentUser = parsedUser;
+          this.authService.updateCurrentUser(parsedUser);
+        }
+      }
+    }
+
     if (!currentUser) {
       this.notificationService.showError('Debes iniciar sesión para canjear premios');
       return;
@@ -99,20 +114,49 @@ export class PremiosComponent implements OnInit {
     const premio = this.premios.find(p => p.id === premioId);
     if (!premio) return;
 
+    // Log both values for debugging
+    console.log('User balance:', currentUser.saldo, 'Prize cost:', premio.points);
+
     // Use saldo instead of points for the user's balance
     if (currentUser.saldo < premio.points) {
-      this.notificationService.showError('No tienes suficientes puntos para canjear este premio');
+      this.notificationService.showError(`No tienes suficientes puntos para canjear este premio. Tienes ${currentUser.saldo} puntos y necesitas ${premio.points}.`);
       return;
     }
 
+    // Show info notification
+    this.notificationService.showInfo('Procesando tu solicitud...');
+
     this.predictionsService.canjearPremio(premioId).subscribe({
       next: (response) => {
+        console.log('Full redemption response:', response);
         this.notificationService.showSuccess('Premio canjeado con éxito');
-        // Actualizar los puntos del usuario si es necesario
+
+        // Update the user's balance with the new value from the response
+        if (response && response.saldo_actual !== undefined) {
+          console.log('New balance from server:', response.saldo_actual);
+          this.authService.updateUserSaldo(response.saldo_actual);
+        } else {
+          console.log('Response missing saldo_actual, calculating manually');
+          // Calculate new balance manually
+          const newBalance = currentUser.saldo - premio.points;
+          console.log('New calculated balance:', newBalance);
+          this.authService.updateUserSaldo(newBalance);
+        }
+
+        // Reload the page after a short delay to reflect changes
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       },
       error: (error) => {
         console.error('Error al canjear premio:', error);
-        this.notificationService.showError('Error al canjear el premio. Por favor, intenta de nuevo.');
+        let errorMessage = 'Error al canjear el premio. Por favor, intenta de nuevo.';
+
+        if (error.error && error.error.message) {
+          errorMessage = error.error.message;
+        }
+
+        this.notificationService.showError(errorMessage);
       }
     });
   }

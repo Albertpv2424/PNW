@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -29,7 +30,40 @@ export class PredictionsService {
   }
 
   canjearPremio(premioId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/premios/${premioId}/canjear`, {});
+    // Get the authentication token
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      console.error('No authentication token found');
+      return new Observable(observer => {
+        observer.error({ error: { message: 'No estás autenticado. Por favor, inicia sesión.' } });
+      });
+    }
+
+    // Create headers with the token
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    console.log(`Sending redemption request for prize ID: ${premioId}`);
+
+    // Include the headers in the request
+    return this.http.post(`${this.apiUrl}/premios/${premioId}/canjear`, {}, { headers })
+      .pipe(
+        tap(response => {
+          console.log('Prize redemption response:', response);
+          // Ensure we have a valid response object
+          if (typeof response !== 'object' || response === null) {
+            console.error('Invalid response format:', response);
+          }
+        }),
+        catchError(error => {
+          console.error('Prize redemption error:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   getPromociones(): Observable<any> {
@@ -37,6 +71,60 @@ export class PredictionsService {
   }
 
   inscribirPromocion(promocionId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/promociones/${promocionId}/inscribir`, {});
+    // Get the authentication token directly from localStorage
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      console.error('No authentication token found');
+      return new Observable(observer => {
+        observer.error({ error: { message: 'No estás autenticado. Por favor, inicia sesión.' } });
+      });
+    }
+
+    // Create headers with the token
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    console.log('URL completa:', `${this.apiUrl}/promociones/${promocionId}/inscribir`);
+    console.log('Headers enviados:', headers);
+
+    // Use HttpClient instead of XMLHttpRequest for better integration with Angular
+    return this.http.post(`${this.apiUrl}/promociones/${promocionId}/inscribir`, {}, { headers });
+  }
+
+  // Add this method to your PredictionsService
+  
+  getUserPremios(): Observable<any> {
+    // Get the authentication token
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      console.error('No authentication token found');
+      return new Observable(observer => {
+        observer.error({ error: { message: 'No estás autenticado. Por favor, inicia sesión.' } });
+      });
+    }
+  
+    // Create headers with the token
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+  
+    // Include the headers in the request
+    return this.http.get(`${this.apiUrl}/user/premios`, { headers })
+      .pipe(
+        tap(response => {
+          console.log('User prizes response:', response);
+        }),
+        catchError(error => {
+          console.error('Error fetching user prizes:', error);
+          return throwError(() => error);
+        })
+      );
   }
 }

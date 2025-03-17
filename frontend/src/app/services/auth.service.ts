@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { tap, catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 // Update the User interface to include profile_image
@@ -92,7 +92,28 @@ export class AuthService {
 
   // Add this method if it doesn't exist
   updateCurrentUser(user: User): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
+    console.log('User updated:', user);
+  }
+
+  // Update the updateUserSaldo method
+  updateUserSaldo(saldo: number): void {
+    // Get current user
+    const currentUser = this.getCurrentUser();
+    if (currentUser) {
+      // Update saldo
+      currentUser.saldo = saldo;
+      console.log('Updating user saldo to:', saldo);
+
+      // Update in localStorage
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+      // Update in the subject - create a new object to ensure change detection
+      this.currentUserSubject.next({...currentUser});
+    } else {
+      console.error('Cannot update saldo: No current user found');
+    }
   }
 
   // Add this method to your AuthService
@@ -101,6 +122,71 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/reset-password`, {
       email: email,
       password: password
+    });
+  }
+
+  // Add this method to check if the token is valid
+  checkTokenValidity(): Observable<boolean> {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return of(false);
+    }
+
+    // Create a simple endpoint in your backend to validate tokens
+    return this.http.get<{valid: boolean}>(`${this.apiUrl}/validate-token`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }).pipe(
+      map(response => response.valid),
+      catchError(() => {
+        // If there's an error, the token is invalid
+        this.logout();
+        return of(false);
+      })
+    );
+  }
+
+  // Añade este método para refrescar el token
+  refreshToken(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/refresh-token`, {
+      headers: {
+        'Authorization': `Bearer ${this.getToken()}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      withCredentials: true
+    }).pipe(
+      tap((response: any) => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+        }
+      })
+    );
+  }
+
+  // Añade este método para obtener los headers de autenticación
+  getAuthHeaders() {
+    const token = this.getToken();
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+  }
+
+  // Request a password reset email
+  // Add these methods to your auth.service.ts file if they don't exist
+  requestPasswordReset(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/request-password-reset`, { email });
+  }
+
+  resetPasswordWithToken(email: string, password: string, token: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password-with-token`, {
+      email,
+      password,
+      token
     });
   }
 }
