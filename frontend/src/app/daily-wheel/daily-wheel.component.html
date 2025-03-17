@@ -9,28 +9,24 @@
       <h2>Ruleta Diaria</h2>
       <button class="close-button" (click)="toggleWheel()">×</button>
     </div>
-    
     <div class="wheel-content">
       <canvas #canvas width="300" height="300"></canvas>
       
       <div class="wheel-controls">
-        <button 
-          class="spin-button" 
-          (click)="spinWheel()" 
-          [disabled]="isSpinning || !canSpin">
-          {{ isSpinning ? 'Girando...' : (canSpin ? 'GIRAR' : 'Ya has girado hoy') }}
+        <button class="spin-button" (click)="spinWheel()" [disabled]="!canSpin || isSpinning">
+          {{ isSpinning ? 'Girando...' : (canSpin ? 'Girar' : 'Ya has girado hoy') }}
         </button>
         
-        <p class="wheel-info" *ngIf="!canSpin">
+        <div class="wheel-info" *ngIf="!canSpin && !isSpinning">
           Podrás volver a girar mañana
-        </p>
-        
-        <div class="prize-display" *ngIf="selectedPrize !== null">
-          <p>¡Has ganado!</p>
-          <div class="prize-amount">
-            <span>{{selectedPrize}}</span>
-            <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
-          </div>
+        </div>
+      </div>
+      
+      <!-- Only show the prize after spinning is complete -->
+      <div class="prize-display" *ngIf="selectedPrize && !isSpinning">
+        <p>¡Has ganado!</p>
+        <div class="prize-amount">
+          {{ selectedPrize }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon">
         </div>
       </div>
     </div>

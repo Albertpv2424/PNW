@@ -30,16 +30,13 @@
         </span>
       </div>
       <!-- Añadimos el icono de recompensas aquí -->
+
+      <a class="rewards-icon" routerLink="/rewards" [class.active]="isActive('/rewards')" title="Recompensas diarias">
+        🎁
+      </a>
       <div class="nav-icons">
-        <a class="nav-icon" routerLink="/premios" [class.active]="isActive('/premios')" title="Premios">
-          🏆
-        </a>
-        <a class="nav-icon" routerLink="/promociones" [class.active]="isActive('/promociones')" title="Promociones">
-          🎁
-        </a>
-        <a class="rewards-icon" routerLink="/rewards" [class.active]="isActive('/rewards')" title="Recompensas diarias">
-          🎁
-        </a>
+
+
         <!-- Add the daily wheel component here -->
         <app-daily-wheel *ngIf="username"></app-daily-wheel>
       </div>
@@ -49,7 +46,8 @@
       <!-- Perfil con menú desplegable para usuarios logueados -->
       <div class="profile-dropdown" *ngIf="username" (click)="toggleProfileMenu()" (clickOutside)="closeProfileMenu()">
         <div class="profile-container">
-          <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
+          <div class="profile-image"
+            [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
             <span *ngIf="!profileImage">{{ getInitials() }}</span>
           </div>
           <span class="username">{{ username }}</span>

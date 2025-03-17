@@ -80,7 +80,14 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Dibujar segmentos
+    // Draw outer circle
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#333';
+    ctx.stroke();
+    
+    // Draw segments
     const segmentAngle = 2 * Math.PI / this.prizes.length;
     
     for (let i = 0; i < this.prizes.length; i++) {
@@ -94,33 +101,57 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       
       ctx.fillStyle = this.colors[i];
       ctx.fill();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#333';
+      ctx.stroke();
       
-      // Dibujar texto
+      // Draw text
       ctx.save();
       ctx.translate(centerX, centerY);
       ctx.rotate(startAngle + segmentAngle / 2);
       ctx.textAlign = 'right';
       ctx.fillStyle = '#fff';
       ctx.font = 'bold 16px Arial';
-      ctx.fillText(this.prizes[i].toString(), radius - 20, 5);
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      ctx.shadowBlur = 3;
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 1;
+      
+      // Rotate text to be readable from outside the wheel
+      ctx.rotate(Math.PI / 2);
+      ctx.fillText(this.prizes[i].toString(), 0, -radius + 25);
       ctx.restore();
     }
     
-    // Dibujar círculo central
+    // Draw central circle
     ctx.beginPath();
     ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
     ctx.fillStyle = '#fff';
     ctx.fill();
     ctx.stroke();
     
-    // Dibujar flecha
+    // We're removing the arrow from here as it will be drawn separately
+  }
+
+  // Add a new method to draw just the arrow
+  drawArrow() {
+    const canvas = this.canvasRef.nativeElement;
+    const ctx = this.ctx;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = Math.min(centerX, centerY) - 10;
+    
+    // Draw arrow at the RIGHT side instead of the top
     ctx.beginPath();
-    ctx.moveTo(centerX + radius + 10, centerY);
-    ctx.lineTo(centerX + radius - 10, centerY - 15);
-    ctx.lineTo(centerX + radius - 10, centerY + 15);
+    ctx.moveTo(centerX + radius + 10, centerY); // Position at right
+    ctx.lineTo(centerX + radius - 15, centerY - 15); // Top point
+    ctx.lineTo(centerX + radius - 15, centerY + 15); // Bottom point
     ctx.closePath();
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = '#ff4d4d';
     ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#333';
+    ctx.stroke();
   }
 
   toggleWheel() {
@@ -140,6 +171,7 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     }
     
     this.isSpinning = true;
+    this.selectedPrize = null; // Reset selected prize to hide result until animation completes
     
     // Número aleatorio de rotaciones (entre 3 y 5 vueltas completas)
     const rotations = 3 + Math.random() * 2;
@@ -147,15 +179,10 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     // Ángulo aleatorio final (determina el premio)
     const finalAngle = Math.random() * 2 * Math.PI;
     
-    // Calcular el premio basado en el ángulo final
-    const segmentAngle = 2 * Math.PI / this.prizes.length;
-    const prizeIndex = Math.floor(((2 * Math.PI - finalAngle) % (2 * Math.PI)) / segmentAngle);
-    this.selectedPrize = this.prizes[prizeIndex];
-    
     // Animación de giro
     let currentRotation = 0;
     const totalRotation = rotations * 2 * Math.PI + finalAngle;
-    const duration = 3000; // 3 segundos
+    const duration = 4000; // 4 segundos para un giro más dramático
     const startTime = Date.now();
     
     const animate = () => {
@@ -178,14 +205,37 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       ctx.translate(centerX, centerY);
       ctx.rotate(currentRotation);
       ctx.translate(-centerX, -centerY);
-      
       this.drawWheel();
-      
       ctx.restore();
+      
+      // Draw the fixed arrow (outside the rotation transform)
+      this.drawArrow();
       
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
+        // IMPORTANTE: Determinar qué premio está en la parte DERECHA (donde apunta la flecha)
+        // cuando la rueda se detiene
+        const segmentAngle = 2 * Math.PI / this.prizes.length;
+        
+        // Normalizar el ángulo final de rotación (entre 0 y 2π)
+        const normalizedAngle = (currentRotation % (2 * Math.PI));
+        
+        // Calcular qué segmento está a la DERECHA (donde apunta la flecha)
+        // La flecha está en la derecha (ángulo 0 en el sistema de coordenadas del canvas)
+        const prizeIndex = Math.floor(((2 * Math.PI - normalizedAngle) % (2 * Math.PI)) / segmentAngle);
+        
+        // Asegurarnos de que el índice esté dentro del rango válido
+        const validIndex = (prizeIndex + this.prizes.length) % this.prizes.length;
+        
+        // Establecer el premio seleccionado como el que está en la parte derecha
+        this.selectedPrize = this.prizes[validIndex];
+        
+        console.log('Final rotation:', currentRotation);
+        console.log('Normalized angle:', normalizedAngle);
+        console.log('Prize index:', validIndex);
+        console.log('Selected prize:', this.selectedPrize);
+        
         this.isSpinning = false;
         this.awardPrize();
       }
@@ -229,6 +279,8 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     
     // No longer need to store in localStorage since we're using the server
     this.canSpin = false;
+    
+    console.log('Awarding prize:', this.selectedPrize);
     
     // Enviar al servidor
     this.http.post(`${this.apiUrl}/daily-wheel/spin`, { points: this.selectedPrize }).subscribe({
