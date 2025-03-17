@@ -72,38 +72,27 @@ export class VideoRewardsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Cargar estadísticas del usuario desde localStorage o API
-    const stats = localStorage.getItem('videoRewardsStats');
-
-    if (stats) {
-      const parsedStats = JSON.parse(stats);
-      const today = new Date().toDateString();
-
-      // Si las estadísticas son de hoy, cargarlas
-      if (parsedStats.date === today) {
-        this.videosWatchedToday = parsedStats.videosWatched;
-        this.pointsEarnedToday = parsedStats.pointsEarned;
-        this.dailyLimitReached = this.videosWatchedToday >= 5;
-      } else {
-        // Si son de otro día, reiniciar
+    // Fetch stats from the API instead of localStorage
+    this.http.get(`${this.apiUrl}/video-rewards/status`).subscribe({
+      next: (response: any) => {
+        console.log('Video rewards status:', response);
+        this.videosWatchedToday = response.videosWatched;
+        this.pointsEarnedToday = response.pointsEarned;
+        this.dailyLimitReached = !response.canWatchMore;
+      },
+      error: (error) => {
+        console.error('Error loading video rewards status:', error);
+        // Default to allowing videos if there's an error
         this.resetStats();
       }
-    } else {
-      this.resetStats();
-    }
+    });
   }
 
+  // Remove localStorage usage from resetStats
   resetStats(): void {
     this.videosWatchedToday = 0;
     this.pointsEarnedToday = 0;
     this.dailyLimitReached = false;
-
-    const today = new Date().toDateString();
-    localStorage.setItem('videoRewardsStats', JSON.stringify({
-      date: today,
-      videosWatched: 0,
-      pointsEarned: 0
-    }));
   }
 
   startWatchingVideos(): void {
@@ -170,39 +159,21 @@ export class VideoRewardsComponent implements OnInit, OnDestroy {
     // Generar puntos aleatorios entre 10 y 50
     this.pointsEarned = Math.floor(Math.random() * 41) + 10;
 
-    // Actualizar estadísticas
-    this.videosWatchedToday++;
-    this.pointsEarnedToday += this.pointsEarned;
-    this.dailyLimitReached = this.videosWatchedToday >= 5;
-
-    // Guardar estadísticas
-    const today = new Date().toDateString();
-    localStorage.setItem('videoRewardsStats', JSON.stringify({
-      date: today,
-      videosWatched: this.videosWatchedToday,
-      pointsEarned: this.pointsEarnedToday
-    }));
-
-    // Actualizar saldo del usuario
+    // Update user balance through API instead of localStorage
     this.updateUserBalance(this.pointsEarned);
   }
 
   updateUserBalance(points: number): void {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-      return;
-    }
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
-    this.http.post(`${this.apiUrl}/add-points`, { points }, { headers }).subscribe({
+    // Send points to the API
+    this.http.post(`${this.apiUrl}/video-rewards/add-points`, { points }).subscribe({
       next: (response: any) => {
         if (response.success) {
-          // Actualizar el usuario en el servicio de autenticación
+          // Update local stats
+          this.videosWatchedToday = response.videosWatched;
+          this.pointsEarnedToday = response.saldo - (this.authService.getCurrentUser()?.saldo || 0);
+          this.dailyLimitReached = this.videosWatchedToday >= 5;
+          
+          // Update user balance in auth service
           const currentUser = this.authService.getCurrentUser();
           if (currentUser) {
             currentUser.saldo = response.saldo;
@@ -210,6 +181,8 @@ export class VideoRewardsComponent implements OnInit, OnDestroy {
           }
 
           this.notificationService.showSuccess(`¡Has ganado ${points} puntos!`);
+        } else {
+          this.notificationService.showError(response.message || 'Error al actualizar puntos');
         }
       },
       error: (error) => {

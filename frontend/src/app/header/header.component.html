@@ -30,9 +30,19 @@
         </span>
       </div>
       <!-- Añadimos el icono de recompensas aquí -->
-      <a class="rewards-icon" routerLink="/rewards" [class.active]="isActive('/rewards')" title="Recompensas diarias">
-        🎁
-      </a>
+      <div class="nav-icons">
+        <a class="nav-icon" routerLink="/premios" [class.active]="isActive('/premios')" title="Premios">
+          🏆
+        </a>
+        <a class="nav-icon" routerLink="/promociones" [class.active]="isActive('/promociones')" title="Promociones">
+          🎁
+        </a>
+        <a class="rewards-icon" routerLink="/rewards" [class.active]="isActive('/rewards')" title="Recompensas diarias">
+          🎁
+        </a>
+        <!-- Add the daily wheel component here -->
+        <app-daily-wheel *ngIf="username"></app-daily-wheel>
+      </div>
     </div>
 
     <div class="user-info">

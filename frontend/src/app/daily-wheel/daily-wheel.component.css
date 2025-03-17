@@ -1,0 +1,159 @@
+.wheel-icon {
+  font-size: 24px;
+  cursor: pointer;
+  position: relative;
+  margin: 0 10px;
+  transition: transform 0.3s ease;
+}
+
+.wheel-icon:hover {
+  transform: scale(1.2);
+}
+
+.wheel-icon.disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.notification-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: #ff4d4d;
+  border-radius: 50%;
+}
+
+.wheel-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.wheel-container {
+  background-color: #1e1e30;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+.wheel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #00b341;
+  color: white;
+}
+
+.wheel-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.wheel-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+canvas {
+  margin-bottom: 20px;
+}
+
+.wheel-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.spin-button {
+  background-color: #00b341;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 80%;
+  max-width: 200px;
+  margin-bottom: 15px;
+}
+
+.spin-button:hover:not(:disabled) {
+  background-color: #009935;
+}
+
+.spin-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.wheel-info {
+  color: #aaa;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.prize-display {
+  margin-top: 20px;
+  text-align: center;
+  animation: bounceIn 0.5s ease;
+}
+
+.prize-display p {
+  color: white;
+  margin: 0 0 10px 0;
+  font-size: 18px;
+}
+
+.prize-amount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #00b341;
+}
+
+.coin-icon {
+  width: 30px;
+  height: 30px;
+  margin-left: 8px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}

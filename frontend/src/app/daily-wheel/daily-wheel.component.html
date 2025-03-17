@@ -1,0 +1,38 @@
+<div class="wheel-icon" (click)="toggleWheel()" [class.disabled]="!canSpin">
+  🎡
+  <div class="notification-dot" *ngIf="canSpin"></div>
+</div>
+
+<div class="wheel-modal" *ngIf="isOpen">
+  <div class="wheel-container">
+    <div class="wheel-header">
+      <h2>Ruleta Diaria</h2>
+      <button class="close-button" (click)="toggleWheel()">×</button>
+    </div>
+    
+    <div class="wheel-content">
+      <canvas #canvas width="300" height="300"></canvas>
+      
+      <div class="wheel-controls">
+        <button 
+          class="spin-button" 
+          (click)="spinWheel()" 
+          [disabled]="isSpinning || !canSpin">
+          {{ isSpinning ? 'Girando...' : (canSpin ? 'GIRAR' : 'Ya has girado hoy') }}
+        </button>
+        
+        <p class="wheel-info" *ngIf="!canSpin">
+          Podrás volver a girar mañana
+        </p>
+        
+        <div class="prize-display" *ngIf="selectedPrize !== null">
+          <p>¡Has ganado!</p>
+          <div class="prize-amount">
+            <span>{{selectedPrize}}</span>
+            <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

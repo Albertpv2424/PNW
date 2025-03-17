@@ -3,11 +3,19 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { ClickOutsideDirective } from '../directives/click-outside.directive';
+import { DailyWheelComponent } from '../daily-wheel/daily-wheel.component';
+import { RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, ClickOutsideDirective],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    ClickOutsideDirective,
+    DailyWheelComponent  // Add this import
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })

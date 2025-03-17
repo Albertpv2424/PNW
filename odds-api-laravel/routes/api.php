@@ -2,10 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\OddsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventoController;
+use App\Http\Controllers\ApuestaController;
 use App\Http\Controllers\PremioController;
 use App\Http\Controllers\PromocionController;
+use App\Http\Controllers\DailyWheelController;
+use App\Http\Controllers\VideoRewardsController;
+use App\Http\Controllers\OddsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +75,12 @@ Route::middleware('auth:sanctum')->post('/delete-account', [App\Http\Controllers
 // Añade esta ruta junto con las demás rutas protegidas por auth:sanctum
 
 Route::middleware('auth:sanctum')->post('/add-points', [AuthController::class, 'addPoints']);
+
+// Daily Wheel routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/daily-wheel/spin', [DailyWheelController::class, 'spin']);
+    Route::get('/daily-wheel/status', [DailyWheelController::class, 'checkStatus']);
+    
+    Route::post('/video-rewards/add-points', [VideoRewardsController::class, 'addPoints']);
+    Route::get('/video-rewards/status', [VideoRewardsController::class, 'checkStatus']);
+});
