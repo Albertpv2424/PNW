@@ -42,29 +42,23 @@ class OddsApiService
                 'regions' => $regions,
                 'markets' => $markets,
             ]);
-    
+
             if ($response->successful()) {
                 $data = $response->json();
-    
-                // Filtrar solo los eventos donde FanDuel esté presente
-                $filteredOdds = array_map(function ($event) {
-                    $event['bookmakers'] = array_filter($event['bookmakers'], function ($bookmaker) {
-                        return $bookmaker['title'] === 'FanDuel';
-                    });
-    
-                    return !empty($event['bookmakers']) ? $event : null;
-                }, $data);
-    
-                // Eliminar elementos nulos
-                return array_filter($filteredOdds);
+                
+                // For debugging - log the raw data
+                Log::info('Raw odds data: ' . json_encode(array_slice($data, 0, 2)));
+                
+                // Either remove the filtering completely
+                return $data;
             }
-    
+
             Log::error('API Error: ' . $response->body());
             return [];
-    
+
         } catch (\Exception $e) {
             Log::error('API Request Failed: ' . $e->getMessage());
             return [];
         }
     }
-}    
+}

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-03-2025 a las 16:24:10
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Tiempo de generación: 17-03-2025 a las 19:04:24
+-- Versión del servidor: 10.4.25-MariaDB
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,11 +24,37 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `daily_rewards_tracking`
+--
+
+CREATE TABLE `daily_rewards_tracking` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` date NOT NULL,
+  `wheel_spun` tinyint(1) NOT NULL DEFAULT 0,
+  `wheel_points_earned` int(11) NOT NULL DEFAULT 0,
+  `videos_watched` int(11) NOT NULL DEFAULT 0,
+  `video_points_earned` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `daily_rewards_tracking`
+--
+
+INSERT INTO `daily_rewards_tracking` (`id`, `usuari_nick`, `date`, `wheel_spun`, `wheel_points_earned`, `videos_watched`, `video_points_earned`, `created_at`, `updated_at`) VALUES
+(1, 'Albertpv24', '2025-03-17', 1, 10, 0, 0, '2025-03-17 14:54:14', '2025-03-17 16:50:55'),
+(2, 'Admin', '2025-03-17', 1, 50, 1, 19, '2025-03-17 14:57:39', '2025-03-17 15:05:38');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `inscripcio_a_promos`
 --
 
 CREATE TABLE `inscripcio_a_promos` (
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `promo_id` bigint(20) UNSIGNED NOT NULL,
   `data_inscripcio` timestamp NULL DEFAULT NULL,
   `compleix_requisits` tinyint(1) NOT NULL DEFAULT 0
@@ -39,6 +65,7 @@ CREATE TABLE `inscripcio_a_promos` (
 --
 
 INSERT INTO `inscripcio_a_promos` (`usuari_nick`, `promo_id`, `data_inscripcio`, `compleix_requisits`) VALUES
+('Admin', 1, '2025-03-17 15:02:59', 0),
 ('Albertpv24', 1, '2025-03-15 13:46:01', 0);
 
 -- --------------------------------------------------------
@@ -48,7 +75,7 @@ INSERT INTO `inscripcio_a_promos` (`usuari_nick`, `promo_id`, `data_inscripcio`,
 --
 
 CREATE TABLE `limitacio` (
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `apostes_diaries` int(11) NOT NULL DEFAULT 0,
   `temps_diari` int(11) NOT NULL DEFAULT 0,
   `punts_apostats` int(11) NOT NULL DEFAULT 0,
@@ -63,7 +90,7 @@ CREATE TABLE `limitacio` (
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -88,7 +115,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (14, 'add_profile_image_to_usuaris_table', 1),
 (15, 'update_personal_access_tokens_table', 2),
 (16, 'add_data_inscripcio_to_inscripcio_a_promos', 3),
-(17, 'create_password_resets_table', 4);
+(17, 'create_password_resets_table', 4),
+(18, '2024_05_20_000000_create_daily_rewards_tracking_table', 5);
 
 -- --------------------------------------------------------
 
@@ -97,8 +125,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) NOT NULL,
-  `token` varchar(255) NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -118,11 +146,11 @@ INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) NOT NULL,
-  `tokenable_id` varchar(50) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -157,7 +185,16 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (21, 'App\\Models\\User', 'Papa', 'auth-token', 'acd4504bafd62151dfa963f21ad0e22bc4dab413a6b19c2efbc72cefb4a6f89b', '[\"*\"]', '2025-03-16 13:23:41', NULL, '2025-03-16 13:22:18', '2025-03-16 13:23:41'),
 (22, 'App\\Models\\User', 'Papa', 'auth-token', '47228b7187b7c4631103f66586fbf35958c8469542661096a4774251b7ed3e19', '[\"*\"]', '2025-03-16 13:28:39', NULL, '2025-03-16 13:23:49', '2025-03-16 13:28:39'),
 (23, 'App\\Models\\User', 'Albertpv24', 'auth-token', '80164d0d38b2c92e8a72a2045372e3683d594f6f0dc28fb6415f505aa41d465a', '[\"*\"]', '2025-03-16 14:17:24', NULL, '2025-03-16 14:12:42', '2025-03-16 14:17:24'),
-(24, 'App\\Models\\User', 'Albertpv24', 'auth-token', '6279b93083d9604a3ec806bebadb78131c199fcfa94fcdc320d0eac281dbc6ff', '[\"*\"]', '2025-03-16 14:22:30', NULL, '2025-03-16 14:19:14', '2025-03-16 14:22:30');
+(24, 'App\\Models\\User', 'Albertpv24', 'auth-token', '6279b93083d9604a3ec806bebadb78131c199fcfa94fcdc320d0eac281dbc6ff', '[\"*\"]', '2025-03-16 14:22:30', NULL, '2025-03-16 14:19:14', '2025-03-16 14:22:30'),
+(25, 'App\\Models\\User', 'Albertpv24', 'auth-token', '01d28a3a2c0d7d8c3b3cac5df1bfde16131498b8e28ea5c91e97917a7b205eae', '[\"*\"]', '2025-03-17 14:49:10', NULL, '2025-03-17 14:47:12', '2025-03-17 14:49:10'),
+(26, 'App\\Models\\User', 'Albertpv24', 'auth-token', 'e79545494d10232c007a0835a1a9e943aa4e24f43c214e71dbf4533f2d332288', '[\"*\"]', '2025-03-17 14:57:06', NULL, '2025-03-17 14:49:30', '2025-03-17 14:57:06'),
+(27, 'App\\Models\\User', 'Admin', 'auth-token', '38cb5ed284a047184c7e0a253e06ff1eb6c304c33fc615f62f8e59ad0c565b1d', '[\"*\"]', '2025-03-17 14:57:43', NULL, '2025-03-17 14:57:36', '2025-03-17 14:57:43'),
+(28, 'App\\Models\\User', 'Albertpv24', 'auth-token', 'f7e9c9fa587b0127baed1e9a411bf3ca9a924de19e37f692d4922773647989dc', '[\"*\"]', '2025-03-17 15:00:36', NULL, '2025-03-17 14:57:57', '2025-03-17 15:00:36'),
+(29, 'App\\Models\\User', 'Admin', 'auth-token', '99bca52304951762acc92dc022669a3b3cfdbca940694cb3a63e628538c4f475', '[\"*\"]', '2025-03-17 15:05:38', NULL, '2025-03-17 15:01:27', '2025-03-17 15:05:38'),
+(30, 'App\\Models\\User', 'Albertpv24', 'auth-token', '97bf5f950e2e6fcb67d028f96865d711dc6d63ba237d0d1f00197e53bea47fb2', '[\"*\"]', '2025-03-17 15:21:23', NULL, '2025-03-17 15:05:56', '2025-03-17 15:21:23'),
+(31, 'App\\Models\\User', 'Admin', 'auth-token', '01a8cdfe707f7167b5f54c6c9d64e306879b52d78215c04ffb8d719a786c66fc', '[\"*\"]', '2025-03-17 15:21:38', NULL, '2025-03-17 15:21:32', '2025-03-17 15:21:38'),
+(32, 'App\\Models\\User', 'Albertpv24', 'auth-token', '742688caa498256ff168839f282fb9887196abe4fc0d58cf166dbe2811196a58', '[\"*\"]', '2025-03-17 16:50:55', NULL, '2025-03-17 15:21:58', '2025-03-17 16:50:55'),
+(33, 'App\\Models\\User', 'Albertpv24', 'auth-token', '6554aabfd2fee886d610382ff09165b8828ad818ad0ccf0869a6538c3b4210d2', '[\"*\"]', '2025-03-17 17:03:34', NULL, '2025-03-17 16:52:27', '2025-03-17 17:03:34');
 
 -- --------------------------------------------------------
 
@@ -167,7 +204,7 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 
 CREATE TABLE `prediccions_sist` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `usuari_nick` varchar(50) DEFAULT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `prediccio_proposada_id` bigint(20) UNSIGNED NOT NULL,
   `resultat_prediccio_id` bigint(20) UNSIGNED DEFAULT NULL,
   `punts_apostats` int(11) NOT NULL,
@@ -182,7 +219,7 @@ CREATE TABLE `prediccions_sist` (
 
 CREATE TABLE `prediccio_proposada` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cuota` decimal(10,2) NOT NULL,
   `punts_proposats` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -200,17 +237,17 @@ CREATE TABLE `premis` (
   `cost` decimal(10,2) NOT NULL,
   `condicio` decimal(10,2) NOT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `premis`
 --
 
 INSERT INTO `premis` (`id`, `titol`, `descripcio`, `cost`, `condicio`, `image`) VALUES
-(1, 'Tour Per Lleida', 'Visita guiada por los lugares más emblemáticos de Lleida', 1500.00, 1.00, 'uploads/premios/tour.png'),
-(2, 'Karting Alpicat', 'Sesión de karting en el circuito de Alpicat', 2000.00, 1.00, 'uploads/premios/karting.png'),
-(3, 'Cena Gourmet', 'Cena para dos personas en un restaurante de alta cocina', 3000.00, 1.00, 'uploads/premios/cena.png'),
-(4, 'Entradas VIP Lleida Esportiu', 'Dos entradas VIP para un partido del Lleida Esportiu', 1000.00, 1.00, 'uploads/premios/entradas.png');
+(1, 'Tour Per Lleida', 'Visita guiada por los lugares más emblemáticos de Lleida', '1500.00', '1.00', 'uploads/premios/tour.png'),
+(2, 'Karting Alpicat', 'Sesión de karting en el circuito de Alpicat', '2000.00', '1.00', 'uploads/premios/karting.png'),
+(3, 'Cena Gourmet', 'Cena para dos personas en un restaurante de alta cocina', '3000.00', '1.00', 'uploads/premios/cena.png'),
+(4, 'Entradas VIP Lleida Esportiu', 'Dos entradas VIP para un partido del Lleida Esportiu', '1000.00', '1.00', 'uploads/premios/entradas.png');
 
 -- --------------------------------------------------------
 
@@ -220,7 +257,7 @@ INSERT INTO `premis` (`id`, `titol`, `descripcio`, `cost`, `condicio`, `image`) 
 
 CREATE TABLE `premis_usuaris` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `premi_id` bigint(20) UNSIGNED NOT NULL,
   `data_reclamat` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_limit` datetime GENERATED ALWAYS AS (`data_reclamat` + interval 1 month) STORED,
@@ -251,7 +288,7 @@ CREATE TABLE `promos` (
   `data_final` date NOT NULL,
   `tipus_promocio` bigint(20) UNSIGNED DEFAULT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `promos`
@@ -271,8 +308,8 @@ INSERT INTO `promos` (`id`, `titol`, `descripcio`, `data_inici`, `data_final`, `
 
 CREATE TABLE `resultat_prediccio` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `resultat_prediccio` enum('Guanyat','Perdut','Empat') DEFAULT NULL,
-  `validacio` varchar(255) NOT NULL
+  `resultat_prediccio` enum('Guanyat','Perdut','Empat') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `validacio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -283,8 +320,8 @@ CREATE TABLE `resultat_prediccio` (
 
 CREATE TABLE `tipus_promocio` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `titol` varchar(255) NOT NULL,
-  `descripcio` varchar(255) DEFAULT NULL
+  `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -304,8 +341,8 @@ INSERT INTO `tipus_promocio` (`id`, `titol`, `descripcio`) VALUES
 
 CREATE TABLE `user_sist` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nick` varchar(50) NOT NULL,
-  `pswd` varchar(255) NOT NULL
+  `nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pswd` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -315,19 +352,19 @@ CREATE TABLE `user_sist` (
 --
 
 CREATE TABLE `usuaris` (
-  `nick` varchar(50) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `tipus_acc` enum('Usuari','Usuari_premium','Administrador') NOT NULL,
-  `pswd` varchar(255) NOT NULL,
-  `profile_image` varchar(255) DEFAULT NULL,
+  `nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipus_acc` enum('Usuari','Usuari_premium','Administrador') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pswd` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `saldo` decimal(10,2) NOT NULL DEFAULT 0.00,
   `creat_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `actualitzat_el` date DEFAULT NULL,
   `apostes_realitzades` int(11) NOT NULL DEFAULT 0,
   `temps_diari` int(11) NOT NULL DEFAULT 3600,
   `bloquejat` tinyint(1) NOT NULL DEFAULT 0,
-  `dni` varchar(9) NOT NULL,
-  `telefon` varchar(15) DEFAULT NULL,
+  `dni` varchar(9) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefon` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data_naixement` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -336,12 +373,19 @@ CREATE TABLE `usuaris` (
 --
 
 INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `profile_image`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`, `dni`, `telefon`, `data_naixement`) VALUES
-('Admin', 'admin@admin.com', 'Administrador', '$2y$12$IIyc1NTGaJ6Mbw3NHZRkx.H4AuRrUc26PeBTMESqb8qJ7RMeWYJii', NULL, 0.00, '2025-03-16 00:26:20', NULL, 0, 3600, 0, '', NULL, '0000-00-00'),
-('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$nif3I.g3GYw4vh2CIs1EOOQQaFG/hPQCTadrGHCloHcmLh7qQy9Fa', 'uploads/profiles/profile_1742039638_67d56a56eea4f.jpeg', 3551.00, '2025-03-15 11:53:59', NULL, 0, 3600, 0, '48052260Q', '645554144', '2003-04-24');
+('Admin', 'admin@admin.com', 'Administrador', '$2y$12$IIyc1NTGaJ6Mbw3NHZRkx.H4AuRrUc26PeBTMESqb8qJ7RMeWYJii', NULL, '569.00', '2025-03-16 00:26:20', NULL, 0, 3600, 0, '', NULL, '0000-00-00'),
+('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$nif3I.g3GYw4vh2CIs1EOOQQaFG/hPQCTadrGHCloHcmLh7qQy9Fa', 'uploads/profiles/profile_1742039638_67d56a56eea4f.jpeg', '4593.00', '2025-03-15 11:53:59', NULL, 0, 3600, 0, '48052260Q', '645554144', '2003-04-24');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `daily_rewards_tracking`
+--
+ALTER TABLE `daily_rewards_tracking`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `daily_rewards_tracking_usuari_nick_date_unique` (`usuari_nick`,`date`);
 
 --
 -- Indices de la tabla `inscripcio_a_promos`
@@ -445,16 +489,22 @@ ALTER TABLE `usuaris`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `daily_rewards_tracking`
+--
+ALTER TABLE `daily_rewards_tracking`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `prediccions_sist`
@@ -507,6 +557,12 @@ ALTER TABLE `user_sist`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `daily_rewards_tracking`
+--
+ALTER TABLE `daily_rewards_tracking`
+  ADD CONSTRAINT `daily_rewards_tracking_usuari_nick_foreign` FOREIGN KEY (`usuari_nick`) REFERENCES `usuaris` (`nick`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `inscripcio_a_promos`
