@@ -86,3 +86,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 // Add this line to your existing routes
 Route::get('/search', [App\Http\Controllers\SearchController::class, 'search']);
+
+// Add this route for handling bet submissions
+Route::middleware('auth:sanctum')->post('/apuestas', [ApuestaController::class, 'registrarApuesta']);

@@ -7,6 +7,9 @@ export interface BetSelection {
   betType: string;
   odds: number;
   matchInfo: string;
+  homeTeam?: string;
+  awayTeam?: string;
+  leagueName?: string;
 }
 
 @Injectable({

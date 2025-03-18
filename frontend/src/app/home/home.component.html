@@ -79,6 +79,7 @@
                     @for (outcome of getOrderedOutcomes(event.bookmakers[0].markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
                       <div class="odd-column">
                         <div class="odd-label-new">{{ outcome.name === 'Draw' ? 'EMPATE' : (outcome.name === event.home_team ? 'LOCAL' : 'VISITANTE') }}</div>
+                        <!-- Fix the button in the featured matches section -->
                         <button
                           class="odd-button-new"
                           [class.active]="isSelectionActive(event.id || '', outcome.name)"
@@ -88,7 +89,8 @@
                             outcome.price,
                             event.home_team,
                             event.away_team,
-                            event.id || ''
+                            event.id || '',
+                            event.league || event.sport_title
                           )"
                         >
                           {{ outcome.price }}
@@ -155,7 +157,8 @@
                       @for (outcome of getOrderedOutcomes(event.bookmakers[0].markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
                         <div class="odd-column">
                           <div class="odd-label-new">{{ outcome.name === 'Draw' ? 'EMPATE' : (outcome.name === event.home_team ? 'LOCAL' : 'VISITANTE') }}</div>
-                          <button
+                          <!-- Fix the button in the selected league section -->
+                          <button 
                             class="odd-button-new"
                             [class.active]="isSelectionActive(event.id || '', outcome.name)"
                             (click)="openBetPopup(
@@ -164,7 +167,8 @@
                               outcome.price,
                               event.home_team,
                               event.away_team,
-                              event.id || ''
+                              event.id || '',
+                              event.league || event.sport_title
                             )"
                           >
                             {{ outcome.price }}
@@ -200,3 +204,8 @@
 
 <!-- Añadir el componente de apuesta combinada al final -->
 <app-combined-bet></app-combined-bet>
+
+<!-- Update your ngFor to use the new tracking function -->
+<div *ngFor="let match of featuredMatches; trackBy: trackByMatch">
+  <!-- match content -->
+</div>
