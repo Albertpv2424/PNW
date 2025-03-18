@@ -55,6 +55,12 @@ export class LoginComponent {
       this.authService.login(credentials).subscribe({
         next: (response) => {
           console.log('Login successful!', response);
+          
+          // Verificar y mostrar el tipo de cuenta para depuración
+          if (response && response.user) {
+            console.log('Tipo de cuenta:', response.user.tipus_acc);
+          }
+          
           this.loginStatus = { type: 'success', message: '¡Login exitoso! Redirigiendo...' };
           
           // Check if response and user exist before accessing properties
@@ -64,9 +70,17 @@ export class LoginComponent {
             this.notificationService.showSuccess('¡Login exitoso!');
           }
           
-          setTimeout(() => {
+          // Redirección inmediata basada en el tipo de usuario
+          const userType = response?.user?.tipus_acc?.toString().trim() || '';
+          const isAdmin = ['admin', 'Admin', 'administrador', 'Administrador'].includes(userType);
+          
+          if (isAdmin) {
+            console.log('Admin user detected, redirecting to admin dashboard immediately');
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            console.log('Regular user detected, redirecting to home');
             this.router.navigate(['/']);
-          }, 2000);
+          }
         },
         error: (error) => {
           console.error('Login failed', error);
