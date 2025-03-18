@@ -10,7 +10,7 @@
       <button class="close-button" (click)="toggleWheel()">×</button>
     </div>
     <div class="wheel-content">
-      <canvas #canvas width="300" height="300"></canvas>
+      <canvas #wheelCanvas width="400" height="400"></canvas>
       
       <div class="wheel-controls">
         <button class="spin-button" (click)="spinWheel()" [disabled]="!canSpin || isSpinning">

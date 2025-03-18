@@ -13,7 +13,11 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./daily-wheel.component.css']
 })
 export class DailyWheelComponent implements OnInit, AfterViewInit {
-  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  // Change to match the HTML template
+  @ViewChild('wheelCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
+  
+  // Only one ctx declaration
+  private ctx!: CanvasRenderingContext2D;
   
   isOpen = false;
   isSpinning = false;
@@ -23,7 +27,6 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
   colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#8AC24A', '#607D8B'];
   selectedPrize: number | null = null;
   
-  private ctx!: CanvasRenderingContext2D;
   private apiUrl = environment.apiUrl;
 
   constructor(
@@ -34,16 +37,13 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.checkLastSpin();
-    // Remove the setupCanvas call from here
   }
 
   ngAfterViewInit() {
-    // Move canvas setup to ngAfterViewInit where the view is guaranteed to be ready
-    setTimeout(() => {
-      this.setupCanvas();
-    }, 100);
+    // Initialize canvas after view is initialized
+    setTimeout(() => this.setupCanvas(), 300);
   }
-
+  
   setupCanvas() {
     if (!this.canvasRef) {
       console.error('Canvas reference not found');
@@ -70,8 +70,14 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     
     this.drawWheel();
   }
-
+  
   drawWheel() {
+    if (!this.ctx) {
+      console.error('Canvas context not initialized');
+      return;
+    }
+    
+    // Your wheel drawing code here
     const canvas = this.canvasRef.nativeElement;
     const ctx = this.ctx;
     const centerX = canvas.width / 2;
