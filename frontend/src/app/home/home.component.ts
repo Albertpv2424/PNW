@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OddsService } from '../services/odds.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { BetPopupComponent } from '../bet-popup/bet-popup.component';
 import { BetSelectionsService } from '../services/bet-selections.service';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
@@ -70,12 +70,29 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private oddsService: OddsService,
-    private authService: AuthService,
+    public authService: AuthService,
     private betSelectionsService: BetSelectionsService,
-    public teamBadgeService: TeamBadgeService  // Change from private to public
+    public teamBadgeService: TeamBadgeService,
+    private router: Router  // Add Router to constructor
   ) {}
 
-  // Añadir este método al componente HomeComponent
+  // Modificar el método ngOnInit para redirigir a los administradores
+  ngOnInit() {
+    // Check if user is admin and redirect to dashboard
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser && this.authService.isAdmin()) {
+      // Redirect admin users to the dashboard
+      this.router.navigate(['/admin/dashboard']);
+      return;
+    }
+    
+    // Continue with normal initialization for non-admin users
+    this.loadSports();
+    this.loadUserInfo();
+    this.loadFeaturedMatches(); // This will now work correctly
+  }
+
+  // Make sure this method is defined in the class
   loadFeaturedMatches() {
     // Cargar partidos destacados de diferentes ligas
     const featuredSports = ['soccer_spain_la_liga', 'soccer_uefa_champs_league', 'basketball_nba'];
@@ -125,14 +142,6 @@ export class HomeComponent implements OnInit {
       });
     });
   }
-
-  // Modificar el método ngOnInit para cargar los partidos destacados
-  ngOnInit() {
-    this.loadSports();
-    this.loadUserInfo();
-    this.loadFeaturedMatches(); // Añadir esta línea
-  }
-
   loadUserInfo() {
     const user = this.authService.getCurrentUser();
     if (user) {
@@ -403,5 +412,17 @@ export class HomeComponent implements OnInit {
   trackByMatch(index: number, match: OddEvent): string {
   // Create a unique identifier using multiple properties and always include the index
   return match.id || `${match.sport_title || ''}_${match.league || ''}_${match.home_team || ''}_${match.away_team || ''}_${match.commence_time || ''}_${index}`;
+  }
+
+  // Add this property for the user menu dropdown
+  isMenuOpen: boolean = false;
+  
+  // Add these methods for menu toggle
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+  
+  closeMenu(): void {
+    this.isMenuOpen = false;
   }
 }

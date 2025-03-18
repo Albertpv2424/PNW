@@ -209,3 +209,40 @@
 <div *ngFor="let match of featuredMatches; trackBy: trackByMatch">
   <!-- match content -->
 </div>
+
+<div class="user-menu" *ngIf="isMenuOpen">
+  <ul>
+    <li>
+      <a routerLink="/profile">
+        <i class="fas fa-user"></i> Mi Perfil
+      </a>
+    </li>
+    <li>
+      <a routerLink="/bets">
+        <i class="fas fa-gamepad"></i> Mis Apuestas
+      </a>
+    </li>
+    <li>
+      <a routerLink="/history">
+        <i class="fas fa-history"></i> Historial
+      </a>
+    </li>
+    <li>
+      <a routerLink="/profile/edit">
+        <i class="fas fa-edit"></i> Editar Perfil
+      </a>
+    </li>
+    <!-- Add Admin Dashboard option if user is admin -->
+    <li *ngIf="authService.isAdmin()">
+      <a routerLink="/admin/dashboard">
+        <i class="fas fa-tachometer-alt"></i> Admin
+      </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+      </a>
+    </li>
+  </ul>
+</div>

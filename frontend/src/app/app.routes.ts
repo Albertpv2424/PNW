@@ -10,6 +10,8 @@ import { PremiosComponent } from './premios/premios.component';
 import { PromocionesComponent } from './promociones/promociones.component';
 import { VideoRewardsComponent } from './video-rewards/video-rewards.component';
 import { UsersComponent } from './admin/users/users.component';
+import { PrizesComponent } from './admin/prizes/prizes.component';
+import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,22 +20,27 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'profile/edit', component: ProfileComponent },
-  { path: 'premios', component: PremiosComponent },
-  { path: 'promociones', component: PromocionesComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile/edit', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'premios', component: PremiosComponent, canActivate: [AuthGuard] },
+  { path: 'promociones', component: PromocionesComponent, canActivate: [AuthGuard] },
   { path: 'live', component: HomeComponent }, // Temporalmente redirige a Home
-  { path: 'rewards', component: VideoRewardsComponent },
+  { path: 'rewards', component: VideoRewardsComponent, canActivate: [AuthGuard] },
+  
+  // Admin routes with layout
   {
-    path: 'admin/dashboard',
-    component: DashboardComponent,
-    canActivate: [AuthGuard]
+    path: 'admin',
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'users', component: UsersComponent },
+      { path: 'prizes', component: PrizesComponent },
+      // Add other admin routes here
+    ]
   },
-  {
-    path: 'admin/users',
-    component: UsersComponent,
-    canActivate: [AuthGuard]
-  },
+  
   // Ruta comodín para manejar rutas no encontradas
   { path: '**', redirectTo: '' }
 ];

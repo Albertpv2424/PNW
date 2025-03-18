@@ -36,7 +36,11 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    this.checkLastSpin();
+    // Only check spin status if this component is actually being displayed
+    // and not when navigating to other routes
+    if (this.isOpen) {
+      this.checkLastSpin();
+    }
   }
 
   ngAfterViewInit() {
@@ -256,8 +260,11 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       return;
     }
     
+    // Add the authentication headers to the request
+    const headers = this.authService.getAuthHeaders();
+    
     // Check with the server instead of localStorage
-    this.http.get(`${this.apiUrl}/daily-wheel/status`).subscribe({
+    this.http.get(`${this.apiUrl}/daily-wheel/status`, { headers }).subscribe({
       next: (response: any) => {
         console.log('Wheel status response:', response);
         this.canSpin = response.canSpin;
@@ -288,8 +295,11 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     
     console.log('Awarding prize:', this.selectedPrize);
     
-    // Enviar al servidor
-    this.http.post(`${this.apiUrl}/daily-wheel/spin`, { points: this.selectedPrize }).subscribe({
+    // Add the authentication headers to the request
+    const headers = this.authService.getAuthHeaders();
+    
+    // Enviar al servidor con los headers correctos
+    this.http.post(`${this.apiUrl}/daily-wheel/spin`, { points: this.selectedPrize }, { headers }).subscribe({
       next: (response: any) => {
         console.log('Prize awarded response:', response);
         // Actualizar el saldo del usuario

@@ -15,42 +15,24 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const currentUser = this.authService.getCurrentUser();
-    console.log('AuthGuard - Current user:', currentUser);
     
     if (!currentUser) {
-      console.log('AuthGuard - No user found, redirecting to login');
       this.notificationService.showError('Debes iniciar sesión para acceder a esta página');
       this.router.navigate(['/login']);
       return false;
     }
 
-    // Verificar si el usuario es administrador
-    const isAdmin = currentUser.tipus_acc && 
-                   ['admin', 'Admin', 'administrador', 'Administrador'].includes(
-                     currentUser.tipus_acc.toString().trim()
-                   );
-
     // Si la ruta comienza con /admin, verificar que el usuario sea administrador
     if (state.url.startsWith('/admin')) {
-      console.log('AuthGuard - Admin route detected, user type:', currentUser.tipus_acc);
-      
-      if (!isAdmin) {
-        console.log('AuthGuard - User is not admin, redirecting to home');
+      // Match the same logic as the backend - check for 'admin' or 'administrador' (case insensitive)
+      const userType = currentUser.tipus_acc.toLowerCase();
+      if (userType !== 'admin' && userType !== 'administrador') {
         this.notificationService.showError('No tienes permisos de administrador');
         this.router.navigate(['/']);
         return false;
       }
-    } else {
-      // Si la ruta NO comienza con /admin, verificar que el usuario NO sea administrador
-      // Esto evita que los administradores accedan a las rutas de usuario normal
-      if (isAdmin && !state.url.startsWith('/login') && !state.url.startsWith('/register')) {
-        console.log('AuthGuard - Admin trying to access user route, redirecting to admin dashboard');
-        this.router.navigate(['/admin/dashboard']);
-        return false;
-      }
     }
 
-    console.log('AuthGuard - Access granted');
     return true;
   }
 }

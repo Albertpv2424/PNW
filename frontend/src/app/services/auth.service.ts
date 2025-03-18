@@ -166,18 +166,7 @@ export class AuthService {
     );
   }
 
-  // Añade este método para obtener los headers de autenticación
-  getAuthHeaders() {
-    const token = this.getToken();
-    return {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
-  }
-
   // Request a password reset email
-  // Add these methods to your auth.service.ts file if they don't exist
   requestPasswordReset(email: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/request-password-reset`, { email });
   }
@@ -188,5 +177,39 @@ export class AuthService {
       password,
       token
     });
+  }
+
+  // Add this method to your AuthService
+  // Add these methods if they don't already exist
+  
+  // Add or update this method in your AuthService
+  isAdmin(): boolean {
+    const user = this.getCurrentUser();
+    if (!user) return false;
+    
+    const userType = user.tipus_acc.toLowerCase();
+    return userType === 'admin' || userType === 'administrador';
+  }
+  
+  // Also, let's add a getAuthHeaders method if it doesn't exist
+  // Update the getAuthHeaders method to handle multipart/form-data
+  getAuthHeaders(isMultipart: boolean = false): any {
+    const token = this.getToken();
+    if (!token) return {};
+    
+    // For multipart/form-data requests, we only need the Authorization header
+    // Angular will automatically set the correct Content-Type with boundary
+    if (isMultipart) {
+      return {
+        'Authorization': `Bearer ${token}`
+      };
+    }
+    
+    // For regular JSON requests, include Content-Type
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
   }
 }

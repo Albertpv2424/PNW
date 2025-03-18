@@ -10,6 +10,7 @@ use App\Http\Controllers\PromocionController;
 use App\Http\Controllers\DailyWheelController;
 use App\Http\Controllers\VideoRewardsController;
 use App\Http\Controllers\OddsController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,3 +90,27 @@ Route::get('/search', [App\Http\Controllers\SearchController::class, 'search']);
 
 // Add this route for handling bet submissions
 Route::middleware('auth:sanctum')->post('/apuestas', [ApuestaController::class, 'registrarApuesta']);
+
+// Admin routes
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+    // User management
+    Route::get('/users', [AdminController::class, 'getUsers']);
+    Route::get('/users/{id}', [AdminController::class, 'getUser']);
+    Route::post('/users', [AdminController::class, 'createUser']);
+    Route::put('/users/{id}', [AdminController::class, 'updateUser']);
+    Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
+    Route::post('/users/{id}/balance', [AdminController::class, 'updateUserBalance']);
+    Route::post('/users/{id}/role', [AdminController::class, 'changeUserRole']);
+    
+    // Stats
+    Route::get('/stats', [AdminController::class, 'getStats']);
+});
+
+// Add these routes to your existing api.php file
+
+// Prize management routes
+Route::get('/admin/prizes', [AdminController::class, 'getPrizes']);
+Route::get('/admin/prizes/{id}', [AdminController::class, 'getPrize']);
+Route::post('/admin/prizes', [AdminController::class, 'createPrize']);
+Route::post('/admin/prizes/{id}', [AdminController::class, 'updatePrize']);
+Route::delete('/admin/prizes/{id}', [AdminController::class, 'deletePrize']);

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { NotificationService } from '../../services/notification.service';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,38 +12,45 @@ import { NotificationService } from '../../services/notification.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  // Stats for the dashboard
+  stats = {
+    totalUsers: 0,
+    totalBets: 0,
+    redeemedPrizes: 0,
+    totalBalance: 0
+  };
+  
   currentUser: any = null;
-
+  
   constructor(
-    private router: Router,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private adminService: AdminService
   ) {}
-
+  
   ngOnInit(): void {
-    // Verificar si el usuario está autenticado y es administrador
+    // Get the current user
     this.currentUser = this.authService.getCurrentUser();
-    console.log('Dashboard - Current user:', this.currentUser);
     
-    if (!this.currentUser) {
-      this.notificationService.showError('Acceso no autorizado');
-      this.router.navigate(['/login']);
-      return;
-    }
-    
-    // Usar la misma comparación flexible que en el AuthGuard
-    const isAdmin = this.currentUser.tipus_acc && 
-                   ['admin', 'Admin', 'administrador', 'Administrador'].includes(
-                     this.currentUser.tipus_acc.toString().trim()
-                   );
-    
-    if (!isAdmin) {
-      this.notificationService.showError('No tienes permisos de administrador');
-      this.router.navigate(['/']);
-      return;
-    }
+    // Load dashboard data
+    this.loadDashboardStats();
   }
-
+  
+  loadDashboardStats(): void {
+    // Call the admin service to get dashboard stats
+    this.adminService.getStats().subscribe({
+      next: (data: any) => {
+        this.stats.totalUsers = data.total_users || 0;
+        this.stats.totalBets = data.total_bets || 0;
+        this.stats.redeemedPrizes = data.redeemed_prizes || 0;
+        this.stats.totalBalance = data.total_balance || 0;
+      },
+      error: (error) => {
+        console.error('Error loading dashboard stats:', error);
+      }
+    });
+  }
+  
+  // Añadimos el método logout
   logout(): void {
     this.authService.logout();
   }
