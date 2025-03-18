@@ -22,7 +22,7 @@ interface Prize {
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule],
   templateUrl: './prizes.component.html',
-  styleUrls: ['../shared/admin-dashboard.css', './prizes.component.css']
+  styleUrls: ['../shared/admin-shared.css', './prizes.component.css']
 })
 export class PrizesComponent implements OnInit {
   prizes: Prize[] = [];
@@ -37,7 +37,7 @@ export class PrizesComponent implements OnInit {
   deletePrizeId: number | null = null;
   imagePreview: string | null = null;
   selectedFile: File | null = null;
-  
+
   constructor(
     private http: HttpClient,
     public authService: AuthService,
@@ -55,15 +55,27 @@ export class PrizesComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('PrizesComponent initialized');
-    
+
+    // Check authentication status
+    const isLoggedIn = this.authService.isLoggedIn();
+    console.log('User is logged in:', isLoggedIn);
+
+    // Check admin status
+    const isAdmin = this.authService.isAdmin();
+    console.log('User is admin:', isAdmin);
+
+    // Get current user
+    const currentUser = this.authService.getCurrentUser();
+    console.log('Current user:', currentUser);
+
     // Check if user is admin before loading prizes
-    if (!this.authService.isAdmin()) {
+    if (!isAdmin) {
       console.error('User is not admin, redirecting to home');
       this.notificationService.showError('No tienes permisos de administrador para acceder a esta sección.');
       this.router.navigate(['/']);
       return;
     }
-    
+
     // Add debugging to see if this component is being loaded
     console.log('Loading prizes from API');
     this.loadPrizes();
@@ -76,25 +88,22 @@ export class PrizesComponent implements OnInit {
 
   loadPrizes(): void {
     this.isLoading = true;
-    
-    if (!this.authService.isLoggedIn()) {
-      this.notificationService.showError('No hay sesión activa. Por favor, inicia sesión nuevamente.');
-      this.router.navigate(['/login']);
-      this.isLoading = false;
-      return;
-    }
-    
-    if (!this.authService.isAdmin()) {
-      this.notificationService.showError('No tienes permisos de administrador para acceder a esta sección.');
-      this.router.navigate(['/']);
-      this.isLoading = false;
-      return;
-    }
-    
+
+    console.log('Starting loadPrizes method');
+
+    // Get token and log first 10 characters
+    const token = this.authService.getToken();
+    console.log('Using token (first 10 chars):', token ? token.substring(0, 10) + '...' : 'No token');
+
+    // Log headers being sent
+    const headers = this.authService.getAuthHeaders();
+    console.log('Headers:', headers);
+
     this.http.get<Prize[]>(`${environment.apiUrl}/admin/prizes`, {
       headers: this.authService.getAuthHeaders()
     }).subscribe({
       next: (data: Prize[]) => {
+        console.log('Prizes loaded successfully:', data.length);
         this.prizes = data.map(prize => ({
           ...prize,
           // Corregir la URL de la imagen para que apunte al servidor correcto
@@ -105,15 +114,19 @@ export class PrizesComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading prizes:', error);
-        
+        console.error('Error status:', error.status);
+        console.error('Error message:', error.error?.message || 'Unknown error');
+
         if (error.status === 403) {
           this.notificationService.showError('No tienes permisos de administrador para acceder a esta sección.');
         } else if (error.status === 401) {
           this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          this.authService.logout();
+          this.router.navigate(['/login']);
         } else {
           this.notificationService.showError('Error al cargar los premios: ' + (error.error?.message || 'Error desconocido'));
         }
-        
+
         this.isLoading = false;
       }
     });
@@ -124,10 +137,10 @@ export class PrizesComponent implements OnInit {
       this.filteredPrizes = [...this.prizes];
       return;
     }
-    
+
     const term = this.searchTerm.toLowerCase().trim();
-    this.filteredPrizes = this.prizes.filter(prize => 
-      prize.titol.toLowerCase().includes(term) || 
+    this.filteredPrizes = this.prizes.filter(prize =>
+      prize.titol.toLowerCase().includes(term) ||
       prize.descripcio.toLowerCase().includes(term)
     );
   }
@@ -137,7 +150,7 @@ export class PrizesComponent implements OnInit {
     this.selectedPrize = prize;
     this.imagePreview = null;
     this.selectedFile = null;
-    
+
     if (prize) {
       // Editing existing prize
       this.prizeForm.patchValue({
@@ -146,7 +159,7 @@ export class PrizesComponent implements OnInit {
         cost: prize.cost,
         condicio: prize.condicio
       });
-      
+
       // Show current image
       if (prize.image && !prize.image.includes('default.png')) {
         this.imagePreview = prize.image;
@@ -160,7 +173,7 @@ export class PrizesComponent implements OnInit {
         condicio: 1
       });
     }
-    
+
     this.showPrizeForm = true;
   }
 
@@ -173,10 +186,10 @@ export class PrizesComponent implements OnInit {
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    
+
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
-      
+
       // Create preview
       const reader = new FileReader();
       reader.onload = () => {
@@ -191,21 +204,21 @@ export class PrizesComponent implements OnInit {
       this.notificationService.showError('Por favor, completa todos los campos requeridos correctamente');
       return;
     }
-    
+
     const formData = new FormData();
     const prizeData = this.prizeForm.value;
-    
+
     // Add form fields to FormData
     formData.append('titol', prizeData.titol);
     formData.append('descripcio', prizeData.descripcio);
     formData.append('cost', prizeData.cost);
     formData.append('condicio', prizeData.condicio || '1');
-    
+
     // Add image if selected
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
-    
+
     if (this.isEditing && this.selectedPrize) {
       // Update existing prize
       this.http.post(`${environment.apiUrl}/admin/prizes/${this.selectedPrize.id}`, formData, {
@@ -254,7 +267,7 @@ export class PrizesComponent implements OnInit {
       this.notificationService.showError('ID de premio no válido');
       return;
     }
-    
+
     this.http.delete(`${environment.apiUrl}/admin/prizes/${this.deletePrizeId}`, {
       headers: this.authService.getAuthHeaders()
     }).subscribe({
@@ -279,12 +292,12 @@ export class PrizesComponent implements OnInit {
   // Añadir este método después del método handleImageError
   getPrizeInitials(title: string): string {
     if (!title) return '?';
-    
+
     const words = title.split(' ');
     if (words.length === 1) {
       return title.substring(0, 2).toUpperCase();
     }
-    
+
     return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
   }
 }

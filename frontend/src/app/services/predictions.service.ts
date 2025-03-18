@@ -67,7 +67,17 @@ export class PredictionsService {
   }
 
   getPromociones(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/promociones`);
+    // Volvemos a la ruta original que sí está definida en el backend
+    return this.http.get(`${this.apiUrl}/promociones`)
+      .pipe(
+        tap(response => {
+          console.log('Promociones response:', response);
+        }),
+        catchError(error => {
+          console.error('Error fetching promociones:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   inscribirPromocion(promocionId: number): Observable<any> {
@@ -96,25 +106,25 @@ export class PredictionsService {
   }
 
   // Add this method to your PredictionsService
-  
+
   getUserPremios(): Observable<any> {
     // Get the authentication token
     const token = localStorage.getItem('token');
-  
+
     if (!token) {
       console.error('No authentication token found');
       return new Observable(observer => {
         observer.error({ error: { message: 'No estás autenticado. Por favor, inicia sesión.' } });
       });
     }
-  
+
     // Create headers with the token
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     };
-  
+
     // Include the headers in the request
     return this.http.get(`${this.apiUrl}/user/premios`, { headers })
       .pipe(

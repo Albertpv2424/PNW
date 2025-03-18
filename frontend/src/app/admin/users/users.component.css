@@ -328,31 +328,259 @@
 }
 
 /* Estilo para la imagen de perfil en la tabla de usuarios */
-.user-avatar {
-  width: 36px;
-  height: 36px;
+/* Import shared admin styles */
+@import '../shared/admin-shared.css';
+
+/* Users Header - Styled like Promociones */
+.users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.users-header h2 {
+  margin: 0;
+  color: #1a237e;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-container input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 250px;
+  font-size: 14px;
+}
+
+.add-user-btn {
+  background-color: #1a237e;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.add-user-btn:hover {
+  background-color: #3949ab;
+}
+
+/* Table Styles */
+.users-table-container {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th,
+.users-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.users-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+}
+
+.users-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Mantener los estilos específicos para usuarios */
+.user-avatar-container {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
   border-radius: 50%;
-  background-color: #34495e;
-  background-size: cover;
-  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  margin-right: 10px;
+  background-color: #f5f5f5;
 }
 
-.user-cell {
+.user-avatar {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.user-role {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.role-admin {
+  background-color: #1a237e;
+  color: white;
+}
+
+.role-user {
+  background-color: #4caf50;
+  color: white;
+}
+
+.user-balance {
+  font-weight: 500;
+}
+
+.actions-cell {
+  width: 150px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.3s;
+}
+
+.edit-btn {
+  background-color: #2196f3;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #1976d2;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+.balance-btn {
+  background-color: #ff9800;
+  color: white;
+}
+
+.balance-btn:hover {
+  background-color: #f57c00;
+}
+
+.role-btn {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.role-btn:hover {
+  background-color: #7b1fa2;
+}
+
+/* Loading and Empty States */
+.loading, .no-users {
+  padding: 30px;
+  text-align: center;
+  color: #666;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Balance adjustment modal */
+.balance-form {
   display: flex;
   align-items: center;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-/* Estilo para el icono de la moneda */
+.balance-input {
+  flex: 1;
+}
+
 .coin-icon {
   width: 18px;
   height: 18px;
   vertical-align: middle;
-  margin-left: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .search-container input {
+    width: 100%;
+  }
+
+  .add-user-btn {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-btn, .submit-btn {
+    width: 100%;
+  }
+}
+
+/* Tooltip for truncated text */
+.truncate-text {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.truncate-text:hover::after {
+  content: attr(data-full-text);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  z-index: 10;
+  white-space: normal;
+  max-width: 300px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }

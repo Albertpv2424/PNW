@@ -6,7 +6,7 @@
   background-color: #f5f5f5;
 }
 
-/* Header Styles - Mejorado */
+/* Header Styles */
 .dashboard-header {
   background-color: #1a1a2e;
   color: white;
@@ -129,23 +129,23 @@
   .dashboard-content {
     flex-direction: column;
   }
-  
+
   .sidebar {
     width: 100%;
   }
-  
+
   .dashboard-header {
     padding: 1rem;
   }
-  
+
   .logo-container h1 {
     font-size: 1.2rem;
   }
-  
+
   .user-info {
     gap: 0.5rem;
   }
-  
+
   .welcome-text {
     display: none;
   }

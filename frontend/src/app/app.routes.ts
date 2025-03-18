@@ -12,6 +12,7 @@ import { VideoRewardsComponent } from './video-rewards/video-rewards.component';
 import { UsersComponent } from './admin/users/users.component';
 import { PrizesComponent } from './admin/prizes/prizes.component';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
+import { PromotionsComponent } from './admin/promotions/promotions.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,7 +27,7 @@ export const routes: Routes = [
   { path: 'promociones', component: PromocionesComponent, canActivate: [AuthGuard] },
   { path: 'live', component: HomeComponent }, // Temporalmente redirige a Home
   { path: 'rewards', component: VideoRewardsComponent, canActivate: [AuthGuard] },
-  
+
   // Admin routes with layout
   {
     path: 'admin',
@@ -37,10 +38,11 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'users', component: UsersComponent },
       { path: 'prizes', component: PrizesComponent },
+      { path: 'promotions', component: PromotionsComponent}
       // Add other admin routes here
     ]
   },
-  
+
   // Ruta comodín para manejar rutas no encontradas
   { path: '**', redirectTo: '' }
 ];

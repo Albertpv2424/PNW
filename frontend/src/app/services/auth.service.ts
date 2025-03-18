@@ -86,6 +86,7 @@ export class AuthService {
     return !!this.getToken();
   }
 
+  // Keep only ONE implementation of getCurrentUser
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
@@ -181,35 +182,57 @@ export class AuthService {
 
   // Add this method to your AuthService
   // Add these methods if they don't already exist
-  
+
   // Add or update this method in your AuthService
+  // Add or update the isAdmin method
+  // Update the isAdmin method to be more flexible
   isAdmin(): boolean {
     const user = this.getCurrentUser();
-    if (!user) return false;
-    
-    const userType = user.tipus_acc.toLowerCase();
-    return userType === 'admin' || userType === 'administrador';
-  }
+    if (!user) {
+      console.log('No user found when checking admin status');
+      return false;
+    }
   
+    // Make sure tipus_acc exists before trying to use toLowerCase()
+    if (!user.tipus_acc) {
+      console.log('User has no tipus_acc property:', user);
+      return false;
+    }
+  
+    // Case-insensitive check for admin status
+    const userType = user.tipus_acc.toLowerCase();
+    console.log('Checking admin status for user:', user.nick, 'Type:', userType);
+  
+    // More flexible check for various admin type strings
+    const isAdmin = ['admin', 'administrador', 'administrator'].includes(userType);
+    console.log('Is admin?', isAdmin);
+  
+    return isAdmin;
+  }
+
+
   // Also, let's add a getAuthHeaders method if it doesn't exist
   // Update the getAuthHeaders method to handle multipart/form-data
-  getAuthHeaders(isMultipart: boolean = false): any {
+  // Añadir este método al AuthService si no existe
+  getAuthHeaders(isFormData: boolean = false): HttpHeaders {
     const token = this.getToken();
-    if (!token) return {};
-    
-    // For multipart/form-data requests, we only need the Authorization header
-    // Angular will automatically set the correct Content-Type with boundary
-    if (isMultipart) {
-      return {
-        'Authorization': `Bearer ${token}`
-      };
+    if (!token) {
+      console.error('No se encontró token de autenticación');
+      return new HttpHeaders({
+        'Accept': 'application/json'
+      });
     }
-    
-    // For regular JSON requests, include Content-Type
-    return {
+
+    let headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
       'Accept': 'application/json'
-    };
+    });
+
+    // Solo añadir Content-Type si no es FormData
+    if (!isFormData) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
+
+    return headers;
   }
 }

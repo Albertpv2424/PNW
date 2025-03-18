@@ -15,7 +15,8 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || !in_array(strtolower($request->user()->tipus_acc), ['admin', 'administrador'])) {
+        // Update to check for multiple admin role strings (case-insensitive)
+        if (!$request->user() || !in_array(strtolower($request->user()->tipus_acc), ['admin', 'administrador', 'administrator'])) {
             return response()->json(['message' => 'Acceso no autorizado'], 403);
         }
 
