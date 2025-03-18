@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-03-2025 a las 17:31:02
+-- Tiempo de generación: 18-03-2025 a las 17:43:07
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
 
@@ -44,7 +44,8 @@ CREATE TABLE `daily_rewards_tracking` (
 --
 
 INSERT INTO `daily_rewards_tracking` (`id`, `usuari_nick`, `date`, `wheel_spun`, `wheel_points_earned`, `videos_watched`, `video_points_earned`, `created_at`, `updated_at`) VALUES
-(1, 'Wispy', '2025-03-18', 1, 25, 1, 22, '2025-03-18 15:25:15', '2025-03-18 15:26:46');
+(1, 'Wispy', '2025-03-18', 1, 25, 1, 22, '2025-03-18 15:25:15', '2025-03-18 15:26:46'),
+(2, 'Albertpv24', '2025-03-18', 0, 0, 0, 0, '2025-03-18 15:37:00', '2025-03-18 15:37:00');
 
 -- --------------------------------------------------------
 
@@ -172,7 +173,8 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
-(1, 'App\\Models\\User', 'Wispy', 'auth-token', '802ca8c3a60af28da14568edc4195b4d9a6dbb357c49054da0f2f4fd1f5dd447', '[\"*\"]', '2025-03-18 15:27:19', NULL, '2025-03-18 15:25:11', '2025-03-18 15:27:19');
+(1, 'App\\Models\\User', 'Wispy', 'auth-token', '802ca8c3a60af28da14568edc4195b4d9a6dbb357c49054da0f2f4fd1f5dd447', '[\"*\"]', '2025-03-18 15:27:19', NULL, '2025-03-18 15:25:11', '2025-03-18 15:27:19'),
+(2, 'App\\Models\\User', 'Albertpv24', 'auth-token', '3f0396d9aa93a2225ddeb55c57c7d79a502783687637cef951670e13c00e86b1', '[\"*\"]', '2025-03-18 15:42:32', NULL, '2025-03-18 15:36:59', '2025-03-18 15:42:32');
 
 -- --------------------------------------------------------
 
@@ -221,12 +223,30 @@ INSERT INTO `prediccio_proposada` (`id`, `usuari_nick`, `cuota`, `punts_proposat
 
 CREATE TABLE `premis` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `titol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cost` decimal(10,2) NOT NULL,
   `condicio` decimal(10,2) NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ;
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `premis`
+--
+
+INSERT INTO `premis` (`id`, `titol`, `descripcio`, `cost`, `condicio`, `image`) VALUES
+(1, 'Tour Per Lleida', 'Visita guiada por los lugares más emblemáticos de Lleida', '1500.00', '1.00', 'uploads/premios/tour.png'),
+(2, 'Karting Alpicat', 'Sesión de karting en el circuito de Alpicat', '2000.00', '1.00', 'uploads/premios/karting.png'),
+(3, 'Cena Gourmet', 'Cena para dos personas en un restaurante de alta cocina', '3000.00', '1.00', 'uploads/premios/cena.png'),
+(4, 'Entradas VIP Lleida Esportiu', 'Dos entradas VIP para un partido del Lleida Esportiu', '1000.00', '1.00', 'uploads/premios/entradas.png'),
+(5, 'Partit del Hoops Lleida', 'Entrada para un partido del Hoops Lleida en el Barris Nord', '500.00', '1.00', 'uploads/premios/tour.png'),
+(6, 'Escape Room Lleida', 'Experiencia de escape room para ti y tus amigos en Lleida', '2500.00', '1.00', 'uploads/premios/escape.png'),
+(7, 'Visita Guiada Museu de Lleida', 'Visita guiada al Museu de Lleida con acceso a todas las exposiciones', '800.00', '1.00', 'uploads/premios/museu.png'),
+(8, 'Entrada Camp Nou Experience', 'Visita al estadio del FC Barcelona con el tour completo', '3000.00', '1.00', 'uploads/premios/camp-nou.png'),
+(9, 'Visita a la Sagrada Familia', 'Entrada con audioguía para visitar la Sagrada Familia en Barcelona', '2800.00', '1.00', 'uploads/premios/sagrada.png'),
+(10, 'Tour por Montserrat', 'Excursión guiada a la montaña de Montserrat con visita al monasterio', '3500.00', '1.00', 'uploads/premios/montserrat.png'),
+(11, 'Entrada Partido RCD Espanyol', 'Entrada para un partido del RCD Espanyol en el RCDE Stadium', '10000.00', '1.00', 'uploads/premios/espanyol.png'),
+(12, 'Festival Castell de Peralada', 'Entrada para el prestigioso festival de música y danza en el Castell de Peralada', '2200.00', '1.00', 'uploads/premios/peralada.png');
 
 -- --------------------------------------------------------
 
@@ -251,13 +271,23 @@ CREATE TABLE `premis_usuaris` (
 
 CREATE TABLE `promos` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `titol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data_inici` date NOT NULL,
   `data_final` date NOT NULL,
   `tipus_promocio` bigint(20) UNSIGNED DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ;
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `promos`
+--
+
+INSERT INTO `promos` (`id`, `titol`, `descripcio`, `data_inici`, `data_final`, `tipus_promocio`, `image`) VALUES
+(1, 'Bono de Bienvenida', 'Recibe 500 puntos al registrarte', '2023-01-01', '2025-12-31', 1, 'uploads/promociones/bienvenida.png'),
+(2, 'Apuesta Segura', 'Recupera tu apuesta si pierdes en tu primera predicción', '2023-06-01', '2024-12-31', 1, 'uploads/promociones/apuesta-segura.png'),
+(3, 'Copa del Rey 2024', 'Duplica tus puntos en apuestas para la Copa del Rey', '2024-01-01', '2024-04-30', 3, 'uploads/promociones/copa-rey.png'),
+(4, 'Liga 2023-2024', 'Gana puntos extra por cada 5 predicciones acertadas en La Liga', '2023-08-01', '2024-05-31', 2, 'uploads/promociones/liga.png');
 
 -- --------------------------------------------------------
 
@@ -282,6 +312,15 @@ CREATE TABLE `tipus_promocio` (
   `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `tipus_promocio`
+--
+
+INSERT INTO `tipus_promocio` (`id`, `titol`, `descripcio`) VALUES
+(1, 'Bienvenida', 'Promociones para nuevos usuarios'),
+(2, 'Temporada', 'Promociones por temporada deportiva'),
+(3, 'Evento Especial', 'Promociones para eventos deportivos especiales');
 
 -- --------------------------------------------------------
 
@@ -323,6 +362,7 @@ CREATE TABLE `usuaris` (
 --
 
 INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `profile_image`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`, `dni`, `telefon`, `data_naixement`) VALUES
+('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$wyfpGoWwBl8VDWUEWdVXO.iZb2a5/l.jZwtFERfkjbpK.PKtJChha', 'uploads/profiles/profile_1742315811_67d9a12336465.png', '500.00', '2025-03-18 16:36:51', NULL, 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
 ('Wispy', 'paudomec@alumnes.ilerna.com', 'Usuari', '$2y$12$iVGmPHaf.eyGoThYf99u1u4iA3xVcDDa1Gj7gc7WJHrQJ7.2ANdOu', 'uploads/profiles/profile_1742315104_67d99e60222b0.png', '21.00', '2025-03-18 16:25:04', NULL, 0, 3600, 0, '48059629W', '611411604', '2004-11-30');
 
 --
@@ -448,7 +488,7 @@ ALTER TABLE `usuaris`
 -- AUTO_INCREMENT de la tabla `daily_rewards_tracking`
 --
 ALTER TABLE `daily_rewards_tracking`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_prediccio`
@@ -466,7 +506,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `prediccions_sist`
@@ -484,7 +524,7 @@ ALTER TABLE `prediccio_proposada`
 -- AUTO_INCREMENT de la tabla `premis`
 --
 ALTER TABLE `premis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `premis_usuaris`
@@ -496,7 +536,7 @@ ALTER TABLE `premis_usuaris`
 -- AUTO_INCREMENT de la tabla `promos`
 --
 ALTER TABLE `promos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `resultat_prediccio`
@@ -508,7 +548,7 @@ ALTER TABLE `resultat_prediccio`
 -- AUTO_INCREMENT de la tabla `tipus_promocio`
 --
 ALTER TABLE `tipus_promocio`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `user_sist`
