@@ -11,6 +11,9 @@ return new class extends Migration {
             $table->string('usuari_nick', 50);
             $table->decimal('cuota', 10, 2)->check('cuota > 0');
             $table->decimal('punts_proposats', 10, 2)->check('punts_proposats >= 0');
+            $table->enum('tipo_apuesta', ['simple', 'parlay'])->default('simple'); // Nuevo campo
+            $table->string('match_info')->nullable(); // Added match_info field to store match description
+            $table->string('prediction_choice')->nullable(); // New column to store the prediction choice (like "empate")
             $table->foreign('usuari_nick')->references('nick')->on('usuaris')->cascadeOnDelete();
         });
     }

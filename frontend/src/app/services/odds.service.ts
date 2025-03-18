@@ -17,4 +17,12 @@ export class OddsService {
   getOdds(sportKey: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/odds/${sportKey}`);
   }
-} 
+  
+  getScores(sportKey: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/scores/${sportKey}`);
+  }
+  
+  getEventResults(eventId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/events/${eventId}/results`);
+  }
+}

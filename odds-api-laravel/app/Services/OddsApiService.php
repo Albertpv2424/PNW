@@ -61,4 +61,26 @@ class OddsApiService
             }
         });
     }
+    public function getScores($sportKey)
+{
+    // Cache scores data for 5 minutes (scores change more frequently)
+    return Cache::remember("scores_{$sportKey}", 300, function () use ($sportKey) {
+        try {
+            $response = Http::get("{$this->baseUrl}/sports/{$sportKey}/scores", [
+                'api_key' => $this->apiKey,
+                'daysFrom' => 1  // Get scores from the last day
+            ]);
+            
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                Log::error("Error fetching scores for {$sportKey}: " . $response->body());
+                return [];
+            }
+        } catch (\Exception $e) {
+            Log::error("Exception fetching scores for {$sportKey}: " . $e->getMessage());
+            return [];
+        }
+    });
+}
 }

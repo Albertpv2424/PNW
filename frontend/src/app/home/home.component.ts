@@ -248,25 +248,24 @@ export class HomeComponent implements OnInit {
   // Nuevo método para abrir el pop-up de apuesta
   // Update the openBetPopup method to accept the matchId parameter
   // Modificar el método openBetPopup para que use el servicio de selecciones
-  openBetPopup(teamName: string, betType: string, odds: number, homeTeam: string, awayTeam: string, matchId: string) {
+  openBetPopup(teamName: string, betType: string, odds: number, homeTeam: string, awayTeam: string, matchId: string, leagueName?: string) {
     console.log('Abriendo popup para:', teamName, betType, odds);
-
-    // Desactivamos el popup individual y solo usamos el servicio de selecciones
-    // this.selectedBet = {
-    //   teamName,
-    //   betType,
-    //   odds,
-    //   matchInfo: `${homeTeam} vs ${awayTeam}`
-    // };
-    // this.showBetPopup = true;
-
+  
+    // Create a more descriptive matchInfo
+    const matchInfo = leagueName 
+      ? `${leagueName}: ${homeTeam} vs ${awayTeam}` 
+      : `${homeTeam} vs ${awayTeam}`;
+  
     // Usamos el servicio de selecciones para apuestas combinadas
     this.betSelectionsService.addSelection({
       matchId,
       teamName,
       betType,
       odds,
-      matchInfo: `${homeTeam} vs ${awayTeam}`
+      matchInfo,
+      homeTeam,
+      awayTeam,
+      leagueName
     });
   }
 
@@ -397,5 +396,12 @@ export class HomeComponent implements OnInit {
   handleFlagError(event: any, country?: string): void {
     // Set a default flag icon or hide the element
     event.target.style.display = 'none';
+  }
+
+  // Add this tracking function to your HomeComponent class
+  // Update the tracking function to be more robust
+  trackByMatch(index: number, match: OddEvent): string {
+  // Create a unique identifier using multiple properties and always include the index
+  return match.id || `${match.sport_title || ''}_${match.league || ''}_${match.home_team || ''}_${match.away_team || ''}_${match.commence_time || ''}_${index}`;
   }
 }

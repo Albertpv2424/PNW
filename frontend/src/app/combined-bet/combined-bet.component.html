@@ -11,7 +11,8 @@
   </div>
   
   <div class="selections-list">
-    @for (selection of selections; track selection.matchId) {
+    <!-- Fixed the div structure and added trackBy -->
+    <div *ngFor="let selection of selections; trackBy: trackBySelection">
       <div class="selection-item">
         <button class="remove-button" (click)="removeSelection(selection.matchId)">×</button>
         <div class="match-info">{{ selection.matchInfo }}</div>
@@ -20,7 +21,7 @@
           <span class="odds">{{ selection.odds }}</span>
         </div>
       </div>
-    }
+    </div>
   </div>
 
   <div class="total-section">
