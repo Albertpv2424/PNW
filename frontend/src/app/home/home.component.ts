@@ -307,7 +307,8 @@ export class HomeComponent implements OnInit {
     return selections.some(s =>
       s.matchId === matchId &&
       (s.teamName === outcomeName ||
-       (outcomeName === 'Draw' && s.teamName === 'Empate'))
+       (outcomeName === 'Draw' && s.teamName === 'Empate') ||
+       (s.teamName === 'Visitante' && outcomeName === s.teamName))
     );
   }
 

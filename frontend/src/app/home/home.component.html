@@ -77,7 +77,7 @@
                 @if (event.bookmakers && event.bookmakers.length > 0 && event.bookmakers[0].markets && event.bookmakers[0].markets.length > 0) {
                   <div class="odds-container-new">
                     @for (outcome of getOrderedOutcomes(event.bookmakers[0].markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
-                      <div class="odd-column">
+                      <div class="odd-column" [class.active]="isSelectionActive(event.id || '', outcome.name)">
                         <div class="odd-label-new">{{ outcome.name === 'Draw' ? 'EMPATE' : (outcome.name === event.home_team ? 'LOCAL' : 'VISITANTE') }}</div>
                         <!-- Fix the button in the featured matches section -->
                         <button
