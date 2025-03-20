@@ -242,8 +242,11 @@ class BetVerificationController extends Controller
                     'prediccio_proposada.match_info',
                     'prediccio_proposada.prediction_choice',
                     'prediccio_proposada.tipo_apuesta',
-                    'prediccio_proposada.created_at as fecha_apuesta',
-                    DB::raw('NOW() as fecha_verificacion'), // Fallback if no timestamp in resultat_prediccio
+                    // Eliminar esta línea que causa el error:
+                    // 'prediccio_proposada.created_at as fecha_apuesta',
+                    // Reemplazar con:
+                    DB::raw('NOW() as fecha_apuesta'),
+                    DB::raw('NOW() as fecha_verificacion'),
                     'resultat_prediccio.resultat_prediccio as resultado',
                     'resultat_prediccio.validacio as comentari',
                     'usuaris.email'

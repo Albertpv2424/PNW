@@ -98,6 +98,28 @@ export class BetVerificationComponent implements OnInit {
   }
 
   formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleString();
+    if (!dateString) return 'N/V';
+    
+    try {
+      // Intentar parsear la fecha
+      const date = new Date(dateString);
+      
+      // Verificar si la fecha es válida
+      if (isNaN(date.getTime())) {
+        return 'Fecha pendiente';
+      }
+      
+      // Formatear la fecha en formato español
+      return date.toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('Error al formatear fecha:', error, dateString);
+      return 'Fecha inválida';
+    }
   }
 }
