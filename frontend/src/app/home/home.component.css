@@ -477,7 +477,7 @@
 }
 
 .odd-column:last-child {
-  border-right: none;
+  border-right: none;     
 }
 
 .odd-column.active,
