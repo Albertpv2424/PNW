@@ -164,4 +164,27 @@ export class AdminService {
       headers: this.getAuthHeaders()
     });
   }
+
+  // Add these methods to your AdminService class
+
+  // Get pending bets
+  getPendingBets(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/bets/pending`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+  
+  // Get verified bets
+  getVerifiedBets(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/bets/verified`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+  
+  // Verify a bet
+  verifyBet(betId: number, data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/bets/${betId}/verify`, data, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

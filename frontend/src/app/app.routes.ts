@@ -13,6 +13,7 @@ import { UsersComponent } from './admin/users/users.component';
 import { PrizesComponent } from './admin/prizes/prizes.component';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 import { PromotionsComponent } from './admin/promotions/promotions.component';
+import { BetVerificationComponent } from './admin/bet-verification/bet-verification.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -38,7 +39,8 @@ export const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'users', component: UsersComponent },
       { path: 'prizes', component: PrizesComponent },
-      { path: 'promotions', component: PromotionsComponent}
+      { path: 'promotions', component: PromotionsComponent},
+      { path: 'bet-verification', component: BetVerificationComponent }
       // Add other admin routes here
     ]
   },

@@ -142,3 +142,11 @@ Route::middleware('auth:sanctum')->get('/debug/user-role', function (Request $re
         ] : null
     ]);
 });
+
+// Add these routes for bet verification
+Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+    // Bet verification routes
+    Route::get('/bets/pending', [App\Http\Controllers\Admin\BetVerificationController::class, 'getPendingBets']);
+    Route::get('/bets/verified', [App\Http\Controllers\Admin\BetVerificationController::class, 'getVerifiedBets']);
+    Route::post('/bets/{id}/verify', [App\Http\Controllers\Admin\BetVerificationController::class, 'verifyBet']);
+});
