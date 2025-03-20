@@ -78,8 +78,18 @@ class ApuestaController extends Controller
             if (count($request->selecciones) === 1) {
                 $data['prediction_choice'] = $request->selecciones[0]['teamName'];
             } else {
-                // For combined bets, store "Combinada" or a summary
-                $data['prediction_choice'] = 'Combinada';
+                // For combined bets, store a summary of all selections
+                if (count($request->selecciones) === 1) {
+                    $data['prediction_choice'] = $request->selecciones[0]['teamName'];
+                } else {
+                    // Create a summary of all teams selected in the combined bet
+                    $teamSelections = array_map(function($seleccion) {
+                        return $seleccion['teamName'];
+                    }, $request->selecciones);
+                    
+                    // Join all team names with a separator
+                    $data['prediction_choice'] = implode(' + ', $teamSelections);
+                }
             }
 
             // Only add tipo_apuesta if the column exists
