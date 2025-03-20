@@ -1,0 +1,787 @@
+/* Import shared admin styles */
+@import '../shared/admin-shared.css';
+
+/* Main container styling */
+.container-fluid {
+  padding: 1.5rem;
+}
+
+/* Card styling */
+.card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1.25rem 1.5rem;
+  background: #1e1e2d;
+  border-bottom: none;
+}
+
+.card-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.card-header h2 i {
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+  background-color: #fff;
+}
+
+/* Nav pills styling - Arreglado para evitar superposición */
+.nav-pills {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.nav-pills .nav-item {
+  margin-right: 0;
+}
+
+.nav-pills .nav-link {
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid #e9ecef;
+  cursor: pointer;
+}
+
+.nav-pills .nav-link:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.nav-pills .nav-link.active {
+  background: #00b341; /* Color verde que coincide con el tema de apuestas */
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 8px rgba(0, 179, 65, 0.3);
+}
+
+.nav-pills .badge {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+}
+
+/* Table styling */
+.table-responsive {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.table {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.table th {
+  font-weight: 600;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  border-top: none;
+  padding: 1rem;
+  white-space: nowrap;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-top: 1px solid #f1f1f1;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  transition: background-color 0.2s ease;
+}
+
+/* Row highlighting for bet status */
+.table-success {
+  background-color: rgba(40, 167, 69, 0.1) !important;
+}
+
+.table-danger {
+  background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Avatar styling */
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  flex-shrink: 0;
+  background-color: #e9ecef;
+  color: #1e1e2d;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Badge styling */
+.badge {
+  font-weight: 500;
+  padding: 0.35rem 0.65rem;
+  border-radius: 30px;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.badge.bg-primary {
+  background-color: #00b341 !important; /* Verde para coincidir con el tema */
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* Estilo específico para apuestas simples y combinadas */
+.badge.rounded-pill {
+  padding: 0.35rem 0.75rem;
+}
+
+span.badge[class*="bg-primary"] {
+  background-color: #00b341 !important;
+  color: white;
+}
+
+span.badge[class*="bg-warning"] {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+}
+
+/* Button styling */
+.btn {
+  font-weight: 500;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.btn-outline-primary {
+  color: #00b341;
+  border-color: #00b341;
+}
+
+.btn-outline-primary:hover {
+  background-color: #00b341;
+  color: white;
+  border-color: #00b341;
+}
+
+.btn-success {
+  background: #00b341;
+  border: none;
+}
+
+.btn-success:hover {
+  background: #00a038;
+}
+
+.btn-danger {
+  background: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+/* Alert styling */
+.alert {
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+.alert i {
+  font-size: 1.25rem;
+  margin-right: 0.75rem;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.alert-light {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Loading spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.25rem;
+  color: #00b341;
+}
+
+/* Modal styling */
+.modal-backdrop.show {
+  opacity: 0.7;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  background: #1e1e2d;
+  color: white;
+  border-bottom: none;
+}
+
+.modal-header h5 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #eee;
+  background-color: #f8f9fa;
+}
+
+/* Card styling in modal */
+.modal-body .card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  background-color: #f8f9fa;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-body .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.modal-body .card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #6c757d;
+}
+
+.modal-body .small.text-muted {
+  font-size: 0.8rem;
+  color: #6c757d !important;
+}
+
+.modal-body .fw-medium {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* Result cards */
+.bg-success-subtle {
+  background-color: rgba(0, 179, 65, 0.1);
+  border-left: 4px solid #00b341;
+}
+
+.bg-danger-subtle {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-left: 4px solid #dc3545;
+}
+
+/* Colores para texto de ganancia/pérdida */
+.text-success {
+  color: #00b341 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+/* Estilos específicos para el modal de detalles de apuesta */
+.modal-dialog {
+  max-width: 800px;
+  margin: 1.75rem auto;
+}
+
+/* Fix for modal z-index and positioning */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 1.75rem auto;
+  pointer-events: none;
+  max-width: 800px;
+}
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+}
+
+/* Fix for badge display in tables */
+span.badge.rounded-pill {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+}
+
+/* Specific styling for bet types */
+span.badge.bg-primary {
+  background-color: #00b341 !important;
+  color: white;
+}
+
+span.badge.bg-warning.text-dark {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+}
+
+/* Fix for text colors */
+.text-success {
+  color: #00b341 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+/* Fix for nav pills overlap */
+.nav-pills {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 1.5rem;
+  list-style: none;
+  gap: 0.75rem;
+}
+
+.nav-pills .nav-item {
+  margin-bottom: 0.5rem;
+}
+
+/* Fix for modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+}
+
+/* Fix for modal scrolling */
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1.5rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Fix for button colors */
+.btn-outline-primary {
+  color: #00b341;
+  border-color: #00b341;
+}
+
+.btn-outline-primary:hover {
+  background-color: #00b341;
+  color: white;
+  border-color: #00b341;
+}
+
+.btn-success {
+  background: #00b341;
+  border-color: #00b341;
+}
+
+.btn-success:hover {
+  background: #009e3a;
+  border-color: #009e3a;
+}
+
+/* Fix for table row colors */
+.table-success {
+  background-color: rgba(0, 179, 65, 0.1) !important;
+}
+
+/* Fix for card headers */
+.card-header {
+  background: #1e1e2d;
+  color: white;
+}
+
+/* Fix for nav pills active state */
+.nav-pills .nav-link.active {
+  background-color: #00b341;
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 8px rgba(0, 179, 65, 0.3);
+}
+
+/* Fix for spinner color */
+.spinner-border {
+  color: #00b341;
+}
+
+/* Fix for result cards */
+.bg-success-subtle {
+  background-color: rgba(0, 179, 65, 0.1);
+  border-left: 4px solid #00b341;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .modal-dialog {
+    max-width: 95%;
+    margin: 1rem auto;
+  }
+  
+  .row.g-4 {
+    gap: 1rem !important;
+  }
+  
+  .card-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .nav-pills .nav-link {
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 1rem;
+  }
+  
+  .card-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .nav-pills .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .table th, .table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .d-flex.gap-2 {
+    flex-direction: column;
+    gap: 0.5rem !important;
+  }
+  
+  .d-flex.gap-2 .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .container-fluid {
+    padding: 0.75rem;
+  }
+  
+  .card-header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .nav-pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  .nav-pills .nav-item {
+    flex-shrink: 0;
+  }
+  
+  .modal-header {
+    padding: 1rem;
+  }
+  
+  .modal-body {
+    padding: 0.75rem;
+  }
+  
+  .modal-footer {
+    padding: 0.75rem 1rem;
+  }
+  
+  .row.g-4 {
+    gap: 0.5rem !important;
+  }
+  
+  .col-md-6 {
+    padding: 0 0.5rem;
+  }
+  
+  .table-responsive {
+    margin: 0 -0.5rem;
+    width: calc(100% + 1rem);
+  }
+  
+  .fw-medium, .fw-bold {
+    font-size: 0.9rem;
+  }
+  
+  .small {
+    font-size: 0.75rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .modal-dialog {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .modal-content {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .btn, .nav-pills, .modal-footer {
+    display: none !important;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+  
+  .card-header {
+    background: #f8f9fa !important;
+    color: #000 !important;
+  }
+}
+
+/* Mejora del centrado de contenido en tablas */
+.table {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table th,
+.table td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+/* Asegurar que todos los elementos dentro de las celdas estén centrados */
+.table td > *,
+.table th > * {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Centrar contenido de badges y botones */
+.badge, .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* Centrar texto en todas las celdas de detalles */
+.modal-body .table td,
+.modal-body .table th {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+/* Centrar contenido en cards */
+.card-body {
+  text-align: center;
+}
+
+/* Asegurar que los elementos de información del usuario estén centrados */
+.row.g-2 .col-6 {
+  text-align: center;
+}
+
+/* Centrar elementos en el modal */
+.modal-body .fw-medium,
+.modal-body .small.text-muted,
+.modal-body .fw-bold {
+  text-align: center;
+  display: block;
+}
+
+/* Ocultar la información del usuario y simplificar el modal */
+.modal-body .card-title:contains("Información del Usuario") {
+  display: none;
+}
+
+.modal-body .d-flex.align-items-center.mb-3 {
+  display: none !important;
+}
+
+/* Simplificar la visualización de detalles */
+.modal-body .card {
+  margin-bottom: 1rem;
+  box-shadow: none;
+}
+
+.modal-body .card-body {
+  padding: 1rem;
+}
+
+/* Centrar todo el contenido del modal */
+.modal-body {
+  text-align: center;
+}
+
+.modal-body .row.g-2 .col-6 {
+  width: 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+/* Ocultar la sección de comentarios */
+.modal-body label[for="verificationComment"],
+.modal-body #verificationComment {
+  display: none;
+}
+
+/* Hacer que los botones de verificación estén más centrados y destacados */
+.modal-body .d-flex.gap-2.justify-content-center {
+  margin-top: 1rem;
+}
+
+.modal-body .btn-success,
+.modal-body .btn-danger {
+  min-width: 180px;
+}
+
+/* Simplificar la tabla de selecciones */
+.modal-body .table-responsive {
+  margin: 0 auto;
+  max-width: 90%;
+}
+
+.modal-body .table th,
+.modal-body .table td {
+  padding: 0.5rem;
+  text-align: center !important;
+}
+
+/* Hacer que el título de la apuesta sea más prominente */
+.modal-header h5 {
+  margin: 0 auto;
+  font-size: 1.3rem;
+}
+
+/* Ajustar el espaciado en el modal */
+.modal-body .row.g-4 {
+  margin-bottom: 1rem !important;
+}
+
+/* Eliminar elementos innecesarios */
+.modal-body p:contains("Comentario:") {
+  display: none;
+}
