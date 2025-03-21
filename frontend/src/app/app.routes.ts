@@ -14,6 +14,8 @@ import { PrizesComponent } from './admin/prizes/prizes.component';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 import { PromotionsComponent } from './admin/promotions/promotions.component';
 import { BetVerificationComponent } from './admin/bet-verification/bet-verification.component';
+import { BetsComponent } from './bets/bets.component';
+import { HistoryComponent } from './history/history.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,8 +24,19 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'profile/edit', component: ProfileComponent, canActivate: [AuthGuard] },
+
+  // Profile routes - updated to use separate components
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: ProfileComponent },
+      { path: 'edit', component: ProfileComponent },
+      { path: 'bets', component: BetsComponent },
+      { path: 'history', component: HistoryComponent }
+    ]
+  },
+
   { path: 'premios', component: PremiosComponent, canActivate: [AuthGuard] },
   { path: 'promociones', component: PromocionesComponent, canActivate: [AuthGuard] },
   { path: 'live', component: HomeComponent }, // Temporalmente redirige a Home

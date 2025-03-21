@@ -29,10 +29,11 @@
     </a>
   </div>
 
+  <!-- Update the navigation section -->
   <div class="profile-navigation">
-    <a routerLink="/profile" class="nav-item" [class.active]="!editMode">Perfil</a>
-    <a routerLink="/profile/bets" class="nav-item">Mis Apuestas</a>
-    <a routerLink="/profile/history" class="nav-item">Historial</a>
+    <a routerLink="/profile" class="nav-item" [class.active]="!editMode && !isBetsView && !isHistoryView">Perfil</a>
+    <a routerLink="/profile/bets" class="nav-item" [class.active]="isBetsView">Mis Apuestas</a>
+    <a routerLink="/profile/history" class="nav-item" [class.active]="isHistoryView">Historial</a>
     <a routerLink="/profile/edit" class="nav-item" [class.active]="editMode">Editar Perfil</a>
   </div>
 

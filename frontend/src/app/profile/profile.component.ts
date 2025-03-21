@@ -268,4 +268,8 @@ export class ProfileComponent implements OnInit {
         }
       });
   }
+
+  // Add these properties to fix the template error
+  isBetsView = false;
+  isHistoryView = false;
 }

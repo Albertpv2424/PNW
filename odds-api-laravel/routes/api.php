@@ -150,3 +150,11 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::get('/bets/verified', [App\Http\Controllers\Admin\BetVerificationController::class, 'getVerifiedBets']);
     Route::post('/bets/{id}/verify', [App\Http\Controllers\Admin\BetVerificationController::class, 'verifyBet']);
 });
+
+// Add these routes to your existing api.php file
+Route::middleware('auth:sanctum')->group(function () {
+    // User bets routes
+    Route::get('/user/bets/active', 'App\Http\Controllers\BetController@getUserActiveBets');
+    Route::get('/user/bets/history', 'App\Http\Controllers\BetController@getUserBetHistory');
+    Route::get('/user/bets/stats', 'App\Http\Controllers\BetController@getUserBetStats');
+});

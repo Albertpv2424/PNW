@@ -1,0 +1,56 @@
+<app-header></app-header>
+
+<!-- Add background container -->
+<div class="background-container"></div>
+
+<div class="history-container">
+  <div class="content-wrapper">
+    <h1>Historial de Apuestas</h1>
+
+    <div class="loading-spinner" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <p>Cargando historial...</p>
+    </div>
+
+    <div class="error-message" *ngIf="error">
+      <p>{{ error }}</p>
+      <button (click)="loadBetHistory()">Reintentar</button>
+    </div>
+
+    <!-- History List -->
+    <div class="bets-list" *ngIf="!isLoading && !error">
+      <div class="empty-state" *ngIf="betHistory.length === 0">
+        <p>No tienes historial de apuestas.</p>
+        <a routerLink="/" class="place-bet-btn">Realizar una apuesta</a>
+      </div>
+
+      <div class="bet-card" *ngFor="let bet of betHistory">
+        <div class="bet-header">
+          <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
+          <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ bet.status }}</span>
+        </div>
+
+        <div class="bet-details">
+          <h3 class="bet-match">{{ bet.match_info }}</h3>
+          <p class="bet-selection">
+            <strong>Selección:</strong> {{ bet.prediction_choice }}
+          </p>
+          <div class="bet-info">
+            <div class="bet-amount">
+              <span>Apostado:</span>
+              <strong>{{ bet.punts_proposats }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
+            </div>
+            <div class="bet-odds">
+              <span>Cuota:</span>
+              <strong>{{ bet.cuota }}</strong>
+            </div>
+            <div class="bet-result" *ngIf="bet.status.toLowerCase() === 'ganada'">
+              <span>Ganancia:</span>
+              <strong>{{ bet.punts_proposats * bet.cuota | number:'1.0-0' }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
