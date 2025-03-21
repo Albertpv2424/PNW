@@ -2,38 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PremioUsuario extends Model
 {
-    use HasFactory;
+    // Change the table name to match your database
+    protected $table = 'premis_usuaris';
 
-    // Define the table name
-    protected $table = 'premio_usuario';
+    // Disable timestamps
+    public $timestamps = false;
 
     // Define fillable fields
     protected $fillable = [
         'usuari_nick',
         'premi_id',
         'data_reclamat',
-        'estado'
+        'usat'
     ];
 
-    // Define date fields
-    protected $dates = [
-        'data_reclamat'
-    ];
+    // Define relationship with Premio model
+    public function premio()
+    {
+        return $this->belongsTo(Premio::class, 'premi_id');
+    }
 
-    // Define the relationship with User
+    // Define relationship with User model
     public function user()
     {
         return $this->belongsTo(User::class, 'usuari_nick', 'nick');
-    }
-
-    // Define the relationship with Premio
-    public function premio()
-    {
-        return $this->belongsTo(Premio::class, 'premi_id', 'id');
     }
 }

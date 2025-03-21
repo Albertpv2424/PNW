@@ -47,8 +47,6 @@ class PremioController extends Controller
             $premioUsuario->usuari_nick = $user->nick;
             $premioUsuario->premi_id = $premio->id;
             $premioUsuario->data_reclamat = Carbon::now();
-            // Remove this line - don't set data_limit as it's a generated column
-            // $premioUsuario->data_limit = Carbon::now()->addMonths(3); // 3 months validity
             $premioUsuario->usat = false;
 
             // Debug log to check if the model is being created correctly
@@ -56,7 +54,6 @@ class PremioController extends Controller
                 'user' => $user->nick,
                 'premio_id' => $premio->id,
                 'data_reclamat' => $premioUsuario->data_reclamat,
-                // 'data_limit' => $premioUsuario->data_limit, // Remove this line too
                 'table' => $premioUsuario->getTable(),
                 'fillable' => $premioUsuario->getFillable()
             ]);
@@ -142,7 +139,7 @@ class PremioController extends Controller
     }
 
     // Add this new method to the PremioController class
-    
+
     public function userPremios()
     {
         // Get authenticated user
@@ -150,13 +147,13 @@ class PremioController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Usuario no autenticado'], 401);
         }
-    
+
         // Get all prizes redeemed by the user with related prize information
         $premiosUsuario = PremioUsuario::where('usuari_nick', $user->nick)
             ->with('premio')
             ->orderBy('data_reclamat', 'desc')
             ->get();
-    
+
         // Transform the data to include all necessary information
         $premiosData = $premiosUsuario->map(function($premioUsuario) {
             return [
@@ -171,7 +168,7 @@ class PremioController extends Controller
                 'usado' => $premioUsuario->usat ? true : false
             ];
         });
-    
+
         return response()->json($premiosData);
     }
 }
