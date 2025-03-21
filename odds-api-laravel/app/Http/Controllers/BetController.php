@@ -6,12 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class BetController extends Controller
 {
-    /**
-     * Get active bets for the current user
-     */
     public function getUserActiveBets()
     {
         try {
@@ -21,33 +19,39 @@ class BetController extends Controller
                 return response()->json(['message' => 'Usuario no autenticado'], 401);
             }
 
-            // Get active (pending) bets
-            $activeBets = DB::table('prediccio_proposada as pp')
+            // Verificar si existe la columna created_at
+            $hasCreatedAt = Schema::hasColumn('prediccio_proposada', 'created_at');
+
+            // Construir la consulta base
+            $query = DB::table('prediccio_proposada as pp')
                 ->leftJoin('prediccions_sist as ps', 'pp.id', '=', 'ps.prediccio_proposada_id')
-                ->where('pp.usuari_nick', $user->nick)
-                ->whereNull('ps.id') // No system prediction yet (pending)
-                ->orWhere(function($query) use ($user) {
-                    $query->where('pp.usuari_nick', $user->nick)
-                          ->where('ps.validat', false); // Not validated yet
-                })
-                ->select('pp.*')
-                ->orderBy('pp.created_at', 'desc')
-                ->get();
+                ->where(function($q) use ($user) {
+                    $q->where('pp.usuari_nick', $user->nick)
+                      ->where(function($q2) {
+                          $q2->whereNull('ps.id')
+                             ->orWhere('ps.validat', 0);
+                      });
+                });
+
+            // Seleccionar campos
+            $query->select('pp.*');
+
+            // Agregar ordenamiento solo si existe la columna
+            if ($hasCreatedAt) {
+                $query->orderBy('pp.created_at', 'desc');
+            }
+
+            $activeBets = $query->get();
 
             return response()->json($activeBets);
         } catch (\Exception $e) {
             Log::error('Error in BetController::getUserActiveBets: ' . $e->getMessage(), [
-                'user' => Auth::user() ? Auth::user()->nick : 'unauthenticated',
-                'trace' => $e->getTraceAsString()
+                'user' => Auth::user() ? Auth::user()->nick : 'unknown'
             ]);
-
-            return response()->json(['message' => 'Error al obtener las apuestas activas'], 500);
+            return response()->json(['message' => 'Error al obtener apuestas activas: ' . $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Get bet history for the current user
-     */
     public function getUserBetHistory()
     {
         try {
@@ -57,33 +61,67 @@ class BetController extends Controller
                 return response()->json(['message' => 'Usuario no autenticado'], 401);
             }
 
+            // Verificar si existe la columna created_at y resultat_prediccio
+            $hasCreatedAt = Schema::hasColumn('prediccio_proposada', 'created_at');
+
+            // Obtener la estructura de resultat_prediccio
+            $resultatColumns = DB::select("SHOW COLUMNS FROM resultat_prediccio");
+            $statusColumn = 'resultat_prediccio'; // Columna por defecto
+
+            // Buscar la columna correcta para el estado
+            foreach ($resultatColumns as $column) {
+                if ($column->Field === 'resultat_prediccio') {
+                    $statusColumn = 'resultat_prediccio';
+                    break;
+                } else if ($column->Field === 'validacio') {
+                    $statusColumn = 'validacio';
+                    break;
+                }
+            }
+
             // Get completed bets (validated)
-            $betHistory = DB::table('prediccio_proposada as pp')
+            $query = DB::table('prediccio_proposada as pp')
                 ->join('prediccions_sist as ps', 'pp.id', '=', 'ps.prediccio_proposada_id')
                 ->join('resultat_prediccio as rp', 'ps.resultat_prediccio_id', '=', 'rp.id')
                 ->where('pp.usuari_nick', $user->nick)
-                ->where('ps.validat', true)
-                ->select(
-                    'pp.*',
-                    'rp.nom as status'
-                )
-                ->orderBy('pp.created_at', 'desc')
-                ->get();
+                ->where('ps.validat', true);
+
+            // Seleccionar campos
+            $query->select(
+                'pp.*',
+                "rp.{$statusColumn} as status"
+            );
+
+            // Agregar ordenamiento solo si existe la columna
+            if ($hasCreatedAt) {
+                $query->orderBy('pp.created_at', 'desc');
+            }
+
+            $betHistory = $query->get();
+
+            // Mapear los estados para que sean consistentes en la interfaz
+            $betHistory = $betHistory->map(function($bet) {
+                if (isset($bet->status)) {
+                    if (strtolower($bet->status) === 'guanyat') {
+                        $bet->status = 'Ganada';
+                    } else if (strtolower($bet->status) === 'perdut') {
+                        $bet->status = 'Perdida';
+                    } else if (strtolower($bet->status) === 'empat') {
+                        $bet->status = 'Empate';
+                    }
+                }
+                return $bet;
+            });
 
             return response()->json($betHistory);
         } catch (\Exception $e) {
             Log::error('Error in BetController::getUserBetHistory: ' . $e->getMessage(), [
-                'user' => Auth::user() ? Auth::user()->nick : 'unauthenticated',
-                'trace' => $e->getTraceAsString()
+                'user' => Auth::user() ? Auth::user()->nick : 'unknown'
             ]);
-
-            return response()->json(['message' => 'Error al obtener el historial de apuestas'], 500);
+            return response()->json(['message' => 'Error al obtener historial de apuestas: ' . $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Get bet statistics for the current user
-     */
     public function getUserBetStats()
     {
         try {
@@ -93,70 +131,103 @@ class BetController extends Controller
                 return response()->json(['message' => 'Usuario no autenticado'], 401);
             }
 
-            // Get total bets
+            // Obtener la estructura de resultat_prediccio
+            $resultatColumns = DB::select("SHOW COLUMNS FROM resultat_prediccio");
+            $statusColumn = 'resultat_prediccio'; // Columna por defecto
+
+            // Buscar la columna correcta para el estado
+            foreach ($resultatColumns as $column) {
+                if ($column->Field === 'resultat_prediccio') {
+                    $statusColumn = 'resultat_prediccio';
+                    break;
+                } else if ($column->Field === 'validacio') {
+                    $statusColumn = 'validacio';
+                    break;
+                }
+            }
+
+            // Total de apuestas
             $totalBets = DB::table('prediccio_proposada')
                 ->where('usuari_nick', $user->nick)
                 ->count();
 
-            // Get won bets
-            $wonBets = DB::table('prediccio_proposada as pp')
+            // Apuestas ganadas
+            $wonBetsQuery = DB::table('prediccio_proposada as pp')
                 ->join('prediccions_sist as ps', 'pp.id', '=', 'ps.prediccio_proposada_id')
                 ->join('resultat_prediccio as rp', 'ps.resultat_prediccio_id', '=', 'rp.id')
                 ->where('pp.usuari_nick', $user->nick)
-                ->where('ps.validat', true)
-                ->where('rp.nom', 'ganada')
-                ->count();
+                ->where('ps.validat', 1);
 
-            // Get lost bets
-            $lostBets = DB::table('prediccio_proposada as pp')
+            // Usar la columna correcta para el filtro
+            if ($statusColumn === 'resultat_prediccio') {
+                $wonBetsQuery->where('rp.resultat_prediccio', 'Guanyat');
+            } else {
+                $wonBetsQuery->where('rp.validacio', 'Guanyat');
+            }
+
+            $wonBets = $wonBetsQuery->count();
+
+            // Apuestas perdidas
+            $lostBetsQuery = DB::table('prediccio_proposada as pp')
                 ->join('prediccions_sist as ps', 'pp.id', '=', 'ps.prediccio_proposada_id')
                 ->join('resultat_prediccio as rp', 'ps.resultat_prediccio_id', '=', 'rp.id')
                 ->where('pp.usuari_nick', $user->nick)
-                ->where('ps.validat', true)
-                ->where('rp.nom', 'perdida')
-                ->count();
+                ->where('ps.validat', 1);
 
-            // Get pending bets
+            // Usar la columna correcta para el filtro
+            if ($statusColumn === 'resultat_prediccio') {
+                $lostBetsQuery->where('rp.resultat_prediccio', 'Perdut');
+            } else {
+                $lostBetsQuery->where('rp.validacio', 'Perdut');
+            }
+
+            $lostBets = $lostBetsQuery->count();
+
+            // Apuestas pendientes
             $pendingBets = DB::table('prediccio_proposada as pp')
                 ->leftJoin('prediccions_sist as ps', 'pp.id', '=', 'ps.prediccio_proposada_id')
                 ->where('pp.usuari_nick', $user->nick)
                 ->where(function($query) {
                     $query->whereNull('ps.id')
-                          ->orWhere('ps.validat', false);
+                          ->orWhere('ps.validat', 0);
                 })
                 ->count();
 
-            // Calculate total winnings
+            // Ganancias totales
             $totalWinnings = DB::table('prediccio_proposada as pp')
                 ->join('prediccions_sist as ps', 'pp.id', '=', 'ps.prediccio_proposada_id')
                 ->join('resultat_prediccio as rp', 'ps.resultat_prediccio_id', '=', 'rp.id')
                 ->where('pp.usuari_nick', $user->nick)
-                ->where('ps.validat', true)
-                ->where('rp.nom', 'ganada')
-                ->sum(DB::raw('pp.punts_proposats * pp.cuota'));
+                ->where('ps.validat', 1);
 
-            // Calculate win rate
-            $winRate = 0;
-            $completedBets = $wonBets + $lostBets;
-            if ($completedBets > 0) {
-                $winRate = ($wonBets / $completedBets) * 100;
+            // Usar la columna correcta para el filtro
+            if ($statusColumn === 'resultat_prediccio') {
+                $totalWinnings->where('rp.resultat_prediccio', 'Guanyat');
+            } else {
+                $totalWinnings->where('rp.validacio', 'Guanyat');
             }
 
-            return response()->json([
-                'total_bets' => $totalBets,
-                'won_bets' => $wonBets,
-                'lost_bets' => $lostBets,
-                'pending_bets' => $pendingBets,
-                'total_winnings' => $totalWinnings,
-                'win_rate' => $winRate
-            ]);
+            $totalWinnings = $totalWinnings->sum(DB::raw('pp.punts_proposats * pp.cuota'));
+
+            // Calcular porcentaje de victoria
+            $completedBets = $wonBets + $lostBets;
+            $winRate = $completedBets > 0 ? ($wonBets / $completedBets) * 100 : 0;
+
+            $stats = [
+                'totalBets' => $totalBets,
+                'wonBets' => $wonBets,
+                'lostBets' => $lostBets,
+                'pendingBets' => $pendingBets,
+                'totalWinnings' => $totalWinnings,
+                'winRate' => $winRate
+            ];
+
+            return response()->json($stats);
         } catch (\Exception $e) {
             Log::error('Error in BetController::getUserBetStats: ' . $e->getMessage(), [
-                'user' => Auth::user() ? Auth::user()->nick : 'unauthenticated',
-                'trace' => $e->getTraceAsString()
+                'user' => Auth::user() ? Auth::user()->nick : 'unknown'
             ]);
-
-            return response()->json(['message' => 'Error al obtener las estadísticas de apuestas'], 500);
+            return response()->json(['message' => 'Error al obtener estadísticas de apuestas: ' . $e->getMessage()], 500);
         }
     }
 }

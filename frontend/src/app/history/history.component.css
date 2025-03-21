@@ -123,6 +123,17 @@ h1 {
   transition: transform 0.2s;
 }
 
+/* Nuevos estilos para tarjetas con estado */
+.bet-card.won {
+  background-color: rgba(0, 179, 65, 0.15);
+  border-left: 4px solid #00b341;
+}
+
+.bet-card.lost {
+  background-color: rgba(255, 77, 77, 0.15);
+  border-left: 4px solid #ff4d4d;
+}
+
 .bet-card:hover {
   transform: translateY(-5px);
 }
@@ -135,9 +146,27 @@ h1 {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
+/* Estilos específicos para los headers según estado */
+.bet-card.won .bet-header {
+  background-color: rgba(0, 179, 65, 0.3);
+}
+
+.bet-card.lost .bet-header {
+  background-color: rgba(255, 77, 77, 0.3);
+}
+
 .bet-date {
   font-size: 14px;
   color: #aaaaaa;
+}
+
+/* Ajustar color de fecha según estado */
+.bet-card.won .bet-date {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.bet-card.lost .bet-date {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .bet-status {
@@ -157,6 +186,17 @@ h1 {
   color: #ff4d4d;
 }
 
+/* Mejorar contraste de los estados */
+.bet-card.won .status-won {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.bet-card.lost .status-lost {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
 .status-pending {
   background-color: rgba(255, 204, 0, 0.2);
   color: #ffcc00;
@@ -171,9 +211,27 @@ h1 {
   font-size: 18px;
 }
 
+/* Ajustar color del partido según estado */
+.bet-card.won .bet-match {
+  color: #ffffff;
+}
+
+.bet-card.lost .bet-match {
+  color: #ffffff;
+}
+
 .bet-selection {
   margin: 0 0 15px 0;
   color: #cccccc;
+}
+
+/* Ajustar color de la selección según estado */
+.bet-card.won .bet-selection {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.bet-card.lost .bet-selection {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .bet-info {
@@ -227,3 +285,53 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+/* Add styles for stats summary */
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #aaaaaa;
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.win {
+  color: #00b341;
+}
+
+.loss {
+  color: #ff4d4d;
+}
+
+.pending {
+  color: #ffcc00;
+}
+
+/* Asegúrate de que el resto de tus estilos existentes permanezcan */

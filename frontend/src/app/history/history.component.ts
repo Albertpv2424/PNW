@@ -15,6 +15,14 @@ import { NotificationService } from '../services/notification.service';
 })
 export class HistoryComponent implements OnInit {
   betHistory: any[] = [];
+  stats = {
+    totalBets: 0,
+    wonBets: 0,
+    lostBets: 0,
+    pendingBets: 0,
+    totalWinnings: 0,
+    winRate: 0
+  };
   isLoading = true;
   error = '';
 
@@ -26,12 +34,13 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadBetHistory();
+    this.loadBetStats();
   }
 
   loadBetHistory(): void {
     this.isLoading = true;
+    this.error = '';
 
-    // Load bet history
     this.betService.getUserBetHistory().subscribe({
       next: (data) => {
         this.betHistory = data;
@@ -39,13 +48,31 @@ export class HistoryComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading bet history:', error);
-        this.error = 'Error al cargar el historial de apuestas';
+        this.error = 'Error al cargar el historial de predicciones';
         this.isLoading = false;
 
         if (error.status === 401) {
           this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
           this.authService.logout();
         }
+      }
+    });
+  }
+
+  loadBetStats(): void {
+    this.betService.getUserBetStats().subscribe({
+      next: (data) => {
+        this.stats = {
+          totalBets: data.totalBets || 0,
+          wonBets: data.wonBets || 0,
+          lostBets: data.lostBets || 0,
+          pendingBets: data.pendingBets || 0,
+          totalWinnings: data.totalWinnings || 0,
+          winRate: data.winRate || 0
+        };
+      },
+      error: (error) => {
+        console.error('Error loading bet statistics:', error);
       }
     });
   }
@@ -62,17 +89,12 @@ export class HistoryComponent implements OnInit {
     });
   }
 
-  // Get status class for styling
+  // Get CSS class for bet status
   getStatusClass(status: string): string {
-    switch (status.toLowerCase()) {
-      case 'ganada':
-        return 'status-won';
-      case 'perdida':
-        return 'status-lost';
-      case 'pendiente':
-        return 'status-pending';
-      default:
-        return '';
-    }
+    const statusLower = status.toLowerCase();
+    if (statusLower === 'ganada') return 'status-won';
+    if (statusLower === 'perdida') return 'status-lost';
+    if (statusLower === 'pendiente') return 'status-pending';
+    return '';
   }
 }

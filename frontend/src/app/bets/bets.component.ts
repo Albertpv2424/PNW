@@ -15,15 +15,6 @@ import { NotificationService } from '../services/notification.service';
 })
 export class BetsComponent implements OnInit {
   activeBets: any[] = [];
-  stats = {
-    totalBets: 0,
-    wonBets: 0,
-    lostBets: 0,
-    pendingBets: 0,
-    totalWinnings: 0,
-    winRate: 0
-  };
-
   isLoading = true;
   error = '';
 
@@ -44,7 +35,6 @@ export class BetsComponent implements OnInit {
     this.betService.getUserActiveBets().subscribe({
       next: (data) => {
         this.activeBets = data;
-        this.stats.pendingBets = data.length;
         this.isLoading = false;
       },
       error: (error) => {
@@ -56,23 +46,6 @@ export class BetsComponent implements OnInit {
           this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
           this.authService.logout();
         }
-      }
-    });
-
-    // Load bet statistics
-    this.betService.getUserBetStats().subscribe({
-      next: (data) => {
-        this.stats = {
-          totalBets: data.total_bets || 0,
-          wonBets: data.won_bets || 0,
-          lostBets: data.lost_bets || 0,
-          pendingBets: data.pending_bets || 0,
-          totalWinnings: data.total_winnings || 0,
-          winRate: data.win_rate || 0
-        };
-      },
-      error: (error) => {
-        console.error('Error loading bet statistics:', error);
       }
     });
   }

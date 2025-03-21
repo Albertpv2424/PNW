@@ -5,7 +5,37 @@
 
 <div class="history-container">
   <div class="content-wrapper">
-    <h1>Historial de Apuestas</h1>
+    <h1>Historial de Predicciones</h1>
+
+    <!-- Stats summary section -->
+    <div class="stats-summary">
+      <div class="stat-card">
+        <h3>Total Predicciones</h3>
+        <p class="stat-number">{{ stats.totalBets }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Predicciones Ganadas</h3>
+        <p class="stat-number win">{{ stats.wonBets }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Predicciones Perdidas</h3>
+        <p class="stat-number loss">{{ stats.lostBets }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Predicciones Pendientes</h3>
+        <p class="stat-number pending">{{ stats.pendingBets }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Ganancias Totales</h3>
+        <p class="stat-number">
+          {{ stats.totalWinnings | number:'1.0-0' }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
+        </p>
+      </div>
+      <div class="stat-card">
+        <h3>% de Victoria</h3>
+        <p class="stat-number">{{ stats.winRate | number:'1.1-1' }}%</p>
+      </div>
+    </div>
 
     <div class="loading-spinner" *ngIf="isLoading">
       <div class="spinner"></div>
@@ -20,11 +50,15 @@
     <!-- History List -->
     <div class="bets-list" *ngIf="!isLoading && !error">
       <div class="empty-state" *ngIf="betHistory.length === 0">
-        <p>No tienes historial de apuestas.</p>
-        <a routerLink="/" class="place-bet-btn">Realizar una apuesta</a>
+        <p>No tienes historial de predicciones.</p>
+        <a routerLink="/" class="place-bet-btn">Realizar una predicción</a>
       </div>
 
-      <div class="bet-card" *ngFor="let bet of betHistory">
+      <div class="bet-card" *ngFor="let bet of betHistory"
+           [ngClass]="{
+             'won': bet.status.toLowerCase() === 'ganada',
+             'lost': bet.status.toLowerCase() === 'perdida'
+           }">
         <div class="bet-header">
           <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
           <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ bet.status }}</span>
