@@ -36,11 +36,8 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    // Only check spin status if this component is actually being displayed
-    // and not when navigating to other routes
-    if (this.isOpen) {
-      this.checkLastSpin();
-    }
+    // Always check spin status when component initializes, not just when open
+    this.checkLastSpin();
   }
 
   ngAfterViewInit() {
@@ -167,6 +164,8 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
   toggleWheel() {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
+      // Check spin status when opening the wheel
+      this.checkLastSpin();
       // Add a longer delay to ensure the modal is fully rendered
       setTimeout(() => this.setupCanvas(), 300);
     }
@@ -297,14 +296,9 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
 
     // Add the authentication headers to the request
     const headers = this.authService.getAuthHeaders();
-    console.log('Request headers for daily wheel:', headers);
-
-    // Log the request payload
-    const payload = { points: this.selectedPrize };
-    console.log('Request payload:', payload);
 
     // Enviar al servidor con los headers correctos
-    this.http.post(`${this.apiUrl}/daily-wheel/spin`, payload, { headers }).subscribe({
+    this.http.post(`${this.apiUrl}/daily-wheel/spin`, { points: this.selectedPrize }, { headers }).subscribe({
       next: (response: any) => {
         console.log('Prize awarded response:', response);
         // Actualizar el saldo del usuario
@@ -313,6 +307,11 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
           currentUser.saldo = response.saldo;
           this.authService.updateCurrentUser(currentUser);
         }
+
+        // Set canSpin to false immediately after successful response
+        this.canSpin = false;
+        const today = new Date().toISOString().split('T')[0];
+        this.lastSpinDate = today;
 
         this.notificationService.showSuccess(`¡Felicidades! Has ganado ${this.selectedPrize} puntos`);
 
@@ -323,27 +322,21 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         console.error('Error al procesar el premio:', error);
-        console.error('Error details:', {
-          status: error.status,
-          statusText: error.statusText,
-          error: error.error,
-          message: error.message
-        });
 
-        this.canSpin = true; // Allow the user to try again
+        // Only reset canSpin if it's not a "already spun" error
+        if (error.status === 400 && error.error && error.error.message === 'Ya has girado la ruleta hoy') {
+          this.canSpin = false;
+          const today = new Date().toISOString().split('T')[0];
+          this.lastSpinDate = today;
+          this.notificationService.showError('Ya has girado la ruleta hoy. Vuelve mañana para más premios.');
+        } else {
+          this.canSpin = true; // Allow the user to try again for other errors
+          this.notificationService.showError(error.error?.message || 'Ha ocurrido un error al procesar tu premio. Inténtalo de nuevo.');
+        }
 
         if (error.status === 401) {
           this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
           this.authService.logout();
-        } else if (error.status === 500) {
-          // More specific error message for server errors
-          const errorMessage = error.error?.message || 'Error interno del servidor al procesar tu premio';
-          this.notificationService.showError(errorMessage);
-
-          // Log additional information that might help debugging
-          console.error('User info:', this.authService.getCurrentUser());
-        } else {
-          this.notificationService.showError('Ha ocurrido un error al procesar tu premio. Inténtalo de nuevo.');
         }
       }
     });
