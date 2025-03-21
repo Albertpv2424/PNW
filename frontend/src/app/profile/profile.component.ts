@@ -108,6 +108,10 @@ export class ProfileComponent implements OnInit {
   }
 
   // Update ngOnInit to call this method
+  // Añadir propiedad para almacenar las apuestas recientes
+  recentBets: any[] = [];
+  loadingRecentBets = false;
+
   ngOnInit(): void {
     // Determinar si estamos en modo edición
     this.route.url.subscribe(segments => {
@@ -133,6 +137,7 @@ export class ProfileComponent implements OnInit {
     }
     this.loadUserPrizes();
     this.loadBetStats(); // Añadir carga de estadísticas
+    this.loadRecentBets(); // Añadir esta línea
   }
 
   // Añadir método para cargar estadísticas
@@ -311,4 +316,38 @@ export class ProfileComponent implements OnInit {
   // Add these properties to fix the template error
   isBetsView = false;
   isHistoryView = false;
+
+  // Añadir método para cargar las apuestas recientes
+  loadRecentBets(): void {
+    this.loadingRecentBets = true;
+    this.betService.getUserBetHistory().subscribe({
+      next: (data) => {
+        // Tomar solo las 3 apuestas más recientes
+        this.recentBets = data.slice(0, 3);
+        this.loadingRecentBets = false;
+      },
+      error: (error) => {
+        console.error('Error loading recent bets:', error);
+        this.loadingRecentBets = false;
+      }
+    });
+  }
+
+  // Añadir método para formatear la fecha
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+
+  // Añadir método para obtener la clase CSS según el estado
+  getStatusClass(status: string): string {
+    const statusLower = status.toLowerCase();
+    if (statusLower === 'ganada') return 'status-won';
+    if (statusLower === 'perdida') return 'status-lost';
+    return 'status-pending';
+  }
 }

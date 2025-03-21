@@ -101,10 +101,53 @@
       <div class="profile-section">
         <h2>Últimas Apuestas</h2>
         <div class="recent-bets">
-          <div class="empty-state">
+          <div class="loading-spinner" *ngIf="loadingRecentBets">
+            <div class="spinner"></div>
+            <p>Cargando apuestas...</p>
+          </div>
+
+          <div class="empty-state" *ngIf="!loadingRecentBets && recentBets.length === 0">
             <div class="empty-icon">📊</div>
             <p>No tienes apuestas recientes</p>
             <a routerLink="/" class="action-button">Realizar una apuesta</a>
+          </div>
+
+          <div class="bets-list" *ngIf="!loadingRecentBets && recentBets.length > 0">
+            <div class="bet-card" *ngFor="let bet of recentBets"
+                 [ngClass]="{
+                   'won': bet.status.toLowerCase() === 'ganada',
+                   'lost': bet.status.toLowerCase() === 'perdida'
+                 }">
+              <div class="bet-header">
+                <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
+                <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ bet.status }}</span>
+              </div>
+
+              <div class="bet-details">
+                <h3 class="bet-match">{{ bet.match_info }}</h3>
+                <p class="bet-selection">
+                  <strong>Selección:</strong> {{ bet.prediction_choice }}
+                </p>
+                <div class="bet-info">
+                  <div class="bet-amount">
+                    <span>Apostado:</span>
+                    <strong>{{ bet.punts_proposats }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
+                  </div>
+                  <div class="bet-odds">
+                    <span>Cuota:</span>
+                    <strong>{{ bet.cuota }}</strong>
+                  </div>
+                  <div class="bet-result" *ngIf="bet.status.toLowerCase() === 'ganada'">
+                    <span>Ganancia:</span>
+                    <strong>{{ bet.punts_proposats * bet.cuota | number:'1.0-0' }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="view-all-bets">
+              <a routerLink="/profile/bets" class="view-all-link">Ver todas mis apuestas</a>
+            </div>
           </div>
         </div>
       </div>
