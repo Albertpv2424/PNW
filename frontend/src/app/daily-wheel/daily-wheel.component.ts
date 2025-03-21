@@ -27,6 +27,10 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
   colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#8AC24A', '#607D8B'];
   selectedPrize: number | null = null;
 
+  // Add these missing properties
+  lastEarnedPoints: number | null = null;
+  showLastEarnedPoints: boolean = false;
+
   private apiUrl = environment.apiUrl;
 
   constructor(
@@ -38,11 +42,15 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // Always check spin status when component initializes, not just when open
     this.checkLastSpin();
+    // Also check for last earned points
+    this.checkLastEarnedPoints();
   }
 
   ngAfterViewInit() {
-    // Initialize canvas after view is initialized
-    setTimeout(() => this.setupCanvas(), 300);
+    // Only initialize canvas if the wheel is open
+    if (this.isOpen) {
+      setTimeout(() => this.setupCanvas(), 300);
+    }
   }
 
   setupCanvas() {
@@ -267,6 +275,14 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       next: (response: any) => {
         console.log('Wheel status response:', response);
         this.canSpin = response.canSpin;
+
+        // Store the points earned from the response
+        if (response.pointsEarned && response.pointsEarned > 0) {
+          this.lastEarnedPoints = response.pointsEarned;
+          // Only show the last earned points if the user can't spin today
+          this.showLastEarnedPoints = !response.canSpin;
+        }
+
         if (!this.canSpin) {
           const today = new Date().toISOString().split('T')[0];
           this.lastSpinDate = today;
@@ -284,6 +300,16 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  // Add this new method
+  checkLastEarnedPoints() {
+    // We'll use localStorage to remember points between sessions
+    const storedPoints = localStorage.getItem('lastWheelPoints');
+    if (storedPoints) {
+      this.lastEarnedPoints = parseInt(storedPoints, 10);
+      this.showLastEarnedPoints = true;
+    }
   }
 
   awardPrize() {
@@ -307,6 +333,11 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
           currentUser.saldo = response.saldo;
           this.authService.updateCurrentUser(currentUser);
         }
+
+        // Store the points in localStorage for future sessions
+        localStorage.setItem('lastWheelPoints', this.selectedPrize?.toString() || '0');
+        this.lastEarnedPoints = this.selectedPrize;
+        this.showLastEarnedPoints = true;
 
         // Set canSpin to false immediately after successful response
         this.canSpin = false;

@@ -144,21 +144,23 @@ canvas {
 
 .prize-display {
   margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
   text-align: center;
-  animation: bounceIn 0.6s ease;
+  animation: pulse 1.5s infinite;
 }
 
-@keyframes bounceIn {
-  0% { transform: scale(0.3); opacity: 0; }
-  50% { transform: scale(1.1); }
-  70% { transform: scale(0.9); }
-  100% { transform: scale(1); opacity: 1; }
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 .prize-display p {
-  color: white;
+  margin: 0 0 10px 0;
   font-size: 18px;
-  margin-bottom: 10px;
+  color: #fff;
 }
 
 .prize-amount {
@@ -175,3 +177,21 @@ canvas {
   height: 30px;
   margin-left: 10px;
 }
+
+/* Add this to your CSS file */
+.last-earned-points {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: rgba(0, 179, 65, 0.2);
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #00b341;
+}
+
+.last-earned-points p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* We can reuse the prize-amount class that already exists */
