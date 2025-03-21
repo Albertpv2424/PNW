@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { BetService } from '../services/bet.service';
 import { HeaderComponent } from '../header/header.component';
 import { RouterModule } from '@angular/router';
+import { ProfileHeaderComponent } from '../profile-header/profile-header.component';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-bets',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, RouterModule],
+  imports: [CommonModule, HeaderComponent, RouterModule, ProfileHeaderComponent],
   templateUrl: './bets.component.html',
   styleUrls: ['./bets.component.css']
 })
@@ -17,6 +18,12 @@ export class BetsComponent implements OnInit {
   activeBets: any[] = [];
   isLoading = true;
   error = '';
+
+  // Propiedades para el header del perfil
+  username: string = '';
+  email: string = '';
+  profileImage: string | null = null;
+  saldo: number = 0;
 
   constructor(
     private betService: BetService,
@@ -26,6 +33,7 @@ export class BetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserBets();
+    this.loadUserInfo();
   }
 
   loadUserBets(): void {
@@ -60,5 +68,15 @@ export class BetsComponent implements OnInit {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  loadUserInfo(): void {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.username = user.nick;
+      this.email = user.email;
+      this.profileImage = user.profile_image || null;
+      this.saldo = user.saldo;
+    }
   }
 }

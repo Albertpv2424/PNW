@@ -1,10 +1,20 @@
-<app-header></app-header>
+<!-- Reemplazar el header actual -->
+<!-- <app-header></app-header> -->
 
 <!-- Add background container -->
 <div class="background-container"></div>
 
 <div class="history-container">
   <div class="content-wrapper">
+    <!-- Añadir el header de perfil compartido -->
+    <app-profile-header
+      [username]="username"
+      [email]="email"
+      [profileImage]="profileImage"
+      [saldo]="saldo"
+      [activeTab]="'history'"
+    ></app-profile-header>
+
     <h1>Historial de Predicciones</h1>
 
     <!-- Stats summary section -->

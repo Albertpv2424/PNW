@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { BetService } from '../services/bet.service';
 import { HeaderComponent } from '../header/header.component';
 import { RouterModule } from '@angular/router';
+import { ProfileHeaderComponent } from '../profile-header/profile-header.component';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, RouterModule],
+  imports: [CommonModule, HeaderComponent, RouterModule, ProfileHeaderComponent],
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
@@ -26,6 +27,12 @@ export class HistoryComponent implements OnInit {
   isLoading = true;
   error = '';
 
+  // Propiedades para el header del perfil
+  username: string = '';
+  email: string = '';
+  profileImage: string | null = null;
+  saldo: number = 0;
+
   constructor(
     private betService: BetService,
     private authService: AuthService,
@@ -35,6 +42,7 @@ export class HistoryComponent implements OnInit {
   ngOnInit(): void {
     this.loadBetHistory();
     this.loadBetStats();
+    this.loadUserInfo();
   }
 
   loadBetHistory(): void {
@@ -96,5 +104,15 @@ export class HistoryComponent implements OnInit {
     if (statusLower === 'perdida') return 'status-lost';
     if (statusLower === 'pendiente') return 'status-pending';
     return '';
+  }
+
+  loadUserInfo(): void {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.username = user.nick;
+      this.email = user.email;
+      this.profileImage = user.profile_image || null;
+      this.saldo = user.saldo;
+    }
   }
 }

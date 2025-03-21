@@ -9,6 +9,7 @@ import { PredictionsService } from '../services/predictions.service';
 import { NotificationService } from '../services/notification.service';
 import { FormsModule } from '@angular/forms';
 import { BetService } from '../services/bet.service';
+import { ProfileHeaderComponent } from '../profile-header/profile-header.component';
 
 // Añadir la interfaz RedeemedPrize que falta
 interface RedeemedPrize {
@@ -27,7 +28,13 @@ interface RedeemedPrize {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    FormsModule,
+    ProfileHeaderComponent // Add this line to import the component
+  ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })

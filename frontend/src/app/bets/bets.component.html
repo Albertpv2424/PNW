@@ -1,10 +1,20 @@
-<app-header></app-header>
+<!-- Reemplazar el header actual -->
+<!-- <app-header></app-header> -->
 
 <!-- Add background container -->
 <div class="background-container"></div>
 
 <div class="bets-container">
   <div class="content-wrapper">
+    <!-- Añadir el header de perfil compartido -->
+    <app-profile-header
+      [username]="username"
+      [email]="email"
+      [profileImage]="profileImage"
+      [saldo]="saldo"
+      [activeTab]="'bets'"
+    ></app-profile-header>
+
     <h1>Mis Predicciones</h1>
 
     <!-- Loading state -->

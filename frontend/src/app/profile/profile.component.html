@@ -2,40 +2,16 @@
 <div class="background-container"></div>
 
 <div class="profile-container">
-  <div class="profile-header">
-    <div class="profile-avatar">
-      <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
-        <span *ngIf="!profileImage">{{ getInitials() }}</span>
-      </div>
-    </div>
-    <div class="profile-info">
-      <h1>{{ username }}</h1>
-      <p class="profile-email">{{ email }}</p>
-      <!-- Reemplaza la sección del saldo con este código -->
-      <div class="profile-balance">
-        <div class="balance-icon">
-          <img src="assets/monedapnw.png" alt="Moneda">
-        </div>
-        <span class="balance-amount">
-          <span class="integer-part">{{ saldo | number:'1.0-0' }}</span>
-          <span class="decimal-part">.{{ (saldo.toString().split('.')[1] || '00').padEnd(2, '0') }}</span>
-        </span>
-      </div>
-    </div>
-    <!-- Botón para volver al home -->
-    <a routerLink="/" class="home-button">
-      <span class="home-icon">🏠</span>
-      <span>Volver al inicio</span>
-    </a>
-  </div>
+  <!-- Reemplazar el header actual con el componente compartido -->
+  <app-profile-header
+    [username]="username"
+    [email]="email"
+    [profileImage]="profileImage"
+    [saldo]="saldo"
+    [activeTab]="editMode ? 'edit' : 'profile'"
+  ></app-profile-header>
 
-  <!-- Update the navigation section -->
-  <div class="profile-navigation">
-    <a routerLink="/profile" class="nav-item" [class.active]="!editMode && !isBetsView && !isHistoryView">Perfil</a>
-    <a routerLink="/profile/bets" class="nav-item" [class.active]="isBetsView">Mis Apuestas</a>
-    <a routerLink="/profile/history" class="nav-item" [class.active]="isHistoryView">Historial</a>
-    <a routerLink="/profile/edit" class="nav-item" [class.active]="editMode">Editar Perfil</a>
-  </div>
+  <!-- Eliminar la navegación existente ya que ahora está en el componente compartido -->
 
   <div class="profile-content">
     <!-- Vista de perfil normal -->
