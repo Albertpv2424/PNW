@@ -557,20 +557,23 @@
 
 .activity-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .activity-card {
-  background-color: rgba(42, 42, 64, 0.7);
+  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
-  padding: 20px;
+  padding: 20px 15px;
   text-align: center;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background-color 0.3s;
 }
 
 .activity-card:hover {
   transform: translateY(-5px);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .activity-icon {
@@ -581,13 +584,34 @@
 .activity-count {
   font-size: 24px;
   font-weight: bold;
+  margin: 5px 0;
   color: #00b341;
-  margin-bottom: 5px;
 }
 
 .activity-label {
-  color: #ccc;
   font-size: 14px;
+  color: #aaaaaa;
+}
+
+/* Colores específicos para cada tipo de actividad */
+.activity-card:nth-child(1) .activity-count {
+  color: #ffcc00; /* Amarillo para apuestas activas */
+}
+
+.activity-card:nth-child(2) .activity-count {
+  color: #00b341; /* Verde para apuestas ganadas */
+}
+
+.activity-card:nth-child(3) .activity-count {
+  color: #ff4d4d; /* Rojo para apuestas perdidas */
+}
+
+.activity-card:nth-child(4) .activity-count {
+  color: #00b341; /* Verde para ganancias */
+}
+
+.activity-card:nth-child(5) .activity-count {
+  color: #1e90ff; /* Azul para porcentaje de victoria */
 }
 
 .recent-bets {

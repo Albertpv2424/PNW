@@ -63,18 +63,28 @@
         <div class="activity-summary">
           <div class="activity-card">
             <div class="activity-icon">🎮</div>
-            <div class="activity-count">0</div>
+            <div class="activity-count">{{ stats.pendingBets }}</div>
             <div class="activity-label">Apuestas Activas</div>
           </div>
           <div class="activity-card">
             <div class="activity-icon">✅</div>
-            <div class="activity-count">0</div>
+            <div class="activity-count">{{ stats.wonBets }}</div>
             <div class="activity-label">Apuestas Ganadas</div>
           </div>
           <div class="activity-card">
             <div class="activity-icon">❌</div>
-            <div class="activity-count">0</div>
+            <div class="activity-count">{{ stats.lostBets }}</div>
             <div class="activity-label">Apuestas Perdidas</div>
+          </div>
+          <div class="activity-card">
+            <div class="activity-icon">💰</div>
+            <div class="activity-count">{{ stats.totalWinnings | number:'1.0-0' }}</div>
+            <div class="activity-label">Ganancias Totales</div>
+          </div>
+          <div class="activity-card">
+            <div class="activity-icon">📊</div>
+            <div class="activity-count">{{ stats.winRate | number:'1.1-1' }}%</div>
+            <div class="activity-label">% de Victoria</div>
           </div>
         </div>
       </div>

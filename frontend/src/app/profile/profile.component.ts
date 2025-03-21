@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { PredictionsService } from '../services/predictions.service';
 import { NotificationService } from '../services/notification.service';
 import { FormsModule } from '@angular/forms';
+import { BetService } from '../services/bet.service';
 
 // Añadir la interfaz RedeemedPrize que falta
 interface RedeemedPrize {
@@ -45,6 +46,16 @@ export class ProfileComponent implements OnInit {
   imagePreview: string | null = null;
   selectedFile: File | null = null;
 
+  // Add stats property
+  stats = {
+    totalBets: 0,
+    wonBets: 0,
+    lostBets: 0,
+    pendingBets: 0,
+    totalWinnings: 0,
+    winRate: 0
+  };
+
   // Add this property to your ProfileComponent class
   redeemedPrizes: RedeemedPrize[] = [];
   loadingPrizes = false;
@@ -58,7 +69,8 @@ export class ProfileComponent implements OnInit {
     private predictionsService: PredictionsService,
     private fb: FormBuilder,
     private notificationService: NotificationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private betService: BetService // Añadir BetService
   ) {
     this.profileForm = this.fb.group({
       nick: ['', Validators.required],
@@ -113,6 +125,26 @@ export class ProfileComponent implements OnInit {
       });
     }
     this.loadUserPrizes();
+    this.loadBetStats(); // Añadir carga de estadísticas
+  }
+
+  // Añadir método para cargar estadísticas
+  loadBetStats(): void {
+    this.betService.getUserBetStats().subscribe({
+      next: (data) => {
+        this.stats = {
+          totalBets: data.totalBets || 0,
+          wonBets: data.wonBets || 0,
+          lostBets: data.lostBets || 0,
+          pendingBets: data.pendingBets || 0,
+          totalWinnings: data.totalWinnings || 0,
+          winRate: data.winRate || 0
+        };
+      },
+      error: (error) => {
+        console.error('Error loading bet statistics:', error);
+      }
+    });
   }
 
   getInitials(): string {
