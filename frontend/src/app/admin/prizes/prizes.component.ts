@@ -205,51 +205,84 @@ export class PrizesComponent implements OnInit {
       return;
     }
 
-    const formData = new FormData();
+    // Debug form values
+    console.log('Form values:', this.prizeForm.value);
+
     const prizeData = this.prizeForm.value;
-
-    // Add form fields to FormData
-    formData.append('titol', prizeData.titol);
-    formData.append('descripcio', prizeData.descripcio);
-    formData.append('cost', prizeData.cost);
-    formData.append('condicio', prizeData.condicio || '1');
-
-    // Add image if selected
+    
+    // Check if we're using FormData or JSON
     if (this.selectedFile) {
+      // Use FormData for file uploads
+      const formData = new FormData();
+      
+      // Add form fields to FormData - ensure string conversion
+      formData.append('titol', prizeData.titol || '');
+      formData.append('descripcio', prizeData.descripcio || '');
+      formData.append('cost', prizeData.cost ? prizeData.cost.toString() : '');
+      formData.append('condicio', prizeData.condicio ? prizeData.condicio.toString() : '1');
       formData.append('image', this.selectedFile);
-    }
-
-    if (this.isEditing && this.selectedPrize) {
-      // Update existing prize
-      this.http.post(`${environment.apiUrl}/admin/prizes/${this.selectedPrize.id}`, formData, {
-        headers: this.authService.getAuthHeaders() // Remove the 'true' parameter
-      }).subscribe({
-        next: (response) => {
-          this.notificationService.showSuccess('Premio actualizado correctamente');
-          this.loadPrizes();
-          this.closePrizeForm();
-        },
-        error: (error) => {
-          console.error('Error updating prize:', error);
-          this.notificationService.showError('Error al actualizar el premio');
+      
+      console.log('Using FormData for submission with image');
+      
+      // For FormData, don't set Content-Type header
+      const options = {
+        headers: {
+          'Authorization': `Bearer ${this.authService.getToken()}`,
+          'Accept': 'application/json'
         }
-      });
+      };
+      
+      this.submitRequest(formData, options);
     } else {
-      // Create new prize
-      this.http.post(`${environment.apiUrl}/admin/prizes`, formData, {
-        headers: this.authService.getAuthHeaders() // Remove the 'true' parameter
-      }).subscribe({
-        next: (response) => {
-          this.notificationService.showSuccess('Premio creado correctamente');
-          this.loadPrizes();
-          this.closePrizeForm();
-        },
-        error: (error) => {
-          console.error('Error creating prize:', error);
-          this.notificationService.showError('Error al crear el premio');
+      // Use JSON for regular submissions
+      console.log('Using JSON for submission without image');
+      
+      // Ensure all required fields are included
+      const jsonData = {
+        titol: prizeData.titol,
+        descripcio: prizeData.descripcio,
+        cost: prizeData.cost,
+        condicio: prizeData.condicio || 1
+      };
+      
+      console.log('JSON data to submit:', jsonData);
+      
+      // For JSON, set Content-Type header
+      const options = {
+        headers: {
+          'Authorization': `Bearer ${this.authService.getToken()}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         }
-      });
+      };
+      
+      this.submitRequest(jsonData, options);
     }
+  }
+
+  // Helper method to submit the request
+  private submitRequest(data: any, options: any): void {
+    const endpoint = this.isEditing && this.selectedPrize 
+      ? `${environment.apiUrl}/admin/prizes/${this.selectedPrize.id}`
+      : `${environment.apiUrl}/admin/prizes`;
+      
+    this.http.post(endpoint, data, options).subscribe({
+      next: (response) => {
+        console.log('Prize operation successful:', response);
+        this.notificationService.showSuccess(
+          this.isEditing ? 'Premio actualizado correctamente' : 'Premio creado correctamente'
+        );
+        this.loadPrizes();
+        this.closePrizeForm();
+      },
+      error: (error) => {
+        console.error('Error with prize operation:', error);
+        this.notificationService.showError(
+          `Error al ${this.isEditing ? 'actualizar' : 'crear'} el premio: ` + 
+          (error.error?.message || error.statusText || 'Error desconocido')
+        );
+      }
+    });
   }
 
   confirmDeletePrize(id: number): void {
