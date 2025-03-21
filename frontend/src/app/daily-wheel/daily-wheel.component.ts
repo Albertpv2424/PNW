@@ -15,10 +15,10 @@ import { environment } from '../../environments/environment';
 export class DailyWheelComponent implements OnInit, AfterViewInit {
   // Change to match the HTML template
   @ViewChild('wheelCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
-  
+
   // Only one ctx declaration
   private ctx!: CanvasRenderingContext2D;
-  
+
   isOpen = false;
   isSpinning = false;
   canSpin = true;
@@ -26,7 +26,7 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
   prizes = [100, 50, 200, 25, 500, 75, 150, 10];
   colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#8AC24A', '#607D8B'];
   selectedPrize: number | null = null;
-  
+
   private apiUrl = environment.apiUrl;
 
   constructor(
@@ -47,74 +47,74 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     // Initialize canvas after view is initialized
     setTimeout(() => this.setupCanvas(), 300);
   }
-  
+
   setupCanvas() {
     if (!this.canvasRef) {
       console.error('Canvas reference not found');
       return;
     }
-    
+
     const canvas = this.canvasRef.nativeElement;
     if (!canvas) {
       console.error('Canvas element not found');
       return;
     }
-    
+
     const context = canvas.getContext('2d');
     if (!context) {
       console.error('Could not get 2D context');
       return;
     }
-    
+
     this.ctx = context;
-    
+
     // Set explicit dimensions
     canvas.width = 300;
     canvas.height = 300;
-    
+
     this.drawWheel();
   }
-  
+
   drawWheel() {
     if (!this.ctx) {
       console.error('Canvas context not initialized');
       return;
     }
-    
+
     // Your wheel drawing code here
     const canvas = this.canvasRef.nativeElement;
     const ctx = this.ctx;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = Math.min(centerX, centerY) - 10;
-    
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     // Draw outer circle
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#333';
     ctx.stroke();
-    
+
     // Draw segments
     const segmentAngle = 2 * Math.PI / this.prizes.length;
-    
+
     for (let i = 0; i < this.prizes.length; i++) {
       const startAngle = i * segmentAngle;
       const endAngle = (i + 1) * segmentAngle;
-      
+
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
       ctx.arc(centerX, centerY, radius, startAngle, endAngle);
       ctx.closePath();
-      
+
       ctx.fillStyle = this.colors[i];
       ctx.fill();
       ctx.lineWidth = 1;
       ctx.strokeStyle = '#333';
       ctx.stroke();
-      
+
       // Draw text
       ctx.save();
       ctx.translate(centerX, centerY);
@@ -126,20 +126,20 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       ctx.shadowBlur = 3;
       ctx.shadowOffsetX = 1;
       ctx.shadowOffsetY = 1;
-      
+
       // Rotate text to be readable from outside the wheel
       ctx.rotate(Math.PI / 2);
       ctx.fillText(this.prizes[i].toString(), 0, -radius + 25);
       ctx.restore();
     }
-    
+
     // Draw central circle
     ctx.beginPath();
     ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
     ctx.fillStyle = '#fff';
     ctx.fill();
     ctx.stroke();
-    
+
     // We're removing the arrow from here as it will be drawn separately
   }
 
@@ -150,7 +150,7 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const radius = Math.min(centerX, centerY) - 10;
-    
+
     // Draw arrow at the RIGHT side instead of the top
     ctx.beginPath();
     ctx.moveTo(centerX + radius + 10, centerY); // Position at right
@@ -174,83 +174,83 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
 
   spinWheel() {
     if (!this.canSpin || this.isSpinning) return;
-    
+
     if (!this.authService.isLoggedIn()) {
       this.notificationService.showError('Debes iniciar sesión para girar la ruleta');
       return;
     }
-    
+
     this.isSpinning = true;
     this.selectedPrize = null; // Reset selected prize to hide result until animation completes
-    
+
     // Número aleatorio de rotaciones (entre 3 y 5 vueltas completas)
     const rotations = 3 + Math.random() * 2;
-    
+
     // Ángulo aleatorio final (determina el premio)
     const finalAngle = Math.random() * 2 * Math.PI;
-    
+
     // Animación de giro
     let currentRotation = 0;
     const totalRotation = rotations * 2 * Math.PI + finalAngle;
     const duration = 4000; // 4 segundos para un giro más dramático
     const startTime = Date.now();
-    
+
     const animate = () => {
       const elapsedTime = Date.now() - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
-      
+
       // Función de easing para desacelerar gradualmente
       const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
-      
+
       currentRotation = totalRotation * easeOut(progress);
-      
+
       const canvas = this.canvasRef.nativeElement;
       const ctx = this.ctx;
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       ctx.save();
       ctx.translate(centerX, centerY);
       ctx.rotate(currentRotation);
       ctx.translate(-centerX, -centerY);
       this.drawWheel();
       ctx.restore();
-      
+
       // Draw the fixed arrow (outside the rotation transform)
       this.drawArrow();
-      
+
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
         // IMPORTANTE: Determinar qué premio está en la parte DERECHA (donde apunta la flecha)
         // cuando la rueda se detiene
         const segmentAngle = 2 * Math.PI / this.prizes.length;
-        
+
         // Normalizar el ángulo final de rotación (entre 0 y 2π)
         const normalizedAngle = (currentRotation % (2 * Math.PI));
-        
+
         // Calcular qué segmento está a la DERECHA (donde apunta la flecha)
         // La flecha está en la derecha (ángulo 0 en el sistema de coordenadas del canvas)
         const prizeIndex = Math.floor(((2 * Math.PI - normalizedAngle) % (2 * Math.PI)) / segmentAngle);
-        
+
         // Asegurarnos de que el índice esté dentro del rango válido
         const validIndex = (prizeIndex + this.prizes.length) % this.prizes.length;
-        
+
         // Establecer el premio seleccionado como el que está en la parte derecha
         this.selectedPrize = this.prizes[validIndex];
-        
+
         console.log('Final rotation:', currentRotation);
         console.log('Normalized angle:', normalizedAngle);
         console.log('Prize index:', validIndex);
         console.log('Selected prize:', this.selectedPrize);
-        
+
         this.isSpinning = false;
         this.awardPrize();
       }
     };
-    
+
     animate();
   }
 
@@ -259,10 +259,10 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       this.canSpin = true;
       return;
     }
-    
+
     // Add the authentication headers to the request
     const headers = this.authService.getAuthHeaders();
-    
+
     // Check with the server instead of localStorage
     this.http.get(`${this.apiUrl}/daily-wheel/status`, { headers }).subscribe({
       next: (response: any) => {
@@ -277,7 +277,7 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
         console.error('Error checking wheel status:', error);
         // Default to allowing spin if there's an error
         this.canSpin = true;
-        
+
         // Check if it's an authentication error
         if (error.status === 401) {
           this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
@@ -289,17 +289,22 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
 
   awardPrize() {
     if (!this.selectedPrize) return;
-    
+
     // No longer need to store in localStorage since we're using the server
     this.canSpin = false;
-    
+
     console.log('Awarding prize:', this.selectedPrize);
-    
+
     // Add the authentication headers to the request
     const headers = this.authService.getAuthHeaders();
-    
+    console.log('Request headers for daily wheel:', headers);
+
+    // Log the request payload
+    const payload = { points: this.selectedPrize };
+    console.log('Request payload:', payload);
+
     // Enviar al servidor con los headers correctos
-    this.http.post(`${this.apiUrl}/daily-wheel/spin`, { points: this.selectedPrize }, { headers }).subscribe({
+    this.http.post(`${this.apiUrl}/daily-wheel/spin`, payload, { headers }).subscribe({
       next: (response: any) => {
         console.log('Prize awarded response:', response);
         // Actualizar el saldo del usuario
@@ -308,9 +313,9 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
           currentUser.saldo = response.saldo;
           this.authService.updateCurrentUser(currentUser);
         }
-        
+
         this.notificationService.showSuccess(`¡Felicidades! Has ganado ${this.selectedPrize} puntos`);
-        
+
         // Cerrar la ruleta después de 3 segundos
         setTimeout(() => {
           this.isOpen = false;
@@ -318,11 +323,25 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         console.error('Error al procesar el premio:', error);
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message
+        });
+
         this.canSpin = true; // Allow the user to try again
-        
+
         if (error.status === 401) {
           this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
           this.authService.logout();
+        } else if (error.status === 500) {
+          // More specific error message for server errors
+          const errorMessage = error.error?.message || 'Error interno del servidor al procesar tu premio';
+          this.notificationService.showError(errorMessage);
+
+          // Log additional information that might help debugging
+          console.error('User info:', this.authService.getCurrentUser());
         } else {
           this.notificationService.showError('Ha ocurrido un error al procesar tu premio. Inténtalo de nuevo.');
         }

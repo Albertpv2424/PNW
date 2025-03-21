@@ -2,39 +2,51 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class DailyRewardsTracking extends Model
 {
+    use HasFactory;
+
     protected $table = 'daily_rewards_tracking';
-    
+
     protected $fillable = [
-        'usuari_nick',
+        'usuari_nick', // Changed from 'user_nick' to 'usuari_nick'
         'date',
         'wheel_spun',
-        'wheel_points_earned',
         'videos_watched',
-        'video_points_earned',
-        'bets_today',
-        'max_daily_bets',
-        'betting_time_today',
-        'max_daily_betting_time'
+        'wheel_points_earned',
+        'video_points_earned'
     ];
 
-    protected $casts = [
-        'date' => 'date',
-        'wheel_spun' => 'boolean',
-        'wheel_points_earned' => 'integer',
-        'videos_watched' => 'integer',
-        'video_points_earned' => 'integer',
-        'bets_today' => 'integer',
-        'max_daily_bets' => 'integer',
-        'betting_time_today' => 'integer',
-        'max_daily_betting_time' => 'integer'
-    ];
-
-    public function user()
+    /**
+     * Get today's record for a user, or create a new one if it doesn't exist
+     *
+     * @param string $userNick
+     * @return DailyRewardsTracking
+     */
+    public static function getTodayRecord($userNick)
     {
-        return $this->belongsTo(User::class, 'usuari_nick', 'nick');
+        $today = Carbon::today()->format('Y-m-d');
+
+        $record = self::where('usuari_nick', $userNick) // Changed from 'user_nick' to 'usuari_nick'
+                      ->where('date', $today)
+                      ->first();
+
+        if (!$record) {
+            // Create a new record for today
+            $record = self::create([
+                'usuari_nick' => $userNick, // Changed from 'user_nick' to 'usuari_nick'
+                'date' => $today,
+                'wheel_spun' => false,
+                'videos_watched' => 0,
+                'wheel_points_earned' => 0,
+                'video_points_earned' => 0
+            ]);
+        }
+
+        return $record;
     }
 }

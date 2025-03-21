@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
@@ -81,10 +81,36 @@ export class AdminService {
   }
 
   // Actualizar el saldo de un usuario
-  updateUserBalance(nick: string, amount: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/users/${nick}/balance`, { amount }, {
-      headers: this.getAuthHeaders()
-    });
+  updateUserBalance(userId: string | number, amount: number): Observable<any> {
+    console.log(`Updating balance for user ID: ${userId}, Amount: ${amount}`);
+
+    // Create the request payload
+    const payload = { saldo: amount };
+
+    // Log the headers being sent
+    const headers = this.authService.getAuthHeaders();
+    console.log('Request headers:', headers);
+
+    // Make the request with detailed error handling
+    return this.http.put(`${environment.apiUrl}/admin/users/${userId}/balance`, payload, {
+      headers: headers
+    }).pipe(
+      tap(response => console.log('Balance update response:', response)),
+      catchError(error => {
+        console.error('Detailed balance update error:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message
+        });
+
+        // Check if there's a more specific error message from the server
+        const errorMessage = error.error?.message || 'Error al actualizar el saldo';
+
+        // Re-throw the error with more context
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
   // Cambiar el tipo de cuenta de un usuario
@@ -173,14 +199,14 @@ export class AdminService {
       headers: this.getAuthHeaders()
     });
   }
-  
+
   // Get verified bets
   getVerifiedBets(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/bets/verified`, {
       headers: this.getAuthHeaders()
     });
   }
-  
+
   // Verify a bet
   verifyBet(betId: number, data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/bets/${betId}/verify`, data, {

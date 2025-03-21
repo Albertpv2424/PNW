@@ -164,15 +164,23 @@ export class VideoRewardsComponent implements OnInit, OnDestroy {
   }
 
   updateUserBalance(points: number): void {
+    // Log the request details
+    console.log('Sending video reward points:', points);
+    console.log('Auth headers:', this.authService.getAuthHeaders());
+
     // Send points to the API
-    this.http.post(`${this.apiUrl}/video-rewards/add-points`, { points }).subscribe({
+    this.http.post(`${this.apiUrl}/video-rewards/add-points`, { points }, {
+      headers: this.authService.getAuthHeaders()
+    }).subscribe({
       next: (response: any) => {
+        console.log('Video reward response:', response);
+
         if (response.success) {
           // Update local stats
           this.videosWatchedToday = response.videosWatched;
           this.pointsEarnedToday = response.saldo - (this.authService.getCurrentUser()?.saldo || 0);
           this.dailyLimitReached = this.videosWatchedToday >= 5;
-          
+
           // Update user balance in auth service
           const currentUser = this.authService.getCurrentUser();
           if (currentUser) {
@@ -187,7 +195,23 @@ export class VideoRewardsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error al actualizar el saldo:', error);
-        this.notificationService.showError('No se pudo actualizar tu saldo. Inténtalo de nuevo más tarde.');
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message
+        });
+
+        // More specific error message based on the status code
+        if (error.status === 401) {
+          this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          this.authService.logout();
+        } else if (error.status === 500) {
+          const errorMessage = error.error?.message || 'Error interno del servidor al procesar los puntos';
+          this.notificationService.showError(errorMessage);
+        } else {
+          this.notificationService.showError('No se pudo actualizar tu saldo. Inténtalo de nuevo más tarde.');
+        }
       }
     });
   }
