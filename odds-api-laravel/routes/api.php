@@ -183,3 +183,10 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::post('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'update']);
     Route::delete('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'destroy']);
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    // User bets routes
+    Route::get('/user/bets/active', 'App\Http\Controllers\BetController@getUserActiveBets');
+    Route::get('/user/bets/history', 'App\Http\Controllers\BetController@getUserBetHistory');
+    Route::get('/user/bets/stats', 'App\Http\Controllers\BetController@getUserBetStats');
+});
