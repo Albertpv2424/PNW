@@ -213,26 +213,16 @@ export class AuthService {
 
   // Also, let's add a getAuthHeaders method if it doesn't exist
   // Update the getAuthHeaders method to handle multipart/form-data
-  // Añadir este método al AuthService si no existe
-  getAuthHeaders(isFormData: boolean = false): HttpHeaders {
+  // Update this method in your AuthService
+  getAuthHeaders(): any {
     const token = this.getToken();
     if (!token) {
-      console.error('No se encontró token de autenticación');
-      return new HttpHeaders({
-        'Accept': 'application/json'
-      });
+      return {};
     }
-
-    let headers = new HttpHeaders({
+        // Return a plain object instead of HttpHeaders
+    return {
       'Authorization': `Bearer ${token}`,
       'Accept': 'application/json'
-    });
-
-    // Solo añadir Content-Type si no es FormData
-    if (!isFormData) {
-      headers = headers.set('Content-Type', 'application/json');
-    }
-
-    return headers;
+    };
   }
 }

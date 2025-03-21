@@ -81,13 +81,44 @@ class PrizeController extends Controller
     /**
      * Create a new prize
      */
+    // Add this method to your PrizeController class
+    
+    /**
+     * Debug the incoming request data
+     */
+    private function debugRequest(Request $request, $message = 'Request data')
+    {
+        $requestData = $request->all();
+        $hasImage = $request->hasFile('image');
+        
+        // Log the request data
+        Log::info($message, [
+            'request_data' => $requestData,
+            'has_image' => $hasImage,
+            'content_type' => $request->header('Content-Type'),
+            'request_headers' => $request->headers->all()
+        ]);
+        
+        return $requestData;
+    }
+    
+    // Then update your store method to use this:
     public function store(Request $request)
     {
         // Verify admin permissions
         if (!$this->isAdmin()) {
             return response()->json(['message' => 'No tienes permisos de administrador'], 403);
         }
-
+    
+        // Debug the request
+        $this->debugRequest($request, 'Prize creation request received with detailed info');
+        
+        // Log the incoming request for debugging
+        Log::info('Prize creation request received', [
+            'request_data' => $request->except('image'),
+            'has_image' => $request->hasFile('image')
+        ]);
+    
         $validator = Validator::make($request->all(), [
             'titol' => 'required|string|max:255',
             'descripcio' => 'required|string',
@@ -95,34 +126,61 @@ class PrizeController extends Controller
             'condicio' => 'required|numeric|min:1',
             'image' => 'nullable|image|max:2048', // 2MB max
         ]);
-
+    
         if ($validator->fails()) {
+            Log::error('Prize validation failed', [
+                'errors' => $validator->errors()->toArray()
+            ]);
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
-        $prize = new Premio();
-        $prize->titol = $request->titol;
-        $prize->descripcio = $request->descripcio;
-        $prize->cost = $request->cost;
-        $prize->condicio = $request->condicio;
-
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-
-            // Ensure directory exists
-            if (!file_exists(public_path('uploads/prizes'))) {
-                mkdir(public_path('uploads/prizes'), 0755, true);
+    
+        try {
+            $prize = new Premio();
+            $prize->titol = $request->titol;
+            $prize->descripcio = $request->descripcio;
+            $prize->cost = $request->cost;
+            $prize->condicio = $request->condicio;
+    
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                
+                // Ensure directory exists - FIXED: Changed from 'prizes' to 'premios'
+                $uploadPath = public_path('uploads/premios');
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+                
+                $image->move($uploadPath, $imageName);
+                $prize->image = 'uploads/premios/' . $imageName; // FIXED: Changed from 'prizes' to 'premios'
+                
+                Log::info('Image uploaded successfully', [
+                    'path' => $prize->image
+                ]);
+            } else {
+                $prize->image = null;
+                Log::info('No image provided for prize');
             }
-
-            $image->move(public_path('uploads/prizes'), $imageName);
-            $prize->image = 'uploads/prizes/' . $imageName;
+    
+            $prize->save();
+            
+            Log::info('Prize created successfully', [
+                'prize_id' => $prize->id,
+                'prize_title' => $prize->titol
+            ]);
+    
+            return response()->json($prize, 201);
+        } catch (\Exception $e) {
+            Log::error('Error creating prize', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'message' => 'Error al crear el premio: ' . $e->getMessage()
+            ], 500);
         }
-
-        $prize->save();
-
-        return response()->json($prize, 201);
     }
 
     /**
@@ -167,8 +225,9 @@ class PrizeController extends Controller
 
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/prizes'), $imageName);
-            $prize->image = 'uploads/prizes/' . $imageName;
+            // FIXED: Changed from 'prizes' to 'premios'
+            $image->move(public_path('uploads/premios'), $imageName);
+            $prize->image = 'uploads/premios/' . $imageName; // FIXED: Changed from 'prizes' to 'premios'
         }
 
         $prize->save();
