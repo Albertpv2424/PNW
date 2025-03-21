@@ -151,35 +151,10 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('/bets/{id}/verify', [App\Http\Controllers\Admin\BetVerificationController::class, 'verifyBet']);
 });
 
-// Admin prize routes
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/prizes', [App\Http\Controllers\Admin\PrizeController::class, 'index']);
-    Route::post('/prizes', [App\Http\Controllers\Admin\PrizeController::class, 'store']);
-    Route::get('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'show']);
-    Route::post('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'update']);
-    Route::delete('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'destroy']);
-});
-// Admin prize routes
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/prizes', [App\Http\Controllers\Admin\PrizeController::class, 'index']);
-    Route::post('/prizes', [App\Http\Controllers\Admin\PrizeController::class, 'store']);
-    Route::get('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'show']);
-    Route::post('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'update']);
-    Route::delete('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'destroy']);
-});
-// Admin prize routes
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/prizes', [App\Http\Controllers\Admin\PrizeController::class, 'index']);
-    Route::post('/prizes', [App\Http\Controllers\Admin\PrizeController::class, 'store']);
-    Route::get('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'show']);
-    Route::post('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'update']);
-    Route::delete('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'destroy']);
-});
-// Admin prize routes
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/prizes', [App\Http\Controllers\Admin\PrizeController::class, 'index']);
-    Route::post('/prizes', [App\Http\Controllers\Admin\PrizeController::class, 'store']);
-    Route::get('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'show']);
-    Route::post('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'update']);
-    Route::delete('/prizes/{id}', [App\Http\Controllers\Admin\PrizeController::class, 'destroy']);
+// Add these routes to your existing api.php file
+Route::middleware('auth:sanctum')->group(function () {
+    // User bets routes
+    Route::get('/user/bets/active', 'App\Http\Controllers\BetController@getUserActiveBets');
+    Route::get('/user/bets/history', 'App\Http\Controllers\BetController@getUserBetHistory');
+    Route::get('/user/bets/stats', 'App\Http\Controllers\BetController@getUserBetStats');
 });
