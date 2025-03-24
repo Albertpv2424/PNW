@@ -35,7 +35,7 @@
               <td>
                 <div class="user-cell">
                   <div class="user-avatar" 
-                       [style.background-image]="user.profile_image ? 'url(http://localhost:8000/' + user.profile_image + ')' : 'none'">
+                       [style.background-image]="user.profile_image ? (user.profile_image.startsWith('http') ? 'url(' + user.profile_image + ')' : 'url(http://localhost:8000/' + user.profile_image + ')') : 'none'">
                     <span *ngIf="!user.profile_image">{{ getUserInitials(user.nick) }}</span>
                   </div>
                   {{ user.nick }}
@@ -84,6 +84,18 @@
     </div>
     <div class="modal-body">
       <form [formGroup]="userForm" (ngSubmit)="submitUserForm()">
+        <!-- Add profile image preview at the top of the form -->
+        <div class="form-group profile-image-group">
+          <label>Imagen de perfil:</label>
+          <div class="profile-preview">
+            <div class="user-avatar large-avatar" 
+                 [style.background-image]="selectedUser && selectedUser.profile_image ? (selectedUser.profile_image.startsWith('http') ? 'url(' + selectedUser.profile_image + ')' : 'url(http://localhost:8000/' + selectedUser.profile_image + ')') : 'none'">
+              <span *ngIf="!selectedUser || !selectedUser.profile_image">{{ selectedUser ? getUserInitials(selectedUser.nick) : '' }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Continue with the rest of the form fields -->
         <div class="form-group">
           <label for="nick">Nick:</label>
           <input type="text" id="nick" formControlName="nick">

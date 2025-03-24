@@ -338,11 +338,24 @@ export class UsersComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // Añadir este método para obtener las iniciales del usuario
-  getUserInitials(username: string): string {
-    if (!username) return '';
-
-    const names = username.split(' ');
+  // Add this method to the UsersComponent class
+  getProfileImageUrl(imagePath: string | null): string {
+    if (!imagePath) return '';
+    
+    // Check if the image path already includes http or https
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    
+    // Otherwise, prepend the base URL
+    return `http://localhost:8000/${imagePath}`;
+  }
+  
+  // Make sure you have the getUserInitials method
+  getUserInitials(name: string): string {
+    if (!name) return '';
+    
+    const names = name.split(' ');
     if (names.length === 1) {
       return names[0].charAt(0).toUpperCase();
     } else {

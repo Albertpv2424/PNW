@@ -213,4 +213,17 @@ export class AdminService {
       headers: this.getAuthHeaders()
     });
   }
+
+  // Add this helper method after the getAuthHeaders method
+  getFullImageUrl(imagePath: string | null): string {
+    if (!imagePath) return '';
+    
+    // Check if the image path already includes http or https
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    
+    // Otherwise, prepend the base URL
+    return `http://localhost:8000/${imagePath}`;
+  }
 }
