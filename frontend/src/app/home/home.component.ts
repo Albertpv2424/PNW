@@ -52,7 +52,10 @@ export class HomeComponent implements OnInit {
     'NBA', // Added NBA and removed Ligue 1
     'UEFA Champions League',
     'UEFA Europa League',
-    'UEFA Europa Conference League'
+    'UEFA Europa Conference League',
+    'ATP Miami Open',
+    'Grand Slam & Masters 1000',
+    'MLB'
   ];
 
   // Lista de deportes permitidos
@@ -65,7 +68,9 @@ export class HomeComponent implements OnInit {
     'soccer_spain_la_liga',
     'soccer_italy_serie_a',
     'soccer_germany_bundesliga',
-    // Removed soccer_france_ligue_one
+    'tennis_atp_miami_open',
+    'tennis_grand_slam_masters_1000',
+    'baseball_mlb' // Added MLB baseball
   ];
 
   constructor(
@@ -95,7 +100,14 @@ export class HomeComponent implements OnInit {
   // Make sure this method is defined in the class
   loadFeaturedMatches() {
     // Cargar partidos destacados de diferentes ligas
-    const featuredSports = ['soccer_spain_la_liga', 'soccer_uefa_champs_league', 'basketball_nba'];
+    const featuredSports = [
+      'soccer_spain_la_liga', 
+      'soccer_uefa_champs_league', 
+      'basketball_nba',
+      'tennis_atp_miami_open', 
+      'tennis_grand_slam_masters_1000',
+      'baseball_mlb'
+    ];
 
     this.featuredMatches = []; // Limpiar los partidos destacados existentes
     let loadedCount = 0;
@@ -178,11 +190,14 @@ export class HomeComponent implements OnInit {
             'soccer_spain_la_liga': 'Spain',
             'soccer_italy_serie_a': 'Italy',
             'soccer_germany_bundesliga': 'Germany',
-            'basketball_nba': 'USA', // Updated to match the new key
+            'basketball_nba': 'USA',
+            'tennis_atp_miami_open': 'USA',
+            'tennis_grand_slam_masters_1000': 'Europe',
+            'baseball_mlb': 'USA', // Added MLB baseball
             'soccer': 'Europe',
             'soccer_uefa_champs_league': 'Europe',
             'soccer_uefa_europa_league': 'Europe',
-            'soccer_uefa_europa_conference_league': 'Europe'
+            'soccer_uefa_europa_conference_league': 'Europe',
           };
 
           return {
@@ -195,6 +210,10 @@ export class HomeComponent implements OnInit {
         this.sports = sportsWithCountries.filter(sport =>
           this.allowedSports.includes(sport.key)
         );
+        
+        // Add console log to debug available sports
+        console.log('Available sports after filtering:', this.sports);
+        
         this.loading = false;
       },
       error: (error) => {
@@ -215,25 +234,35 @@ export class HomeComponent implements OnInit {
   }
 
   loadOdds(sportKey: string) {
-    this.loading = true;
     this.selectedSportKey = sportKey;
-    this.error = ''; // Limpiar errores anteriores
-
+    this.loading = true;
+    this.error = '';
+    
     this.oddsService.getOdds(sportKey).subscribe({
       next: (data: OddEvent[]) => {
+        console.log(`Loaded odds for ${sportKey}:`, data);
+        
         // Add unique IDs to events if they don't have one
         const eventsWithIds = data.map((event, index) => ({
           ...event,
           id: event.id || `${sportKey}_${index}`
         }));
-
-        // Filtrar por ligas permitidas
-        this.odds = eventsWithIds.filter(event =>
-          this.allowedLeagues.some(league =>
-            event.sport_title?.includes(league) ||
-            event.league?.includes(league)
-          )
-        );
+    
+        // For tennis and baseball, don't filter by leagues
+        if (sportKey === 'tennis_atp_miami_open' || 
+            sportKey === 'tennis_grand_slam_masters_1000' || 
+            sportKey === 'baseball_mlb') {
+          this.odds = eventsWithIds;
+        } else {
+          // Filtrar por ligas permitidas para otros deportes
+          this.odds = eventsWithIds.filter(event =>
+            this.allowedLeagues.some(league =>
+              event.sport_title?.includes(league) ||
+              event.league?.includes(league)
+            )
+          );
+        }
+        
         this.loading = false;
       },
       error: (error) => {

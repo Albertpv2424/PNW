@@ -26,7 +26,51 @@ class OddsApiService
                 ]);
                 
                 if ($response->successful()) {
-                    return $response->json();
+                    $sports = $response->json();
+                    
+                    // Add custom sports if they don't exist in the API response
+                    $customSports = [
+                        [
+                            'key' => 'tennis_atp_miami_open',
+                            'group' => 'Tennis',
+                            'title' => 'ATP Miami Open',
+                            'description' => 'ATP Miami Open Tennis Tournament',
+                            'active' => true,
+                            'has_outrights' => false
+                        ],
+                        [
+                            'key' => 'tennis_grand_slam_masters_1000',
+                            'group' => 'Tennis',
+                            'title' => 'Grand Slam & Masters 1000',
+                            'description' => 'Tennis Grand Slam and Masters 1000 Tournaments',
+                            'active' => true,
+                            'has_outrights' => false
+                        ],
+                        [
+                            'key' => 'baseball_mlb',
+                            'group' => 'Baseball',
+                            'title' => 'MLB',
+                            'description' => 'Major League Baseball',
+                            'active' => true,
+                            'has_outrights' => false
+                        ]
+                    ];
+                    
+                    foreach ($customSports as $customSport) {
+                        $exists = false;
+                        foreach ($sports as $sport) {
+                            if ($sport['key'] === $customSport['key']) {
+                                $exists = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!$exists) {
+                            $sports[] = $customSport;
+                        }
+                    }
+                    
+                    return $sports;
                 } else {
                     Log::error('Error fetching sports data: ' . $response->body());
                     return [];

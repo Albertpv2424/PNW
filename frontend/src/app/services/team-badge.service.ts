@@ -23,6 +23,16 @@ export class TeamBadgeService {
       return `https://a.espncdn.com/i/teamlogos/nba/500/${this.getNBATeamAbbreviation(normalizedName)}.png`;
     }
     
+    // Check if it's an MLB team
+    if (this.isMLBTeam(normalizedName)) {
+      return `https://a.espncdn.com/i/teamlogos/mlb/500/${this.getMLBTeamAbbreviation(normalizedName)}.png`;
+    }
+    
+    // Check if it's a tennis player
+    if (this.isTennisPlayer(normalizedName)) {
+      return this.getTennisPlayerImage(normalizedName);
+    }
+    
     // For soccer teams, use the existing API
     const teamId = this.getTeamId(normalizedName);
     if (teamId !== 0) {
@@ -355,5 +365,52 @@ export class TeamBadgeService {
       }
     }
     return 'nba'; // Default fallback
+  }
+  
+  private isTennisPlayer(name: string): boolean {
+    // This is a simple check - you might want to improve it
+    // with a more comprehensive list of tennis players
+    const tennisPlayers = [
+      'Alcaraz', 'Sinner', 'Djokovic', 'Medvedev', 'Zverev', 
+      'Rublev', 'Hurkacz', 'Ruud', 'De Minaur', 'Tsitsipas',
+      'Fritz', 'Paul', 'Tiafoe', 'Shelton', 'Dimitrov'
+    ];
+    
+    return tennisPlayers.some(player => name.includes(player));
+  }
+  
+  private getTennisPlayerImage(playerName: string): string {
+    // Normalize the player name
+    const normalized = playerName.toLowerCase().replace(/\s+/g, '-');
+    
+    // Try to return a player-specific image, or fall back to a generic tennis player silhouette
+    return `assets/players/${normalized}.png` || 'assets/players/generic-tennis-player.png';
+  }
+
+  // Add these new methods for MLB teams
+  private isMLBTeam(normalizedName: string): boolean {
+    const mlbTeams = [
+      'new-york-yankees', 'boston-red-sox', 'toronto-blue-jays', 'baltimore-orioles', 'tampa-bay-rays',
+      'chicago-white-sox', 'cleveland-guardians', 'detroit-tigers', 'kansas-city-royals', 'minnesota-twins',
+      'houston-astros', 'los-angeles-angels', 'oakland-athletics', 'seattle-mariners', 'texas-rangers',
+      'atlanta-braves', 'miami-marlins', 'new-york-mets', 'philadelphia-phillies', 'washington-nationals',
+      'chicago-cubs', 'cincinnati-reds', 'milwaukee-brewers', 'pittsburgh-pirates', 'st-louis-cardinals',
+      'arizona-diamondbacks', 'colorado-rockies', 'los-angeles-dodgers', 'san-diego-padres', 'san-francisco-giants'
+    ];
+    
+    return mlbTeams.includes(normalizedName);
+  }
+  
+  private getMLBTeamAbbreviation(normalizedName: string): string {
+    const mlbTeamAbbreviations: {[key: string]: string} = {
+      'new-york-yankees': 'nyy', 'boston-red-sox': 'bos', 'toronto-blue-jays': 'tor', 'baltimore-orioles': 'bal', 'tampa-bay-rays': 'tb',
+      'chicago-white-sox': 'chw', 'cleveland-guardians': 'cle', 'detroit-tigers': 'det', 'kansas-city-royals': 'kc', 'minnesota-twins': 'min',
+      'houston-astros': 'hou', 'los-angeles-angels': 'laa', 'oakland-athletics': 'oak', 'seattle-mariners': 'sea', 'texas-rangers': 'tex',
+      'atlanta-braves': 'atl', 'miami-marlins': 'mia', 'new-york-mets': 'nym', 'philadelphia-phillies': 'phi', 'washington-nationals': 'wsh',
+      'chicago-cubs': 'chc', 'cincinnati-reds': 'cin', 'milwaukee-brewers': 'mil', 'pittsburgh-pirates': 'pit', 'st-louis-cardinals': 'stl',
+      'arizona-diamondbacks': 'ari', 'colorado-rockies': 'col', 'los-angeles-dodgers': 'lad', 'san-diego-padres': 'sd', 'san-francisco-giants': 'sf'
+    };
+    
+    return mlbTeamAbbreviations[normalizedName] || 'mlb';
   }
 }

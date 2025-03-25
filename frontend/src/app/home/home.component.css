@@ -599,3 +599,15 @@
 .live-matches {
   margin-bottom: 30px;
 }
+
+/* Tennis match specific styles */
+.tennis-match {
+  background-color: rgba(0, 128, 0, 0.05);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.tennis-match .team-name {
+  font-style: italic;
+  font-weight: 500;
+}
