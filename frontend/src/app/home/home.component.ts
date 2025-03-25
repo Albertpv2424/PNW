@@ -9,6 +9,8 @@ import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
 import { TeamBadgeService } from '../services/team-badge.service';
 import { HeaderComponent } from '../header/header.component';
 import { TennisPlayersService } from '../services/tennis-players.service';
+import { PredictionsService } from '../services/predictions.service';
+
 
 interface Sport {
   key: string;
@@ -27,6 +29,15 @@ interface OddEvent {
   // ... otros campos que vengan de la API
 }
 
+// Add this interface for the prizes
+interface Premio {
+  id: number;
+  titol: string;
+  descripcio: string;
+  cost: number;
+  image: string;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -41,8 +52,25 @@ export class HomeComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
   username: string = '';
-  profileImage: string | null = null; // Add this property
+  profileImage: string | null = null;
   featuredMatches: OddEvent[] = [];
+
+  // Add these missing properties
+  featuredPrizes: Premio[] = [];
+  loadingPrizes: boolean = false;
+  prizesError: string = '';
+
+  // Fix: Move these properties to class level instead of inside ngOnInit
+  featuredPromotions: any[] = [];
+  loadingPromotions: boolean = false;
+  promotionsError: string = '';
+
+  // Add promotional banner properties
+  mainPromotion = {
+    title: 'DOBLAMOS TU PRIMER DEPÓSITO',
+    subtitle: 'HASTA 200 €',
+    buttonText: 'Crear cuenta'
+  };
 
   // Lista de ligas permitidas
   allowedLeagues = [
@@ -79,8 +107,12 @@ export class HomeComponent implements OnInit {
     public authService: AuthService,
     private betSelectionsService: BetSelectionsService,
     public teamBadgeService: TeamBadgeService,
-    private router: Router,  // Add Router to constructor
-    public tennisPlayersService: TennisPlayersService // Add this line
+  // Add Router to constructor
+    public tennisPlayersService: TennisPlayersService, // Add this line
+
+    private router: Router,
+    private predictionsService: PredictionsService  // Add this service
+
   ) {}
 
   // Modificar el método ngOnInit para redirigir a los administradores
@@ -96,10 +128,12 @@ export class HomeComponent implements OnInit {
     // Continue with normal initialization for non-admin users
     this.loadSports();
     this.loadUserInfo();
-    this.loadFeaturedMatches(); // This will now work correctly
+    this.loadFeaturedMatches();
+    this.loadFeaturedPrizes(); // Add this method call
+    this.loadFeaturedPromotions(); // Add this method call
   }
 
-  // Make sure this method is defined in the class
+  // Add this method to load featured matches
   loadFeaturedMatches() {
     // Cargar partidos destacados de diferentes ligas
     const featuredSports = [
@@ -156,6 +190,82 @@ export class HomeComponent implements OnInit {
       });
     });
   }
+
+  // Add this method to load featured promotions
+  loadFeaturedPromotions() {
+    this.loadingPromotions = true;
+    this.promotionsError = '';
+    
+    this.predictionsService.getPromociones().subscribe({
+      next: (data) => {
+        // Convert API data to the format we need
+        const allPromotions = data.map((promocion: any) => ({
+          id: promocion.id,
+          titol: promocion.titol,
+          descripcio: promocion.descripcio,
+          image: promocion.image ? `http://localhost:8000/${promocion.image}` : 'assets/promociones/default.png',
+          data_inici: promocion.data_inici,
+          data_final: promocion.data_final
+        }));
+        
+        // Shuffle the promotions randomly
+        const shuffledPromotions = this.shuffleArray([...allPromotions]);
+        
+        // Take only the first 3 promotions after shuffling
+        this.featuredPromotions = shuffledPromotions.slice(0, 3);
+        this.loadingPromotions = false;
+      },
+      error: (error) => {
+        console.error('Error loading promotions:', error);
+        this.promotionsError = 'Error al cargar las promociones';
+        this.loadingPromotions = false;
+      }
+    });
+  }
+
+  // Add this method to navigate to promotions page
+  navigateToPromotions() {
+    // Navigate directly to promotions page without authentication check
+    this.router.navigate(['/promociones'], { queryParams: { public: 'true' } });
+  }
+
+  // Add this method to load featured prizes
+  loadFeaturedPrizes() {
+    this.loadingPrizes = true;
+    this.prizesError = '';
+    
+    this.predictionsService.getPremios().subscribe({
+      next: (data) => {
+        // Convert API data to the format we need
+        const allPrizes = data.map((premio: any) => ({
+          id: premio.id,
+          titol: premio.titol,
+          descripcio: premio.descripcio,
+          cost: premio.cost,
+          image: premio.image ? `http://localhost:8000/${premio.image}` : 'assets/premios/default.png'
+        }));
+        
+        // Shuffle the prizes randomly
+        const shuffledPrizes = this.shuffleArray([...allPrizes]);
+        
+        // Take only the first 3 prizes after shuffling
+        this.featuredPrizes = shuffledPrizes.slice(0, 3);
+        this.loadingPrizes = false;
+      },
+      error: (error) => {
+        console.error('Error loading prizes:', error);
+        this.prizesError = 'Error al cargar los premios';
+        this.loadingPrizes = false;
+      }
+    });
+  }
+  
+  // Update this method to navigate to prizes page without requiring login
+  navigateToPrizes() {
+    // Navigate directly to prizes page without authentication check
+    this.router.navigate(['/premios'], { queryParams: { public: 'true' } });
+  }
+  
   loadUserInfo() {
     const user = this.authService.getCurrentUser();
     if (user) {
@@ -473,6 +583,7 @@ export class HomeComponent implements OnInit {
     this.isMenuOpen = false;
   }
 
+
   // Add these methods to your HomeComponent class
 
 getSportIcon(sportKey: string): string {
@@ -489,6 +600,18 @@ getSportIcon(sportKey: string): string {
     return ''; // Default - no icon
   }
 }
+  // Make sure this method is defined in the class
+  navigateToSignup(): void {
+    this.router.navigate(['/register']);
+  }
+  
+  // Add this method to check if user is logged in
+  // Añade este método al componente
+  isLoggedIn(): boolean {
+  return this.authService.isLoggedIn();
+  
+  }
+
 
 isSoccerSport(sportKey: string): boolean {
   return sportKey.includes('soccer');

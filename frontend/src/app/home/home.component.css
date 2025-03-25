@@ -59,6 +59,7 @@
 .content-container {
   display: flex;
   flex: 1;
+  padding-top: 70px; /* Adjust this value based on your header height */
 }
 
 /* Sidebar styles */
@@ -160,11 +161,7 @@
   font-size: 12px;
 }
 
-.match-league {
-  color: #ccc;
-}
-
-.match-date {
+.match-league, .match-date {
   color: #ccc;
 }
 
@@ -212,9 +209,12 @@
 }
 
 .team-name {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
+  margin-top: 8px;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .vs {
@@ -349,22 +349,6 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Mejora para los nombres de equipos en la cabecera */
-.team-name {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 8px;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.no-odds-message {
-  text-align: center;
-  color: #999;
-  padding: 10px;
-}
-
 /* Alerts */
 .alert {
   padding: 10px 15px;
@@ -397,7 +381,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Add these styles to your existing CSS */
+/* User profile section */
 .user-profile-section {
   display: flex;
   align-items: center;
@@ -418,7 +402,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #00b341; /* Cambiado de #e63946 a #00b341 */
+  background-color: #00b341;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -443,11 +427,6 @@
   font-size: 18px;
   font-weight: bold;
   color: #333;
-}
-
-/* Add this to the top of your home component CSS */
-.content-container {
-  padding-top: 70px; /* Adjust this value based on your header height */
 }
 
 /* Nuevo diseño de cuotas similar a la imagen */
@@ -551,57 +530,6 @@
   color: white;
 }
 
-.odd-label-new {
-  font-size: 12px;
-  color: #666;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  transition: color 0.3s ease;
-}
-
-/* Ajustes para el diseño de equipos */
-.match-teams {
-  padding: 15px;
-  background-color: #23232f;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.team {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 40%;
-}
-
-.vs {
-  color: #666;
-  font-size: 14px;
-}
-
-.team-name {
-  margin-top: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-  text-align: center;
-}
-
-.team-logo {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.team-badge {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
 /* Estilos para partidos en vivo */
 .live-match-card {
   border: 1px solid #00b341;
@@ -630,6 +558,7 @@
 .live-matches {
   margin-bottom: 30px;
 }
+
 
 /* Tennis match specific styles */
 .tennis-match {
@@ -673,4 +602,308 @@
   border-radius: 50%;
   background-color: transparent;
   padding: 2px;
+}
+/* Promotional Banner Styles */
+.promo-banner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, #00b341 0%, #007c2d 100%);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.promo-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 3rem;
+}
+
+.promo-text {
+  max-width: 50%;
+  padding-left: 2rem;
+  text-align: left;
+}
+
+.promo-text h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.promo-text h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffcc00;
+  margin: 1rem 0 1.5rem 0;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.promo-button {
+  background-color: #ffffff;
+  color: #00b341;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.promo-button:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Featured prizes section */
+.featured-prizes-section {
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.view-all-btn {
+  background-color: transparent;
+  color: #00b341;
+  border: 1px solid #00b341;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-all-btn:hover {
+  background-color: #00b341;
+  color: white;
+}
+
+.prizes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.prize-card {
+  background-color: #1e1e30;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.prize-card:hover {
+  transform: translateY(-5px);
+}
+
+.prize-image {
+  height: 160px;
+  overflow: hidden;
+}
+
+.prize-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.prize-content {
+  padding: 1rem;
+}
+
+.prize-content h3 {
+  color: white;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.prize-description {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.8em;
+}
+
+.prize-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.prize-cost {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  margin-right: 0;
+}
+
+.coin-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
+
+/* Hide buttons */
+.view-prize-btn, .ver-mas {
+  display: none;
+}
+
+/* Featured promotions section - banner style */
+.featured-promotions-section {
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+}
+
+.promotions-banner-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.promotion-banner {
+  background: linear-gradient(135deg, #00b341 0%, #007c2d 100%);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.promotion-banner:hover {
+  transform: translateY(-5px);
+}
+
+.promotion-banner-content {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.promotion-banner-text {
+  flex: 2;
+  color: white;
+  padding-right: 2rem;
+}
+
+.promotion-banner-text h3 {
+  font-size: 1.8rem;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.promotion-banner-text p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.promotion-banner-image {
+  flex: 1;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.promotion-banner-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.promotion-dates {
+  display: block;
+  font-size: 0.8rem;
+  color: #ffcc00;
+  margin-top: 0.5rem;
+}
+
+/* Media queries */
+@media (max-width: 992px) {
+  .prizes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .promo-text, .promotion-banner-text {
+    max-width: 80%;
+  }
+  
+  .promo-text h1, .promotion-banner-text h3 {
+    font-size: 2rem;
+  }
+  
+  .promo-text h2 {
+    font-size: 1.5rem;
+  }
+  
+  .promotion-banner-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .promotion-banner-text {
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .prizes-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .promo-banner {
+    height: 250px;
+  }
+  
+  .promo-text {
+    max-width: 100%;
+  }
+  
+  .promo-text h1 {
+    font-size: 1.5rem;
+  }
+  
+  .promo-text h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .promo-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+  }
 }

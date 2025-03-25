@@ -4,7 +4,7 @@
 <div class="main-layout">
   <!-- Use the new header component -->
   <app-header [username]="username" (logoutEvent)="logout()"></app-header>
-
+  
   <div class="content-container">
     <!-- Left sidebar with leagues -->
     <aside class="sidebar">
@@ -30,9 +30,99 @@
         }
       </div>
     </aside>
-
+    
     <!-- Main content with matches -->
     <main class="main-content">
+      <!-- Add a main promotional banner with our slogan -->
+      <div class="promo-banner">
+        <div class="promo-content">
+          <div class="promo-text">
+            <h1>Predict and Win</h1>
+            <p class="promo-tagline">¡Predice, Gana, Disfruta! Sin riesgo, solo diversión.</p>
+            <h2>Gana premios reales sin gastar dinero</h2>
+            <button class="promo-button" (click)="navigateToPrizes()">Comienza Ahora</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured promotions section -->
+      <div class="featured-promotions-section">
+        <div class="section-header">
+          <h2>Promociones Destacadas</h2>
+          <button class="view-all-btn" (click)="navigateToPromotions()">Ver todas</button>
+        </div>
+        
+        @if (loadingPromotions) {
+          <div class="loading-spinner">Cargando promociones...</div>
+        } @else if (promotionsError) {
+          <div class="error-message">{{ promotionsError }}</div>
+        } @else if (featuredPromotions.length === 0) {
+          <div class="empty-message">No hay promociones destacadas disponibles.</div>
+        } @else {
+          <div class="promotions-banner-carousel">
+            @for (promocion of featuredPromotions; track promocion.id) {
+              <div class="promotion-banner">
+                <div class="promotion-banner-content">
+                  <div class="promotion-banner-text">
+                    <h3>{{ promocion.titol }}</h3>
+                    <p>{{ promocion.descripcio }}</p>
+                    <span class="promotion-dates">
+                      Válido: {{ promocion.data_inici | date:'dd/MM/yyyy' }} - {{ promocion.data_final | date:'dd/MM/yyyy' }}
+                    </span>
+                  </div>
+                  <div class="promotion-banner-image">
+                    <img [src]="promocion.image" [alt]="promocion.titol">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      
+      <!-- Añadir esta sección después del banner promocional y antes de "Deportes Disponibles" -->
+      <div class="featured-prizes-section">
+        <div class="section-header">
+          <h2>Premios Destacados</h2>
+          <button class="view-all-btn" (click)="navigateToPrizes()">Ver todos</button>
+        </div>
+        
+        @if (loadingPrizes) {
+          <div class="loading-spinner">Cargando premios...</div>
+        } @else if (prizesError) {
+          <div class="error-message">{{ prizesError }}</div>
+        } @else if (featuredPrizes.length === 0) {
+          <div class="empty-message">No hay premios destacados disponibles.</div>
+        } @else {
+          <div class="prizes-carousel">
+            <div class="prizes-grid">
+              @for (premio of featuredPrizes; track premio.id) {
+                <div class="prize-card">
+                  <div class="prize-image">
+                    <img [src]="premio.image" [alt]="premio.titol">
+                  </div>
+                  <div class="prize-content">
+                    <h3>{{ premio.titol }}</h3>
+                    <p class="prize-description">{{ premio.descripcio }}</p>
+                    <div class="prize-footer">
+                      <span class="prize-cost">
+                        {{ premio.cost | number:'1.0-0' }}
+                        <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
+                      </span>
+                      <button class="view-prize-btn" (click)="navigateToPrizes()">Ver más</button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Add this section after the featured prizes section -->
+      <!-- Featured prizes section remains unchanged -->
+      
+
       <h1>Deportes Disponibles</h1>
 
       <div *ngIf="error" class="alert alert-danger">
@@ -42,7 +132,7 @@
       <div *ngIf="loading" class="alert alert-info">
         Cargando datos...
       </div>
-
+      
       <!-- Partidos destacados - Nueva sección -->
       <!-- Partidos destacados - Solo se muestran cuando no hay liga seleccionada -->
       <div class="featured-matches" *ngIf="!selectedSportKey && featuredMatches.length > 0">
@@ -249,6 +339,7 @@
   <!-- match content -->
 </div>
 
+<!-- Fix the user menu by adding the closing tag -->
 <div class="user-menu" *ngIf="isMenuOpen">
   <ul>
     <li>
