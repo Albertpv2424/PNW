@@ -8,9 +8,8 @@ import { BetSelectionsService } from '../services/bet-selections.service';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
 import { TeamBadgeService } from '../services/team-badge.service';
 import { HeaderComponent } from '../header/header.component';
-
-import { TennisPlayersService } from '../services/tennis-players.service';
 import { PredictionsService } from '../services/predictions.service';
+import { TennisPlayersService } from '../services/tennis-players.service';
 
 
 
@@ -108,16 +107,10 @@ export class HomeComponent implements OnInit {
     private oddsService: OddsService,
     public authService: AuthService,
     private betSelectionsService: BetSelectionsService,
-    public teamBadgeService: TeamBadgeService,
-
-  // Add Router to constructor
+    public teamBadgeService: TeamBadgeService,// Add Router to constructor
     public tennisPlayersService: TennisPlayersService, // Add this line
-
     private router: Router,
     private predictionsService: PredictionsService  // Add this service
-
-
-
   ) {}
 
   // Modificar el método ngOnInit para redirigir a los administradores
@@ -606,14 +599,7 @@ getSportIcon(sportKey: string): string {
     return ''; // Default - no icon
   } 
 }
-  // Make sure this method is defined in the class
 
-  
-  // Add this method to check if user is logged in
-  // Añade este método al componente
- 
-
-  // Make sure this method is defined in the class
   navigateToSignup(): void {
     this.router.navigate(['/register']);
   }
@@ -622,16 +608,15 @@ getSportIcon(sportKey: string): string {
   // Añade este método al componente
   isLoggedIn(): boolean {
   return this.authService.isLoggedIn();
+} 
   
-  }
 
 
-isSoccerSport(sportKey: string): boolean {
+  isSoccerSport(sportKey: string): boolean {
   return sportKey.includes('soccer');
 }
 
-// Add these methods to display tennis player images
-// Add this method to check if a player is a tennis player
+
 isTennisPlayer(playerName: string): boolean {
   // Check if we're in a tennis sport context
   const isTennisSport = this.selectedSportKey && 
@@ -652,11 +637,11 @@ getPlayerImage(playerName: string): string {
 
 // Añade este método a tu HomeComponent
 handlePlayerImageError(event: any, playerName: string): void {
+
   console.warn(`Error loading image for player: ${playerName}`);
   // Establecer una imagen por defecto
   event.target.src = 'assets/players/default.png';
   
-  // Remove the call to handleImageError since it doesn't exist in the service
-  // Just log the error and set the default image
+
 }
 }
