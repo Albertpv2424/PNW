@@ -8,6 +8,7 @@ import { BetSelectionsService } from '../services/bet-selections.service';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
 import { TeamBadgeService } from '../services/team-badge.service';
 import { HeaderComponent } from '../header/header.component';
+import { TennisPlayersService } from '../services/tennis-players.service';
 
 interface Sport {
   key: string;
@@ -78,7 +79,8 @@ export class HomeComponent implements OnInit {
     public authService: AuthService,
     private betSelectionsService: BetSelectionsService,
     public teamBadgeService: TeamBadgeService,
-    private router: Router  // Add Router to constructor
+    private router: Router,  // Add Router to constructor
+    public tennisPlayersService: TennisPlayersService // Add this line
   ) {}
 
   // Modificar el método ngOnInit para redirigir a los administradores
@@ -125,7 +127,7 @@ export class HomeComponent implements OnInit {
               ...event,
               id: event.id || `${sportKey}_${index}`
             }));
-
+    
             // Filtrar por ligas permitidas
             const filteredEvents = eventsWithIds.filter(event =>
               this.allowedLeagues.some(league =>
@@ -250,8 +252,8 @@ export class HomeComponent implements OnInit {
     
         // For tennis and baseball, don't filter by leagues
         if (sportKey === 'tennis_atp_miami_open' || 
-            sportKey === 'tennis_grand_slam_masters_1000' || 
-            sportKey === 'baseball_mlb') {
+                sportKey === 'tennis_grand_slam_masters_1000' || 
+                sportKey === 'baseball_mlb') {
           this.odds = eventsWithIds;
         } else {
           // Filtrar por ligas permitidas para otros deportes
@@ -371,7 +373,14 @@ export class HomeComponent implements OnInit {
    * Fallback method for team logo errors
    */
   handleTeamLogoError(event: any, teamName: string): void {
-    event.target.src = this.teamBadgeService.getFallbackBadge(teamName);
+    // Check if it's a tennis player in a tennis event
+    if (this.selectedSportKey && (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'))) {
+      // Use default tennis player image
+      event.target.src = 'assets/players/default.png';
+    } else {
+      // Use team badge fallback for other sports
+      event.target.src = this.teamBadgeService.getFallbackBadge(teamName);
+    }
   }
 
   /**
@@ -485,5 +494,34 @@ isSoccerSport(sportKey: string): boolean {
   return sportKey.includes('soccer');
 }
 
+// Add these methods to display tennis player images
+// Add this method to check if a player is a tennis player
+isTennisPlayer(playerName: string): boolean {
+  // Check if we're in a tennis sport context
+  const isTennisSport = this.selectedSportKey && 
+    (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'));
+  
+  if (!isTennisSport) {
+    return false;
+  }
+  
+  // Check if the player has a custom image
+  return this.tennisPlayersService.hasCustomImage(playerName);
 }
 
+// Add this method to get the player image
+getPlayerImage(playerName: string): string {
+  return this.tennisPlayersService.getPlayerImagePath(playerName);
+}
+
+// Añade este método a tu HomeComponent
+handlePlayerImageError(event: any, playerName: string): void {
+  console.warn(`Error loading image for player: ${playerName}`);
+  // Establecer una imagen por defecto
+  event.target.src = 'assets/players/default.png';
+  
+  // Remove the call to handleImageError since it doesn't exist in the service
+  // Just log the error and set the default image
+}
+
+}

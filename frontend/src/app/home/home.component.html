@@ -58,8 +58,15 @@
 
               <div class="match-teams">
                 <div class="team home-team">
+                  <!-- For featured matches section -->
                   <div class="team-logo">
-                    <img [src]="getTeamLogo(event.home_team)"
+                    <img *ngIf="isTennisPlayer(event.home_team)" 
+                         [src]="getPlayerImage(event.home_team)"
+                         alt="{{ event.home_team }}"
+                         class="player-image"
+                         (error)="handleTeamLogoError($event, event.home_team)">
+                    <img *ngIf="!isTennisPlayer(event.home_team)"
+                         [src]="getTeamLogo(event.home_team)"
                          alt="{{ event.home_team }}"
                          class="team-badge"
                          (error)="handleTeamLogoError($event, event.home_team)">
@@ -69,7 +76,14 @@
                 <div class="vs">VS</div>
                 <div class="team away-team">
                   <div class="team-logo">
-                    <img [src]="getTeamLogo(event.away_team)"
+                    <!-- Fix: Add check for tennis player for away team -->
+                    <img *ngIf="isTennisPlayer(event.away_team)" 
+                         [src]="getPlayerImage(event.away_team)"
+                         alt="{{ event.away_team }}"
+                         class="player-image"
+                         (error)="handleTeamLogoError($event, event.away_team)">
+                    <img *ngIf="!isTennisPlayer(event.away_team)"
+                         [src]="getTeamLogo(event.away_team)"
                          alt="{{ event.away_team }}"
                          class="team-badge"
                          (error)="handleTeamLogoError($event, event.away_team)">
@@ -140,8 +154,15 @@
                   <!-- Special handling for tennis matches -->
                   <div class="match-teams" [class.tennis-match]="selectedSportKey === 'tennis_atp_miami_open'">
                     <div class="team home-team">
+                      <!-- For selected league section - home team -->
                       <div class="team-logo">
-                        <img [src]="getTeamLogo(event.home_team)"
+                        <img *ngIf="isTennisPlayer(event.home_team)" 
+                             [src]="getPlayerImage(event.home_team)"
+                             alt="{{ event.home_team }}"
+                             class="player-image"
+                             (error)="handleTeamLogoError($event, event.home_team)">
+                        <img *ngIf="!isTennisPlayer(event.home_team)"
+                             [src]="getTeamLogo(event.home_team)"
                              alt="{{ event.home_team }}"
                              class="team-badge"
                              (error)="handleTeamLogoError($event, event.home_team)">
@@ -150,8 +171,15 @@
                     </div>
                     <div class="vs">VS</div>
                     <div class="team away-team">
+                      <!-- For selected league section - away team -->
                       <div class="team-logo">
-                        <img [src]="getTeamLogo(event.away_team)"
+                        <img *ngIf="isTennisPlayer(event.away_team)" 
+                             [src]="getPlayerImage(event.away_team)"
+                             alt="{{ event.away_team }}"
+                             class="player-image"
+                             (error)="handleTeamLogoError($event, event.away_team)">
+                        <img *ngIf="!isTennisPlayer(event.away_team)"
+                             [src]="getTeamLogo(event.away_team)"
                              alt="{{ event.away_team }}"
                              class="team-badge"
                              (error)="handleTeamLogoError($event, event.away_team)">
