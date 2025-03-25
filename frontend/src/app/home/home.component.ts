@@ -8,8 +8,10 @@ import { BetSelectionsService } from '../services/bet-selections.service';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
 import { TeamBadgeService } from '../services/team-badge.service';
 import { HeaderComponent } from '../header/header.component';
+
 import { TennisPlayersService } from '../services/tennis-players.service';
 import { PredictionsService } from '../services/predictions.service';
+
 
 
 interface Sport {
@@ -107,11 +109,14 @@ export class HomeComponent implements OnInit {
     public authService: AuthService,
     private betSelectionsService: BetSelectionsService,
     public teamBadgeService: TeamBadgeService,
+
   // Add Router to constructor
     public tennisPlayersService: TennisPlayersService, // Add this line
 
     private router: Router,
     private predictionsService: PredictionsService  // Add this service
+
+
 
   ) {}
 
@@ -584,6 +589,7 @@ export class HomeComponent implements OnInit {
   }
 
 
+
   // Add these methods to your HomeComponent class
 
 getSportIcon(sportKey: string): string {
@@ -598,8 +604,15 @@ getSportIcon(sportKey: string): string {
     return '⚽'; // Soccer/Football
   } else {
     return ''; // Default - no icon
-  }
+  } 
 }
+  // Make sure this method is defined in the class
+
+  
+  // Add this method to check if user is logged in
+  // Añade este método al componente
+ 
+
   // Make sure this method is defined in the class
   navigateToSignup(): void {
     this.router.navigate(['/register']);
@@ -646,5 +659,4 @@ handlePlayerImageError(event: any, playerName: string): void {
   // Remove the call to handleImageError since it doesn't exist in the service
   // Just log the error and set the default image
 }
-
 }
