@@ -34,9 +34,21 @@ export class BetSelectionsService {
     this.selectionsSubject.next([...this.selections]);
   }
 
-  removeSelection(matchId: string) {
-    this.selections = this.selections.filter(s => s.matchId !== matchId);
-    this.selectionsSubject.next([...this.selections]);
+  removeSelection(matchId: string, teamName: string): void {
+    // Find the index of the selection to remove
+    const index = this.selections.findIndex(s => 
+      s.matchId === matchId && 
+      (s.teamName === teamName || 
+       (teamName === 'Draw' && s.teamName === 'Empate') ||
+       (s.teamName === 'Visitante' && teamName === s.teamName))
+    );
+    
+    // If found, remove it
+    if (index !== -1) {
+      this.selections.splice(index, 1);
+      this.selectionsSubject.next([...this.selections]);
+      console.log('Selection removed:', matchId, teamName);
+    }
   }
 
   clearSelections() {

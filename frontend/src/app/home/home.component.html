@@ -13,10 +13,16 @@
         @for (sport of sports; track sport.key) {
           <div class="league-item" [class.active]="selectedSportKey === sport.key" (click)="loadOdds(sport.key)">
             <div class="league-info">
-              <img [src]="getCountryFlag(sport.country)"
+              <!-- Add sport-specific icons -->
+              <span class="sport-icon" *ngIf="getSportIcon(sport.key) !== ''">{{ getSportIcon(sport.key) }}</span>
+              
+              <!-- Show country flag only for soccer leagues -->
+              <img *ngIf="isSoccerSport(sport.key)" 
+                   [src]="getCountryFlag(sport.country)"
                    [alt]="sport.country"
                    class="league-flag"
                    (error)="handleFlagError($event, sport.country)">
+              
               <span class="league-name">{{ sport.title }}</span>
             </div>
             <span class="chevron">›</span>

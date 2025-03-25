@@ -14,7 +14,7 @@
     <!-- Fixed the div structure and added trackBy -->
     <div *ngFor="let selection of selections; trackBy: trackBySelection">
       <div class="selection-item">
-        <button class="remove-button" (click)="removeSelection(selection.matchId)">×</button>
+        <button class="remove-button" (click)="removeSelection(selection.matchId, selection.teamName)">×</button>
         <div class="match-info">{{ selection.matchInfo }}</div>
         <div class="bet-info">
           <span>{{ selection.teamName }}</span>

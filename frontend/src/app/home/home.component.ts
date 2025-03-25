@@ -287,24 +287,32 @@ export class HomeComponent implements OnInit {
   // Update the openBetPopup method to accept the matchId parameter
   // Modificar el método openBetPopup para que use el servicio de selecciones
   openBetPopup(teamName: string, betType: string, odds: number, homeTeam: string, awayTeam: string, matchId: string, leagueName?: string) {
-    console.log('Abriendo popup para:', teamName, betType, odds);
+    console.log('Toggling selection for:', teamName, betType, odds);
   
     // Create a more descriptive matchInfo
     const matchInfo = leagueName 
       ? `${leagueName}: ${homeTeam} vs ${awayTeam}` 
       : `${homeTeam} vs ${awayTeam}`;
   
-    // Usamos el servicio de selecciones para apuestas combinadas
-    this.betSelectionsService.addSelection({
-      matchId,
-      teamName,
-      betType,
-      odds,
-      matchInfo,
-      homeTeam,
-      awayTeam,
-      leagueName
-    });
+    // Check if this selection is already active
+    const isActive = this.isSelectionActive(matchId, teamName);
+    
+    if (isActive) {
+      // If already selected, remove it
+      this.betSelectionsService.removeSelection(matchId, teamName);
+    } else {
+      // If not selected, add it
+      this.betSelectionsService.addSelection({
+        matchId,
+        teamName,
+        betType,
+        odds,
+        matchInfo,
+        homeTeam,
+        awayTeam,
+        leagueName
+      });
+    }
   }
 
   // Método para cerrar el pop-up
@@ -455,4 +463,27 @@ export class HomeComponent implements OnInit {
   closeMenu(): void {
     this.isMenuOpen = false;
   }
+
+  // Add these methods to your HomeComponent class
+
+getSportIcon(sportKey: string): string {
+  // Return appropriate emoji based on sport key
+  if (sportKey.includes('tennis')) {
+    return '🎾'; // Tennis ball
+  } else if (sportKey.includes('baseball') || sportKey.includes('mlb')) {
+    return '⚾'; // Baseball
+  } else if (sportKey.includes('basketball') || sportKey.includes('nba')) {
+    return '🏀'; // Basketball
+  } else if (sportKey.includes('soccer')) {
+    return '⚽'; // Soccer/Football
+  } else {
+    return ''; // Default - no icon
+  }
 }
+
+isSoccerSport(sportKey: string): boolean {
+  return sportKey.includes('soccer');
+}
+
+}
+

@@ -611,3 +611,25 @@
   font-style: italic;
   font-weight: 500;
 }
+
+.sport-icon {
+  font-size: 18px;
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.league-info {
+  display: flex;
+  align-items: center;
+}
+
+/* Adjust the flag styling to work with the new layout */
+.league-flag {
+  width: 20px;
+  height: 15px;
+  margin-right: 8px;
+  border-radius: 2px;
+  object-fit: cover;
+}

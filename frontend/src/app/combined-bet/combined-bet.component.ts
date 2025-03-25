@@ -43,8 +43,19 @@ export class CombinedBetComponent implements OnInit {
     });
   }
 
-  removeSelection(matchId: string) {
-    this.betSelectionsService.removeSelection(matchId);
+  removeSelection(matchId: string, teamName?: string) {
+    // If teamName is not provided, get it from the selections
+    if (!teamName) {
+      const selection = this.selections.find(s => s.matchId === matchId);
+      if (selection) {
+        teamName = selection.teamName;
+      } else {
+        console.error('Selection not found for matchId:', matchId);
+        return;
+      }
+    }
+    
+    this.betSelectionsService.removeSelection(matchId, teamName);
   }
 
   clearSelections() {
