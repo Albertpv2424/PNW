@@ -144,125 +144,85 @@
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.match-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.match-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  background-color: #2a2a3c;
-  font-size: 12px;
-}
-
-.match-league {
-  color: #ccc;
-}
-
-.match-date {
-  color: #ccc;
-}
-
-.match-teams {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background-color: #23232f;
-  position: relative;
-}
-
-.match-teams:after {
-  content: "VS";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: #666;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.team {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 45%;
-  padding: 10px;
 }
 
-.team-logo {
-  width: 40px;
-  height: 40px;
-  margin-bottom: 8px;
+/* Fix for the odds section */
+.match-odds-new {
+  background-color: #1e1e2d;
+  border-top: 1px solid #2a2a3c;
+  padding: 0;
+  margin: 0;
+  height: 70px; /* Fixed height */
+}
+
+.odds-container-new {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.odd-column {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  border-right: 1px solid #2a2a3c;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.odd-column:last-child {
+  border-right: none;
+}
+
+.odd-column.active {
+  background-color: #00b341;
+}
+
+/* Position the label at the top */
+.odd-label-new {
+  position: absolute;
+  top: -25%; /* Keeping it high but not too high */
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px; /* Slightly smaller font */
+  color: #666;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.odd-column.active .odd-label-new {
+  color: white;
+}
+
+/* Position the odds value in the center-bottom */
+.odd-button-new {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.team-badge {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.team-name {
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.vs {
-  font-size: 14px;
-  color: #666;
-  font-weight: bold;
-}
-
-.home-team {
-  text-align: right;
-}
-
-.away-team {
-  text-align: left;
-}
-
-/* Estilos mejorados para las cuotas */
-.match-odds-improved {
-  padding: 0;
-  background-color: #2a2a3c;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
-.odds-container-improved {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.odd-button-improved {
-  flex: 1;
-  background-color: #23232f;
+  background: transparent;
   border: none;
-  padding: 15px 10px;
-  color: white;
+  color: #00b341;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
-  text-align: center;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 0;
-  position: relative;
-  overflow: hidden;
-  margin: 0 1px;
+  padding-top: 15px; /* Adjusted to keep the number centered but below the label */
+}
+
+.odd-column.active .odd-button-new {
+  color: white;
+}
+
+.odd-button-new:hover {
+  transform: scale(1.05);
 }
 
 .odd-button-improved:hover {
@@ -566,6 +526,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 140px; /* Fixed height for the teams section */
 }
 
 .team {
@@ -573,210 +534,44 @@
   flex-direction: column;
   align-items: center;
   width: 40%;
+  height: 100px; /* Fixed height for team containers */
 }
 
-.vs {
-  color: #666;
-  font-size: 14px;
-}
-
-/* Actualizar las propiedades de fuente en el componente Home */
 .team-name {
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
   margin-top: 8px;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.match-league, .match-date {
-  font-family: 'Poppins', sans-serif;
-  font-size: 12px;
-  color: #ccc;
-}
-
-.odd-value-improved {
-  font-family: 'Poppins', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: #00b341;
-  transition: all 0.3s ease;
-}
-
-.odd-button-improved:first-child::before {
-  content: 'LOCAL';
-  font-size: 10px;
-  color: #ccc;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.odd-button-improved:nth-child(2)::before {
-  content: 'EMPATE';
-  font-size: 10px;
-  color: #ccc;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.odd-button-improved:last-child::before {
-  content: 'VISITANTE';
-  font-size: 10px;
-  color: #ccc;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.odd-button-improved:hover .odd-value-improved {
-  transform: scale(1.05);
-}
-
-.odd-button-improved:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 25%;
-  height: 50%;
-  width: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Mejora para el mensaje de no cuotas */
-.no-odds-message {
-  text-align: center;
-  color: #999;
-  padding: 15px;
-  font-style: italic;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Mejora para los nombres de equipos en la cabecera */
-.team-name {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
-  text-align: center;
-  margin-top: 8px;
   color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.no-odds-message {
   text-align: center;
-  color: #999;
-  padding: 10px;
-}
-
-/* Alerts */
-.alert {
-  padding: 10px 15px;
-  margin-bottom: 15px;
-  border-radius: 4px;
-}
-
-.alert-danger {
-  background-color: rgba(255, 68, 68, 0.2);
-  color: #ff4444;
-}
-
-.alert-info {
-  background-color: rgba(0, 123, 255, 0.2);
-  color: #0099ff;
-}
-
-.league-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 5px;
-}
-
-.league-flag {
-  width: 24px;
-  height: 16px;
-  object-fit: cover;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-/* Add these styles to your existing CSS */
-.user-profile-section {
-  display: flex;
-  align-items: center;
-  margin: 20px 0;
-  padding: 15px;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.profile-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* Cambiar el color del perfil */
-.profile-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #00b341; /* Cambiado de #e63946 a #00b341 */
-  background-size: cover;
-  background-position: center;
+  height: 40px; /* Fixed height for team names */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
-.user-info {
+.team-logo {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.match-odds-new {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-}
-
-.welcome-text {
-  font-size: 14px;
-  color: #888;
-}
-
-.username {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* Add this to the top of your home component CSS */
-.content-container {
-  padding-top: 70px; /* Adjust this value based on your header height */
-}
-
-/* Nuevo diseño de cuotas similar a la imagen */
-.match-odds-new {
-  background-color: #1e1e2d;
-  border-top: 1px solid #2a2a3c;
-  padding: 0;
-  margin-top: 0;
+  min-height: 80px; /* Minimum height for odds section */
 }
 
 .odds-container-new {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  height: 100%; /* Make odds container fill available space */
 }
 
 .odd-column {
@@ -784,11 +579,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-right: 1px solid #2a2a3c;
-  padding: 8px 0;
-  transition: all 0.3s ease;
-  position: relative;
-  cursor: pointer;
+  justify-content: center;
+  height: 100%; /* Make columns fill the container */
+  min-height: 60px;
 }
 
 .odd-column.active,
@@ -881,6 +674,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 140px; /* Fixed height for the teams section */
 }
 
 .team {

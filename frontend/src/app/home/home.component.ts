@@ -56,7 +56,8 @@ export class HomeComponent implements OnInit {
     'UEFA Europa Conference League',
     'ATP Miami Open',
     'Grand Slam & Masters 1000',
-    'MLB'
+    'MLB',
+    'EuroLeague' // Added EuroLeague Basketball
   ];
 
   // Lista de deportes permitidos
@@ -71,7 +72,8 @@ export class HomeComponent implements OnInit {
     'soccer_germany_bundesliga',
     'tennis_atp_miami_open',
     'tennis_grand_slam_masters_1000',
-    'baseball_mlb' // Added MLB baseball
+    'baseball_mlb', // Added MLB baseball
+    'basketball_euroleague' // Added EuroLeague Basketball
   ];
 
   constructor(
@@ -108,9 +110,11 @@ export class HomeComponent implements OnInit {
       'basketball_nba',
       'tennis_atp_miami_open', 
       'tennis_grand_slam_masters_1000',
-      'baseball_mlb'
+      'baseball_mlb',
+      'basketball_euroleague' // Added EuroLeague Basketball
     ];
 
+    // Rest of the method remains unchanged
     this.featuredMatches = []; // Limpiar los partidos destacados existentes
     let loadedCount = 0;
     const maxFeaturedMatches = 6; // Aumentamos a 6 partidos destacados
@@ -250,10 +254,11 @@ export class HomeComponent implements OnInit {
           id: event.id || `${sportKey}_${index}`
         }));
     
-        // For tennis and baseball, don't filter by leagues
+        // For tennis, baseball, and basketball_euroleague, don't filter by leagues
         if (sportKey === 'tennis_atp_miami_open' || 
                 sportKey === 'tennis_grand_slam_masters_1000' || 
-                sportKey === 'baseball_mlb') {
+                sportKey === 'baseball_mlb' ||
+                sportKey === 'basketball_euroleague') {
           this.odds = eventsWithIds;
         } else {
           // Filtrar por ligas permitidas para otros deportes
@@ -329,15 +334,6 @@ export class HomeComponent implements OnInit {
       amount: betData.amount,
       potentialWin: betData.amount * betData.odds
     });
-
-    // Aquí implementarías la lógica para enviar la apuesta al backend
-    // Por ejemplo:
-    // this.betService.placeBet({
-    //   teamName: this.selectedBet.teamName,
-    //   betType: this.selectedBet.betType,
-    //   odds: this.selectedBet.odds,
-    //   amount: betData.amount
-    // }).subscribe(...)
   }
 
   // Añadir este método para verificar si una selección está activa
@@ -475,19 +471,26 @@ export class HomeComponent implements OnInit {
 
   // Add these methods to your HomeComponent class
 
+// Add this method to handle sport selection
+selectSport(sportKey: string): void {
+// Call the existing loadOdds method which already sets selectedSportKey
+this.loadOdds(sportKey);
+}
+
+// Update the getSportIcon method to include flags for all sports
 getSportIcon(sportKey: string): string {
-  // Return appropriate emoji based on sport key
-  if (sportKey.includes('tennis')) {
-    return '🎾'; // Tennis ball
-  } else if (sportKey.includes('baseball') || sportKey.includes('mlb')) {
-    return '⚾'; // Baseball
-  } else if (sportKey.includes('basketball') || sportKey.includes('nba')) {
-    return '🏀'; // Basketball
-  } else if (sportKey.includes('soccer')) {
-    return '⚽'; // Soccer/Football
-  } else {
-    return ''; // Default - no icon
-  }
+// Return appropriate emoji based on sport key
+if (sportKey.includes('tennis')) {
+return '🎾'; // Tennis ball
+} else if (sportKey.includes('baseball') || sportKey.includes('mlb')) {
+return '⚾'; // Baseball
+} else if (sportKey.includes('basketball') || sportKey.includes('nba') || sportKey.includes('euroleague')) {
+return '🏀'; // Basketball
+} else if (sportKey.includes('soccer')) {
+return '⚽'; // Soccer/Football
+} else {
+return ''; // Default - no icon
+}
 }
 
 isSoccerSport(sportKey: string): boolean {
