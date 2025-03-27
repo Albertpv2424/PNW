@@ -21,7 +21,9 @@
         } @else {
           <div class="promociones-grid">
             @for (promocion of promociones; track promocion.id) {
-              <div class="promocion-card">
+              <div class="promocion-card" 
+                   [class.expired]="promocion.isExpired"
+                   [class.inscrito]="promocion.isInscrito">
                 <div class="promocion-image">
                   <img [src]="promocion.image" [alt]="promocion.title" (error)="handleImageError($event, promocion)">
                 </div>
@@ -32,7 +34,11 @@
                   <div class="promocion-dates">
                     <span>Válido: {{ formatDate(promocion.startDate) }} - {{ formatDate(promocion.endDate) }}</span>
                   </div>
-                  <button class="inscribir-button" (click)="onInscribir(promocion.id)">{{ promocion.buttonText }}</button>
+                  <button class="inscribir-button" 
+                          (click)="onInscribir(promocion.id)"
+                          [disabled]="promocion.isInscrito || promocion.isExpired">
+                    {{ promocion.buttonText }}
+                  </button>
                 </div>
               </div>
             }
