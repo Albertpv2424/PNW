@@ -82,182 +82,273 @@ export class TeamBadgeService {
       'chelsea': 49,
       'arsenal': 42,
       'tottenham': 47,
+      'west-ham': 48,
+      'leicester': 46,
+      'everton': 45,
       'aston-villa': 66,
       'newcastle': 34,
-      'west-ham': 48,
-      'brighton': 51,
-      'crystal-palace': 52,
-      'brentford': 55,
-      'fulham': 36,
       'wolves': 39,
+      'crystal-palace': 52,
+      'southampton': 41,
+      'brighton': 51,
+      'brentford': 55,
+      'leeds': 63,
+      'burnley': 44,
+      'watford': 38,
+      'norwich': 71,
+      'fulham': 36,
       'bournemouth': 35,
       'nottingham-forest': 65,
-      'everton': 45,
-      'leicester': 46,
-      'southampton': 41,
-      'burnley': 44,
-      'ipswich': 60,
-      'luton': 1359,
       'sheffield-united': 62,
+      'luton-town': 1359,
+      'ipswich-town': 677,
       
       // Serie A (Italia)
       'juventus': 496,
-      'milan': 489,
       'inter': 505,
+      'milan': 489,
       'napoli': 492,
       'roma': 497,
       'lazio': 487,
       'atalanta': 499,
       'fiorentina': 502,
-      'bologna': 500,
       'torino': 503,
-      'monza': 1579,
-      'udinese': 494,
       'sassuolo': 488,
-      'empoli': 511,
-      'salernitana': 514,
-      'lecce': 867,
       'verona': 504,
+      'bologna': 500,
+      'empoli': 511,
+      'sampdoria': 498,
+      'udinese': 494,
+      'venezia': 517,
       'cagliari': 490,
+      'spezia': 515,
+      'salernitana': 514,
+      'cremonese': 520,
+      'monza': 1579,
+      'lecce': 867,
       'genoa': 495,
-      'como': 517,
-      'venezia': 607,
+      'como': 522,
       'parma': 523,
       
       // Bundesliga (Alemania)
       'bayern-munich': 157,
       'borussia-dortmund': 165,
-      'bayer-leverkusen': 168,
       'rb-leipzig': 173,
-      'eintracht-frankfurt': 169,
+      'bayer-leverkusen': 168,
       'wolfsburg': 161,
+      'eintracht-frankfurt': 169,
       'borussia-monchengladbach': 163,
       'hoffenheim': 167,
+      'stuttgart': 172,
       'freiburg': 160,
       'mainz': 164,
-      'union-berlin': 182,
       'koln': 192,
+      'union-berlin': 182,
       'hertha-berlin': 159,
       'augsburg': 170,
-      'stuttgart': 172,
-      'werder-bremen': 162,
+      'arminia-bielefeld': 188,
       'bochum': 176,
-      'holstein-kiel': 178,
-      'heidenheim': 188,
+      'greuther-furth': 178,
+      'werder-bremen': 162,
+      'schalke': 174,
+      'holstein-kiel': 175,
+      'heidenheim': 180,
       'st-pauli': 189,
       
-      // Ligue 1 (Francia)
-      'paris-saint-germain': 85,
-      'marseille': 81,
-      'lyon': 80,
-      'monaco': 91,
+      // Champions League y Europa League
+      'psg': 85,
+      // 'manchester-city': 50, // Removed duplicate
+      // 'real-madrid': 541, // Removed duplicate
+      // 'bayern-munich': 157, // Removed duplicate
+      // 'liverpool': 40, // Removed duplicate
+      // 'barcelona': 529, // Removed duplicate
+      // 'juventus': 496, // Removed duplicate
+      // 'atletico-madrid': 530, // Removed duplicate
+      // 'chelsea': 49, // Removed duplicate
+      // 'borussia-dortmund': 165, // Removed duplicate
+      'porto': 212,
+      'ajax': 194,
+      'benfica': 211,
+      // 'rb-leipzig': 173, // Removed duplicate
+      // 'atalanta': 499, // Removed duplicate
+      // 'sevilla': 536, // Removed duplicate
+      // 'inter': 505, // Removed duplicate
+      // 'napoli': 492, // Removed duplicate
+      // 'milan': 489, // Removed duplicate
+      // 'arsenal': 42, // Removed duplicate
+      // 'tottenham': 47, // Removed duplicate
+      // 'roma': 497, // Removed duplicate
+      // 'lazio': 487, // Removed duplicate
+      // 'villarreal': 533, // Removed duplicate
+      'salzburg': 571,
+      'shakhtar-donetsk': 550,
+      'zenit': 596,
       'lille': 79,
+      'sporting-cp': 228,
+      'club-brugge': 569,
+      'dinamo-zagreb': 620,
+      'young-boys': 565,
+      'malmo-ff': 576,
+      'sheriff-tiraspol': 568,
+      'besiktas': 645,
+      'dynamo-kyiv': 597,
+      'psv': 197,
+      'feyenoord': 196,
+      'rangers': 257,
+      'celtic': 247,
+      'olympiacos': 553,
+      'crvena-zvezda': 598,
+      'slavia-prague': 567,
+      'sparta-prague': 593,
+      'midtjylland': 583,
+      'bodo-glimt': 710,
+      'galatasaray': 645,
+      'fenerbahce': 611,
+      'monaco': 91,
+      'lyon': 80,
+      'marseille': 81,
       'rennes': 94,
       'nice': 84,
       'lens': 116,
       'strasbourg': 95,
+      'nantes': 83,
       'reims': 93,
       'montpellier': 82,
-      'toulouse': 96,
-      'nantes': 83,
       'angers': 77,
-      'clermont': 99,
       'brest': 106,
+      'troyes': 110,
+      'lorient': 97,
+      'clermont-foot': 99,
       'metz': 112,
-      'le-havre': 78,
-      'auxerre': 108,
       'saint-etienne': 1063,
+      'bordeaux': 78,
+      'auxerre': 96,
+      'toulouse': 101, // Fixed duplicate - changed ID from 96 to 101
+      'ajaccio': 98,
       
-      // Champions League
- 
-      'porto': 212,
-      'benfica': 211,
-      'psv': 197,
-      'feyenoord': 196,
-      'celtic': 247,
-      'red-star-belgrade': 598,
-      'salzburg': 571,
-      'shakhtar': 550,
-      'young-boys': 565,
-      'copenhagen': 400,
-      'braga': 214,
-      'sparta-prague': 628,
-      'dinamo-zagreb': 620,
-      'slovan-bratislava': 651,
-      'antwerp': 1393,
-
-      'galatasaray': 645,
-      
-      // Europa League
-
-      'ajax': 194,
-
-      'rangers': 248,
-      'olympiacos': 553,
-      'qarabag': 556,
-      'maccabi-tel-aviv': 605,
-      'slavia-prague': 567,
-      'paok': 619,
-      'fenerbahce': 611,
-
-      
-      // Conference League
-
+      // Equipos adicionales de otras ligas
+      // 'ajax': 194, // Removed duplicate
+      // 'psv': 197, // Removed duplicate
+      // 'feyenoord': 196, // Removed duplicate
       'az-alkmaar': 195,
+      // 'porto': 212, // Removed duplicate
+      // 'benfica': 211, // Removed duplicate
+      // 'sporting-cp': 228, // Removed duplicate
+      'braga': 214,
+      // 'celtic': 247, // Removed duplicate
+      // 'rangers': 257, // Removed duplicate
+      'aberdeen': 258,
+      'hearts': 260,
+      'anderlecht': 554,
+      // 'club-brugge': 569, // Removed duplicate
       'gent': 631,
-      'club-brugge': 569,
-      'rapid-wien': 574,
+      'standard-liege': 733,
+      // 'olympiacos': 553, // Removed duplicate
+      'panathinaikos': 617,
+      'aek-athens': 557,
+      'paok': 619,
+      // 'galatasaray': 645, // Removed duplicate
+      // 'fenerbahce': 611, // Removed duplicate
+      // 'besiktas': 645, // Removed duplicate - this is a duplicate with galatasaray
+      'besiktas-istanbul': 571, // Added with different key
+      'trabzonspor': 610,
+      'basel': 555,
+      // 'young-boys': 565, // Removed duplicate
+      'zurich': 556,
+      'lugano': 605,
+      // 'slavia-prague': 567, // Removed duplicate
+      // 'sparta-prague': 593, // Removed duplicate
       'viktoria-plzen': 566,
-      'ludogorets': 566,
-      'apoel': 578,
-      'legia-warsaw': 357,
-      'fc-copenhagen': 400,
-      'molde': 329,
-      'bodo-glimt': 327,
-      // NBA Teams
-      'boston-celtics': 2,
-      'brooklyn-nets': 3,
-      'new-york-knicks': 24,
-      'philadelphia-76ers': 27,
-      'toronto-raptors': 38,
-      'chicago-bulls': 6,
-      'cleveland-cavaliers': 7,
-      'detroit-pistons': 10,
-      'indiana-pacers': 15,
-      'milwaukee-bucks': 21,
-      'atlanta-hawks': 1,
-      'charlotte-hornets': 5,
-      'miami-heat': 20,
-      'orlando-magic': 26,
-      'washington-wizards': 41,
-      'denver-nuggets': 9,
-      'minnesota-timberwolves': 22,
-      'oklahoma-city-thunder': 25,
-      'portland-trail-blazers': 29,
-      'utah-jazz': 40,
-      'golden-state-warriors': 14,
-      'la-clippers': 16,
-      'los-angeles-lakers': 17,
-      'phoenix-suns': 28,
-      'sacramento-kings': 30,
-      'dallas-mavericks': 8,
-      'houston-rockets': 14,
-      'memphis-grizzlies': 19,
-      'new-orleans-pelicans': 23,
-      'san-antonio-spurs': 31,
-    };
-    
-    // Buscar coincidencias parciales
-    for (const [key, id] of Object.entries(teamIds)) {
-      if (normalizedName.includes(key)) {
-        return id;
-      }
-    }
-    
-    // ID por defecto si no se encuentra (logo genérico)
-    return 0;
+      'legia-warsaw': 543,
+      'lech-poznan': 572,
+      // 'dinamo-zagreb': 620, // Removed duplicate
+      'hajduk-split': 621,
+      'rijeka': 628,
+      'red-bull-salzburg': 571,
+      'rapid-wien': 574,
+      'sturm-graz': 578,
+      'austria-wien': 600,
+      // 'shakhtar-donetsk': 550, // Removed duplicate
+      // 'dynamo-kyiv': 597, // Removed duplicate
+      // 'zenit': 596, // Removed duplicate
+      'spartak-moscow': 558,
+      'cska-moscow': 611, // Changed ID to avoid duplicate
+      'lokomotiv-moscow': 599, // Changed ID to avoid duplicate
+      'krasnodar': 627,
+      'rostov': 628,
+      'boca-juniors': 451,
+      'river-plate': 452,
+      'flamengo': 127,
+      'palmeiras': 128,
+      'santos': 135,
+      'sao-paulo': 131,
+      'corinthians': 133,
+      'gremio': 130,
+      'internacional': 129,
+      'atletico-mineiro': 134,
+      'america': 2283,
+      'cruz-azul': 2284,
+      'guadalajara': 2285,
+      'monterrey': 2287,
+      'tigres': 2290,
+      'pumas-unam': 2288,
+      'al-hilal': 2932,
+      'al-nassr': 2931,
+      'al-ahli': 2933,
+      'al-ittihad': 2934,
+      'al-shabab': 2935,
+      'guangzhou-evergrande': 3300,
+      'shanghai-sipg': 3301,
+      'beijing-guoan': 3302,
+      'jiangsu-suning': 3303,
+      'shandong-luneng': 3304,
+      'kashima-antlers': 3350,
+      'urawa-red-diamonds': 3351,
+      'kawasaki-frontale': 3352,
+      'gamba-osaka': 3353,
+      'vissel-kobe': 3354,
+      'sydney-fc': 3400,
+      'melbourne-victory': 3401,
+      'melbourne-city': 3402,
+      'adelaide-united': 3403,
+      'western-sydney': 3404,
+      'los-angeles-fc': 2581,
+      'la-galaxy': 2582,
+      'seattle-sounders': 2583,
+      'toronto-fc': 2584,
+      'atlanta-united': 2585,
+      'new-york-city': 2586,
+      'new-york-red-bulls': 2587,
+      'portland-timbers': 2588,
+      'inter-miami': 2589,
+      'orlando-city': 2590,
+      'dc-united': 2591,
+      'chicago-fire': 2592,
+      'columbus-crew': 2593,
+      'philadelphia-union': 2594,
+      'fc-cincinnati': 2595,
+      'minnesota-united': 2596,
+      'nashville-sc': 2597,
+      'austin-fc': 2598,
+      'charlotte-fc': 2599,
+      'st-louis-city': 2600
+  };
+  
+  // Buscar coincidencias exactas primero
+  if (teamIds[normalizedName]) {
+    return teamIds[normalizedName];
   }
   
+  // Si no hay coincidencia exacta, buscar coincidencias parciales
+  for (const team in teamIds) {
+    if (normalizedName.includes(team) || team.includes(normalizedName)) {
+      return teamIds[team];
+    }
+  }
+  
+  return 0; // No se encontró coincidencia
+}
+
   /**
    * Método alternativo usando otra API gratuita
    */
@@ -293,26 +384,53 @@ export class TeamBadgeService {
   /**
    * Método de respaldo usando SVG generados
    */
+  /**
+   * Proporciona un escudo genérico basado en el nombre del equipo
+   * @param teamName Nombre del equipo
+   * @returns URL de un escudo genérico
+   */
   getFallbackBadge(teamName: string): string {
-    // Obtener iniciales del equipo
-    const initials = teamName
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .substring(0, 2)
-      .toUpperCase();
+    // Primero intentamos con un servicio alternativo para equipos de fútbol
+    if (!this.isNBATeam(teamName.toLowerCase()) && !this.isMLBTeam(teamName.toLowerCase())) {
+      // Intentar con el servicio de Football Data
+      const normalizedName = teamName.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, '-');
+      
+      // Intentar con PES Database (alternativa para equipos de fútbol)
+      return `https://www.pesmaster.com/pes-2023/graphics/teamlogos/${normalizedName}.png`;
+    }
     
-    // Generar color basado en el nombre del equipo
-    const hash = teamName.split('').reduce((acc, char) => {
-      return char.charCodeAt(0) + ((acc << 5) - acc);
-    }, 0);
+    // Si no es un equipo de fútbol o no se encuentra, usar un escudo genérico
+    const firstLetter = teamName.charAt(0).toUpperCase();
+    const color = this.getColorFromName(teamName);
     
-    const color = `#${Math.abs(hash).toString(16).substring(0, 6).padStart(6, '0')}`;
-    
-    // Crear SVG data URL
-    return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='${color.replace('#', '%23')}'/%3E%3Ctext x='20' y='25' font-family='Arial' font-size='14' fill='white' text-anchor='middle'%3E${initials}%3E%3E`;
+    // Generar un SVG con la inicial del equipo
+    return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="${color}" /><text x="50" y="65" font-family="Arial" font-size="50" font-weight="bold" text-anchor="middle" fill="white">${firstLetter}</text></svg>`;
   }
 
+  /**
+   * Genera un color basado en el nombre del equipo
+   * @param name Nombre del equipo
+   * @returns Código de color hexadecimal para usar en SVG
+   */
+  private getColorFromName(name: string): string {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    const colors = [
+      '%2334495e', '%232980b9', '%239b59b6', '%2316a085', 
+      '%23c0392b', '%23f39c12', '%23d35400', '%23192a56',
+      '%23273c75', '%236c5ce7', '%23e84118', '%230097e6'
+    ];
+    
+    // Usar el hash para seleccionar un color de la lista
+    const index = Math.abs(hash) % colors.length;
+    return colors[index];
+  }
+  
   private isNBATeam(normalizedName: string): boolean {
     const nbaTeams = [
       'celtics', 'nets', 'knicks', '76ers', 'raptors', 'bulls', 'cavaliers',

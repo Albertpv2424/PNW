@@ -445,8 +445,10 @@ export class HomeComponent implements OnInit {
   /**
    * Handles flag loading errors
    */
-  handleFlagError(event: any, country?: string): void {
-    // Set a default flag icon or hide the element
+  // Add this method if it doesn't exist
+  handleFlagError(event: any, country: string): void {
+    console.error(`Error loading flag for ${country}`);
+    // Set a default flag or hide the image
     event.target.style.display = 'none';
   }
 
