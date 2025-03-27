@@ -10,16 +10,109 @@ export class TeamBadgeService {
   /**
    * Obtiene la URL del escudo de un equipo usando API-Football
    * @param teamName Nombre del equipo
+   * @param context Contexto opcional (liga, competición)
    * @returns URL del escudo del equipo
    */
-  getTeamBadgeUrl(teamName: string): string {
+  getTeamBadgeUrl(teamName: string, context?: string): string {
     // Normalizar el nombre del equipo
     const normalizedName = teamName.toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       .replace(/\s+/g, '-');
     
+    // Caso especial para Bayern Munich - siempre usar la API con ID 157
+    // independientemente del contexto (fútbol o baloncesto)
+    if (normalizedName.includes('bayern') || normalizedName.includes('munich')) {
+      return `https://media.api-sports.io/football/teams/157.png`;
+    }
+    
+    // Casos especiales basados en el contexto
+    if (context) {
+      const contextLower = context.toLowerCase();
+      
+      // Contexto de Euroliga (baloncesto)
+      if (contextLower.includes('euroliga') || contextLower.includes('euroleague') || 
+          contextLower.includes('basket') || contextLower.includes('baloncesto')) {
+        
+        // Milano en contexto de baloncesto
+        if (normalizedName.includes('milan') || normalizedName.includes('olimpia') || normalizedName.includes('pallacanestro')) {
+          console.log('Detectado Milano en contexto de baloncesto:', normalizedName);
+          return 'assets/teams/milano-basket.png';
+        }
+        
+        // Paris en contexto de baloncesto
+        if (normalizedName.includes('paris') || normalizedName.includes('psg')) {
+          return 'assets/teams/paris-basket.png';
+        }
+        
+        // Bologna en contexto de baloncesto
+        if (normalizedName.includes('bologna')) {
+          return 'assets/teams/virtus-bologna.png';
+        }
+      }
+      
+      // Contexto de fútbol (Bundesliga, Champions, etc.)
+      if (contextLower.includes('bundesliga') || contextLower.includes('champions') || 
+          contextLower.includes('football') || contextLower.includes('futbol') || 
+          contextLower.includes('serie a') || contextLower.includes('ligue 1')) {
+        
+        // Caso especial para distinguir entre AC Milan e Inter Milan
+        if (normalizedName.includes('milan') || normalizedName.includes('inter')) {
+          // Si es Inter Milan (también conocido como Internazionale Milano)
+          if (normalizedName.includes('inter') || normalizedName.includes('internazionale')) {
+            return `https://media.api-sports.io/football/teams/505.png`;
+          }
+          // Si es solo Milan (AC Milan)
+          if (normalizedName === 'milan' || normalizedName.includes('ac-milan')) {
+            return `https://media.api-sports.io/football/teams/489.png`;
+          }
+        }
+        
+        // Para otros equipos de fútbol, usar la API
+        const teamId = this.getTeamId(normalizedName);
+        if (teamId !== 0) {
+          return `https://media.api-sports.io/football/teams/${teamId}.png`;
+        }
+      }
+    }
+    
+    // Casos especiales basados en el nombre
+    // Casos especiales basados en el nombre
+    if (normalizedName.includes('basket') || normalizedName.includes('baloncesto')) {
+      // Bayern Munich de baloncesto - usar la API igual que el de fútbol
+      if (normalizedName.includes('bayern') || normalizedName.includes('munich')) {
+        return `https://media.api-sports.io/football/teams/157.png`;
+      }
+      
+      // Milano de baloncesto
+      if (normalizedName.includes('milan') || normalizedName.includes('olimpia')) {
+        return 'assets/teams/milano.png';
+      }
+      
+      // Paris de baloncesto
+      if (normalizedName.includes('paris') || normalizedName.includes('psg')) {
+        return 'assets/teams/paris-basket.png';
+      }
+      
+      // Virtus Bologna de baloncesto
+      if (normalizedName.includes('bologna')) {
+        return 'assets/teams/virtus-bologna.png';
+      }
+    }
+    
+    // Caso especial para distinguir entre AC Milan e Inter Milan
+    if (normalizedName.includes('milan') || normalizedName.includes('inter')) {
+      // Si es Inter Milan (también conocido como Internazionale Milano)
+      if (normalizedName.includes('inter') || normalizedName.includes('internazionale')) {
+        return `https://media.api-sports.io/football/teams/505.png`;
+      }
+      // Si es solo Milan (AC Milan)
+      if (normalizedName === 'milan' || normalizedName.includes('ac-milan')) {
+        return `https://media.api-sports.io/football/teams/489.png`;
+      }
+    }
+    
     // First check if we have a local image for this team
-    if (this.hasLocalTeamImage(normalizedName)) {
+    if (this.hasLocalTeamImage(normalizedName, context)) {
       return this.getLocalTeamImageUrl(normalizedName);
     }
     
@@ -53,13 +146,13 @@ export class TeamBadgeService {
    * @param normalizedName Nombre normalizado del equipo
    * @returns true si existe una imagen local
    */
-  private hasLocalTeamImage(normalizedName: string): boolean {
+  private hasLocalTeamImage(normalizedName: string, context?: string): boolean {
     // Lista de equipos con imágenes locales
     const localTeams = [
-      // Euroliga
-      'asvel-lyon', 'zalgiris', 'monaco', 'milano', 'munich', 
-      'partizan', 'anadolu', 'maccabi', 'baskonia', 'alba', 
-      'bologna', 'paris',
+      // Euroliga (baloncesto)
+      'asvel-lyon', 'zalgiris', 'monaco-basket', 'milano', 
+      'partizan', 'anadolu', 'maccabi', 
+      'baskonia', 'alba', 'virtus-bologna', 'paris-basket',
       
       // Bundesliga
       'st-pauli',
@@ -70,15 +163,74 @@ export class TeamBadgeService {
       // La Liga
       'osasuna', 'leganes', 'las-palmas',
       
-      // Champions League
-      'bayern', 'psg',
-      
       // Conference League
       'legia', 'djugardens', 'rapid-wien', 'celje', 'jagielonia',
       
       // Europa League
       'bodo-glimt'
     ];
+    
+    // Caso especial para Bayern Munich - siempre usar la API
+    if (normalizedName.includes('bayern') || normalizedName.includes('munich')) {
+      return false; // Nunca usar imagen local para Bayern Munich
+    }
+    
+    // Caso especial para Milan/Milano
+    if (normalizedName.includes('milan') || normalizedName.includes('olimpia')) {
+      // Si el contexto o nombre indica que es baloncesto (Milano), considerarlo como equipo local
+      if ((context && (context.toLowerCase().includes('euroliga') || 
+                      context.toLowerCase().includes('euroleague') ||
+                      context.toLowerCase().includes('basket') || 
+                      context.toLowerCase().includes('baloncesto'))) ||
+          normalizedName.includes('milano') || normalizedName.includes('olimpia') || 
+          normalizedName.includes('basket') || normalizedName.includes('baloncesto')) {
+        return true;
+      }
+      
+      // Si es Inter Milan o AC Milan (fútbol), usar la API (no es local)
+      if (normalizedName.includes('inter') || normalizedName === 'milan' || 
+          normalizedName.includes('ac-milan')) {
+        return false;
+      }
+      
+      // Para otros casos con "milan", verificar en la lista
+      return localTeams.some(team => 
+        normalizedName === team || 
+        normalizedName.includes(team) || 
+        team.includes(normalizedName)
+      );
+    }
+    
+    // Caso especial para PSG/Paris
+    if (normalizedName.includes('paris') || normalizedName.includes('psg')) {
+      // Si el contexto o nombre indica que es baloncesto, considerarlo como equipo local
+      if ((context && (context.toLowerCase().includes('euroliga') || 
+                      context.toLowerCase().includes('euroleague') ||
+                      context.toLowerCase().includes('basket') || 
+                      context.toLowerCase().includes('baloncesto'))) ||
+          (normalizedName.includes('paris') && 
+           (normalizedName.includes('basket') || normalizedName.includes('baloncesto')))) {
+        return true;
+      }
+      // Para PSG (fútbol), usar la API (no es local)
+      return false;
+    }
+    
+    // Caso especial para Bologna
+    if (normalizedName.includes('bologna')) {
+      // Si el contexto o nombre indica que es baloncesto, considerarlo como equipo local
+      if ((context && (context.toLowerCase().includes('euroliga') || 
+                      context.toLowerCase().includes('euroleague') ||
+                      context.toLowerCase().includes('basket') || 
+                      context.toLowerCase().includes('baloncesto'))) ||
+          normalizedName.includes('virtus') || 
+          normalizedName.includes('basket') || 
+          normalizedName.includes('baloncesto')) {
+        return true;
+      }
+      // Para Bologna FC (fútbol), usar la API (no es local)
+      return false;
+    }
     
     return localTeams.some(team => 
       normalizedName === team || 
@@ -95,18 +247,20 @@ export class TeamBadgeService {
   private getLocalTeamImageUrl(normalizedName: string): string {
     // Mapeo de nombres normalizados a nombres de archivo
     const fileNames: {[key: string]: string} = {
-      // Euroliga
+      // Euroliga (baloncesto)
       'asvel-lyon': 'asvel-lyon.png',
       'zalgiris': 'zalgiris.png',
-      'monaco': 'monaco-basket.png', // Añadimos 'basket' para diferenciar del equipo de fútbol
+      'monaco-basket': 'monaco-basket.png',
       'milano': 'milano.png',
-      'munich': 'bayern-munich-basket.png',
+      'milano-basket': 'milano.png',
       'partizan': 'partizan.png',
       'anadolu': 'anadolu-efes.png',
       'maccabi': 'maccabi.png',
       'baskonia': 'baskonia.png',
       'alba': 'alba-berlin.png',
-      'bologna': 'virtus-bologna.png',
+      'virtus-bologna': 'virtus-bologna.png',
+      'bologna-basket': 'virtus-bologna.png',
+      'paris-basket': 'paris-basket.png',
       'paris': 'paris-basket.png',
       
       // Bundesliga
@@ -120,10 +274,6 @@ export class TeamBadgeService {
       'leganes': 'leganes.png',
       'las-palmas': 'las-palmas.png',
       
-      // Champions League
-      'bayern': 'bayern-munich.png',
-      'psg': 'psg.png',
-      
       // Conference League
       'legia': 'legia-warsaw.png',
       'djugardens': 'djugardens.png',
@@ -134,6 +284,37 @@ export class TeamBadgeService {
       // Europa League
       'bodo-glimt': 'bodo-glimt.png'
     };
+    
+    // Caso especial para Bayern Munich (baloncesto)
+    if ((normalizedName.includes('bayern') || normalizedName.includes('munich')) && 
+        (normalizedName.includes('basket') || normalizedName.includes('baloncesto') || 
+         normalizedName.includes('euroliga') || normalizedName.includes('euroleague'))) {
+      return 'assets/teams/bayern-munich-basket.png';
+    }
+    
+    // Caso especial para Milano (baloncesto)
+    // Caso especial para Milano (baloncesto)
+    if ((normalizedName.includes('milan') || normalizedName.includes('olimpia')) && 
+        (normalizedName.includes('milano') || normalizedName.includes('olimpia') || 
+         normalizedName.includes('basket') || normalizedName.includes('baloncesto') || 
+         normalizedName.includes('euroliga') || normalizedName.includes('euroleague'))) {
+      return 'assets/teams/milano-basket.png';
+    }
+    
+    // Caso especial para Paris (baloncesto)
+    if ((normalizedName.includes('paris') || normalizedName.includes('psg')) && 
+        (normalizedName.includes('basket') || normalizedName.includes('baloncesto') || 
+         normalizedName.includes('euroliga') || normalizedName.includes('euroleague'))) {
+      return 'assets/teams/paris-basket.png';
+    }
+    
+    // Caso especial para Virtus Bologna (baloncesto)
+    if (normalizedName.includes('bologna') && 
+        (normalizedName.includes('virtus') || normalizedName.includes('basket') || 
+         normalizedName.includes('baloncesto') || normalizedName.includes('euroliga') || 
+         normalizedName.includes('euroleague'))) {
+      return 'assets/teams/virtus-bologna.png';
+    }
     
     // Buscar coincidencias exactas primero
     if (fileNames[normalizedName]) {
@@ -584,7 +765,6 @@ export class TeamBadgeService {
       'pelicans': 'no',
       'spurs': 'sa'
     };
-  
     for (const [key, abbr] of Object.entries(teamAbbreviations)) {
       if (normalizedName.includes(key)) {
         return abbr;
