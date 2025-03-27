@@ -68,8 +68,8 @@ export class PromocionesComponent implements OnInit {
           startDate: new Date(promo.data_inici),
           endDate: new Date(promo.data_final),
           type: promo.tipoPromocion ? promo.tipoPromocion.titol : 'General',
-          // Corregir el formato de la URL
-          image: promo.image ? `http://localhost:8000/${promo.image}` : 'assets/promociones/default.png',
+          // Usar una URL de imagen que sabemos que existe o una imagen en base64
+          image: promo.image ? `http://localhost:8000/${promo.image}` : this.getDefaultImageUrl(),
           buttonText: 'INSCRIBIRSE'
         }));
         this.isLoading = false;
@@ -156,5 +156,23 @@ export class PromocionesComponent implements OnInit {
       month: '2-digit',
       year: 'numeric'
     });
+  }
+
+  /**
+   * Maneja errores de carga de imágenes
+   */
+  handleImageError(event: any, promocion: PromocionUI): void {
+    console.log('Error al cargar la imagen de la promoción:', promocion.id);
+    // Usar una imagen en base64 en lugar de una ruta de archivo
+    event.target.src = this.getDefaultImageUrl();
+  }
+
+  /**
+   * Devuelve una URL para la imagen por defecto
+   * Usa una imagen en base64 para evitar problemas de 404
+   */
+  getDefaultImageUrl(): string {
+    // Imagen simple en base64 (un rectángulo gris con texto)
+    return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlMGUwZTAiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZmlsbD0iIzc3NyI+UHJvbW9jaW9uPC90ZXh0Pjwvc3ZnPg==';
   }
 }

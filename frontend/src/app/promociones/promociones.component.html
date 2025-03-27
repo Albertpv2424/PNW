@@ -23,7 +23,7 @@
             @for (promocion of promociones; track promocion.id) {
               <div class="promocion-card">
                 <div class="promocion-image">
-                  <img [src]="promocion.image" [alt]="promocion.title">
+                  <img [src]="promocion.image" [alt]="promocion.title" (error)="handleImageError($event, promocion)">
                 </div>
                 <div class="promocion-info">
                   <div class="promocion-type">{{ promocion.type }}</div>

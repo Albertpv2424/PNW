@@ -23,6 +23,9 @@
   overflow: hidden;
   background-color: #1e1e30;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .promocion-card:hover {
@@ -32,14 +35,34 @@
 
 .promocion-image {
   width: 100%;
-  height: 200px;
+  height: 280px;
   overflow: hidden;
+  position: relative;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promocion-info {
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
 }
 
 .promocion-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.promocion-card:hover .promocion-image img {
+  transform: scale(1.05);
 }
 
 .promocion-info {
