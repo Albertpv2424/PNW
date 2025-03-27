@@ -1,31 +1,34 @@
 <div class="admin-container">
-  <div class="promociones-header">
-    <h2>Promociones Disponibles</h2>
-    <div class="actions">
+  <div class="admin-header">
+    <h1>Gestión de Promociones</h1>
+    <div class="admin-actions">
       <div class="search-container">
-        <input type="text" placeholder="Buscar promoción..." [(ngModel)]="searchTerm" (keyup)="searchPromociones()">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="searchPromociones()" 
+          placeholder="Buscar promociones..."
+          class="search-input"
+        >
       </div>
-      <button class="add-promocion-btn" (click)="openPromocionForm()">Añadir Promoción</button>
+      <button class="btn-primary" (click)="openPromocionForm()">
+        <i class="fas fa-plus"></i> Nueva Promoción
+      </button>
     </div>
   </div>
 
-  <div *ngIf="isLoading" class="loading-container">
+  <div class="loading-container" *ngIf="isLoading">
     <div class="spinner"></div>
     <p>Cargando promociones...</p>
   </div>
 
-  <div *ngIf="!isLoading && filteredPromociones.length === 0" class="no-data-container">
-    <p>No hay promociones disponibles.</p>
-  </div>
-
-  <div *ngIf="!isLoading && filteredPromociones.length > 0" class="promociones-table-container">
-    <table class="promociones-table">
+  <div class="table-container" *ngIf="!isLoading">
+    <table class="data-table">
       <thead>
         <tr>
           <th>ID</th>
           <th>Imagen</th>
           <th>Título</th>
-          <th>Descripción</th>
           <th>Tipo</th>
           <th>Fecha Inicio</th>
           <th>Fecha Fin</th>
@@ -33,30 +36,30 @@
         </tr>
       </thead>
       <tbody>
+        <tr *ngIf="filteredPromociones.length === 0">
+          <td colspan="7" class="no-data">No hay promociones disponibles</td>
+        </tr>
         <tr *ngFor="let promocion of filteredPromociones">
           <td>{{ promocion.id }}</td>
-          <td>
-            <div class="promocion-image-container">
-              <img [src]="promocion.image ? (promocion.image.startsWith('http') ? promocion.image : 'http://localhost:8000/' + promocion.image) : 'assets/promociones/default.png'"
-                  alt="{{ promocion.titol }}"
-                  class="promocion-thumbnail"
-                  (error)="handleImageError(promocion)">
-            </div>
+          <td class="image-cell">
+            <img 
+              [src]="promocion.image ? (promocion.image.startsWith('http') ? promocion.image : 'http://localhost:8000/' + promocion.image) : 'assets/promociones/default.png'" 
+              alt="{{ promocion.titol }}"
+              class="thumbnail"
+            >
           </td>
           <td>{{ promocion.titol }}</td>
-          <td>
-            <div class="truncate-text" [attr.data-full-text]="promocion.descripcio">
-              {{ promocion.descripcio }}
-            </div>
-          </td>
-          <td>{{ getTipoPromocionName(promocion.tipo_promocion_id) }}</td>
+          <!-- In the table row for each promotion -->
+          <td>{{ getTipoPromocionName(promocion.tipus_promocio) }}</td>
           <td>{{ promocion.data_inici | date:'dd/MM/yyyy' }}</td>
           <td>{{ promocion.data_final | date:'dd/MM/yyyy' }}</td>
           <td class="actions-cell">
-            <div class="action-buttons">
-              <button class="action-btn edit-btn" (click)="openPromocionForm(promocion)">Editar</button>
-              <button class="action-btn delete-btn" (click)="confirmDeletePromocion(promocion.id)">Eliminar</button>
-            </div>
+            <button class="btn-edit" (click)="openPromocionForm(promocion)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-delete" (click)="confirmDelete(promocion.id)">
+              <i class="fas fa-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -64,76 +67,86 @@
   </div>
 
   <!-- Modal para crear/editar promoción -->
-  <div *ngIf="showPromocionForm" class="modal-overlay">
+  <div class="modal" *ngIf="showPromocionForm">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>{{ isEditing ? 'Editar Promoción' : 'Añadir Promoción' }}</h3>
+        <h2>{{ isEditing ? 'Editar' : 'Nueva' }} Promoción</h2>
         <button class="close-btn" (click)="closePromocionForm()">&times;</button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="promocionForm" (ngSubmit)="savePromocion()">
+        <form [formGroup]="promocionForm" (ngSubmit)="submitPromocionForm()">
           <div class="form-group">
             <label for="titol">Título:</label>
-            <input type="text" id="titol" formControlName="titol" class="form-control">
-            <div *ngIf="promocionForm.get('titol')?.invalid && promocionForm.get('titol')?.touched" class="error-message">
-              El título es obligatorio
+            <input type="text" id="titol" formControlName="titol">
+            <div class="error" *ngIf="promocionForm.get('titol')?.invalid && promocionForm.get('titol')?.touched">
+              El título es requerido
             </div>
           </div>
-
+          
           <div class="form-group">
             <label for="descripcio">Descripción:</label>
-            <textarea id="descripcio" formControlName="descripcio" class="form-control" rows="4"></textarea>
-            <div *ngIf="promocionForm.get('descripcio')?.invalid && promocionForm.get('descripcio')?.touched" class="error-message">
-              La descripción es obligatoria
+            <textarea id="descripcio" formControlName="descripcio" rows="3"></textarea>
+            <div class="error" *ngIf="promocionForm.get('descripcio')?.invalid && promocionForm.get('descripcio')?.touched">
+              La descripción es requerida
             </div>
           </div>
-
+          
           <div class="form-group">
-            <label for="tipo_promocion_id">Tipo de Promoción:</label>
-            <select id="tipo_promocion_id" formControlName="tipo_promocion_id" class="form-control">
+            <label for="tipus_promocio">Tipo de Promoción:</label>
+            <select id="tipus_promocio" formControlName="tipus_promocio">
               <option value="">Selecciona un tipo</option>
               <option *ngFor="let tipo of tiposPromocion" [value]="tipo.id">{{ tipo.titol }}</option>
             </select>
-            <div *ngIf="promocionForm.get('tipo_promocion_id')?.invalid && promocionForm.get('tipo_promocion_id')?.touched" class="error-message">
-              El tipo de promoción es obligatorio
+            <div class="error" *ngIf="promocionForm.get('tipus_promocio')?.invalid && promocionForm.get('tipus_promocio')?.touched">
+              El tipo de promoción es requerido
             </div>
           </div>
-
+          
           <div class="form-row">
-            <div class="form-group">
-              <label for="data_inici">Fecha de inicio:</label>
-              <input type="date" id="data_inici" formControlName="data_inici" class="form-control">
-              <div *ngIf="promocionForm.get('data_inici')?.invalid && promocionForm.get('data_inici')?.touched" class="error-message">
-                La fecha de inicio es obligatoria
+            <div class="form-group half-width">
+              <label for="data_inici">Fecha de Inicio:</label>
+              <input type="date" id="data_inici" formControlName="data_inici">
+              <div class="error" *ngIf="promocionForm.get('data_inici')?.invalid && promocionForm.get('data_inici')?.touched">
+                La fecha de inicio es requerida
               </div>
             </div>
-
-            <div class="form-group">
-              <label for="data_final">Fecha de fin:</label>
-              <input type="date" id="data_final" formControlName="data_final" class="form-control">
-              <div *ngIf="promocionForm.get('data_final')?.invalid && promocionForm.get('data_final')?.touched" class="error-message">
-                La fecha de fin es obligatoria
+            
+            <div class="form-group half-width">
+              <label for="data_final">Fecha de Fin:</label>
+              <input type="date" id="data_final" formControlName="data_final">
+              <div class="error" *ngIf="promocionForm.get('data_final')?.invalid && promocionForm.get('data_final')?.touched">
+                La fecha de fin es requerida
               </div>
             </div>
           </div>
-
+          
           <div class="form-group">
             <label for="image">Imagen:</label>
-            <div class="file-input-container">
-              <div class="file-input-button">Seleccionar imagen</div>
-              <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
-            </div>
-            <div *ngIf="selectedFileName" class="selected-file-name">
-              {{ selectedFileName }}
-            </div>
-            <div *ngIf="imagePreview" class="image-preview">
-              <img [src]="imagePreview" alt="Vista previa">
+            <div class="image-upload-container">
+              <div class="image-preview-container" *ngIf="imagePreview">
+                <img [src]="imagePreview" alt="Vista previa" class="preview-image">
+              </div>
+              <div class="file-input-container">
+                <input 
+                  type="file" 
+                  id="image" 
+                  (change)="onFileSelected($event)" 
+                  accept="image/*"
+                  class="file-input"
+                >
+                <label for="image" class="file-label">
+                  <i class="fas fa-upload"></i> 
+                  {{ selectedFileName || 'Seleccionar imagen' }}
+                </label>
+              </div>
             </div>
           </div>
-
+          
           <div class="form-actions">
-            <button type="button" class="cancel-btn" (click)="closePromocionForm()">Cancelar</button>
-            <button type="submit" class="save-btn" [disabled]="promocionForm.invalid">Guardar</button>
+            <button type="button" class="btn-secondary" (click)="closePromocionForm()">Cancelar</button>
+            <button type="submit" class="btn-primary" [disabled]="promocionForm.invalid">
+              {{ isEditing ? 'Actualizar' : 'Crear' }} Promoción
+            </button>
           </div>
         </form>
       </div>
@@ -141,17 +154,17 @@
   </div>
 
   <!-- Modal de confirmación para eliminar -->
-  <div *ngIf="showDeleteConfirm" class="modal-overlay">
-    <div class="modal-content delete-confirm">
+  <div class="modal" *ngIf="showDeleteConfirm">
+    <div class="modal-content confirm-modal">
       <div class="modal-header">
-        <h3>Confirmar eliminación</h3>
-        <button class="close-btn" (click)="cancelDeletePromocion()">&times;</button>
+        <h2>Confirmar Eliminación</h2>
+        <button class="close-btn" (click)="cancelDelete()">&times;</button>
       </div>
       <div class="modal-body">
         <p>¿Estás seguro de que deseas eliminar esta promoción? Esta acción no se puede deshacer.</p>
         <div class="form-actions">
-          <button class="cancel-btn" (click)="cancelDeletePromocion()">Cancelar</button>
-          <button class="delete-btn action-btn" (click)="deletePromocion()">Eliminar</button>
+          <button type="button" class="btn-secondary" (click)="cancelDelete()">Cancelar</button>
+          <button type="button" class="btn-danger" (click)="deletePromocion()">Eliminar</button>
         </div>
       </div>
     </div>

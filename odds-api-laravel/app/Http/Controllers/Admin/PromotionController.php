@@ -53,37 +53,22 @@ class PromotionController extends Controller
     /**
      * Crear una nueva promoción
      */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'titol' => 'required|string|max:255',
-            'descripcio' => 'required|string',
-            'data_inici' => 'required|date',
-            'data_final' => 'required|date|after_or_equal:data_inici',
-            'tipo_promocion_id' => 'required|exists:tipo_promocion,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Error de validación', 'errors' => $validator->errors()], 422);
-        }
-
-        $promocion = new Promocion();
-        $promocion->titol = $request->titol;
-        $promocion->descripcio = $request->descripcio;
-        $promocion->data_inici = $request->data_inici;
-        $promocion->data_final = $request->data_final;
-        $promocion->tipo_promocion_id = $request->tipo_promocion_id;
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('public/promociones');
-            $promocion->image = str_replace('public/', 'storage/', $imagePath);
-        }
-
-        $promocion->save();
-
-        return response()->json(['message' => 'Promoción creada con éxito', 'promocion' => $promocion], 201);
-    }
+    
+     public function store(Request $request)
+     {
+         $request->validate([
+             'titol' => 'required|string|max:255',
+             'descripcio' => 'nullable|string',
+             'data_inici' => 'required|date',
+             'data_final' => 'required|date|after_or_equal:data_inici',
+             'tipus_promocio' => 'required|exists:tipus_promocio,id',
+             'image' => 'nullable|string' // Nom del fitxer o URL de la imatge
+         ]);
+ 
+         $promocio = Promocion::create($request->all());
+ 
+         return response()->json(['message' => 'Promoció creada correctament!', 'data' => $promocio], 201);
+     }
 
     /**
      * Actualizar una promoción existente
@@ -101,7 +86,7 @@ class PromotionController extends Controller
             'descripcio' => 'required|string',
             'data_inici' => 'required|date',
             'data_final' => 'required|date|after_or_equal:data_inici',
-            'tipo_promocion_id' => 'required|exists:tipo_promocion,id',
+            'tipus_promocio' => 'required|exists:tipus_promocio,id', // Changed from tipo_promocion_id
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -113,7 +98,7 @@ class PromotionController extends Controller
         $promocion->descripcio = $request->descripcio;
         $promocion->data_inici = $request->data_inici;
         $promocion->data_final = $request->data_final;
-        $promocion->tipo_promocion_id = $request->tipo_promocion_id;
+        $promocion->tipus_promocio = $request->tipus_promocio; // Changed from tipo_promocion_id
 
         if ($request->hasFile('image')) {
             // Eliminar imagen anterior si existe

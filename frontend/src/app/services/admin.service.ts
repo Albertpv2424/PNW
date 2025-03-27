@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
-
+// Add these imports at the top if they're not already there
+import { catchError, tap, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -141,58 +142,6 @@ export class AdminService {
     });
   }
 
-  // Métodos para gestionar promociones
-  // Update the getPromociones method in the AdminService
-  // Make sure these methods are correctly implemented
-  getPromociones(): Observable<any> {
-    // Remove the duplicate 'admin' in the URL path
-    return this.http.get<any>(`${this.apiUrl}/promotions`, {
-      headers: this.getAuthHeaders()
-    });
-  }
-
-  getTiposPromocion(): Observable<any> {
-    // Remove the duplicate 'admin' in the URL path
-    return this.http.get<any>(`${this.apiUrl}/tipos-promocion`, {
-      headers: this.getAuthHeaders()
-    });
-  }
-
-  getPromocion(id: number): Observable<any> {
-    // Fix the URL to use 'promotions' instead of 'promociones'
-    return this.http.get<any>(`${this.apiUrl}/promotions/${id}`, {
-      headers: this.getAuthHeaders()
-    });
-  }
-
-  createPromocion(promocionData: FormData): Observable<any> {
-    // Fix the URL to use 'promotions' instead of 'promociones'
-    return this.http.post<any>(`${this.apiUrl}/promotions`, promocionData, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.authService.getToken()}`
-        // No incluimos Content-Type para que Angular lo establezca automáticamente con el boundary para FormData
-      })
-    });
-  }
-
-  updatePromocion(id: number, promocionData: FormData): Observable<any> {
-    // Fix the URL to use 'promotions' instead of 'promociones'
-    return this.http.post<any>(`${this.apiUrl}/promotions/${id}`, promocionData, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.authService.getToken()}`
-      })
-    });
-  }
-
-  deletePromocion(id: number): Observable<any> {
-    // Fix the URL to use 'promotions' instead of 'promociones'
-    return this.http.delete<any>(`${this.apiUrl}/promotions/${id}`, {
-      headers: this.getAuthHeaders()
-    });
-  }
-
-  // Add these methods to your AdminService class
-
   // Get pending bets
   getPendingBets(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/bets/pending`, {
@@ -225,5 +174,48 @@ export class AdminService {
     
     // Otherwise, prepend the base URL
     return `http://localhost:8000/${imagePath}`;
+  }
+
+  // Promotion management methods
+  getPromociones(): Observable<any> {
+    // Change from 'promociones' to 'promotions' to match the backend route
+    return this.http.get<any>(`${this.apiUrl}/promotions`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  getTiposPromocion(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/tipos-promocion`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  createPromocion(promocionData: FormData): Observable<any> {
+    // Change from 'promociones' to 'promotions' to match the backend route
+    return this.http.post<any>(`${this.apiUrl}/promotions`, promocionData, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`,
+        'Accept': 'application/json'
+        // Note: Deliberately NOT setting 'Content-Type' for FormData
+      })
+    });
+  }
+
+  updatePromocion(id: number, promocionData: FormData): Observable<any> {
+    // Change from 'promociones' to 'promotions' to match the backend route
+    return this.http.post<any>(`${this.apiUrl}/promotions/${id}`, promocionData, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`,
+        'Accept': 'application/json'
+        // Note: Deliberately NOT setting 'Content-Type' for FormData
+      })
+    });
+  }
+
+  deletePromocion(id: number): Observable<any> {
+    // Change from 'promociones' to 'promotions' to match the backend route
+    return this.http.delete<any>(`${this.apiUrl}/promotions/${id}`, {
+      headers: this.getAuthHeaders()
+    });
   }
 }
