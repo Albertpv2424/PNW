@@ -18,6 +18,11 @@ export class TeamBadgeService {
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       .replace(/\s+/g, '-');
     
+    // First check if we have a local image for this team
+    if (this.hasLocalTeamImage(normalizedName)) {
+      return this.getLocalTeamImageUrl(normalizedName);
+    }
+    
     // Check if it's an NBA team
     if (this.isNBATeam(normalizedName)) {
       return `https://a.espncdn.com/i/teamlogos/nba/500/${this.getNBATeamAbbreviation(normalizedName)}.png`;
@@ -44,6 +49,109 @@ export class TeamBadgeService {
   }
   
   /**
+   * Verifica si existe una imagen local para el equipo
+   * @param normalizedName Nombre normalizado del equipo
+   * @returns true si existe una imagen local
+   */
+  private hasLocalTeamImage(normalizedName: string): boolean {
+    // Lista de equipos con imágenes locales
+    const localTeams = [
+      // Euroliga
+      'asvel-lyon', 'zalgiris', 'monaco', 'milano', 'munich', 
+      'partizan', 'anadolu', 'maccabi', 'baskonia', 'alba', 
+      'bologna', 'paris',
+      
+      // Bundesliga
+      'st-pauli',
+      
+      // Serie A
+      'como',
+      
+      // La Liga
+      'osasuna', 'leganes', 'las-palmas',
+      
+      // Champions League
+      'bayern', 'psg',
+      
+      // Conference League
+      'legia', 'djugardens', 'rapid-wien', 'celje', 'jagielonia',
+      
+      // Europa League
+      'bodo-glimt'
+    ];
+    
+    return localTeams.some(team => 
+      normalizedName === team || 
+      normalizedName.includes(team) || 
+      team.includes(normalizedName)
+    );
+  }
+  
+  /**
+   * Obtiene la URL de la imagen local del equipo
+   * @param normalizedName Nombre normalizado del equipo
+   * @returns URL de la imagen local
+   */
+  private getLocalTeamImageUrl(normalizedName: string): string {
+    // Mapeo de nombres normalizados a nombres de archivo
+    const fileNames: {[key: string]: string} = {
+      // Euroliga
+      'asvel-lyon': 'asvel-lyon.png',
+      'zalgiris': 'zalgiris.png',
+      'monaco': 'monaco-basket.png', // Añadimos 'basket' para diferenciar del equipo de fútbol
+      'milano': 'milano.png',
+      'munich': 'bayern-munich-basket.png',
+      'partizan': 'partizan.png',
+      'anadolu': 'anadolu-efes.png',
+      'maccabi': 'maccabi.png',
+      'baskonia': 'baskonia.png',
+      'alba': 'alba-berlin.png',
+      'bologna': 'virtus-bologna.png',
+      'paris': 'paris-basket.png',
+      
+      // Bundesliga
+      'st-pauli': 'st-pauli.png',
+      
+      // Serie A
+      'como': 'como.png',
+      
+      // La Liga
+      'osasuna': 'osasuna.png',
+      'leganes': 'leganes.png',
+      'las-palmas': 'las-palmas.png',
+      
+      // Champions League
+      'bayern': 'bayern-munich.png',
+      'psg': 'psg.png',
+      
+      // Conference League
+      'legia': 'legia-warsaw.png',
+      'djugardens': 'djugardens.png',
+      'rapid-wien': 'rapid-wien.png',
+      'celje': 'celje.png',
+      'jagielonia': 'jagielonia.png',
+      
+      // Europa League
+      'bodo-glimt': 'bodo-glimt.png'
+    };
+    
+    // Buscar coincidencias exactas primero
+    if (fileNames[normalizedName]) {
+      return `assets/teams/${fileNames[normalizedName]}`;
+    }
+    
+    // Si no hay coincidencia exacta, buscar coincidencias parciales
+    for (const [key, fileName] of Object.entries(fileNames)) {
+      if (normalizedName.includes(key) || key.includes(normalizedName)) {
+        return `assets/teams/${fileName}`;
+      }
+    }
+    
+    // Si no se encuentra coincidencia, usar una imagen genérica
+    return 'assets/teams/default.png';
+  }
+  
+  /**
    * Mapeo de nombres de equipos a IDs de la API
    * @param normalizedName Nombre normalizado del equipo
    * @returns ID del equipo en la API
@@ -64,16 +172,16 @@ export class TeamBadgeService {
       'espanyol': 540,
       'getafe': 546,
       'mallorca': 798,
-      'osasuna': 558,
+      // 'osasuna': 558, // Removed as requested
       'rayo-vallecano': 728,
       'valladolid': 720,
       'girona': 547,
       'alaves': 542,
-      'las-palmas': 472,
+      // 'las-palmas': 472, // Removed as requested
       'granada': 715,
       'almeria': 723,
       'cadiz': 724,
-      'leganes': 726,
+      // 'leganes': 726, // Removed as requested
       
       // Premier League (Inglaterra)
       'manchester-city': 50,
@@ -127,7 +235,7 @@ export class TeamBadgeService {
       'monza': 1579,
       'lecce': 867,
       'genoa': 495,
-      'como': 522,
+      // 'como': 522, // Removed as requested
       'parma': 523,
       
       // Bundesliga (Alemania)
@@ -153,13 +261,13 @@ export class TeamBadgeService {
       'schalke': 174,
       'holstein-kiel': 175,
       'heidenheim': 180,
-      'st-pauli': 189,
+      // 'st-pauli': 189, // Removed as requested
       
       // Champions League y Europa League
-      'psg': 85,
+      // 'psg': 85, // Removed as requested
       // 'manchester-city': 50, // Removed duplicate
       // 'real-madrid': 541, // Removed duplicate
-      // 'bayern-munich': 157, // Removed duplicate
+      // 'bayern-munich': 157, // Removed as requested
       // 'liverpool': 40, // Removed duplicate
       // 'barcelona': 529, // Removed duplicate
       // 'juventus': 496, // Removed duplicate
@@ -201,7 +309,7 @@ export class TeamBadgeService {
       'slavia-prague': 567,
       'sparta-prague': 593,
       'midtjylland': 583,
-      'bodo-glimt': 710,
+      // 'bodo-glimt': 710, // Removed as requested
       'galatasaray': 645,
       'fenerbahce': 611,
       'monaco': 91,
@@ -259,13 +367,13 @@ export class TeamBadgeService {
       // 'slavia-prague': 567, // Removed duplicate
       // 'sparta-prague': 593, // Removed duplicate
       'viktoria-plzen': 566,
-      'legia-warsaw': 543,
+      // 'legia-warsaw': 543, // Removed as requested
       'lech-poznan': 572,
       // 'dinamo-zagreb': 620, // Removed duplicate
       'hajduk-split': 621,
       'rijeka': 628,
       'red-bull-salzburg': 571,
-      'rapid-wien': 574,
+      // 'rapid-wien': 574, // Removed as requested
       'sturm-graz': 578,
       'austria-wien': 600,
       // 'shakhtar-donetsk': 550, // Removed duplicate
