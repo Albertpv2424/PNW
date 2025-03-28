@@ -126,7 +126,6 @@ export class PromocionesComponent implements OnInit {
           // Añadir verificación para asegurarse de que la respuesta es JSON
           const contentType = xhr.getResponseHeader('Content-Type');
           if (!contentType || !contentType.includes('application/json')) {
-            console.error('La respuesta no es JSON:', xhr.responseText.substring(0, 100) + '...');
             return;
           }
           

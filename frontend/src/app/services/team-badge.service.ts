@@ -745,7 +745,7 @@ export class TeamBadgeService {
       'pacers': 'ind',
       'bucks': 'mil',
       'hawks': 'atl',
-      'hornets': 'cha',
+      'hornets': 'cha', // Aseguramos que sea 'cha' para Charlotte Hornets
       'heat': 'mia',
       'magic': 'orl',
       'wizards': 'wsh',
@@ -765,11 +765,66 @@ export class TeamBadgeService {
       'pelicans': 'no',
       'spurs': 'sa'
     };
+    
+    // Add additional mappings for more flexible matching
+    const additionalMappings: { [key: string]: string } = {
+      'charlotte': 'cha', // Aseguramos que Charlotte siempre sea 'cha'
+      'charlotte-hornets': 'cha', // Añadimos esta entrada explícita
+      'brooklyn': 'bkn',
+      'brooklyn-nets': 'bkn', // Añadimos esta entrada para Brooklyn Nets
+      'new-york': 'ny',
+      'toronto': 'tor',
+      'chicago': 'chi',
+      'cleveland': 'cle',
+      'detroit': 'det',
+      'indiana': 'ind',
+      'milwaukee': 'mil',
+      'atlanta': 'atl',
+      'miami': 'mia',
+      'orlando': 'orl',
+      'washington': 'wsh',
+      'denver': 'den',
+      'minnesota': 'min',
+      'oklahoma': 'okc',
+      'portland': 'por',
+      'utah': 'utah',
+      'golden-state': 'gs',
+      'los-angeles-clippers': 'lac',
+      'los-angeles-lakers': 'lal',
+      'phoenix': 'phx',
+      'sacramento': 'sac',
+      'dallas': 'dal',
+      'houston': 'hou',
+      'memphis': 'mem',
+      'new-orleans': 'no',
+      'san-antonio': 'sa'
+    };
+    
+    // Primero verificamos si el nombre contiene explícitamente "charlotte" o "hornets"
+    if (normalizedName.includes('charlotte') || normalizedName.includes('hornets')) {
+      return 'cha';
+    }
+    
+    // Verificamos si el nombre contiene explícitamente "brooklyn" o "nets"
+    if (normalizedName.includes('brooklyn') || 
+        (normalizedName.includes('nets') && !normalizedName.includes('pelicans'))) {
+      return 'bkn';
+    }
+    
+    // First check the main abbreviations
     for (const [key, abbr] of Object.entries(teamAbbreviations)) {
       if (normalizedName.includes(key)) {
         return abbr;
       }
     }
+    
+    // Then check additional mappings
+    for (const [key, abbr] of Object.entries(additionalMappings)) {
+      if (normalizedName.includes(key)) {
+        return abbr;
+      }
+    }
+    
     return 'nba'; // Default fallback
   }
   
