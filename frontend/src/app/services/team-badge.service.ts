@@ -55,69 +55,75 @@ export class TeamBadgeService {
       return 'assets/teams/jagiellonia.png';
     }
 
-    // Caso especial para Milan/Milano
-    if (normalizedName.includes('milan') || normalizedName.includes('olimpia')) {
-      // Si el contexto o nombre indica que es baloncesto (Milano), considerarlo como equipo local
-      if ((context && (context.toLowerCase().includes('euroliga') ||
-                      context.toLowerCase().includes('euroleague') ||
-                      context.toLowerCase().includes('basket') ||
-                      context.toLowerCase().includes('baloncesto'))) ||
-          normalizedName.includes('milano') || normalizedName.includes('olimpia') ||
-          normalizedName.includes('basket') || normalizedName.includes('baloncesto')) {
-        // Change from returning boolean to returning string
-        return 'assets/teams/milano-basket.png';
-      }
-
-      // Si es Inter Milan o AC Milan (fútbol), usar la API (no es local)
-      if (normalizedName.includes('inter') || normalizedName === 'milan' ||
-          normalizedName.includes('ac-milan')) {
-        // Change from returning boolean to returning string
-        const teamId = this.getTeamId(normalizedName);
-        return `https://media.api-sports.io/football/teams/${teamId}.png`;
-      }
-
-      // Para otros casos con "milan", verificar en la lista
-      if (this.hasLocalTeamImage(normalizedName, context)) {
-        return this.getLocalTeamImageUrl(normalizedName);
-      } else {
-        const teamId = this.getTeamId(normalizedName);
-        return `https://media.api-sports.io/football/teams/${teamId}.png`;
-      }
+    // Caso especial para Bayern Munich - siempre usar la API para fútbol
+    if ((normalizedName.includes('bayern') || normalizedName.includes('munich')) &&
+        !normalizedName.includes('basket') && !normalizedName.includes('baloncesto')) {
+      console.log('Usando API para Bayern Munich (fútbol)');
+      return `https://media.api-sports.io/football/teams/157.png`;
     }
 
-    // Caso especial para PSG/Paris
-    if (normalizedName.includes('paris') || normalizedName.includes('psg')) {
-      // Si el contexto o nombre indica que es baloncesto, considerarlo como equipo local
-      if ((context && (context.toLowerCase().includes('euroliga') ||
-                      context.toLowerCase().includes('euroleague') ||
-                      context.toLowerCase().includes('basket') ||
-                      context.toLowerCase().includes('baloncesto'))) ||
-          (normalizedName.includes('paris') &&
-           (normalizedName.includes('basket') || normalizedName.includes('baloncesto')))) {
-        // Change from returning boolean to returning string
-        return 'assets/teams/paris-basket.png';
-      }
-      // Para PSG (fútbol), usar la API (no es local)
-      const teamId = this.getTeamId(normalizedName);
-      return `https://media.api-sports.io/football/teams/${teamId}.png`;
+    // Caso especial para Inter Milan - siempre usar la API
+    if (normalizedName.includes('inter') &&
+        (normalizedName.includes('milan') || normalizedName.includes('milano'))) {
+      console.log('Usando API para Inter Milan');
+      return `https://media.api-sports.io/football/teams/505.png`;
     }
 
-    // Caso especial para Bologna
-    if (normalizedName.includes('bologna')) {
-      // Si el contexto o nombre indica que es baloncesto, considerarlo como equipo local
-      if ((context && (context.toLowerCase().includes('euroliga') ||
-                      context.toLowerCase().includes('euroleague') ||
-                      context.toLowerCase().includes('basket') ||
-                      context.toLowerCase().includes('baloncesto'))) ||
-          normalizedName.includes('virtus') ||
-          normalizedName.includes('basket') ||
-          normalizedName.includes('baloncesto')) {
-        // Change from returning boolean to returning string
-        return 'assets/teams/virtus-bologna.png';
-      }
-      // Para Bologna FC (fútbol), usar la API (no es local)
-      const teamId = this.getTeamId(normalizedName);
-      return `https://media.api-sports.io/football/teams/${teamId}.png`;
+    // Caso especial para AC Milan - siempre usar la API
+    if ((normalizedName === 'milan' || normalizedName.includes('ac-milan') ||
+         normalizedName.includes('ac milan')) &&
+        !normalizedName.includes('basket') && !normalizedName.includes('baloncesto')) {
+      console.log('Usando API para AC Milan');
+      return `https://media.api-sports.io/football/teams/489.png`;
+    }
+
+    // Caso especial para equipos de MLB
+    if (this.isMLBTeam(normalizedName)) {
+      console.log('Usando API para equipo MLB:', teamName);
+      const abbr = this.getMLBTeamAbbreviation(normalizedName);
+      return `https://a.espncdn.com/i/teamlogos/mlb/500/${abbr}.png`;
+    }
+
+    // Caso especial para equipos de la NBA
+    if (this.isNBATeam(normalizedName)) {
+      console.log('Usando API para equipo NBA:', teamName);
+      const abbr = this.getNBATeamAbbreviation(normalizedName);
+      return `https://a.espncdn.com/i/teamlogos/nba/500/${abbr}.png`;
+    }
+
+    // Caso especial para Milan/Milano (baloncesto)
+    if ((normalizedName.includes('milan') || normalizedName.includes('olimpia')) &&
+        (normalizedName.includes('milano') || normalizedName.includes('olimpia') ||
+         normalizedName.includes('basket') || normalizedName.includes('baloncesto') ||
+         (context && (context.toLowerCase().includes('euroliga') ||
+                     context.toLowerCase().includes('euroleague') ||
+                     context.toLowerCase().includes('basket') ||
+                     context.toLowerCase().includes('baloncesto'))))) {
+      console.log('Usando imagen local para Milano Basket');
+      return 'assets/teams/milano-basket.png';
+    }
+
+    // Caso especial para PSG/Paris (baloncesto)
+    if ((normalizedName.includes('paris') || normalizedName.includes('psg')) &&
+        (normalizedName.includes('basket') || normalizedName.includes('baloncesto') ||
+         (context && (context.toLowerCase().includes('euroliga') ||
+                     context.toLowerCase().includes('euroleague') ||
+                     context.toLowerCase().includes('basket') ||
+                     context.toLowerCase().includes('baloncesto'))))) {
+      console.log('Usando imagen local para Paris Basket');
+      return 'assets/teams/paris-basket.png';
+    }
+
+    // Caso especial para Bologna (baloncesto)
+    if (normalizedName.includes('bologna') &&
+        (normalizedName.includes('virtus') || normalizedName.includes('basket') ||
+         normalizedName.includes('baloncesto') ||
+         (context && (context.toLowerCase().includes('euroliga') ||
+                     context.toLowerCase().includes('euroleague') ||
+                     context.toLowerCase().includes('basket') ||
+                     context.toLowerCase().includes('baloncesto'))))) {
+      console.log('Usando imagen local para Virtus Bologna');
+      return 'assets/teams/virtus-bologna.png';
     }
 
     // Check if we have a local image for this team
@@ -725,7 +731,19 @@ export class TeamBadgeService {
       'pistons', 'pacers', 'bucks', 'hawks', 'hornets', 'heat', 'magic',
       'wizards', 'nuggets', 'timberwolves', 'thunder', 'trail-blazers', 'jazz',
       'warriors', 'clippers', 'lakers', 'suns', 'kings', 'mavericks',
-      'rockets', 'grizzlies', 'pelicans', 'spurs'
+      'rockets', 'grizzlies', 'pelicans', 'spurs', 'philadelphia', 'boston',
+      'chicago', 'cleveland', 'detroit', 'indiana', 'milwaukee', 'atlanta',
+      'charlotte', 'miami', 'orlando', 'washington', 'denver', 'minnesota',
+      'oklahoma', 'portland', 'utah', 'golden-state', 'los-angeles', 'phoenix',
+      'sacramento', 'dallas', 'houston', 'memphis', 'new-orleans', 'san-antonio',
+      'toronto-raptors', 'brooklyn-nets', 'new-york-knicks', 'philadelphia-76ers',
+      'chicago-bulls', 'cleveland-cavaliers', 'detroit-pistons', 'indiana-pacers',
+      'milwaukee-bucks', 'atlanta-hawks', 'charlotte-hornets', 'miami-heat',
+      'orlando-magic', 'washington-wizards', 'denver-nuggets', 'minnesota-timberwolves',
+      'oklahoma-city-thunder', 'portland-trail-blazers', 'utah-jazz', 'golden-state-warriors',
+      'la-clippers', 'los-angeles-clippers', 'los-angeles-lakers', 'phoenix-suns',
+      'sacramento-kings', 'dallas-mavericks', 'houston-rockets', 'memphis-grizzlies',
+      'new-orleans-pelicans', 'san-antonio-spurs', 'boston-celtics'
     ];
 
     return nbaTeams.some(team => normalizedName.includes(team));
@@ -848,6 +866,11 @@ export class TeamBadgeService {
   }
 
   // Add these new methods for MLB teams
+  /**
+   * Verifica si el equipo es de la MLB
+   * @param normalizedName Nombre normalizado del equipo
+   * @returns true si es un equipo de MLB
+   */
   private isMLBTeam(normalizedName: string): boolean {
     const mlbTeams = [
       'new-york-yankees', 'boston-red-sox', 'toronto-blue-jays', 'baltimore-orioles', 'tampa-bay-rays',
@@ -855,22 +878,61 @@ export class TeamBadgeService {
       'houston-astros', 'los-angeles-angels', 'oakland-athletics', 'seattle-mariners', 'texas-rangers',
       'atlanta-braves', 'miami-marlins', 'new-york-mets', 'philadelphia-phillies', 'washington-nationals',
       'chicago-cubs', 'cincinnati-reds', 'milwaukee-brewers', 'pittsburgh-pirates', 'st-louis-cardinals',
-      'arizona-diamondbacks', 'colorado-rockies', 'los-angeles-dodgers', 'san-diego-padres', 'san-francisco-giants'
+      'arizona-diamondbacks', 'colorado-rockies', 'los-angeles-dodgers', 'san-diego-padres', 'san-francisco-giants',
+      'yankees', 'red-sox', 'blue-jays', 'orioles', 'rays', 'white-sox', 'guardians', 'tigers', 'royals', 'twins',
+      'astros', 'angels', 'athletics', 'mariners', 'rangers', 'braves', 'marlins', 'mets', 'phillies', 'nationals',
+      'cubs', 'reds', 'brewers', 'pirates', 'cardinals', 'diamondbacks', 'rockies', 'dodgers', 'padres', 'giants'
     ];
 
     return mlbTeams.includes(normalizedName);
   }
 
+  /**
+   * Obtiene la abreviatura del equipo de MLB
+   * @param normalizedName Nombre normalizado del equipo
+   * @returns Abreviatura del equipo
+   */
   private getMLBTeamAbbreviation(normalizedName: string): string {
     const mlbTeamAbbreviations: {[key: string]: string} = {
-      'new-york-yankees': 'nyy', 'boston-red-sox': 'bos', 'toronto-blue-jays': 'tor', 'baltimore-orioles': 'bal', 'tampa-bay-rays': 'tb',
-      'chicago-white-sox': 'chw', 'cleveland-guardians': 'cle', 'detroit-tigers': 'det', 'kansas-city-royals': 'kc', 'minnesota-twins': 'min',
-      'houston-astros': 'hou', 'los-angeles-angels': 'laa', 'oakland-athletics': 'oak', 'seattle-mariners': 'sea', 'texas-rangers': 'tex',
-      'atlanta-braves': 'atl', 'miami-marlins': 'mia', 'new-york-mets': 'nym', 'philadelphia-phillies': 'phi', 'washington-nationals': 'wsh',
-      'chicago-cubs': 'chc', 'cincinnati-reds': 'cin', 'milwaukee-brewers': 'mil', 'pittsburgh-pirates': 'pit', 'st-louis-cardinals': 'stl',
-      'arizona-diamondbacks': 'ari', 'colorado-rockies': 'col', 'los-angeles-dodgers': 'lad', 'san-diego-padres': 'sd', 'san-francisco-giants': 'sf'
+      'new-york-yankees': 'nyy', 'yankees': 'nyy',
+      'boston-red-sox': 'bos', 'red-sox': 'bos',
+      'toronto-blue-jays': 'tor', 'blue-jays': 'tor',
+      'baltimore-orioles': 'bal', 'orioles': 'bal',
+      'tampa-bay-rays': 'tb', 'rays': 'tb',
+      'chicago-white-sox': 'chw', 'white-sox': 'chw',
+      'cleveland-guardians': 'cle', 'guardians': 'cle',
+      'detroit-tigers': 'det', 'tigers': 'det',
+      'kansas-city-royals': 'kc', 'royals': 'kc',
+      'minnesota-twins': 'min', 'twins': 'min',
+      'houston-astros': 'hou', 'astros': 'hou',
+      'los-angeles-angels': 'laa', 'angels': 'laa',
+      'oakland-athletics': 'oak', 'athletics': 'oak',
+      'seattle-mariners': 'sea', 'mariners': 'sea',
+      'texas-rangers': 'tex', 'rangers': 'tex',
+      'atlanta-braves': 'atl', 'braves': 'atl',
+      'miami-marlins': 'mia', 'marlins': 'mia',
+      'new-york-mets': 'nym', 'mets': 'nym',
+      'philadelphia-phillies': 'phi', 'phillies': 'phi',
+      'washington-nationals': 'wsh', 'nationals': 'wsh',
+      'chicago-cubs': 'chc', 'cubs': 'chc',
+      'cincinnati-reds': 'cin', 'reds': 'cin',
+      'milwaukee-brewers': 'mil', 'brewers': 'mil',
+      'pittsburgh-pirates': 'pit', 'pirates': 'pit',
+      'st-louis-cardinals': 'stl', 'cardinals': 'stl',
+      'arizona-diamondbacks': 'ari', 'diamondbacks': 'ari',
+      'colorado-rockies': 'col', 'rockies': 'col',
+      'los-angeles-dodgers': 'lad', 'dodgers': 'lad',
+      'san-diego-padres': 'sd', 'padres': 'sd',
+      'san-francisco-giants': 'sf', 'giants': 'sf'
     };
 
-    return mlbTeamAbbreviations[normalizedName] || 'mlb';
+    // Buscar coincidencias parciales si no hay una coincidencia exacta
+    for (const [key, abbr] of Object.entries(mlbTeamAbbreviations)) {
+      if (normalizedName.includes(key)) {
+        return abbr;
+      }
+    }
+
+    return 'mlb'; // Valor por defecto si no se encuentra coincidencia
   }
 }
