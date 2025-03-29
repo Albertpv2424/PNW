@@ -369,6 +369,7 @@ export class HomeComponent implements OnInit {
    * Fallback method for team logo errors
    */
   handleTeamLogoError(event: any, teamName: string): void {
+    console.warn(`Error loading team logo for: ${teamName}`);
 
     // Caso especial para St. Pauli
     if (teamName.toLowerCase().includes('pauli')) {
@@ -384,6 +385,33 @@ export class HomeComponent implements OnInit {
         teamName.toLowerCase().includes('saint germain')) {
       console.log('Cargando imagen local para Paris Saint-Germain');
       event.target.src = 'assets/teams/psg.png';
+      return;
+    }
+
+    // Caso especial para Bodø/Glimt
+    if (teamName.toLowerCase().includes('bodo') ||
+        teamName.toLowerCase().includes('glimt') ||
+        teamName.toLowerCase().includes('bodø')) {
+      console.log('Cargando imagen local para Bodø/Glimt');
+      event.target.src = 'assets/teams/bodo-glimt.png';
+      return;
+    }
+
+    // Caso especial para Djurgårdens IF
+    if (teamName.toLowerCase().includes('djurgarden') ||
+        teamName.toLowerCase().includes('djurgardens') ||
+        teamName.toLowerCase().includes('djurgården')) {
+      console.log('Cargando imagen local para Djurgårdens IF');
+      event.target.src = 'assets/teams/djurgardens.png';
+      return;
+    }
+
+    // Caso especial para Jagiellonia Białystok
+    if (teamName.toLowerCase().includes('jagiellonia') ||
+        teamName.toLowerCase().includes('bialystok') ||
+        teamName.toLowerCase().includes('białystok')) {
+      console.log('Cargando imagen local para Jagiellonia Białystok');
+      event.target.src = 'assets/teams/jagiellonia.png';
       return;
     }
 
