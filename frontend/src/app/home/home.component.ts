@@ -377,6 +377,16 @@ export class HomeComponent implements OnInit {
       return;
     }
 
+    // Caso especial para Paris Saint-Germain
+    if (teamName.toLowerCase().includes('paris') ||
+        teamName.toLowerCase().includes('psg') ||
+        teamName.toLowerCase().includes('saint-germain') ||
+        teamName.toLowerCase().includes('saint germain')) {
+      console.log('Cargando imagen local para Paris Saint-Germain');
+      event.target.src = 'assets/teams/psg.png';
+      return;
+    }
+
     // Check if it's a tennis player in a tennis event
     if (this.selectedSportKey && (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'))) {
       // Use default tennis player image

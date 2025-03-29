@@ -26,6 +26,14 @@ export class TeamBadgeService {
       return 'assets/teams/st-pauli.png';
     }
 
+    // Caso especial para Paris Saint-Germain en Champions League
+    if ((normalizedName.includes('paris') || normalizedName.includes('psg') ||
+         normalizedName.includes('saint-germain') || normalizedName.includes('saint germain')) &&
+        (context?.toLowerCase().includes('champions') || context?.toLowerCase().includes('uefa'))) {
+      console.log('Usando imagen local para Paris Saint-Germain');
+      return 'assets/teams/psg.png';
+    }
+
     // Caso especial para Bayern Munich - siempre usar la API con ID 157
     // independientemente del contexto (fútbol o baloncesto)
     if (normalizedName.includes('bayern') || normalizedName.includes('munich')) {
@@ -163,6 +171,9 @@ export class TeamBadgeService {
 
       // Bundesliga
       'st-pauli', 'fc-st-pauli', 'sankt-pauli',
+
+      // Champions League
+      'paris-saint-germain', 'psg', 'paris',
 
       // Serie A
       'como',
