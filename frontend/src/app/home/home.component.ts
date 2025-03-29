@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/admin/dashboard']);
       return;
     }
-    
+
     // Continue with normal initialization for non-admin users
     this.loadSports();
     this.loadUserInfo();
@@ -105,10 +105,10 @@ export class HomeComponent implements OnInit {
   loadFeaturedMatches() {
     // Cargar partidos destacados de diferentes ligas
     const featuredSports = [
-      'soccer_spain_la_liga', 
-      'soccer_uefa_champs_league', 
+      'soccer_spain_la_liga',
+      'soccer_uefa_champs_league',
       'basketball_nba',
-      'tennis_atp_miami_open', 
+      'tennis_atp_miami_open',
       'tennis_grand_slam_masters_1000',
       'baseball_mlb',
       'basketball_euroleague' // Added EuroLeague Basketball
@@ -131,7 +131,7 @@ export class HomeComponent implements OnInit {
               ...event,
               id: event.id || `${sportKey}_${index}`
             }));
-    
+
             // Filtrar por ligas permitidas
             const filteredEvents = eventsWithIds.filter(event =>
               this.allowedLeagues.some(league =>
@@ -216,10 +216,10 @@ export class HomeComponent implements OnInit {
         this.sports = sportsWithCountries.filter(sport =>
           this.allowedSports.includes(sport.key)
         );
-        
+
         // Add console log to debug available sports
         console.log('Available sports after filtering:', this.sports);
-        
+
         this.loading = false;
       },
       error: (error) => {
@@ -243,20 +243,20 @@ export class HomeComponent implements OnInit {
     this.selectedSportKey = sportKey;
     this.loading = true;
     this.error = '';
-    
+
     this.oddsService.getOdds(sportKey).subscribe({
       next: (data: OddEvent[]) => {
         console.log(`Loaded odds for ${sportKey}:`, data);
-        
+
         // Add unique IDs to events if they don't have one
         const eventsWithIds = data.map((event, index) => ({
           ...event,
           id: event.id || `${sportKey}_${index}`
         }));
-    
+
         // For tennis, baseball, and basketball_euroleague, don't filter by leagues
-        if (sportKey === 'tennis_atp_miami_open' || 
-                sportKey === 'tennis_grand_slam_masters_1000' || 
+        if (sportKey === 'tennis_atp_miami_open' ||
+                sportKey === 'tennis_grand_slam_masters_1000' ||
                 sportKey === 'baseball_mlb' ||
                 sportKey === 'basketball_euroleague') {
           this.odds = eventsWithIds;
@@ -269,7 +269,7 @@ export class HomeComponent implements OnInit {
             )
           );
         }
-        
+
         this.loading = false;
       },
       error: (error) => {
@@ -295,15 +295,15 @@ export class HomeComponent implements OnInit {
   // Modificar el método openBetPopup para que use el servicio de selecciones
   openBetPopup(teamName: string, betType: string, odds: number, homeTeam: string, awayTeam: string, matchId: string, leagueName?: string) {
     console.log('Toggling selection for:', teamName, betType, odds);
-  
+
     // Create a more descriptive matchInfo
-    const matchInfo = leagueName 
-      ? `${leagueName}: ${homeTeam} vs ${awayTeam}` 
+    const matchInfo = leagueName
+      ? `${leagueName}: ${homeTeam} vs ${awayTeam}`
       : `${homeTeam} vs ${awayTeam}`;
-  
+
     // Check if this selection is already active
     const isActive = this.isSelectionActive(matchId, teamName);
-    
+
     if (isActive) {
       // If already selected, remove it
       this.betSelectionsService.removeSelection(matchId, teamName);
@@ -369,6 +369,14 @@ export class HomeComponent implements OnInit {
    * Fallback method for team logo errors
    */
   handleTeamLogoError(event: any, teamName: string): void {
+
+    // Caso especial para St. Pauli
+    if (teamName.toLowerCase().includes('pauli')) {
+      console.log('Cargando imagen local para St. Pauli');
+      event.target.src = 'assets/teams/st-pauli.png';
+      return;
+    }
+
     // Check if it's a tennis player in a tennis event
     if (this.selectedSportKey && (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'))) {
       // Use default tennis player image
@@ -461,12 +469,12 @@ export class HomeComponent implements OnInit {
 
   // Add this property for the user menu dropdown
   isMenuOpen: boolean = false;
-  
+
   // Add these methods for menu toggle
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
-  
+
   closeMenu(): void {
     this.isMenuOpen = false;
   }
@@ -503,13 +511,13 @@ isSoccerSport(sportKey: string): boolean {
 // Add this method to check if a player is a tennis player
 isTennisPlayer(playerName: string): boolean {
   // Check if we're in a tennis sport context
-  const isTennisSport = this.selectedSportKey && 
+  const isTennisSport = this.selectedSportKey &&
     (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'));
-  
+
   if (!isTennisSport) {
     return false;
   }
-  
+
   // Check if the player has a custom image
   return this.tennisPlayersService.hasCustomImage(playerName);
 }
@@ -524,7 +532,7 @@ handlePlayerImageError(event: any, playerName: string): void {
   console.warn(`Error loading image for player: ${playerName}`);
   // Establecer una imagen por defecto
   event.target.src = 'assets/players/default.png';
-  
+
   // Remove the call to handleImageError since it doesn't exist in the service
   // Just log the error and set the default image
 }
