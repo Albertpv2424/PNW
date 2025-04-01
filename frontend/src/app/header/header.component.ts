@@ -54,6 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
     
     // Set up search with debounce and error handling
+    // In the ngOnInit method, update the search pipe configuration:
     this.searchSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -62,9 +63,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log('Searching for:', term);
         return this.http.get(`${this.apiUrl}/search?q=${term}`)
           .pipe(
-            timeout(10000),
+            timeout(30000), // Increase timeout from 10s to 30s
             catchError(error => {
               console.error('Search error:', error);
+              // Show a notification to the user
+              if (error.name === 'TimeoutError') {
+                // You can inject NotificationService and use it here
+                console.error('Search request timed out. Please try again later.');
+              }
               return of({ results: [] });
             })
           );

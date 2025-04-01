@@ -162,12 +162,11 @@ class PromocionController extends Controller
         try {
             Log::info('Fetching all promociones');
 
-            // Get active promociones (current date is between start and end date)
+            // Get ALL promociones, not just active ones
             $promociones = Promocion::with('tipoPromocion')
-                ->where('data_final', '>=', now())
                 ->orderBy('data_inici', 'desc')
                 ->get();
-
+    
             return response()->json($promociones);
         } catch (\Exception $e) {
             Log::error('Error fetching promociones: ' . $e->getMessage());

@@ -59,7 +59,6 @@
 .content-container {
   display: flex;
   flex: 1;
-  padding-top: 70px; /* Adjust this value based on your header height */
 }
 
 /* Sidebar styles */
@@ -145,124 +144,85 @@
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.match-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.match-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  background-color: #2a2a3c;
-  font-size: 12px;
-}
-
-.match-league, .match-date {
-  color: #ccc;
-}
-
-.match-teams {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background-color: #23232f;
-  position: relative;
-}
-
-.match-teams:after {
-  content: "VS";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: #666;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.team {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 45%;
-  padding: 10px;
 }
 
-.team-logo {
-  width: 40px;
-  height: 40px;
-  margin-bottom: 8px;
+/* Fix for the odds section */
+.match-odds-new {
+  background-color: #1e1e2d;
+  border-top: 1px solid #2a2a3c;
+  padding: 0;
+  margin: 0;
+  height: 70px; /* Fixed height */
+}
+
+.odds-container-new {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.odd-column {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  border-right: 1px solid #2a2a3c;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.odd-column:last-child {
+  border-right: none;
+}
+
+.odd-column.active {
+  background-color: #00b341;
+}
+
+/* Position the label at the top */
+.odd-label-new {
+  position: absolute;
+  top: -25%; /* Keeping it high but not too high */
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px; /* Slightly smaller font */
+  color: #666;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.odd-column.active .odd-label-new {
+  color: white;
+}
+
+/* Position the odds value in the center-bottom */
+.odd-button-new {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.team-badge {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.team-name {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 8px;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.vs {
-  font-size: 14px;
-  color: #666;
-  font-weight: bold;
-}
-
-.home-team {
-  text-align: right;
-}
-
-.away-team {
-  text-align: left;
-}
-
-/* Estilos mejorados para las cuotas */
-.match-odds-improved {
-  padding: 0;
-  background-color: #2a2a3c;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
-.odds-container-improved {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.odd-button-improved {
-  flex: 1;
-  background-color: #23232f;
+  background: transparent;
   border: none;
-  padding: 15px 10px;
-  color: white;
+  color: #00b341;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
-  text-align: center;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 0;
-  position: relative;
-  overflow: hidden;
-  margin: 0 1px;
+  padding-top: 15px; /* Adjusted to keep the number centered but below the label */
+}
+
+.odd-column.active .odd-button-new {
+  color: white;
+}
+
+.odd-button-new:hover {
+  transform: scale(1.05);
 }
 
 .odd-button-improved:hover {
@@ -290,300 +250,6 @@
 }
 
 /* Añadir indicadores visuales para identificar cada cuota */
-.odd-button-improved:first-child::before {
-  content: 'LOCAL';
-  font-size: 10px;
-  color: #ccc;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.odd-button-improved:nth-child(2)::before {
-  content: 'EMPATE';
-  font-size: 10px;
-  color: #ccc;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.odd-button-improved:last-child::before {
-  content: 'VISITANTE';
-  font-size: 10px;
-  color: #ccc;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  right: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.odd-button-improved:hover .odd-value-improved {
-  transform: scale(1.05);
-}
-
-.odd-button-improved:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 25%;
-  height: 50%;
-  width: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Mejora para el mensaje de no cuotas */
-.no-odds-message {
-  text-align: center;
-  color: #999;
-  padding: 15px;
-  font-style: italic;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Alerts */
-.alert {
-  padding: 10px 15px;
-  margin-bottom: 15px;
-  border-radius: 4px;
-}
-
-.alert-danger {
-  background-color: rgba(255, 68, 68, 0.2);
-  color: #ff4444;
-}
-
-.alert-info {
-  background-color: rgba(0, 123, 255, 0.2);
-  color: #0099ff;
-}
-
-.league-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 5px;
-}
-
-.league-flag {
-  width: 24px;
-  height: 16px;
-  object-fit: cover;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-/* User profile section */
-.user-profile-section {
-  display: flex;
-  align-items: center;
-  margin: 20px 0;
-  padding: 15px;
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.profile-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* Cambiar el color del perfil */
-.profile-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #00b341;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.welcome-text {
-  font-size: 14px;
-  color: #888;
-}
-
-.username {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* Nuevo diseño de cuotas similar a la imagen */
-.match-odds-new {
-  background-color: #1e1e2d;
-  border-top: 1px solid #2a2a3c;
-  padding: 0;
-  margin-top: 0;
-}
-
-.odds-container-new {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.odd-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-right: 1px solid #2a2a3c;
-  padding: 8px 0;
-  transition: all 0.3s ease;
-  position: relative;
-  cursor: pointer;
-}
-
-.odd-column.active,
-.odd-column:has(.odd-button-new.active) {
-  background-color: #00b341;
-}
-
-.odd-label-new {
-  font-size: 12px;
-  color: #666;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  transition: color 0.3s ease;
-}
-
-.odd-column.active .odd-label-new,
-.odd-column:has(.odd-button-new.active) .odd-label-new {
-  color: white;
-}
-
-/* Update the odd-button-new class to ensure the entire area is clickable */
-.odd-button-new {
-  background: transparent;
-  border: none;
-  color: #00b341;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 8px 12px;
-  transition: all 0.3s ease;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 10%;
-  left: 0;
-  z-index: 10; /* Ensure button is on top for clicks */
-}
-
-/* Update the odd-column class to ensure proper positioning */
-.odd-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-right: 1px solid #2a2a3c;
-  padding: 8px 0;
-  transition: all 0.3s ease;
-  position: relative; /* Important for absolute positioning of the button */
-  cursor: pointer;
-  min-height: 60px; /* Ensure minimum height for clickable area */
-}
-
-/* Make sure the label doesn't interfere with clicks */
-.odd-label-new {
-  font-size: 12px;
-  color: #666;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  transition: color 0.3s ease;
-  position: relative;
-  z-index: 5;
-  pointer-events: none; /* This prevents the label from capturing clicks */
-}
-
-.odd-button-new:hover {
-  transform: scale(1.1);
-}
-
-.odd-column.active .odd-button-new,
-.odd-button-new.active {
-  color: white;
-}
-
-.odd-label-new {
-  font-size: 12px;
-  color: #666;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  transition: color 0.3s ease;
-}
-
-/* Ajustes para el diseño de equipos */
-.match-teams {
-  padding: 15px;
-  background-color: #23232f;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.team {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 40%;
-}
-
-.vs {
-  color: #666;
-  font-size: 14px;
-}
-
-/* Actualizar las propiedades de fuente en el componente Home */
-.team-name {
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  margin-top: 8px;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.match-league, .match-date {
-  font-family: 'Poppins', sans-serif;
-  font-size: 12px;
-  color: #ccc;
-}
-
-.odd-value-improved {
-  font-family: 'Poppins', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: #00b341;
-  transition: all 0.3s ease;
-}
-
 .odd-button-improved:first-child::before {
   content: 'LOCAL';
   font-size: 10px;
@@ -860,6 +526,155 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 140px; /* Fixed height for the teams section */
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  height: 100px; /* Fixed height for team containers */
+}
+
+.team-name {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  height: 40px; /* Fixed height for team names */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.team-logo {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.match-odds-new {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 80px; /* Minimum height for odds section */
+}
+
+.odds-container-new {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%; /* Make odds container fill available space */
+}
+
+.odd-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Make columns fill the container */
+  min-height: 60px;
+}
+
+.odd-column.active,
+.odd-column:has(.odd-button-new.active) {
+  background-color: #00b341;
+}
+
+.odd-label-new {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+.odd-column.active .odd-label-new,
+.odd-column:has(.odd-button-new.active) .odd-label-new {
+  color: white;
+}
+
+/* Update the odd-button-new class to ensure the entire area is clickable */
+.odd-button-new {
+  background: transparent;
+  border: none;
+  color: #00b341;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10%;
+  left: 0;
+  z-index: 10; /* Ensure button is on top for clicks */
+}
+
+/* Update the odd-column class to ensure proper positioning */
+.odd-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid #2a2a3c;
+  padding: 8px 0;
+  transition: all 0.3s ease;
+  position: relative; /* Important for absolute positioning of the button */
+  cursor: pointer;
+  min-height: 60px; /* Ensure minimum height for clickable area */
+}
+
+/* Make sure the label doesn't interfere with clicks */
+.odd-label-new {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 5;
+  pointer-events: none; /* This prevents the label from capturing clicks */
+}
+
+.odd-button-new:hover {
+  transform: scale(1.1);
+}
+
+.odd-column.active .odd-button-new,
+.odd-button-new.active {
+  color: white;
+}
+
+.odd-label-new {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+/* Ajustes para el diseño de equipos */
+.match-teams {
+  padding: 15px;
+  background-color: #23232f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 140px; /* Fixed height for the teams section */
 }
 
 .team {
@@ -925,7 +740,6 @@
   margin-bottom: 30px;
 }
 
-
 /* Tennis match specific styles */
 .tennis-match {
   background-color: rgba(0, 128, 0, 0.05);
@@ -968,309 +782,4 @@
   border-radius: 50%;
   background-color: transparent;
   padding: 2px;
-}
-
-/* Promotional Banner Styles */
-.promo-banner {
-  position: relative;
-  width: 100%;
-  height: 300px;
-  background: linear-gradient(135deg, #00b341 0%, #007c2d 100%);
-  margin-bottom: 2rem;
-  overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.promo-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 2rem 3rem;
-}
-
-.promo-text {
-  max-width: 50%;
-  padding-left: 2rem;
-  text-align: left;
-}
-
-.promo-text h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
-  line-height: 1.2;
-  text-transform: uppercase;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.promo-text h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffcc00;
-  margin: 1rem 0 1.5rem 0;
-  text-transform: uppercase;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.promo-button {
-  background-color: #ffffff;
-  color: #00b341;
-  border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 4px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.promo-button:hover {
-  background-color: #f0f0f0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Featured prizes section */
-.featured-prizes-section {
-  margin-bottom: 2rem;
-  padding: 1rem 0;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.section-header h2 {
-  color: white;
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.view-all-btn {
-  background-color: transparent;
-  color: #00b341;
-  border: 1px solid #00b341;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.view-all-btn:hover {
-  background-color: #00b341;
-  color: white;
-}
-
-.prizes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.prize-card {
-  background-color: #1e1e30;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s;
-}
-
-.prize-card:hover {
-  transform: translateY(-5px);
-}
-
-.prize-image {
-  height: 160px;
-  overflow: hidden;
-}
-
-.prize-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.prize-content {
-  padding: 1rem;
-}
-
-.prize-content h3 {
-  color: white;
-  margin: 0 0 0.5rem 0;
-  font-size: 1.2rem;
-}
-
-.prize-description {
-  color: #ccc;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 2.8em;
-}
-
-.prize-footer {
-  display: flex;
-  justify-content: center;
-}
-
-.prize-cost {
-  display: flex;
-  align-items: center;
-  color: white;
-  font-weight: bold;
-  margin-right: 0;
-}
-
-.coin-icon {
-  width: 20px;
-  height: 20px;
-  margin-left: 5px;
-}
-
-/* Hide buttons */
-.view-prize-btn, .ver-mas {
-  display: none;
-}
-
-/* Featured promotions section - banner style */
-.featured-promotions-section {
-  margin-bottom: 2rem;
-  padding: 1rem 0;
-}
-
-.promotions-banner-carousel {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.promotion-banner {
-  background: linear-gradient(135deg, #00b341 0%, #007c2d 100%);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s;
-}
-
-.promotion-banner:hover {
-  transform: translateY(-5px);
-}
-
-.promotion-banner-content {
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-}
-
-.promotion-banner-text {
-  flex: 2;
-  color: white;
-  padding-right: 2rem;
-}
-
-.promotion-banner-text h3 {
-  font-size: 1.8rem;
-  margin: 0 0 1rem 0;
-  text-transform: uppercase;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.promotion-banner-text p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  opacity: 0.9;
-}
-
-.promotion-banner-image {
-  flex: 1;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.promotion-banner-image img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.promotion-dates {
-  display: block;
-  font-size: 0.8rem;
-  color: #ffcc00;
-  margin-top: 0.5rem;
-}
-
-/* Media queries */
-@media (max-width: 992px) {
-  .prizes-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .promo-text, .promotion-banner-text {
-    max-width: 80%;
-  }
-  
-  .promo-text h1, .promotion-banner-text h3 {
-    font-size: 2rem;
-  }
-  
-  .promo-text h2 {
-    font-size: 1.5rem;
-  }
-  
-  .promotion-banner-content {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .promotion-banner-text {
-    padding-right: 0;
-    padding-bottom: 1rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .prizes-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .promo-banner {
-    height: 250px;
-  }
-  
-  .promo-text {
-    max-width: 100%;
-  }
-  
-  .promo-text h1 {
-    font-size: 1.5rem;
-  }
-  
-  .promo-text h2 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .promo-button {
-    padding: 0.6rem 1.5rem;
-    font-size: 1rem;
-  }
 }

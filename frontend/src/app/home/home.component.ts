@@ -8,10 +8,7 @@ import { BetSelectionsService } from '../services/bet-selections.service';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
 import { TeamBadgeService } from '../services/team-badge.service';
 import { HeaderComponent } from '../header/header.component';
-import { PredictionsService } from '../services/predictions.service';
 import { TennisPlayersService } from '../services/tennis-players.service';
-
-
 
 interface Sport {
   key: string;
@@ -30,15 +27,6 @@ interface OddEvent {
   // ... otros campos que vengan de la API
 }
 
-// Add this interface for the prizes
-interface Premio {
-  id: number;
-  titol: string;
-  descripcio: string;
-  cost: number;
-  image: string;
-}
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -53,25 +41,8 @@ export class HomeComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
   username: string = '';
-  profileImage: string | null = null;
+  profileImage: string | null = null; // Add this property
   featuredMatches: OddEvent[] = [];
-
-  // Add these missing properties
-  featuredPrizes: Premio[] = [];
-  loadingPrizes: boolean = false;
-  prizesError: string = '';
-
-  // Fix: Move these properties to class level instead of inside ngOnInit
-  featuredPromotions: any[] = [];
-  loadingPromotions: boolean = false;
-  promotionsError: string = '';
-
-  // Add promotional banner properties
-  mainPromotion = {
-    title: 'DOBLAMOS TU PRIMER DEPÓSITO',
-    subtitle: 'HASTA 200 €',
-    buttonText: 'Crear cuenta'
-  };
 
   // Lista de ligas permitidas
   allowedLeagues = [
@@ -85,7 +56,8 @@ export class HomeComponent implements OnInit {
     'UEFA Europa Conference League',
     'ATP Miami Open',
     'Grand Slam & Masters 1000',
-    'MLB'
+    'MLB',
+    'EuroLeague' // Added EuroLeague Basketball
   ];
 
   // Lista de deportes permitidos
@@ -100,17 +72,17 @@ export class HomeComponent implements OnInit {
     'soccer_germany_bundesliga',
     'tennis_atp_miami_open',
     'tennis_grand_slam_masters_1000',
-    'baseball_mlb' // Added MLB baseball
+    'baseball_mlb', // Added MLB baseball
+    'basketball_euroleague' // Added EuroLeague Basketball
   ];
 
   constructor(
     private oddsService: OddsService,
     public authService: AuthService,
     private betSelectionsService: BetSelectionsService,
-    public teamBadgeService: TeamBadgeService,// Add Router to constructor
-    public tennisPlayersService: TennisPlayersService, // Add this line
-    private router: Router,
-    private predictionsService: PredictionsService  // Add this service
+    public teamBadgeService: TeamBadgeService,
+    private router: Router,  // Add Router to constructor
+    public tennisPlayersService: TennisPlayersService // Add this line
   ) {}
 
   // Modificar el método ngOnInit para redirigir a los administradores
@@ -122,27 +94,27 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/admin/dashboard']);
       return;
     }
-    
+
     // Continue with normal initialization for non-admin users
     this.loadSports();
     this.loadUserInfo();
-    this.loadFeaturedMatches();
-    this.loadFeaturedPrizes(); // Add this method call
-    this.loadFeaturedPromotions(); // Add this method call
+    this.loadFeaturedMatches(); // This will now work correctly
   }
 
-  // Add this method to load featured matches
+  // Make sure this method is defined in the class
   loadFeaturedMatches() {
     // Cargar partidos destacados de diferentes ligas
     const featuredSports = [
-      'soccer_spain_la_liga', 
-      'soccer_uefa_champs_league', 
+      'soccer_spain_la_liga',
+      'soccer_uefa_champs_league',
       'basketball_nba',
-      'tennis_atp_miami_open', 
+      'tennis_atp_miami_open',
       'tennis_grand_slam_masters_1000',
-      'baseball_mlb'
+      'baseball_mlb',
+      'basketball_euroleague' // Added EuroLeague Basketball
     ];
 
+    // Rest of the method remains unchanged
     this.featuredMatches = []; // Limpiar los partidos destacados existentes
     let loadedCount = 0;
     const maxFeaturedMatches = 6; // Aumentamos a 6 partidos destacados
@@ -159,7 +131,7 @@ export class HomeComponent implements OnInit {
               ...event,
               id: event.id || `${sportKey}_${index}`
             }));
-    
+
             // Filtrar por ligas permitidas
             const filteredEvents = eventsWithIds.filter(event =>
               this.allowedLeagues.some(league =>
@@ -188,82 +160,6 @@ export class HomeComponent implements OnInit {
       });
     });
   }
-
-  // Add this method to load featured promotions
-  loadFeaturedPromotions() {
-    this.loadingPromotions = true;
-    this.promotionsError = '';
-    
-    this.predictionsService.getPromociones().subscribe({
-      next: (data) => {
-        // Convert API data to the format we need
-        const allPromotions = data.map((promocion: any) => ({
-          id: promocion.id,
-          titol: promocion.titol,
-          descripcio: promocion.descripcio,
-          image: promocion.image ? `http://localhost:8000/${promocion.image}` : 'assets/promociones/default.png',
-          data_inici: promocion.data_inici,
-          data_final: promocion.data_final
-        }));
-        
-        // Shuffle the promotions randomly
-        const shuffledPromotions = this.shuffleArray([...allPromotions]);
-        
-        // Take only the first 3 promotions after shuffling
-        this.featuredPromotions = shuffledPromotions.slice(0, 3);
-        this.loadingPromotions = false;
-      },
-      error: (error) => {
-        console.error('Error loading promotions:', error);
-        this.promotionsError = 'Error al cargar las promociones';
-        this.loadingPromotions = false;
-      }
-    });
-  }
-
-  // Add this method to navigate to promotions page
-  navigateToPromotions() {
-    // Navigate directly to promotions page without authentication check
-    this.router.navigate(['/promociones'], { queryParams: { public: 'true' } });
-  }
-
-  // Add this method to load featured prizes
-  loadFeaturedPrizes() {
-    this.loadingPrizes = true;
-    this.prizesError = '';
-    
-    this.predictionsService.getPremios().subscribe({
-      next: (data) => {
-        // Convert API data to the format we need
-        const allPrizes = data.map((premio: any) => ({
-          id: premio.id,
-          titol: premio.titol,
-          descripcio: premio.descripcio,
-          cost: premio.cost,
-          image: premio.image ? `http://localhost:8000/${premio.image}` : 'assets/premios/default.png'
-        }));
-        
-        // Shuffle the prizes randomly
-        const shuffledPrizes = this.shuffleArray([...allPrizes]);
-        
-        // Take only the first 3 prizes after shuffling
-        this.featuredPrizes = shuffledPrizes.slice(0, 3);
-        this.loadingPrizes = false;
-      },
-      error: (error) => {
-        console.error('Error loading prizes:', error);
-        this.prizesError = 'Error al cargar los premios';
-        this.loadingPrizes = false;
-      }
-    });
-  }
-  
-  // Update this method to navigate to prizes page without requiring login
-  navigateToPrizes() {
-    // Navigate directly to prizes page without authentication check
-    this.router.navigate(['/premios'], { queryParams: { public: 'true' } });
-  }
-  
   loadUserInfo() {
     const user = this.authService.getCurrentUser();
     if (user) {
@@ -320,10 +216,10 @@ export class HomeComponent implements OnInit {
         this.sports = sportsWithCountries.filter(sport =>
           this.allowedSports.includes(sport.key)
         );
-        
+
         // Add console log to debug available sports
         console.log('Available sports after filtering:', this.sports);
-        
+
         this.loading = false;
       },
       error: (error) => {
@@ -347,21 +243,22 @@ export class HomeComponent implements OnInit {
     this.selectedSportKey = sportKey;
     this.loading = true;
     this.error = '';
-    
+
     this.oddsService.getOdds(sportKey).subscribe({
       next: (data: OddEvent[]) => {
         console.log(`Loaded odds for ${sportKey}:`, data);
-        
+
         // Add unique IDs to events if they don't have one
         const eventsWithIds = data.map((event, index) => ({
           ...event,
           id: event.id || `${sportKey}_${index}`
         }));
-    
-        // For tennis and baseball, don't filter by leagues
-        if (sportKey === 'tennis_atp_miami_open' || 
-                sportKey === 'tennis_grand_slam_masters_1000' || 
-                sportKey === 'baseball_mlb') {
+
+        // For tennis, baseball, and basketball_euroleague, don't filter by leagues
+        if (sportKey === 'tennis_atp_miami_open' ||
+                sportKey === 'tennis_grand_slam_masters_1000' ||
+                sportKey === 'baseball_mlb' ||
+                sportKey === 'basketball_euroleague') {
           this.odds = eventsWithIds;
         } else {
           // Filtrar por ligas permitidas para otros deportes
@@ -372,7 +269,7 @@ export class HomeComponent implements OnInit {
             )
           );
         }
-        
+
         this.loading = false;
       },
       error: (error) => {
@@ -398,15 +295,15 @@ export class HomeComponent implements OnInit {
   // Modificar el método openBetPopup para que use el servicio de selecciones
   openBetPopup(teamName: string, betType: string, odds: number, homeTeam: string, awayTeam: string, matchId: string, leagueName?: string) {
     console.log('Toggling selection for:', teamName, betType, odds);
-  
+
     // Create a more descriptive matchInfo
-    const matchInfo = leagueName 
-      ? `${leagueName}: ${homeTeam} vs ${awayTeam}` 
+    const matchInfo = leagueName
+      ? `${leagueName}: ${homeTeam} vs ${awayTeam}`
       : `${homeTeam} vs ${awayTeam}`;
-  
+
     // Check if this selection is already active
     const isActive = this.isSelectionActive(matchId, teamName);
-    
+
     if (isActive) {
       // If already selected, remove it
       this.betSelectionsService.removeSelection(matchId, teamName);
@@ -437,15 +334,6 @@ export class HomeComponent implements OnInit {
       amount: betData.amount,
       potentialWin: betData.amount * betData.odds
     });
-
-    // Aquí implementarías la lógica para enviar la apuesta al backend
-    // Por ejemplo:
-    // this.betService.placeBet({
-    //   teamName: this.selectedBet.teamName,
-    //   betType: this.selectedBet.betType,
-    //   odds: this.selectedBet.odds,
-    //   amount: betData.amount
-    // }).subscribe(...)
   }
 
   // Añadir este método para verificar si una selección está activa
@@ -481,6 +369,52 @@ export class HomeComponent implements OnInit {
    * Fallback method for team logo errors
    */
   handleTeamLogoError(event: any, teamName: string): void {
+    console.warn(`Error loading team logo for: ${teamName}`);
+
+    // Caso especial para St. Pauli
+    if (teamName.toLowerCase().includes('pauli')) {
+      console.log('Cargando imagen local para St. Pauli');
+      event.target.src = 'assets/teams/st-pauli.png';
+      return;
+    }
+
+    // Caso especial para Paris Saint-Germain
+    if (teamName.toLowerCase().includes('paris') ||
+        teamName.toLowerCase().includes('psg') ||
+        teamName.toLowerCase().includes('saint-germain') ||
+        teamName.toLowerCase().includes('saint germain')) {
+      console.log('Cargando imagen local para Paris Saint-Germain');
+      event.target.src = 'assets/teams/psg.png';
+      return;
+    }
+
+    // Caso especial para Bodø/Glimt
+    if (teamName.toLowerCase().includes('bodo') ||
+        teamName.toLowerCase().includes('glimt') ||
+        teamName.toLowerCase().includes('bodø')) {
+      console.log('Cargando imagen local para Bodø/Glimt');
+      event.target.src = 'assets/teams/bodo-glimt.png';
+      return;
+    }
+
+    // Caso especial para Djurgårdens IF
+    if (teamName.toLowerCase().includes('djurgarden') ||
+        teamName.toLowerCase().includes('djurgardens') ||
+        teamName.toLowerCase().includes('djurgården')) {
+      console.log('Cargando imagen local para Djurgårdens IF');
+      event.target.src = 'assets/teams/djurgardens.png';
+      return;
+    }
+
+    // Caso especial para Jagiellonia Białystok
+    if (teamName.toLowerCase().includes('jagiellonia') ||
+        teamName.toLowerCase().includes('bialystok') ||
+        teamName.toLowerCase().includes('białystok')) {
+      console.log('Cargando imagen local para Jagiellonia Białystok');
+      event.target.src = 'assets/teams/jagiellonia.png';
+      return;
+    }
+
     // Check if it's a tennis player in a tennis event
     if (this.selectedSportKey && (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'))) {
       // Use default tennis player image
@@ -557,8 +491,10 @@ export class HomeComponent implements OnInit {
   /**
    * Handles flag loading errors
    */
-  handleFlagError(event: any, country?: string): void {
-    // Set a default flag icon or hide the element
+  // Add this method if it doesn't exist
+  handleFlagError(event: any, country: string): void {
+    console.error(`Error loading flag for ${country}`);
+    // Set a default flag or hide the image
     event.target.style.display = 'none';
   }
 
@@ -571,61 +507,55 @@ export class HomeComponent implements OnInit {
 
   // Add this property for the user menu dropdown
   isMenuOpen: boolean = false;
-  
+
   // Add these methods for menu toggle
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
-  
+
   closeMenu(): void {
     this.isMenuOpen = false;
   }
 
-
-
   // Add these methods to your HomeComponent class
 
-getSportIcon(sportKey: string): string {
-  // Return appropriate emoji based on sport key
-  if (sportKey.includes('tennis')) {
-    return '🎾'; // Tennis ball
-  } else if (sportKey.includes('baseball') || sportKey.includes('mlb')) {
-    return '⚾'; // Baseball
-  } else if (sportKey.includes('basketball') || sportKey.includes('nba')) {
-    return '🏀'; // Basketball
-  } else if (sportKey.includes('soccer')) {
-    return '⚽'; // Soccer/Football
-  } else {
-    return ''; // Default - no icon
-  } 
+// Add this method to handle sport selection
+selectSport(sportKey: string): void {
+// Call the existing loadOdds method which already sets selectedSportKey
+this.loadOdds(sportKey);
 }
 
-  navigateToSignup(): void {
-    this.router.navigate(['/register']);
-  }
-  
-  // Add this method to check if user is logged in
-  // Añade este método al componente
-  isLoggedIn(): boolean {
-  return this.authService.isLoggedIn();
-} 
-  
+// Update the getSportIcon method to include flags for all sports
+getSportIcon(sportKey: string): string {
+// Return appropriate emoji based on sport key
+if (sportKey.includes('tennis')) {
+return '🎾'; // Tennis ball
+} else if (sportKey.includes('baseball') || sportKey.includes('mlb')) {
+return '⚾'; // Baseball
+} else if (sportKey.includes('basketball') || sportKey.includes('nba') || sportKey.includes('euroleague')) {
+return '🏀'; // Basketball
+} else if (sportKey.includes('soccer')) {
+return '⚽'; // Soccer/Football
+} else {
+return ''; // Default - no icon
+}
+}
 
-
-  isSoccerSport(sportKey: string): boolean {
+isSoccerSport(sportKey: string): boolean {
   return sportKey.includes('soccer');
 }
 
-
+// Add these methods to display tennis player images
+// Add this method to check if a player is a tennis player
 isTennisPlayer(playerName: string): boolean {
   // Check if we're in a tennis sport context
-  const isTennisSport = this.selectedSportKey && 
+  const isTennisSport = this.selectedSportKey &&
     (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'));
-  
+
   if (!isTennisSport) {
     return false;
   }
-  
+
   // Check if the player has a custom image
   return this.tennisPlayersService.hasCustomImage(playerName);
 }
@@ -637,11 +567,12 @@ getPlayerImage(playerName: string): string {
 
 // Añade este método a tu HomeComponent
 handlePlayerImageError(event: any, playerName: string): void {
-
   console.warn(`Error loading image for player: ${playerName}`);
   // Establecer una imagen por defecto
   event.target.src = 'assets/players/default.png';
-  
 
+  // Remove the call to handleImageError since it doesn't exist in the service
+  // Just log the error and set the default image
 }
+
 }

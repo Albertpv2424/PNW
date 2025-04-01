@@ -9,101 +9,110 @@
   margin: 0 auto;
 }
 
-/* Banner promocional principal (rojo) */
-.promo-banner {
-  position: relative;
+/* Ajusta el grid para que se vea como en la imagen */
+/* Asegurarnos de que el grid muestre todas las promociones */
+.promociones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
   width: 100%;
-  height: 200px;
-  background: linear-gradient(135deg, #c00 0%, #900 100%); /* Fondo rojo degradado */
-  margin-bottom: 2rem;
-  overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-top: 20px;
 }
 
-.promo-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+/* Estilo para promociones expiradas */
+.promocion-card.expired img {
+  filter: grayscale(100%);
+}
+
+.promocion-card.expired::after {
+  content: 'FINALIZADA';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Estilo para promociones en las que ya está inscrito */
+.promocion-card.inscrito .inscribir-button {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+/* Mensajes de error y carga */
+.error-message {
+  color: #ff5252;
+  padding: 15px;
+  background-color: rgba(255, 82, 82, 0.1);
+  border-radius: 4px;
+  margin: 20px 0;
   text-align: center;
 }
 
-.promo-text {
-  max-width: 80%;
-}
-
-.promo-text h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
-  line-height: 1.2;
-  text-transform: uppercase;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.promo-text h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #ffcc00; /* Color amarillo para el monto */
-  margin: 0.5rem 0 1rem 0;
-  text-transform: uppercase;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.promo-button {
-  background-color: #00b341; /* Botón verde */
+.loading-message {
   color: white;
-  border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 4px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 20px;
 }
 
-.promo-button:hover {
-  background-color: #009935;
-  transform: translateY(-2px);
-}
-
-/* Ajusta el grid para que se vea como en la imagen */
-.promociones-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  justify-content: center;
-}
-
-/* Asegúrate de que las tarjetas tengan el estilo correcto */
+/* Asegúrate de que la tarjeta tenga posición relativa para el label de FINALIZADA */
 .promocion-card {
+  position: relative;
+  background-color: #1e1e30;
   border-radius: 8px;
   overflow: hidden;
-  background-color: #1e1e30;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 }
 
 .promocion-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.promocion-card.inscrito .inscribir-button:hover {
+  background-color: #666;
+}
+
+/* Estilo para botones deshabilitados */
+.inscribir-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
 }
 
 .promocion-image {
   width: 100%;
-  height: 200px;
+  height: 280px;
   overflow: hidden;
+  position: relative;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promocion-info {
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
 }
 
 .promocion-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.promocion-card:hover .promocion-image img {
+  transform: scale(1.05);
 }
 
 .promocion-info {
@@ -152,6 +161,11 @@
   background-color: #009935;
 }
 
+.inscribir-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
 /* Añadir estilos de header como en premios */
 .promociones-header {
   display: flex;
@@ -169,34 +183,4 @@
   position: relative;
   top: -1px;
   object-fit: contain;
-}
-
-/* Media queries para responsividad */
-@media (max-width: 768px) {
-  .promociones-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .promo-text h1 {
-    font-size: 1.5rem;
-  }
-  
-  .promo-text h2 {
-    font-size: 1.3rem;
-  }
-  
-  .promo-button {
-    padding: 0.6rem 1.5rem;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .promociones-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .promo-banner {
-    height: 250px;
-  }
 }

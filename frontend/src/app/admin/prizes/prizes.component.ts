@@ -54,9 +54,9 @@ export class PrizesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('PrizesComponent initialized');
 
-    // Check authentication status
+
+
     const isLoggedIn = this.authService.isLoggedIn();
     console.log('User is logged in:', isLoggedIn);
 
@@ -76,7 +76,6 @@ export class PrizesComponent implements OnInit {
       return;
     }
 
-    // Add debugging to see if this component is being loaded
     console.log('Loading prizes from API');
     this.loadPrizes();
   }
@@ -106,7 +105,6 @@ export class PrizesComponent implements OnInit {
         console.log('Prizes loaded successfully:', data.length);
         this.prizes = data.map(prize => ({
           ...prize,
-          // Corregir la URL de la imagen para que apunte al servidor correcto
           image: prize.image ? `http://localhost:8000/${prize.image}` : 'assets/premios/default.png'
         }));
         this.filteredPrizes = [...this.prizes];
