@@ -4,13 +4,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
-import { NotificationComponent } from '../notification/notification.component';
+// Remove NotificationComponent import
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, NotificationComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink], // Remove NotificationComponent
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })

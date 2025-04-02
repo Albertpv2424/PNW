@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router'; // Remove RouterLink, keep Router
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -9,11 +9,10 @@ import { NotificationService } from '../../services/notification.service';
 import { environment } from '../../../environments/environment';
 import { AdminService } from '../../services/admin.service';
 
-// Actualiza la línea de styleUrls para eliminar la referencia a admin-dashboard.css
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule], // Remove RouterLink
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })

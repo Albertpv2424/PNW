@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router'; // Remove RouterLink, keep Router
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 import { AdminService } from '../../services/admin.service';
@@ -33,7 +33,7 @@ interface TipoPromocion {
   templateUrl: './promotions.component.html',
   styleUrls: ['./promotions.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule] // Remove RouterLink
 })
 export class PromotionsComponent implements OnInit {
   promociones: PromocionAPI[] = [];

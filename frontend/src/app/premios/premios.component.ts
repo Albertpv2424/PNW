@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
-import { RouterLink } from '@angular/router';
 import { PredictionsService } from '../services/predictions.service';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
@@ -32,8 +31,8 @@ interface PremioUI {
   imports: [
     CommonModule,
     HeaderComponent,
-    CombinedBetComponent,
-    RouterLink
+    CombinedBetComponent
+    // Remove RouterLink
   ],
   templateUrl: './premios.component.html',
   styleUrls: ['./premios.component.css']

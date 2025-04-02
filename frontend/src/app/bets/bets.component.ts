@@ -1,3 +1,4 @@
+// Update imports to remove HeaderComponent
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BetService } from '../services/bet.service';
@@ -10,7 +11,7 @@ import { NotificationService } from '../services/notification.service';
 @Component({
   selector: 'app-bets',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, RouterModule, ProfileHeaderComponent],
+  imports: [CommonModule, RouterModule, ProfileHeaderComponent], // Remove HeaderComponent
   templateUrl: './bets.component.html',
   styleUrls: ['./bets.component.css']
 })

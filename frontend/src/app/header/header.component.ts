@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { ClickOutsideDirective } from '../directives/click-outside.directive';
 import { DailyWheelComponent } from '../daily-wheel/daily-wheel.component';
-import { RouterLinkActive } from '@angular/router';
+// Remove RouterLinkActive import
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { debounceTime, distinctUntilChanged, filter, switchMap, catchError, timeout } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterLink,
-    RouterLinkActive,
+    // Remove RouterLinkActive,
     ClickOutsideDirective,
     DailyWheelComponent,
     FormsModule

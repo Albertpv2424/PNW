@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router'; // Remove RouterLink, keep Router
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -20,7 +20,7 @@ interface Prize {
 @Component({
   selector: 'app-prizes',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule], // Remove RouterLink
   templateUrl: './prizes.component.html',
   styleUrls: ['../shared/admin-shared.css', './prizes.component.css']
 })

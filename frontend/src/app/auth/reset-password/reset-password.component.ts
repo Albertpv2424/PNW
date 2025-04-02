@@ -4,12 +4,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
-import { NotificationComponent } from '../notification/notification.component';
+// Remove NotificationComponent import
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, NotificationComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink], // Remove NotificationComponent
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })

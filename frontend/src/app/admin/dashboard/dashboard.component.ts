@@ -1,14 +1,15 @@
+// Remove RouterLink from imports
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router'; // Keep Router but remove RouterLink
 import { AdminService } from '../../services/admin.service';
 import { AuthService } from '../../services/auth.service';
-import { NotificationService } from '../../services/notification.service'; // Add this import
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule], // Remove RouterLink from here
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
