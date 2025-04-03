@@ -1,0 +1,93 @@
+.page-container {
+  margin: 0 auto;
+  background-image: url('../../assets/FONDO.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px 20px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.content-card {
+  background-color: rgba(26, 26, 46, 0.9);
+  border-radius: 10px;
+  padding: 30px;
+  color: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #00b341;
+  margin-bottom: 30px;
+  font-size: 32px;
+  text-align: center;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background-color: #00b341;
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  cursor: pointer;
+}
+
+.faq-question h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.toggle-icon {
+  font-size: 24px;
+  color: #00b341;
+  transition: transform 0.3s;
+}
+
+.faq-item.active .toggle-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  padding: 0 15px;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 500px;
+  padding-bottom: 15px;
+}
+
+.faq-answer p {
+  color: #ccc;
+  line-height: 1.6;
+}

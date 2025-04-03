@@ -17,6 +17,18 @@ import { BetVerificationComponent } from './admin/bet-verification/bet-verificat
 import { BetsComponent } from './bets/bets.component';
 import { HistoryComponent } from './history/history.component';
 
+// Importar componentes de información
+import { AboutComponent } from './about/about.component';
+import { TermsComponent } from './terms/terms.component';
+import { PrivacyComponent } from './privacy/privacy.component';
+import { ContactComponent } from './contact/contact.component';
+
+// Importar componentes de ayuda
+import { FaqComponent } from './faq/faq.component';
+import { HowToPlayComponent } from './how-to-play/how-to-play.component';
+import { ResponsibleGamingComponent } from './responsible-gaming/responsible-gaming.component';
+import { SupportComponent } from './support/support.component';
+
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', redirectTo: '', pathMatch: 'full' },
@@ -41,6 +53,18 @@ export const routes: Routes = [
   { path: 'promociones', component: PromocionesComponent, canActivate: [AuthGuard] },
   { path: 'live', component: HomeComponent }, // Temporalmente redirige a Home
   { path: 'rewards', component: VideoRewardsComponent, canActivate: [AuthGuard] },
+
+  // Rutas de información
+  { path: 'about', component: AboutComponent },
+  { path: 'terms', component: TermsComponent },
+  { path: 'privacy', component: PrivacyComponent },
+  { path: 'contact', component: ContactComponent },
+
+  // Rutas de ayuda
+  { path: 'faq', component: FaqComponent },
+  { path: 'how-to-play', component: HowToPlayComponent },
+  { path: 'responsible-gaming', component: ResponsibleGamingComponent },
+  { path: 'support', component: SupportComponent },
 
   // Admin routes with layout
   {

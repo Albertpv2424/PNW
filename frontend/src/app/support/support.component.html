@@ -1,0 +1,95 @@
+<div class="page-container">
+  <div class="content-card">
+    <h1>Soporte</h1>
+    
+    <div class="support-intro">
+      <p>
+        Estamos aquí para ayudarte con cualquier duda o problema que puedas tener. 
+        Consulta nuestras opciones de soporte a continuación.
+      </p>
+    </div>
+    
+    <div class="support-options">
+      <div class="support-option">
+        <div class="option-icon">📋</div>
+        <div class="option-content">
+          <h2>Preguntas Frecuentes</h2>
+          <p>
+            Encuentra respuestas rápidas a las preguntas más comunes en nuestra sección de 
+            <a routerLink="/faq">Preguntas Frecuentes</a>.
+          </p>
+        </div>
+      </div>
+      
+      <div class="support-option">
+        <div class="option-icon">✉️</div>
+        <div class="option-content">
+          <h2>Correo Electrónico</h2>
+          <p>
+            Envíanos un correo a <strong>soporte&#64;pnw.com</strong> y te responderemos en un plazo de 24 horas.
+          </p>
+        </div>
+      </div>
+      
+      <div class="support-option">
+        <div class="option-icon">📞</div>
+        <div class="option-content">
+          <h2>Teléfono</h2>
+          <p>
+            Llámanos al <strong>+34 900 123 456</strong> de lunes a viernes de 9:00 a 20:00 y sábados de 10:00 a 15:00.
+          </p>
+        </div>
+      </div>
+      
+      <div class="support-option">
+        <div class="option-icon">💬</div>
+        <div class="option-content">
+          <h2>Chat en Vivo</h2>
+          <p>
+            Habla con uno de nuestros agentes en tiempo real a través de nuestro chat en vivo, 
+            disponible en la esquina inferior derecha de la pantalla.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="contact-form-container">
+      <h2>Formulario de Contacto</h2>
+      <p>
+        Si prefieres, puedes enviarnos tu consulta a través del siguiente formulario y 
+        nos pondremos en contacto contigo lo antes posible.
+      </p>
+      
+      <form class="contact-form">
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" placeholder="Tu nombre">
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" id="email" placeholder="Tu correo electrónico">
+        </div>
+        
+        <div class="form-group">
+          <label for="issue-type">Tipo de Consulta</label>
+          <select id="issue-type">
+            <option value="">Selecciona una opción</option>
+            <option value="account">Cuenta</option>
+            <option value="bets">Apuestas</option>
+            <option value="prizes">Premios</option>
+            <option value="technical">Problemas Técnicos</option>
+            <option value="other">Otros</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="message">Mensaje</label>
+          <textarea id="message" rows="5" placeholder="Describe tu consulta"></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">Enviar Consulta</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,175 @@
+.page-container {
+  margin: 0 auto;
+  background-image: url('../../assets/FONDO.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px 20px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.content-card {
+  background-color: rgba(26, 26, 46, 0.9);
+  border-radius: 10px;
+  padding: 30px;
+  color: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #00b341;
+  margin-bottom: 30px;
+  font-size: 32px;
+  text-align: center;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background-color: #00b341;
+}
+
+h2 {
+  color: #00b341;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.contact-item {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+.icon {
+  font-size: 28px;
+  margin-right: 15px;
+  color: #00b341;
+}
+
+.details h3 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.details p {
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.social-links a {
+  color: #ccc;
+  text-decoration: none;
+  margin-right: 15px;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: #00b341;
+}
+
+.contact-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-form-container h2 {
+  text-align: center;
+  color: #00b341;
+}
+
+.contact-form-container p {
+  text-align: center;
+  color: #ccc;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #ccc;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background-color: rgba(26, 26, 46, 0.9); /* Fondo oscuro unificado */
+  color: #fff;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:hover, textarea:hover {
+  border-color: #00b341;
+  box-shadow: 0 0 8px rgba(0, 179, 65, 0.4);
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #00b341;
+}
+
+.submit-btn {
+  background-color: #00b341;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto;
+}
+
+.submit-btn:hover {
+  background-color: #00a038;
+}
+
+@media (max-width: 768px) {
+  .contact-info {
+    flex-direction: column;
+  }
+  
+  .contact-item {
+    width: 100%;
+  }
+}
