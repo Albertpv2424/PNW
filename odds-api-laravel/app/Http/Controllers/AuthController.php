@@ -517,7 +517,7 @@ public function addPoints(Request $request)
             'saldo' => $newSaldo
         ]);
     } catch (\Exception $e) {
-        \Log::error('Error al añadir puntos: ' . $e->getMessage());
+        Log::error('Error al añadir puntos: ' . $e->getMessage());
         return response()->json(['message' => 'Error al procesar la solicitud'], 500);
     }
 }
