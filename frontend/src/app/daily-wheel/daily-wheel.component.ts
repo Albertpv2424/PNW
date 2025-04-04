@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -267,15 +267,20 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Add the authentication headers to the request
-    const headers = this.authService.getAuthHeaders();
+    // Corregir el problema de headers
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
 
     // Check with the server instead of localStorage
     this.http.get(`${this.apiUrl}/daily-wheel/status`, { headers }).subscribe({
       next: (response: any) => {
         console.log('Wheel status response:', response);
         this.canSpin = response.canSpin;
-
+        
         // Store the points earned from the response
         if (response.pointsEarned && response.pointsEarned > 0) {
           this.lastEarnedPoints = response.pointsEarned;
@@ -312,17 +317,23 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // También necesitamos corregir el mismo problema en awardPrize()
   awardPrize() {
     if (!this.selectedPrize) return;
-
+  
     // No longer need to store in localStorage since we're using the server
     this.canSpin = false;
-
+  
     console.log('Awarding prize:', this.selectedPrize);
-
-    // Add the authentication headers to the request
-    const headers = this.authService.getAuthHeaders();
-
+  
+    // Corregir el problema de headers
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+  
     // Enviar al servidor con los headers correctos
     this.http.post(`${this.apiUrl}/daily-wheel/spin`, { points: this.selectedPrize }, { headers }).subscribe({
       next: (response: any) => {

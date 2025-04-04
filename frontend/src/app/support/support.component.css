@@ -210,3 +210,36 @@ input:focus, textarea:focus, select:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* Añadir a los estilos existentes */
+
+.error-message {
+  color: #ff4d4d;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.success-message {
+  color: #00b341;
+  font-size: 16px;
+  margin-bottom: 15px;
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(0, 179, 65, 0.1);
+  border-radius: 5px;
+}
+
+.form-feedback {
+  margin-bottom: 20px;
+}
+
+input.ng-invalid.ng-touched, 
+textarea.ng-invalid.ng-touched, 
+select.ng-invalid.ng-touched {
+  border-color: #ff4d4d;
+}
+
+button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

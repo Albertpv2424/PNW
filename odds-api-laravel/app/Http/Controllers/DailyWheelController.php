@@ -20,10 +20,15 @@ class DailyWheelController extends Controller
                 return response()->json(['message' => 'Usuario no autenticado'], 401);
             }
 
+            // Añade logs para depuración
+            Log::info('DailyWheel checkStatus for user: ' . $user->nick);
+
             // Make sure we're using the correct column name
             $tracking = DailyRewardsTracking::where('usuari_nick', $user->nick)
                 ->where('date', now()->format('Y-m-d'))
                 ->first();
+
+            Log::info('DailyWheel tracking record found: ' . ($tracking ? 'yes' : 'no'));
 
             if (!$tracking) {
                 return response()->json([
@@ -46,8 +51,8 @@ class DailyWheelController extends Controller
             return response()->json([
                 'canSpin' => true,
                 'pointsEarned' => 0,
-                'error' => 'Error checking status'
-            ]);
+                'error' => 'Error checking status: ' . $e->getMessage()
+            ], 500); // Cambiado a 500 para ser más explícito
         }
     }
 

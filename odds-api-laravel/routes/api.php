@@ -138,3 +138,8 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('/stats/bets', [StatsController::class, 'betStats']);
     Route::get('/stats/prizes', [StatsController::class, 'prizeStats']);
 });
+
+// Añadir esta ruta junto con las demás rutas API
+// Contact form route
+// Update the contact route to use the same endpoint
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'sendContactForm']);

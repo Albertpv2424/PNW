@@ -173,3 +173,16 @@ input:focus, textarea:focus {
     width: 100%;
   }
 }
+
+
+/* Add this to your existing CSS */
+.error-message {
+  color: #ff4d4d;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+input.ng-invalid.ng-touched, 
+textarea.ng-invalid.ng-touched {
+  border-color: #ff4d4d;
+}
