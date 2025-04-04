@@ -2,4 +2,6 @@
 <main class="main-content">
   <router-outlet></router-outlet>
 </main>
+<!-- Chat component (only visible when not in admin pages) -->
+<app-chat *ngIf="showHeaderFooter"></app-chat>
 <app-footer *ngIf="showHeaderFooter"></app-footer>

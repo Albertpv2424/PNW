@@ -216,13 +216,14 @@ export class AuthService {
   // Update this method in your AuthService
   getAuthHeaders(): any {
     const token = this.getToken();
-    if (!token) {
-      return {};
-    }
-        // Return a plain object instead of HttpHeaders
-    return {
-      'Authorization': `Bearer ${token}`,
+    const headers: {[key: string]: string} = {
       'Accept': 'application/json'
     };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    
+    return headers;
   }
 }

@@ -1,0 +1,44 @@
+<div class="chat-container" [class.open]="isOpen">
+  <div class="chat-header" (click)="toggleChat()">
+    <h3>Chat con Soporte</h3>
+    <button class="toggle-btn">
+      {{ isOpen ? '✕' : '↑' }}
+    </button>
+  </div>
+  
+  <div class="chat-body" *ngIf="isOpen">
+    <div class="chat-messages">
+      <div *ngIf="loading" class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+      
+      <div *ngIf="messages.length === 0 && !loading" class="empty-chat">
+        <p>Inicia una conversación con nuestro equipo de soporte.</p>
+      </div>
+      
+      <div *ngFor="let msg of messages" 
+           class="message" 
+           [class.user-message]="!msg.is_admin" 
+           [class.admin-message]="msg.is_admin">
+        <div class="message-content">
+          {{ msg.message }}
+        </div>
+        <div class="message-time">
+          {{ formatTime(msg.created_at) }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="chat-input">
+      <input 
+        type="text" 
+        [(ngModel)]="newMessage" 
+        placeholder="Escribe un mensaje..." 
+        (keyup.enter)="sendMessage()"
+      >
+      <button (click)="sendMessage()" [disabled]="!newMessage.trim()">
+        Enviar
+      </button>
+    </div>
+  </div>
+</div>

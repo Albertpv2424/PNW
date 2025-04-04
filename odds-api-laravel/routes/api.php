@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PrizeController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\BetVerificationController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,3 +144,12 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
 // Contact form route
 // Update the contact route to use the same endpoint
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'sendContactForm']);
+
+// Rutas para el chat en vivo (requieren autenticación)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/chat/start', 'App\Http\Controllers\ChatController@startSession');
+    Route::get('/chat/messages', 'App\Http\Controllers\ChatController@getMessages');
+    Route::post('/chat/messages', 'App\Http\Controllers\ChatController@sendMessage');
+    Route::get('/chat/sessions', 'App\Http\Controllers\ChatController@getActiveSessions');
+    Route::post('/chat/read', 'App\Http\Controllers\ChatController@markAsRead');
+});

@@ -4,13 +4,14 @@ import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { CommonModule } from '@angular/common';
+import { ChatComponent } from './chat/chat.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule]
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, ChatComponent]
 })
 export class AppComponent implements OnInit {
   title = 'frontend';

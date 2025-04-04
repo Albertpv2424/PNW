@@ -27,6 +27,8 @@ import { FaqComponent } from './faq/faq.component';
 import { HowToPlayComponent } from './how-to-play/how-to-play.component';
 import { ResponsibleGamingComponent } from './responsible-gaming/responsible-gaming.component';
 import { SupportComponent } from './support/support.component';
+import { ChatAdminComponent } from './chat-admin/chat-admin.component';
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -75,7 +77,11 @@ export const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'prizes', component: PrizesComponent },
       { path: 'promotions', component: PromotionsComponent},
-      { path: 'bet-verification', component: BetVerificationComponent }
+      { path: 'bet-verification', component: BetVerificationComponent },
+      {
+        path: 'chat',
+        component: ChatAdminComponent,
+      }
       // Add other admin routes here
     ]
   },
