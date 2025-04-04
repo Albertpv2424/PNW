@@ -360,22 +360,25 @@ class AuthController extends Controller
             // Log the URL for development purposes
             Log::info('Password reset URL for ' . $user->email . ': ' . $resetUrl);
 
-            // In the requestPasswordReset method, update the email sending part:
-
-            // Send the email
+            // Send the email with better error handling
             try {
                 Log::info('Attempting to send password reset email to: ' . $user->email);
                 Mail::to($user->email)->send(new PasswordResetMail($resetUrl));
                 Log::info('Password reset email sent successfully');
+                
+                return response()->json([
+                    'message' => 'Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.',
+                    'success' => true
+                ]);
             } catch (\Exception $e) {
                 Log::error('Failed to send password reset email: ' . $e->getMessage());
                 Log::error('Error details: ' . $e->getTraceAsString());
-                // Even if email fails, we return success to prevent email enumeration attacks
+                
+                return response()->json([
+                    'message' => 'Error al enviar el correo electrónico: ' . $e->getMessage(),
+                    'success' => false
+                ], 500);
             }
-
-            return response()->json([
-                'message' => 'Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.'
-            ]);
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Error de validación',
@@ -383,7 +386,7 @@ class AuthController extends Controller
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Error al enviar el correo electrónico: ' . $e->getMessage()
+                'message' => 'Error al solicitar el restablecimiento de contraseña: ' . $e->getMessage()
             ], 500);
         }
     }

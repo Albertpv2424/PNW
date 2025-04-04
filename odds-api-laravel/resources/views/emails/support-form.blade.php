@@ -31,6 +31,7 @@
             max-width: 180px;
             height: auto;
             margin-bottom: 15px;
+            display: inline-block !important;
         }
         h1 {
             color: #00b341;
@@ -91,8 +92,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <!-- Usamos la imagen directamente desde la carpeta public -->
-            <img src="{{ url('uploads/logo.jpg') }}" alt="Predict & Win Logo">
+            <!-- Usando una URL más confiable para correos electrónicos -->
+            <img src="https://raw.githubusercontent.com/predictwin/assets/main/logo.png" alt="Predict & Win Logo" style="max-width: 180px; height: auto; display: inline-block !important;">
             <h1>Nueva Solicitud de Soporte</h1>
         </div>
         

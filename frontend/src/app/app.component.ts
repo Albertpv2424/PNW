@@ -36,7 +36,8 @@ export class AppComponent implements OnInit {
         url.includes('/profile') || 
         url.includes('/login') || 
         url.includes('/register') || 
-        url.includes('/admin')
+        url.includes('/admin') ||
+        url.includes('/reset-password')
       );
     });
   }

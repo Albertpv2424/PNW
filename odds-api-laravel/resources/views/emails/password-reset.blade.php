@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>Restablecimiento de Contraseña</title>
     <style>
-        /* Estilos anteriores se mantienen igual */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -32,6 +31,7 @@
             max-width: 180px;
             height: auto;
             margin-bottom: 15px;
+            display: inline-block !important;
         }
         h1 {
             color: #00b341;
@@ -40,28 +40,34 @@
             text-align: center;
             font-weight: 600;
         }
-        /* Estilo del botón exactamente como en la imagen */
-        /* Cambiamos el color del texto del botón a blanco y aseguramos que se aplique */
-        .button {
-            display: inline-block;
-            background-color: #00b341;
-            color: #FFFFFF !important; /* Texto en blanco con !important para forzar */
-            text-decoration: none;
-            padding: 14px 28px;
-            border-radius: 6px;
-            font-weight: bold;
-            margin: 20px 0;
-            text-align: center;
-            transition: background-color 0.3s;
+        p {
+            margin-bottom: 18px;
             font-size: 16px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .button:hover {
-            background-color: #00cc4a;
+            color: #444;
         }
         .button-container {
             text-align: center;
-            margin: 35px 0;
+            margin: 30px 0;
+        }
+        .button {
+            display: inline-block;
+            background-color: #00b341;
+            color: #FFFFFF !important;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .url-container {
+            background-color: #f5f7fa;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            border: 1px solid #e1e4e8;
+            margin: 20px 0;
+            color: #555;
+            word-break: break-all;
         }
         .footer {
             margin-top: 40px;
@@ -71,76 +77,15 @@
             color: #777;
             text-align: center;
         }
-        p {
-            margin-bottom: 18px;
-            font-size: 16px;
-            color: #444;
-        }
-        .url-container {
-            word-break: break-all;
-            background-color: #f5f7fa;
-            padding: 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            border: 1px solid #e1e4e8;
-            margin: 20px 0;
-            color: #555;
-        }
-        .saludo {
-            font-weight: 500;
-            font-size: 18px;
-        }
-        strong {
-            color: #00b341;
-        }
-        /* Logo personalizado con HTML/CSS básico */
-        .logo-container {
-            background-color: #00b341;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 15px;
-            width: 180px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Eliminamos los estilos del logo personalizado y mantenemos los originales */
-        .header img {
-            max-width: 180px;
-            height: auto;
-            margin-bottom: 15px;
-        }
-
-        /* El botón está bien ahora */
-        .button {
-            display: inline-block;
-            background-color: #00b341;
-            color: #FFFFFF !important;
-            text-decoration: none;
-            padding: 14px 28px;
-            border-radius: 6px;
-            font-weight: bold;
-            margin: 20px 0;
-            text-align: center;
-            transition: background-color 0.3s;
-            font-size: 16px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <!-- Usamos la imagen directamente desde la carpeta public -->
-            <img src="{{ url('uploads/logo.jpg') }}" alt="Predict & Win Logo">
+            <!-- Usando una URL más confiable para correos electrónicos -->
+            <img src="https://raw.githubusercontent.com/predictwin/assets/main/logo.png" alt="Predict & Win Logo" style="max-width: 180px; height: auto; display: inline-block !important;">
             <h1>Restablecimiento de Contraseña</h1>
         </div>
-
-        <p class="saludo">Hola,</p>
 
         <p>Has solicitado restablecer tu contraseña para tu cuenta en <strong>Predict & Win</strong>. Haz clic en el siguiente botón para crear una nueva contraseña:</p>
 
