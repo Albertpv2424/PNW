@@ -93,7 +93,7 @@
     <div class="container">
         <div class="header">
             <!-- Usando una URL más confiable para correos electrónicos -->
-            <img src="https://raw.githubusercontent.com/predictwin/assets/main/logo.png" alt="Predict & Win Logo" style="max-width: 180px; height: auto; display: inline-block !important;">
+            <img src="https://i.imgur.com/8ATquYo.png" alt="Predict & Win Logo" style="max-width: 180px; height: auto; display: inline-block !important;">
             <h1>Nueva Solicitud de Soporte</h1>
         </div>
         

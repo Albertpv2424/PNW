@@ -80,7 +80,7 @@
     <div class="container">
         <div class="header">
             <!-- Usamos la imagen directamente desde la carpeta public -->
-            <img src="{{ url('uploads/logo.jpg') }}" alt="Predict & Win Logo">
+            <img src="https://i.imgur.com/8ATquYo.png" alt="Predict & Win Logo">
             <h1>Nuevo Mensaje de Contacto</h1>
         </div>
         
