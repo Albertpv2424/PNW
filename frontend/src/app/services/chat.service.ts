@@ -90,46 +90,78 @@ export class ChatService {
     return this.chatOpen.asObservable();
   }
 
-  // Métodos para gestionar el ID de sesión
-  setCurrentSessionId(sessionId: string | null) {
+  // Métodos para gestionar el ID de sesión - KEEP ONLY THIS IMPLEMENTATION
+  setCurrentSessionId(sessionId: string | null): void {
+    console.log('Setting current session ID:', sessionId);
+
+    // Guardar en BehaviorSubject
     this.currentSessionId.next(sessionId);
+
+    // Guardar en localStorage para persistencia
     if (sessionId) {
       localStorage.setItem('chatSessionId', sessionId);
     } else {
       localStorage.removeItem('chatSessionId');
     }
+
+    // Guardar el usuario actual para detectar cambios
+    const currentUser = this.authService.getCurrentUser()?.nick || '';
+    if (currentUser) {
+      localStorage.setItem('lastChatUser', currentUser);
+    }
   }
 
+  // Método mejorado para obtener el ID de sesión actual
   getCurrentSessionId(): Observable<string | null> {
-    // Intentar recuperar de localStorage al iniciar
-    const savedSessionId = localStorage.getItem('chatSessionId');
-    if (savedSessionId && this.currentSessionId.value === null) {
-      this.currentSessionId.next(savedSessionId);
+    // Verificar si hay un ID de sesión en el BehaviorSubject
+    const currentId = this.currentSessionId.getValue();
+
+    if (!currentId) {
+      // Si no hay ID en el BehaviorSubject, intentar recuperarlo del localStorage
+      const storedId = localStorage.getItem('chatSessionId');
+      const currentUser = this.authService.getCurrentUser()?.nick || '';
+      const lastUser = localStorage.getItem('lastChatUser') || '';
+
+      // Solo usar el ID almacenado si el usuario no ha cambiado
+      if (storedId && currentUser === lastUser) {
+        console.log('Restoring session ID from localStorage:', storedId);
+        this.currentSessionId.next(storedId);
+        return of(storedId);
+      }
     }
+
     return this.currentSessionId.asObservable();
   }
 
-  // Método para iniciar una nueva sesión con mensaje inicial
-  startNewSession(initialMessage: string = '¡Hola! Necesito ayuda.'): Observable<any> {
-    console.log('Starting new chat session with initial message:', initialMessage);
+// Método mejorado para iniciar una nueva sesión
+startNewSession(initialMessage: string = '¡Hola! Necesito ayuda.'): Observable<any> {
+  console.log('Starting new chat session with initial message:', initialMessage);
 
-    return this.http.post<any>(`${this.apiUrl}/chat/start`, {
-      message: initialMessage
-    }, {
-      headers: this.authService.getAuthHeaders()
-    }).pipe(
-      tap(response => {
-        console.log('Chat session created:', response);
-        if (response && response.session_id) {
-          this.setCurrentSessionId(response.session_id);
-        }
-      }),
-      catchError(error => {
-        console.error('Error creating chat session:', error);
-        return throwError(() => error);
-      })
-    );
-  }
+  // Limpiar la bandera de necesidad de nueva sesión
+  localStorage.removeItem('needNewChatSession');
+
+  // Guardar el usuario actual
+  const currentUser = this.authService.getCurrentUser()?.nick || '';
+  localStorage.setItem('lastChatUser', currentUser);
+
+  return this.http.post<any>(`${this.apiUrl}/chat/start`, {
+    message: initialMessage
+  }, {
+    headers: this.authService.getAuthHeaders()
+  }).pipe(
+    tap(response => {
+      console.log('Chat session created:', response);
+      if (response && response.session_id) {
+        // Guardar la sesión en localStorage para persistencia
+        this.setCurrentSessionId(response.session_id);
+      }
+    }),
+    catchError(error => {
+      console.error('Error creating chat session:', error);
+      return throwError(() => error);
+    })
+  );
+}
 
   // Método mejorado para obtener mensajes
   getMessages(sessionId: string): Observable<any[]> {

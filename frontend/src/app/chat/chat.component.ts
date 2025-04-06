@@ -30,7 +30,21 @@ export class ChatComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // Obtener el usuario actual
     this.currentUser = this.authService.getCurrentUser();
+
+    // Guardar el nick del usuario para detectar cambios
+    const currentUserNick = this.currentUser?.nick || '';
+    const lastUserNick = localStorage.getItem('lastChatUser');
+
+    // Si el usuario ha cambiado, forzar una nueva sesión
+    if (currentUserNick !== lastUserNick) {
+      console.log('User changed from', lastUserNick, 'to', currentUserNick, '- forcing new chat session');
+      this.sessionId = null;
+      this.chatService.setCurrentSessionId(null);
+      localStorage.removeItem('needNewChatSession');
+      localStorage.setItem('lastChatUser', currentUserNick);
+    }
 
     // Verificar si necesitamos una nueva sesión (después de un error 403)
     const needNewSession = localStorage.getItem('needNewChatSession') === 'true';
@@ -102,8 +116,10 @@ export class ChatComponent implements OnInit, OnDestroy {
           return;
         }
 
+        // Guardar el ID de sesión y el usuario actual
         this.sessionId = response.session_id;
         this.chatService.setCurrentSessionId(response.session_id);
+        localStorage.setItem('lastChatUser', this.currentUser?.nick || '');
         this.loading = false;
 
         // Cargar mensajes después de crear la sesión
