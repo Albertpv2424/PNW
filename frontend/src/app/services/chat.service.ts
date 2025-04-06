@@ -26,57 +26,6 @@ export class ChatService {
     });
   }
 
-  // Corregir el método getMessages para simplificarlo y usar un admin_id predeterminado
-  getMessages(sessionId: string): Observable<any[]> {
-    console.log(`Fetching messages for session: ${sessionId}`);
-
-    // Usar un admin_id predeterminado
-    const adminId = 'Admin';
-
-    // Create a new headers object with all required headers
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
-    });
-
-    // URL simplificada
-    const url = `${this.apiUrl}/chat/messages/${sessionId}`;
-    console.log('Requesting URL:', url);
-
-    return this.http.get(url, {
-      headers: headers,
-      responseType: 'json' // Cambiar a json para simplificar
-    }).pipe(
-      map((response: any) => {
-        // Si la respuesta ya es un array, devolverla directamente
-        if (Array.isArray(response)) {
-          return response;
-        }
-
-        // Si la respuesta tiene una propiedad data que es un array, devolver eso
-        if (response && response.data && Array.isArray(response.data)) {
-          return response.data;
-        }
-
-        // Si la respuesta es un objeto, intentar convertirlo a array
-        if (response && typeof response === 'object') {
-          const messagesArray = Object.values(response);
-          if (Array.isArray(messagesArray) && messagesArray.length > 0) {
-            return messagesArray;
-          }
-        }
-
-        // Si todo falla, devolver array vacío
-        return [];
-      }),
-      catchError(error => {
-        console.error('Error fetching messages:', error);
-        return of([]); // Devolver array vacío en caso de error
-      })
-    );
-  }
 
   // Simplificar el método markAsRead para usar un admin_id predeterminado
   markAsRead(sessionId: string): Observable<any> {
@@ -106,42 +55,7 @@ export class ChatService {
     );
   }
 
-  // Simplificar el método sendMessage para usar un admin_id predeterminado
-  sendMessage(message: string, sessionId: string, isAdmin: boolean = false): Observable<any> {
-    console.log(`Sending message as ${isAdmin ? 'admin' : 'user'} to session ${sessionId}`);
 
-    // Create a new headers object with all required headers
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
-    });
-
-    // Log the request details for debugging
-    console.log('Request details:', {
-      url: `${this.apiUrl}/chat/messages`,
-      headers: headers,
-      body: {
-        message,
-        session_id: sessionId,
-        is_admin: isAdmin
-      }
-    });
-
-    return this.http.post<any>(`${this.apiUrl}/chat/messages`, {
-      message,
-      session_id: sessionId,
-      is_admin: isAdmin
-    }, {
-      headers: headers
-    }).pipe(
-      catchError(error => {
-        console.error('Error sending message:', error);
-        return throwError(() => error);
-      })
-    );
-  }
 
   getActiveSessions(): Observable<any> {
     console.log('Getting active sessions with token:', this.authService.getToken()?.substring(0, 10) + '...');
@@ -195,10 +109,126 @@ export class ChatService {
     return this.currentSessionId.asObservable();
   }
 
-  // Método para iniciar una nueva sesión
-  startNewSession(): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/chat/start`, {}, {
+  // Método para iniciar una nueva sesión con mensaje inicial
+  startNewSession(initialMessage: string = '¡Hola! Necesito ayuda.'): Observable<any> {
+    console.log('Starting new chat session with initial message:', initialMessage);
+
+    return this.http.post<any>(`${this.apiUrl}/chat/start`, {
+      message: initialMessage
+    }, {
       headers: this.authService.getAuthHeaders()
+    }).pipe(
+      tap(response => {
+        console.log('Chat session created:', response);
+        if (response && response.session_id) {
+          this.setCurrentSessionId(response.session_id);
+        }
+      }),
+      catchError(error => {
+        console.error('Error creating chat session:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // Método mejorado para obtener mensajes
+  getMessages(sessionId: string): Observable<any[]> {
+    console.log(`Fetching messages for session: ${sessionId}`);
+
+    // Create a new headers object with all required headers
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
     });
+
+    // URL simplificada
+    const url = `${this.apiUrl}/chat/messages/${sessionId}`;
+    console.log('Requesting URL:', url);
+
+    return this.http.get(url, {
+      headers: headers,
+      responseType: 'json'
+    }).pipe(
+      map((response: any) => {
+        console.log('Messages response:', response);
+
+        // Si la respuesta ya es un array, devolverla directamente
+        if (Array.isArray(response)) {
+          return response;
+        }
+
+        // Si la respuesta tiene una propiedad data que es un array, devolver eso
+        if (response && response.data && Array.isArray(response.data)) {
+          return response.data;
+        }
+
+        // Si la respuesta es un objeto, intentar convertirlo a array
+        if (response && typeof response === 'object') {
+          const messagesArray = Object.values(response);
+          if (Array.isArray(messagesArray) && messagesArray.length > 0) {
+            return messagesArray;
+          }
+        }
+
+        // Si todo falla, devolver array vacío
+        return [];
+      }),
+      catchError(error => {
+        console.error('Error fetching messages:', error);
+
+        // Si es un error 403, probablemente el usuario no tiene permisos
+        // o la sesión pertenece a otro usuario
+        if (error.status === 403) {
+          console.warn('Permission denied for session:', sessionId);
+
+          // Limpiar la sesión actual si no tenemos acceso a ella
+          this.setCurrentSessionId(null);
+
+          // Guardar en localStorage que necesitamos una nueva sesión
+          localStorage.setItem('needNewChatSession', 'true');
+        }
+
+        // Devolver array vacío para evitar errores en la UI
+        return of([]);
+      })
+    );
+  }
+
+  // Método mejorado para enviar mensajes
+  sendMessage(message: string, sessionId: string, isAdmin: boolean = false): Observable<any> {
+    console.log(`Sending message as ${isAdmin ? 'admin' : 'user'} to session ${sessionId}`);
+
+    // Determinar si el usuario actual es admin
+    const currentUser = this.authService.getCurrentUser();
+    const userType = currentUser?.tipus_acc?.toLowerCase() || '';
+    const isUserAdmin = ['admin', 'administrador'].includes(userType);
+
+    // Solo enviar is_admin=true si el usuario es realmente admin
+    const adminFlag = isAdmin && isUserAdmin;
+
+    console.log('Message details:', {
+      message: message,
+      session_id: sessionId,
+      is_admin: adminFlag,
+      user_type: userType
+    });
+
+    return this.http.post<any>(`${this.apiUrl}/chat/messages`, {
+      message,
+      session_id: sessionId,
+      is_admin: adminFlag
+    }, {
+      headers: this.authService.getAuthHeaders()
+    }).pipe(
+      tap(response => {
+        console.log('Message sent successfully:', response);
+      }),
+      catchError(error => {
+        console.error('Error sending message:', error);
+        return throwError(() => error);
+      })
+    );
   }
 }

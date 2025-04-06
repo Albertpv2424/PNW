@@ -1,10 +1,17 @@
 <div class="admin-chat-container">
+  <!-- Sidebar with sessions list -->
   <div class="admin-chat-sidebar">
     <h3>Conversaciones activas</h3>
-    <div *ngIf="loading" class="loading-indicator">Cargando...</div>
-    <div *ngIf="!loading && sessions.length === 0" class="no-sessions">
-      No hay conversaciones activas.
+
+    <div *ngIf="loading" class="loading-indicator">
+      <i class="fas fa-spinner fa-spin"></i> Cargando conversaciones...
     </div>
+
+    <div *ngIf="!loading && sessions.length === 0" class="no-sessions">
+      <i class="fas fa-comments"></i>
+      <p>No hay conversaciones activas en este momento.</p>
+    </div>
+
     <div class="session-list">
       <div *ngFor="let session of sessions"
            class="session-item"
@@ -26,26 +33,37 @@
     </div>
   </div>
 
+  <!-- Main chat area -->
   <div class="admin-chat-main">
     <div *ngIf="!selectedSessionId" class="no-session-selected">
-      Selecciona una conversación para ver los mensajes.
+      <i class="fas fa-comments"></i>
+      <p>Selecciona una conversación para ver los mensajes.</p>
+      <p>Las nuevas consultas de los usuarios aparecerán en la lista de la izquierda.</p>
     </div>
 
     <div *ngIf="selectedSessionId" class="chat-content">
-      <div class="admin-chat-messages">
-        <div *ngIf="loading" class="loading-indicator">Cargando mensajes...</div>
-        <div *ngIf="!loading && messages.length === 0" class="no-messages">
-          No hay mensajes en esta conversación.
+      <div class="admin-chat-messages" #messagesContainer>
+        <div *ngIf="loading" class="loading-indicator">
+          <i class="fas fa-spinner fa-spin"></i> Cargando mensajes...
         </div>
-        <div *ngFor="let message of messages"
-             class="message-item"
-             [class.admin-message]="message.is_admin"
-             [class.user-message]="!message.is_admin">
-          <div class="message-content">
-            {{ message.message }}
-          </div>
-          <div class="message-time">
-            {{ formatTime(message.created_at) }}
+
+        <div *ngIf="!loading && messages.length === 0" class="no-messages">
+          <i class="fas fa-comment-slash"></i>
+          <p>No hay mensajes en esta conversación.</p>
+        </div>
+
+        <div class="messages-container">
+          <div *ngFor="let message of messages" class="message-wrapper">
+            <div class="message-item"
+                 [class.admin-message]="message.is_admin"
+                 [class.user-message]="!message.is_admin">
+              <div class="message-content">
+                {{ message.message }}
+              </div>
+              <div class="message-time">
+                {{ formatTime(message.created_at) }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -54,9 +72,11 @@
         <textarea
           [(ngModel)]="newMessage"
           placeholder="Escribe un mensaje..."
-          (keydown.enter)="$event.preventDefault(); sendMessage()">
+          (keydown.enter)="handleEnterKey($event)">
         </textarea>
-        <button (click)="sendMessage()">Enviar</button>
+        <button (click)="sendMessage()" [disabled]="!newMessage.trim()">
+          <i class="fas fa-paper-plane"></i> Enviar
+        </button>
       </div>
     </div>
   </div>

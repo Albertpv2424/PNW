@@ -1,44 +1,46 @@
-<div class="chat-container" [class.open]="isOpen">
+<!-- Chat button (when closed) -->
+<div *ngIf="!isOpen" class="chat-button" (click)="toggleChat()">
+  <i class="fas fa-comments"></i>
+</div>
+
+<!-- Chat widget (when open) -->
+<div *ngIf="isOpen" class="chat-widget">
   <div class="chat-header" (click)="toggleChat()">
-    <h3>Chat con Soporte</h3>
-    <button class="toggle-btn">
-      {{ isOpen ? '✕' : '↑' }}
+    <h3>Soporte en línea</h3>
+    <button class="chat-toggle">
+      <i class="fas fa-times"></i>
     </button>
   </div>
-  
-  <div class="chat-body" *ngIf="isOpen">
-    <div class="chat-messages">
-      <div *ngIf="loading" class="loading-spinner">
-        <div class="spinner"></div>
-      </div>
-      
-      <div *ngIf="messages.length === 0 && !loading" class="empty-chat">
-        <p>Inicia una conversación con nuestro equipo de soporte.</p>
-      </div>
-      
-      <div *ngFor="let msg of messages" 
-           class="message" 
-           [class.user-message]="!msg.is_admin" 
-           [class.admin-message]="msg.is_admin">
-        <div class="message-content">
-          {{ msg.message }}
-        </div>
-        <div class="message-time">
-          {{ formatTime(msg.created_at) }}
-        </div>
-      </div>
+
+  <div class="chat-messages" #chatContainer>
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="loading-indicator">
+      <div class="loading-spinner"></div>
     </div>
-    
-    <div class="chat-input">
-      <input 
-        type="text" 
-        [(ngModel)]="newMessage" 
-        placeholder="Escribe un mensaje..." 
-        (keyup.enter)="sendMessage()"
-      >
-      <button (click)="sendMessage()" [disabled]="!newMessage.trim()">
-        Enviar
-      </button>
+
+    <!-- Empty state -->
+    <div *ngIf="!loading && messages.length === 0" class="empty-state">
+      <i class="fas fa-comment-dots"></i>
+      <p>¡Hola! ¿En qué podemos ayudarte hoy?</p>
     </div>
+
+    <!-- Messages -->
+    <div *ngFor="let message of messages"
+         [ngClass]="{'message': true, 'user-message': !message.is_admin, 'admin-message': message.is_admin}">
+      {{ message.message }}
+      <div class="message-time">{{ formatTime(message.created_at) }}</div>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="newMessage"
+      placeholder="Escribe un mensaje..."
+      (keyup.enter)="sendMessage()"
+    >
+    <button [disabled]="!newMessage.trim()" (click)="sendMessage()">
+      <i class="fas fa-paper-plane"></i>
+    </button>
   </div>
 </div>

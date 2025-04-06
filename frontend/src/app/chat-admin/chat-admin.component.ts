@@ -51,47 +51,24 @@ export class ChatAdminComponent implements OnInit, OnDestroy {
   sendMessage(): void {
     if (!this.newMessage.trim() || !this.selectedSessionId) return;
 
-    const messageText = this.newMessage.trim();
-    this.newMessage = '';
+    const messageText = this.newMessage.trim(); // Guardar el mensaje antes de limpiarlo
 
-    console.log('Sending admin message:', messageText);
-
+    // Asegurarse de que se envía como admin (true)
     this.chatService.sendMessage(messageText, this.selectedSessionId, true).subscribe({
-      next: (response) => {
-        console.log('Message sent successfully:', response);
-
-        // Create a message object in the expected format
-        const message = {
-          message: messageText,
-          is_admin: true,
-          created_at: new Date().toISOString(),
-          chat_session_id: this.selectedSessionId
-        };
-
-        // Add the message to the messages array
+      next: (message) => {
         this.messages.push(message);
+        this.newMessage = '';
         this.scrollToBottom();
 
-        // Update the session in the list
+        // Actualizar la última hora y mensaje en la lista de sesiones
         const session = this.sessions.find(s => s.session_id === this.selectedSessionId);
         if (session) {
-          session.last_message = messageText;
+          session.last_message = messageText; // Usar el mensaje guardado en lugar de this.newMessage (que ya está vacío)
           session.last_message_time = new Date().toISOString();
         }
       },
       error: (error) => {
         console.error('Error al enviar mensaje:', error);
-        console.error('Error details:', {
-          status: error.status,
-          statusText: error.statusText,
-          message: error.error?.message || 'Unknown error'
-        });
-
-        this.notificationService.showError('Error al enviar el mensaje: ' +
-          (error.error?.message || 'Por favor, intenta de nuevo.'));
-
-        // Restore the message if sending failed
-        this.newMessage = messageText;
       }
     });
   }
@@ -281,4 +258,17 @@ export class ChatAdminComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  // Add this method to your ChatAdminComponent class
+// Update the handleEnterKey method to properly handle the event type
+handleEnterKey(event: Event): void {
+// Cast the event to KeyboardEvent to access keyboard-specific properties
+const keyboardEvent = event as KeyboardEvent;
+
+// If Ctrl key is pressed, allow default behavior (new line)
+if (!keyboardEvent.ctrlKey) {
+event.preventDefault();
+this.sendMessage();
+}
+}
 }

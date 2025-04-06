@@ -111,7 +111,8 @@ class ChatController extends Controller
                 'user' => $user->nick,
                 'session_id' => $request->session_id,
                 'is_admin' => $request->is_admin ?? false,
-                'message_length' => strlen($request->message)
+                'message_length' => strlen($request->message),
+                'user_tipus_acc' => $user->tipus_acc
             ]);
 
             // Verificar que la sesión existe
@@ -204,6 +205,7 @@ class ChatController extends Controller
     }
 
     // Obtener mensajes de una sesión
+    // En el método getMessages (alrededor de la línea 230)
     public function getMessages($sessionId)
     {
         try {
@@ -217,17 +219,27 @@ class ChatController extends Controller
             $session = ChatSession::where('session_id', $sessionId)->first();
 
             if (!$session) {
+                Log::error('Sesión no encontrada', ['session_id' => $sessionId, 'user' => $user->nick]);
                 return response()->json(['error' => 'Sesión no encontrada'], 404);
             }
 
-            // Verificar permisos (solo el usuario de la sesión o un admin pueden ver los mensajes)
-            // Change this:
-            $isAdmin = strtolower($user->tipus_acc) === 'admin';
+            // Añadir logs para depuración
+            Log::info('Verificando permisos para ver mensajes', [
+                'user_nick' => $user->nick,
+                'session_user_id' => $session->user_id,
+                'user_tipus_acc' => $user->tipus_acc
+            ]);
 
-            // To this:
+            // Verificar permisos (solo el usuario de la sesión o un admin pueden ver los mensajes)
             $isAdmin = strtolower($user->tipus_acc) === 'admin' || strtolower($user->tipus_acc) === 'administrador';
 
+            // IMPORTANTE: Permitir acceso si el usuario es admin o es el propietario de la sesión
             if (!$isAdmin && $session->user_id !== $user->nick) {
+                Log::warning('Acceso denegado a mensajes', [
+                    'user' => $user->nick,
+                    'session_user' => $session->user_id,
+                    'session_id' => $sessionId
+                ]);
                 return response()->json(['error' => 'No tienes permisos para ver estos mensajes'], 403);
             }
 
@@ -236,15 +248,22 @@ class ChatController extends Controller
                 ->orderBy('created_at', 'asc')
                 ->get();
 
+            Log::info('Mensajes obtenidos correctamente', [
+                'session_id' => $sessionId,
+                'count' => count($messages)
+            ]);
+
             return response()->json($messages);
 
         } catch (\Exception $e) {
             Log::error('Error al obtener mensajes: ' . $e->getMessage(), [
                 'exception' => get_class($e),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
             ]);
 
-            return response()->json(['error' => 'Error al obtener mensajes'], 500);
+            return response()->json(['error' => 'Error al obtener mensajes: ' . $e->getMessage()], 500);
         }
     }
 
