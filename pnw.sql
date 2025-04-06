@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-03-2025 a las 11:49:33
+-- Tiempo de generación: 06-04-2025 a las 13:22:19
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,64 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `pnw`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `chat_messages`
+--
+
+CREATE TABLE `chat_messages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `admin_id` varchar(255) DEFAULT NULL,
+  `message` text NOT NULL,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0,
+  `read` tinyint(1) NOT NULL DEFAULT 0,
+  `chat_session_id` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `chat_messages`
+--
+
+INSERT INTO `chat_messages` (`id`, `user_id`, `admin_id`, `message`, `is_admin`, `read`, `chat_session_id`, `created_at`, `updated_at`) VALUES
+(1, 'Albertpv24', NULL, 'hola', 0, 0, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 08:24:11', '2025-04-06 08:24:11'),
+(2, 'Albertpv24', NULL, 'aloh', 0, 0, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 08:27:45', '2025-04-06 08:27:45'),
+(3, 'Albertpv24', NULL, 'aloh', 0, 0, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 08:27:45', '2025-04-06 08:27:45'),
+(4, 'Albertpv24', NULL, 'aloh', 0, 0, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 08:27:46', '2025-04-06 08:27:46'),
+(5, 'Albertpv24', NULL, 'hola', 0, 0, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 08:31:30', '2025-04-06 08:31:30'),
+(6, 'admin', NULL, 'yep', 1, 1, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 09:15:07', '2025-04-06 09:15:18'),
+(7, 'admin', NULL, 'jeje', 1, 1, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 09:16:24', '2025-04-06 09:16:28'),
+(8, 'Albertpv24', NULL, 'NECESITO ALGO', 0, 0, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 09:18:42', '2025-04-06 09:18:42'),
+(9, 'admin', NULL, 'si dime?', 1, 1, '30548df4-583c-4a57-8818-5a581c0c70b1', '2025-04-06 09:18:52', '2025-04-06 09:18:55');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `chat_sessions`
+--
+
+CREATE TABLE `chat_sessions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `session_id` varchar(255) NOT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `admin_id` varchar(255) DEFAULT NULL,
+  `last_message` text DEFAULT NULL,
+  `last_message_time` timestamp NULL DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `chat_sessions`
+--
+
+INSERT INTO `chat_sessions` (`id`, `session_id`, `user_id`, `admin_id`, `last_message`, `last_message_time`, `active`, `created_at`, `updated_at`) VALUES
+(1, '30548df4-583c-4a57-8818-5a581c0c70b1', 'Albertpv24', 'admin', 'si dime?', '2025-04-06 09:18:52', 1, '2025-04-06 08:18:55', '2025-04-06 09:18:52');
 
 -- --------------------------------------------------------
 
@@ -154,7 +212,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, 'add_profile_image_to_usuaris_table', 1),
 (18, 'create_password_resets_table', 1),
 (19, 'update_personal_access_tokens_table', 1),
-(20, '2025_03_06_000000_add_betting_limitations_to_daily_rewards', 2);
+(20, '2025_03_06_000000_add_betting_limitations_to_daily_rewards', 2),
+(21, '2025_04_04_165907_create_chat_sessions_table', 3),
+(23, '2025_04_04_165908_create_chat_messages_table', 4);
 
 -- --------------------------------------------------------
 
@@ -225,7 +285,11 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (31, 'App\\Models\\User', 'Prova', 'auth-token', '4c8a102a706e49619546558f7d32918210976420138eed72647c54bd6f387677', '[\"*\"]', '2025-03-21 09:41:49', NULL, '2025-03-21 09:41:27', '2025-03-21 09:41:49'),
 (32, 'App\\Models\\User', 'admin', 'auth-token', 'd9f8ccfdafb6ff00dc6e1b823d634bfcce3124a75356c308bd26a1f68e24f069', '[\"*\"]', '2025-03-21 09:42:11', NULL, '2025-03-21 09:42:10', '2025-03-21 09:42:11'),
 (33, 'App\\Models\\User', 'Prova', 'auth-token', '8a3668f3bd58731d3ff9e5bfef4bfcc558ac06a2d098ea8fcbf5e355e5f23309', '[\"*\"]', '2025-03-21 09:42:37', NULL, '2025-03-21 09:42:24', '2025-03-21 09:42:37'),
-(34, 'App\\Models\\User', 'Albertpv24', 'auth-token', '4aa50b3a67c1459472a0c895b1b55a9f79acd043fa3435ed05c675e405df7710', '[\"*\"]', '2025-03-21 09:49:14', NULL, '2025-03-21 09:43:30', '2025-03-21 09:49:14');
+(34, 'App\\Models\\User', 'Albertpv24', 'auth-token', '4aa50b3a67c1459472a0c895b1b55a9f79acd043fa3435ed05c675e405df7710', '[\"*\"]', '2025-03-21 09:49:14', NULL, '2025-03-21 09:43:30', '2025-03-21 09:49:14'),
+(35, 'App\\Models\\User', 'Albertpv24', 'auth-token', '734875c9ba2e529b8822867c02d657f3df38a0bcc29776f282168380328c4d43', '[\"*\"]', '2025-04-06 09:20:25', NULL, '2025-04-06 08:18:33', '2025-04-06 09:20:25'),
+(36, 'App\\Models\\User', 'admin', 'auth-token', '6404bf27961b951ff7439435ab8607b84b138233a4c67355cb9ba2541c282037', '[\"*\"]', '2025-04-06 08:24:29', NULL, '2025-04-06 08:18:50', '2025-04-06 08:24:29'),
+(37, 'App\\Models\\User', 'admin', 'auth-token', 'e5139677f9794bb584c2de97ec59b2a05f8fa169628948208cf964d388b26535', '[\"*\"]', '2025-04-06 08:31:54', NULL, '2025-04-06 08:24:34', '2025-04-06 08:31:54'),
+(38, 'App\\Models\\User', 'admin', 'auth-token', 'f2e64eba2f824b16a3c92bb8f915a6e6311fe709c0c1c9442558c4291cda826e', '[\"*\"]', '2025-04-06 09:22:16', NULL, '2025-04-06 08:32:23', '2025-04-06 09:22:16');
 
 -- --------------------------------------------------------
 
@@ -450,6 +514,24 @@ INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `profile_image`, `s
 --
 
 --
+-- Indices de la tabla `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `chat_messages_user_id_foreign` (`user_id`),
+  ADD KEY `chat_messages_admin_id_foreign` (`admin_id`),
+  ADD KEY `chat_messages_chat_session_id_foreign` (`chat_session_id`);
+
+--
+-- Indices de la tabla `chat_sessions`
+--
+ALTER TABLE `chat_sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `chat_sessions_session_id_unique` (`session_id`),
+  ADD KEY `chat_sessions_user_id_foreign` (`user_id`),
+  ADD KEY `chat_sessions_admin_id_foreign` (`admin_id`);
+
+--
 -- Indices de la tabla `daily_rewards_tracking`
 --
 ALTER TABLE `daily_rewards_tracking`
@@ -565,6 +647,18 @@ ALTER TABLE `usuaris`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `chat_sessions`
+--
+ALTER TABLE `chat_sessions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `daily_rewards_tracking`
 --
 ALTER TABLE `daily_rewards_tracking`
@@ -580,13 +674,13 @@ ALTER TABLE `detalle_prediccio`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `prediccions_sist`
@@ -639,6 +733,21 @@ ALTER TABLE `user_sist`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  ADD CONSTRAINT `chat_messages_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `usuaris` (`nick`),
+  ADD CONSTRAINT `chat_messages_chat_session_id_foreign` FOREIGN KEY (`chat_session_id`) REFERENCES `chat_sessions` (`session_id`),
+  ADD CONSTRAINT `chat_messages_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `usuaris` (`nick`);
+
+--
+-- Filtros para la tabla `chat_sessions`
+--
+ALTER TABLE `chat_sessions`
+  ADD CONSTRAINT `chat_sessions_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `usuaris` (`nick`),
+  ADD CONSTRAINT `chat_sessions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `usuaris` (`nick`);
 
 --
 -- Filtros para la tabla `daily_rewards_tracking`
