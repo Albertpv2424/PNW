@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { ChatService } from '../services/chat.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-support',
@@ -20,7 +22,9 @@ export class SupportComponent {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private chatService: ChatService // Añadir esta inyección
   ) {
     this.supportForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -76,4 +80,9 @@ export class SupportComponent {
   get emailControl() { return this.supportForm.get('email'); }
   get issueTypeControl() { return this.supportForm.get('issueType'); }
   get messageControl() { return this.supportForm.get('message'); }
+
+  openChat(): void {
+    // Abrir el chat usando el servicio de chat
+    this.chatService.setChatOpen(true);
+  }
 }

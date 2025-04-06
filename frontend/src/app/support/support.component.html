@@ -1,26 +1,26 @@
 <div class="page-container">
   <div class="content-card">
     <h1>Soporte</h1>
-    
+
     <div class="support-intro">
       <p>
-        Estamos aquí para ayudarte con cualquier duda o problema que puedas tener. 
+        Estamos aquí para ayudarte con cualquier duda o problema que puedas tener.
         Consulta nuestras opciones de soporte a continuación.
       </p>
     </div>
-    
+
     <div class="support-options">
       <div class="support-option">
         <div class="option-icon">📋</div>
         <div class="option-content">
           <h2>Preguntas Frecuentes</h2>
           <p>
-            Encuentra respuestas rápidas a las preguntas más comunes en nuestra sección de 
+            Encuentra respuestas rápidas a las preguntas más comunes en nuestra sección de
             <a routerLink="/faq">Preguntas Frecuentes</a>.
           </p>
         </div>
       </div>
-      
+
       <div class="support-option">
         <div class="option-icon">✉️</div>
         <div class="option-content">
@@ -30,7 +30,7 @@
           </p>
         </div>
       </div>
-      
+
       <div class="support-option">
         <div class="option-icon">📞</div>
         <div class="option-content">
@@ -40,26 +40,29 @@
           </p>
         </div>
       </div>
-      
-      <div class="support-option">
+
+      <div class="support-option chat-option">
         <div class="option-icon">💬</div>
         <div class="option-content">
           <h2>Chat en Vivo</h2>
           <p>
-            Habla con uno de nuestros agentes en tiempo real a través de nuestro chat en vivo, 
+            Habla con uno de nuestros agentes en tiempo real a través de nuestro chat en vivo,
             disponible en la esquina inferior derecha de la pantalla.
           </p>
+          <button class="chat-button" (click)="openChat()">
+            <i class="fas fa-comments"></i> Abrir Chat Ahora
+          </button>
         </div>
       </div>
     </div>
-    
+
     <div class="contact-form-container">
       <h2>Envíanos un Mensaje</h2>
       <p>
-        Si prefieres, puedes enviarnos tu consulta a través del siguiente formulario y 
+        Si prefieres, puedes enviarnos tu consulta a través del siguiente formulario y
         nos pondremos en contacto contigo lo antes posible.
       </p>
-      
+
       <form class="contact-form" [formGroup]="supportForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="name">Nombre</label>
@@ -68,7 +71,7 @@
             El nombre es obligatorio
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="email">Correo Electrónico</label>
           <input type="email" id="email" formControlName="email" placeholder="Tu correo electrónico">
@@ -77,7 +80,7 @@
             <span *ngIf="emailControl?.errors?.['email']">Introduce un correo electrónico válido</span>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="issue-type">Tipo de Consulta</label>
           <select id="issue-type" formControlName="issueType">
@@ -92,7 +95,7 @@
             Selecciona un tipo de consulta
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="message">Mensaje</label>
           <textarea id="message" formControlName="message" rows="5" placeholder="Describe tu consulta"></textarea>
@@ -101,7 +104,7 @@
             <span *ngIf="messageControl?.errors?.['minlength']">El mensaje debe tener al menos 10 caracteres</span>
           </div>
         </div>
-        
+
         <div class="form-feedback">
           <div class="success-message" *ngIf="submitSuccess">
             ¡Mensaje enviado con éxito! Te responderemos lo antes posible.
@@ -110,7 +113,7 @@
             {{ submitError }}
           </div>
         </div>
-        
+
         <button type="submit" class="submit-btn" [disabled]="isSubmitting">
           {{ isSubmitting ? 'Enviando...' : 'Enviar Consulta' }}
         </button>

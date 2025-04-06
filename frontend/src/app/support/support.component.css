@@ -233,8 +233,8 @@ input:focus, textarea:focus, select:focus {
   margin-bottom: 20px;
 }
 
-input.ng-invalid.ng-touched, 
-textarea.ng-invalid.ng-touched, 
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched,
 select.ng-invalid.ng-touched {
   border-color: #ff4d4d;
 }
@@ -242,4 +242,52 @@ select.ng-invalid.ng-touched {
 button[disabled] {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+
+/* Estilos para la opción de chat */
+.chat-option {
+  background-color: rgba(255, 255, 255, 0.05); /* Mantener el mismo fondo gris que las otras opciones */
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  transition: transform 0.3s, box-shadow 0.3s;
+  min-height: 180px;
+  border: 0px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.08); /* Ligeramente más claro al pasar el cursor */
+}
+
+/* Estilos para el botón de chat */
+.chat-button {
+  background-color: #00b341; /* Usar el mismo verde que otros botones del sitio */
+  color: white;
+  border: none;
+  border-radius: 5px; /* Mismo radio que otros botones */
+  padding: 12px 24px;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-button:hover {
+  background-color: #00a038; /* Mismo color de hover que otros botones */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chat-button i {
+  font-size: 18px;
 }
