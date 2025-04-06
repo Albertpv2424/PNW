@@ -2,202 +2,354 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ChatMessage;
-use App\Models\ChatSession;
-use App\Models\Usuari;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Models\ChatSession;
+use App\Models\ChatMessage;
+use App\Models\User;
 
 class ChatController extends Controller
 {
+    // Método para obtener el admin predeterminado
+    private function getDefaultAdmin()
+    {
+        // Buscar el primer usuario con rol de admin
+        $admin = User::where('tipus_acc', 'Admin')->first();
+
+        // Si no hay admin, usar 'admin' como valor predeterminado
+        return $admin ? $admin->nick : 'admin';
+    }
+
+    // Iniciar una sesión de chat
     public function startSession(Request $request)
     {
         try {
-            // Get authenticated user
+            // Obtener usuario autenticado
             $user = Auth::user();
-            
+
             if (!$user) {
                 return response()->json(['error' => 'Usuario no autenticado'], 401);
             }
-            
-            // Log detailed user information for debugging
-            Log::info('Starting chat session', [
-                'user_class' => get_class($user),
-                'user_id' => $user->id ?? null,
-                'user_nick' => $user->nick ?? null,
-                'user_attributes' => $user->getAttributes()
-            ]);
-            
-            // Create a new chat session
+
+            // Obtener el admin predeterminado
+            $defaultAdmin = $this->getDefaultAdmin();
+
+            // Crear nueva sesión
             $session = new ChatSession();
             $session->session_id = Str::uuid()->toString();
-            
-            // Determine the correct user identifier
-            if (property_exists($user, 'nick') || isset($user->nick)) {
-                $session->user_id = $user->nick;
-            } else {
-                // If nick is not available, use a fallback approach
-                // This assumes your user model has an 'id' field
-                $session->user_id = $user->id;
-            }
-            
-            // Save the session
+            $session->user_id = $user->nick;
+            $session->admin_id = $defaultAdmin;
+            $session->active = true;
             $session->save();
-            
-            Log::info('Chat session started successfully', [
-                'session_id' => $session->session_id,
-                'user_id' => $session->user_id
-            ]);
-            
+
+            Log::info('Chat session created', ['session_id' => $session->session_id, 'user' => $user->nick]);
+
+            // Si hay un mensaje inicial, guardarlo
+            if ($request->has('message') && !empty($request->message)) {
+                $message = new ChatMessage();
+                $message->user_id = $user->nick;
+                $message->message = $request->message;
+                $message->is_admin = false;
+                $message->read = false;
+                $message->chat_session_id = $session->session_id;
+
+                $saved = $message->save();
+
+                if (!$saved) {
+                    Log::error('Failed to save initial message', [
+                        'session_id' => $session->session_id,
+                        'message' => $request->message
+                    ]);
+                } else {
+                    Log::info('Initial message saved', ['message_id' => $message->id]);
+
+                    // Actualizar la sesión con el último mensaje
+                    $session->last_message = $request->message;
+                    $session->last_message_time = now();
+                    $session->save();
+                }
+            }
+
             return response()->json([
                 'session_id' => $session->session_id
             ]);
+
         } catch (\Exception $e) {
-            // Log detailed error information
-            Log::error('Error starting chat session: ' . $e->getMessage(), [
+            Log::error('Error al iniciar sesión de chat: ' . $e->getMessage(), [
                 'exception' => get_class($e),
+                'trace' => $e->getTraceAsString(),
                 'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
+                'line' => $e->getLine()
             ]);
-            
-            return response()->json([
-                'error' => 'Error al iniciar la sesión de chat: ' . $e->getMessage()
-            ], 500);
+
+            return response()->json(['error' => 'Error al iniciar sesión de chat: ' . $e->getMessage()], 500);
         }
     }
-    
-    public function getMessages($sessionId)
-    {
-        try {
-            $messages = ChatMessage::where('chat_session_id', $sessionId)
-                ->with(['user', 'admin'])
-                ->orderBy('created_at', 'asc')
-                ->get();
-                
-            return response()->json($messages);
-        } catch (\Exception $e) {
-            Log::error('Error al obtener mensajes: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-    
+
+    // Enviar un mensaje
+    // Replace the problematic section (around line 130-160) with this clean implementation:
     public function sendMessage(Request $request)
     {
         try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no autenticado'], 401);
+            }
+
+            // Validar datos
             $request->validate([
                 'message' => 'required|string',
-                'session_id' => 'required|string'
+                'session_id' => 'required|string',
+                'is_admin' => 'boolean'
             ]);
-            
-            $user = Auth::user();
-            
-            // Log user information for debugging
-            Log::info('User sending message', [
-                'user_class' => get_class($user),
-                'user_attributes' => $user->getAttributes()
+
+            // Log the request for debugging
+            Log::info('Message request received', [
+                'user' => $user->nick,
+                'session_id' => $request->session_id,
+                'is_admin' => $request->is_admin ?? false,
+                'message_length' => strlen($request->message)
             ]);
-            
-            $message = new ChatMessage();
-            
-            // Use nick instead of id for user_id
-            if (property_exists($user, 'nick') || isset($user->nick)) {
-                $message->user_id = $user->nick;
+
+            // Verificar que la sesión existe
+            $session = ChatSession::where('session_id', $request->session_id)->first();
+
+            if (!$session) {
+                Log::error('Session not found', ['session_id' => $request->session_id]);
+                return response()->json(['error' => 'Sesión no encontrada'], 404);
+            }
+
+            // 2. Now, let's update the ChatController to better handle the is_admin parameter
+            // In the sendMessage method, update the isAdmin check:
+            // Determinar si es un mensaje de admin
+            $isAdmin = $request->has('is_admin') ? (bool)$request->is_admin : false;
+
+            // Si es admin, verificar permisos
+            if ($isAdmin) {
+                // Check if user is admin with case-insensitive comparison
+                $userType = strtolower($user->tipus_acc);
+                if ($userType !== 'admin' && $userType !== 'administrador') {
+                    Log::error('Unauthorized admin message attempt', [
+                        'user' => $user->nick,
+                        'tipus_acc' => $user->tipus_acc,
+                        'session_id' => $request->session_id
+                    ]);
+                    return response()->json(['error' => 'No tienes permisos para enviar mensajes como admin'], 403);
+                }
+
+                // Update the session's admin_id if it's not set
+                if (empty($session->admin_id)) {
+                    $session->admin_id = $user->nick;
+                    $session->save();
+                }
             } else {
-                $message->user_id = (string) $user->id;
+                // For regular users, verify they are the session owner
+                if ($session->user_id !== $user->nick) {
+                    Log::error('Unauthorized message attempt to another user\'s session', [
+                        'user' => $user->nick,
+                        'session_user_id' => $session->user_id,
+                        'session_id' => $request->session_id
+                    ]);
+                    return response()->json(['error' => 'No puedes enviar mensajes en esta sesión'], 403);
+                }
             }
-            
+
+            // Create and save the message
+            $message = new ChatMessage();
+            $message->user_id = $isAdmin ? $user->nick : $session->user_id;
             $message->message = $request->message;
-            $message->chat_session_id = $request->session_id;
-            $message->is_admin = $user->tipus_acc === 'Administrador';
-            
-            if ($message->is_admin) {
-                $message->admin_id = $user->id;
+            $message->is_admin = $isAdmin;
+            $message->read = false;
+            $message->chat_session_id = $session->session_id;
+
+            // Log before saving
+            Log::info('Attempting to save message', [
+                'message' => $message->toArray(),
+                'session_id' => $session->session_id
+            ]);
+
+            $saved = $message->save();
+
+            if (!$saved) {
+                Log::error('Failed to save message', ['message' => $message->toArray()]);
+                return response()->json(['error' => 'Error al guardar el mensaje'], 500);
             }
-            
-            $message->save();
-            
-            // Actualizar la sesión con la hora del último mensaje
-            ChatSession::where('session_id', $request->session_id)
-                ->update([
-                    'last_message_time' => now(),
-                    'last_message' => $request->message
-                ]);
-            
-            // Cargar las relaciones para la respuesta
-            $message->load(['user', 'admin']);
-            
+
+            // Actualizar la sesión
+            $session->last_message = $request->message;
+            $session->last_message_time = now();
+            $session->save();
+
+            Log::info('Message saved successfully', [
+                'message_id' => $message->id,
+                'session_id' => $session->session_id
+            ]);
+
             return response()->json($message);
+
         } catch (\Exception $e) {
             Log::error('Error al enviar mensaje: ' . $e->getMessage(), [
                 'exception' => get_class($e),
+                'trace' => $e->getTraceAsString(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
+                'request' => $request->all()
             ]);
-            return response()->json(['error' => $e->getMessage()], 500);
+
+            return response()->json(['error' => 'Error al enviar mensaje: ' . $e->getMessage()], 500);
         }
     }
-    
-    public function getActiveSessions()
+
+    // Obtener mensajes de una sesión
+    public function getMessages($sessionId)
     {
         try {
-            // Get all unique session IDs
-            $sessions = ChatSession::with(['user'])
-                ->orderBy('updated_at', 'desc')
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no autenticado'], 401);
+            }
+
+            // Verificar que la sesión existe
+            $session = ChatSession::where('session_id', $sessionId)->first();
+
+            if (!$session) {
+                return response()->json(['error' => 'Sesión no encontrada'], 404);
+            }
+
+            // Verificar permisos (solo el usuario de la sesión o un admin pueden ver los mensajes)
+            // Change this:
+            $isAdmin = strtolower($user->tipus_acc) === 'admin';
+
+            // To this:
+            $isAdmin = strtolower($user->tipus_acc) === 'admin' || strtolower($user->tipus_acc) === 'administrador';
+
+            if (!$isAdmin && $session->user_id !== $user->nick) {
+                return response()->json(['error' => 'No tienes permisos para ver estos mensajes'], 403);
+            }
+
+            // Obtener mensajes
+            $messages = ChatMessage::where('chat_session_id', $sessionId)
+                ->orderBy('created_at', 'asc')
                 ->get();
-                
-            // For each session, get the last message and unread count
-            $sessionsData = $sessions->map(function ($session) {
-                // Get the last message for this session
-                $lastMessage = ChatMessage::where('chat_session_id', $session->session_id)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
-                    
-                // Count unread messages (messages from user that haven't been read by admin)
-                $unreadCount = ChatMessage::where('chat_session_id', $session->session_id)
-                    ->where('is_admin', false)
-                    ->where('is_read', false)
-                    ->count();
-                    
-                return [
-                    'session_id' => $session->session_id,
-                    'user' => $session->user,
-                    'created_at' => $session->created_at,
-                    'updated_at' => $session->updated_at,
-                    'last_message' => $lastMessage ? $lastMessage->message : '',
-                    'last_message_time' => $lastMessage ? $lastMessage->created_at : $session->created_at,
-                    'unread_count' => $unreadCount
-                ];
-            });
-            
-            return response()->json($sessionsData);
+
+            return response()->json($messages);
+
         } catch (\Exception $e) {
-            // Log the detailed error
-            Log::error('Error getting active sessions: ' . $e->getMessage(), [
+            Log::error('Error al obtener mensajes: ' . $e->getMessage(), [
                 'exception' => get_class($e),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
-            return response()->json(['error' => 'Error al obtener sesiones activas: ' . $e->getMessage()], 500);
+
+            return response()->json(['error' => 'Error al obtener mensajes'], 500);
         }
     }
-    
+
+    // Marcar mensajes como leídos
     public function markAsRead($sessionId)
     {
         try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no autenticado'], 401);
+            }
+
+            // Verificar que la sesión existe
+            $session = ChatSession::where('session_id', $sessionId)->first();
+
+            if (!$session) {
+                return response()->json(['error' => 'Sesión no encontrada'], 404);
+            }
+
+            // Determinar qué mensajes marcar como leídos
+            $isAdmin = strtolower($user->tipus_acc) === 'admin';
+
+            // Si es admin, marcar los mensajes del usuario como leídos
+            // Si es usuario, marcar los mensajes del admin como leídos
             ChatMessage::where('chat_session_id', $sessionId)
-                ->where('is_admin', false)
+                ->where('is_admin', !$isAdmin)  // Mensajes opuestos al rol del usuario
+                ->where('read', false)
                 ->update(['read' => true]);
-                
+
             return response()->json(['success' => true]);
+
         } catch (\Exception $e) {
-            Log::error('Error al marcar mensajes como leídos: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
+            Log::error('Error al marcar mensajes como leídos: ' . $e->getMessage(), [
+                'exception' => get_class($e),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json(['error' => 'Error al marcar mensajes como leídos'], 500);
+        }
+    }
+
+    // Obtener sesiones activas (solo para admins)
+    // In the getActiveSessions method (around line 280-320)
+    public function getActiveSessions()
+    {
+        try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no autenticado'], 401);
+            }
+
+            // Verificar si es admin
+            $isAdmin = strtolower($user->tipus_acc) === 'admin' || strtolower($user->tipus_acc) === 'administrador';
+
+            if (!$isAdmin) {
+                return response()->json(['error' => 'No tienes permisos para ver las sesiones'], 403);
+            }
+
+            // Get all active sessions
+            $sessions = ChatSession::where('active', true)
+                ->orderBy('last_message_time', 'desc')
+                ->get();
+
+            // Add user information and unread count to each session
+            foreach ($sessions as $session) {
+                // Get user information
+                $sessionUser = User::where('nick', $session->user_id)->first();
+                if ($sessionUser) {
+                    $session->user_name = $sessionUser->nick;
+                    $session->user_email = $sessionUser->email;
+                }
+
+                // Count unread messages (messages from user that admin hasn't read)
+                $unreadCount = ChatMessage::where('chat_session_id', $session->session_id)
+                    ->where('is_admin', false)
+                    ->where('read', false)
+                    ->count();
+
+                $session->unread_count = $unreadCount;
+
+                // Get last message preview
+                $lastMessage = ChatMessage::where('chat_session_id', $session->session_id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                if ($lastMessage) {
+                    $session->last_message_preview = substr($lastMessage->message, 0, 50);
+                }
+            }
+
+            Log::info('Active sessions retrieved', [
+                'count' => count($sessions),
+                'admin' => $user->nick
+            ]);
+
+            return response()->json($sessions);
+        } catch (\Exception $e) {
+            Log::error('Error getting active sessions: ' . $e->getMessage(), [
+                'exception' => get_class($e),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json(['error' => 'Error al obtener sesiones activas'], 500);
         }
     }
 }

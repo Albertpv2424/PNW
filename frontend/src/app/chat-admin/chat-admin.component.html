@@ -1,77 +1,63 @@
 <div class="admin-chat-container">
-    <h2>Administración de Chat en Vivo</h2>
-    
-    <div class="admin-chat-layout">
-      <!-- Lista de sesiones -->
-      <div class="sessions-list">
-        <h3>Conversaciones activas <span *ngIf="getTotalUnreadCount() > 0" class="total-badge">{{ getTotalUnreadCount() }}</span></h3>
-        
-        <div *ngIf="loading && sessions.length === 0" class="loading-spinner">
-          <div class="spinner"></div>
-        </div>
-        
-        <div *ngIf="sessions.length === 0 && !loading" class="empty-list">
-          <p>No hay conversaciones activas.</p>
-        </div>
-        
-        <div class="session-items">
-          <div *ngFor="let session of sessions" 
-               class="session-item" 
-               [class.active]="selectedSessionId === session.session_id"
-               (click)="selectSession(session.session_id)">
-            <div class="session-info">
-              <div class="session-user">{{ session.user.name || session.user.nick }}</div>
-              <div class="session-email">{{ session.user.email }}</div>
-              <div class="session-last-message">{{ session.last_message }}</div>
-              <div class="session-time">{{ formatDate(session.last_message_time) }} {{ formatTime(session.last_message_time) }}</div>
-            </div>
-            <div *ngIf="session.unread_count > 0" class="unread-badge">
-              {{ session.unread_count }}
-            </div>
+  <div class="admin-chat-sidebar">
+    <h3>Conversaciones activas</h3>
+    <div *ngIf="loading" class="loading-indicator">Cargando...</div>
+    <div *ngIf="!loading && sessions.length === 0" class="no-sessions">
+      No hay conversaciones activas.
+    </div>
+    <div class="session-list">
+      <div *ngFor="let session of sessions"
+           class="session-item"
+           [class.active]="session.session_id === selectedSessionId"
+           (click)="selectSession(session.session_id)">
+        <div class="session-info">
+          <div class="session-header">
+            <span class="user-name">{{ session.user_name || session.user_id }}</span>
+            <span class="session-time">{{ formatTime(session.last_message_time) }}</span>
+          </div>
+          <div class="session-preview">
+            {{ session.last_message || 'No hay mensajes' }}
           </div>
         </div>
-      </div>
-      
-      <!-- Área de chat -->
-      <div class="chat-area">
-        <div *ngIf="!selectedSessionId" class="no-chat-selected">
-          <p>Selecciona una conversación para ver los mensajes.</p>
-        </div>
-        
-        <div *ngIf="selectedSessionId" class="chat-content">
-          <div class="admin-chat-messages">
-            <div *ngIf="loading" class="loading-spinner">
-              <div class="spinner"></div>
-            </div>
-            
-            <div *ngFor="let msg of messages" 
-                 class="message" 
-                 [class.user-message]="!msg.is_admin" 
-                 [class.admin-message]="msg.is_admin">
-              <div class="message-sender">
-                {{ msg.is_admin ? (msg.admin?.name || 'Admin') : (msg.user?.name || 'Usuario') }}
-              </div>
-              <div class="message-content">
-                {{ msg.message }}
-              </div>
-              <div class="message-time">
-                {{ formatTime(msg.created_at) }}
-              </div>
-            </div>
-          </div>
-          
-          <div class="admin-chat-input">
-            <input 
-              type="text" 
-              [(ngModel)]="newMessage" 
-              placeholder="Escribe un mensaje..." 
-              (keyup.enter)="sendMessage()"
-            >
-            <button (click)="sendMessage()" [disabled]="!newMessage.trim()">
-              Enviar
-            </button>
-          </div>
+        <div *ngIf="session.unread_count > 0" class="unread-badge">
+          {{ session.unread_count }}
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="admin-chat-main">
+    <div *ngIf="!selectedSessionId" class="no-session-selected">
+      Selecciona una conversación para ver los mensajes.
+    </div>
+
+    <div *ngIf="selectedSessionId" class="chat-content">
+      <div class="admin-chat-messages">
+        <div *ngIf="loading" class="loading-indicator">Cargando mensajes...</div>
+        <div *ngIf="!loading && messages.length === 0" class="no-messages">
+          No hay mensajes en esta conversación.
+        </div>
+        <div *ngFor="let message of messages"
+             class="message-item"
+             [class.admin-message]="message.is_admin"
+             [class.user-message]="!message.is_admin">
+          <div class="message-content">
+            {{ message.message }}
+          </div>
+          <div class="message-time">
+            {{ formatTime(message.created_at) }}
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-chat-input">
+        <textarea
+          [(ngModel)]="newMessage"
+          placeholder="Escribe un mensaje..."
+          (keydown.enter)="$event.preventDefault(); sendMessage()">
+        </textarea>
+        <button (click)="sendMessage()">Enviar</button>
+      </div>
+    </div>
+  </div>
 </div>

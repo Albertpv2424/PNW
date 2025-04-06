@@ -30,7 +30,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    
+
     // Suscribirse al estado de apertura del chat
     this.subscriptions.push(
       this.chatService.isChatOpen().subscribe(isOpen => {
@@ -68,7 +68,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   initializeChat(): void {
     this.loading = true;
-    
+
     // Verificar si ya hay un ID de sesión guardado
     if (this.sessionId) {
       this.loadMessages();
@@ -91,14 +91,14 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   loadMessages(): void {
     if (!this.sessionId) return;
-    
+
     this.loading = true;
     this.chatService.getMessages(this.sessionId).subscribe({
       next: (messages) => {
         this.messages = messages;
         this.loading = false;
         this.scrollToBottom();
-        
+
         // Marcar mensajes como leídos
         this.chatService.markAsRead(this.sessionId!).subscribe();
       },
@@ -111,8 +111,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   sendMessage(): void {
     if (!this.newMessage.trim() || !this.sessionId) return;
-    
-    this.chatService.sendMessage(this.newMessage, this.sessionId).subscribe({
+
+    this.chatService.sendMessage(this.newMessage, this.sessionId, false).subscribe({
       next: (message) => {
         this.messages.push(message);
         this.newMessage = '';
@@ -120,6 +120,19 @@ export class ChatComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error al enviar mensaje:', error);
+        // Add more detailed error logging
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          message: error.error?.message || 'Unknown error'
+        });
+
+        // Show error to user
+        if (error.status === 403) {
+          alert('No tienes permisos para enviar este mensaje.');
+        } else {
+          alert('Error al enviar el mensaje. Por favor, intenta de nuevo.');
+        }
       }
     });
   }
@@ -132,7 +145,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.pollingSubscription) {
       this.pollingSubscription.unsubscribe();
     }
-    
+
     // Consultar nuevos mensajes cada 5 segundos
     this.pollingSubscription = interval(5000).pipe(
       switchMap(() => {

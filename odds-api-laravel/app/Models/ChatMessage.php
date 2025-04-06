@@ -9,6 +9,8 @@ class ChatMessage extends Model
 {
     use HasFactory;
 
+    protected $table = 'chat_messages';
+
     protected $fillable = [
         'user_id',
         'admin_id',
@@ -18,18 +20,21 @@ class ChatMessage extends Model
         'chat_session_id'
     ];
 
-    protected $casts = [
-        'is_admin' => 'boolean',
-        'read' => 'boolean'
-    ];
+    // Disable Laravel's default timestamp expectations if your table doesn't have them
+    public $timestamps = true;
+
+    public function session()
+    {
+        return $this->belongsTo(ChatSession::class, 'chat_session_id', 'session_id');
+    }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'nick');
     }
 
     public function admin()
     {
-        return $this->belongsTo(User::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id', 'nick');
     }
 }

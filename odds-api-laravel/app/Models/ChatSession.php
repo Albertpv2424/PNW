@@ -9,23 +9,24 @@ class ChatSession extends Model
 {
     use HasFactory;
 
+    protected $table = 'chat_sessions';
+
     protected $fillable = [
         'session_id',
         'user_id',
+        'admin_id',
+        'last_message',
+        'last_message_time',
+        'active'
     ];
-
-    // Primary key is not id but session_id
-    protected $primaryKey = 'session_id';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'nick');
-    }
 
     public function messages()
     {
         return $this->hasMany(ChatMessage::class, 'chat_session_id', 'session_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'nick');
     }
 }

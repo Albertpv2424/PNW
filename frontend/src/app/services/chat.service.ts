@@ -29,10 +29,10 @@ export class ChatService {
   // Corregir el método getMessages para simplificarlo y usar un admin_id predeterminado
   getMessages(sessionId: string): Observable<any[]> {
     console.log(`Fetching messages for session: ${sessionId}`);
-    
+
     // Usar un admin_id predeterminado
     const adminId = 'Admin';
-    
+
     // Create a new headers object with all required headers
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.authService.getToken()}`,
@@ -40,11 +40,11 @@ export class ChatService {
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest'
     });
-    
+
     // URL simplificada
     const url = `${this.apiUrl}/chat/messages/${sessionId}`;
     console.log('Requesting URL:', url);
-    
+
     return this.http.get(url, {
       headers: headers,
       responseType: 'json' // Cambiar a json para simplificar
@@ -54,12 +54,12 @@ export class ChatService {
         if (Array.isArray(response)) {
           return response;
         }
-        
+
         // Si la respuesta tiene una propiedad data que es un array, devolver eso
         if (response && response.data && Array.isArray(response.data)) {
           return response.data;
         }
-        
+
         // Si la respuesta es un objeto, intentar convertirlo a array
         if (response && typeof response === 'object') {
           const messagesArray = Object.values(response);
@@ -67,7 +67,7 @@ export class ChatService {
             return messagesArray;
           }
         }
-        
+
         // Si todo falla, devolver array vacío
         return [];
       }),
@@ -81,20 +81,20 @@ export class ChatService {
   // Simplificar el método markAsRead para usar un admin_id predeterminado
   markAsRead(sessionId: string): Observable<any> {
     console.log(`Marking messages as read for session: ${sessionId}`);
-    
+
     // Usar un admin_id predeterminado
     const adminId = 'Admin';
-    
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.authService.getToken()}`,
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest'
     });
-    
+
     // URL simplificada
     const url = `${this.apiUrl}/chat/read/${sessionId}`;
-    
+
     return this.http.get(url, {
       headers: headers,
       responseType: 'json' // Cambiar a json para simplificar
@@ -107,39 +107,64 @@ export class ChatService {
   }
 
   // Simplificar el método sendMessage para usar un admin_id predeterminado
-  sendMessage(message: string, sessionId: string): Observable<any> {
-    const headers = this.authService.getAuthHeaders();
-    
-    // Usar un admin_id predeterminado
-    const adminId = 'Admin';
-    
+  sendMessage(message: string, sessionId: string, isAdmin: boolean = false): Observable<any> {
+    console.log(`Sending message as ${isAdmin ? 'admin' : 'user'} to session ${sessionId}`);
+
+    // Create a new headers object with all required headers
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+
+    // Log the request details for debugging
+    console.log('Request details:', {
+      url: `${this.apiUrl}/chat/messages`,
+      headers: headers,
+      body: {
+        message,
+        session_id: sessionId,
+        is_admin: isAdmin
+      }
+    });
+
     return this.http.post<any>(`${this.apiUrl}/chat/messages`, {
       message,
       session_id: sessionId,
-      admin_id: adminId,
-      is_admin: true // Asegurarse de que el mensaje se marca como del admin
+      is_admin: isAdmin
     }, {
       headers: headers
     }).pipe(
       catchError(error => {
         console.error('Error sending message:', error);
-        // Devolver un objeto de mensaje ficticio para que la UI no se rompa
-        return of({
-          id: Date.now(),
-          message: message,
-          session_id: sessionId,
-          admin_id: adminId,
-          is_admin: true,
-          created_at: new Date().toISOString()
-        });
+        return throwError(() => error);
       })
     );
   }
 
   getActiveSessions(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/chat/sessions`, {
-      headers: this.authService.getAuthHeaders()
+    console.log('Getting active sessions with token:', this.authService.getToken()?.substring(0, 10) + '...');
+
+    // Create a new headers object with all required headers
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
     });
+
+    return this.http.get<any>(`${this.apiUrl}/chat/sessions`, {
+      headers: headers
+    }).pipe(
+      catchError(error => {
+        console.error('Error fetching active sessions:', error);
+        if (error.status === 403) {
+          console.error('Permission denied. Check if user has admin rights.');
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   // Métodos para gestionar el estado del chat
