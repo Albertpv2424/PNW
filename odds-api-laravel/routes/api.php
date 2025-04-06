@@ -154,4 +154,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/chat/messages/{sessionId}', [ChatController::class, 'getMessages']);
     Route::get('/chat/read/{sessionId}', [ChatController::class, 'markAsRead']);
     Route::get('/chat/sessions', [ChatController::class, 'getActiveSessions']);
+    // Rutas para administración de chat
+    Route::delete('/chat/sessions/{sessionId}', [ChatController::class, 'deleteSession'])->middleware('auth:sanctum');
+    Route::delete('/chat/sessions/old/{days?}', [ChatController::class, 'deleteOldSessions'])->middleware('auth:sanctum');
 });

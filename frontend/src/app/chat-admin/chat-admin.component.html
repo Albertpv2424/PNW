@@ -3,6 +3,13 @@
   <div class="admin-chat-sidebar">
     <h3>Conversaciones activas</h3>
 
+    <!-- Botón para borrar sesiones antiguas con mejor estilo -->
+    <div class="admin-actions">
+      <button class="btn-delete-old" (click)="confirmBulkDelete()">
+        <i class="fas fa-trash"></i> Borrar chats antiguos
+      </button>
+    </div>
+
     <div *ngIf="loading" class="loading-indicator">
       <i class="fas fa-spinner fa-spin"></i> Cargando conversaciones...
     </div>
@@ -25,6 +32,11 @@
           <div class="session-preview">
             {{ session.last_message || 'No hay mensajes' }}
           </div>
+        </div>
+        <div class="session-actions">
+          <button class="btn-delete" (click)="confirmDeleteSession(session.session_id, $event)" title="Borrar chat">
+            <i class="fas fa-trash"></i>
+          </button>
         </div>
         <div *ngIf="session.unread_count > 0" class="unread-badge">
           {{ session.unread_count }}
@@ -77,6 +89,60 @@
         <button (click)="sendMessage()" [disabled]="!newMessage.trim()">
           <i class="fas fa-paper-plane"></i> Enviar
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación para borrar una sesión con mejor estilo -->
+  <div *ngIf="showDeleteConfirm" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmar eliminación</h5>
+          <button type="button" class="close" (click)="cancelDeleteSession()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>¿Estás seguro de que deseas eliminar esta conversación? Esta acción no se puede deshacer.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelDeleteSession()">Cancelar</button>
+          <button type="button" class="btn btn-danger" [disabled]="deletingInProgress" (click)="deleteSession()">
+            <span *ngIf="deletingInProgress"><i class="fas fa-spinner fa-spin"></i> Eliminando...</span>
+            <span *ngIf="!deletingInProgress">Eliminar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación para borrar sesiones antiguas con mejor estilo -->
+  <div *ngIf="showBulkDeleteConfirm" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Eliminar chats antiguos</h5>
+          <button type="button" class="close" (click)="cancelBulkDelete()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Esta acción eliminará todas las conversaciones más antiguas que el número de días especificado.</p>
+          <div class="form-group">
+            <label for="daysToKeep">Mantener chats de los últimos:</label>
+            <div class="input-group">
+              <input type="number" id="daysToKeep" class="form-control" [(ngModel)]="daysToKeep" min="1" max="365">
+              <div class="input-group-append">
+                <span class="input-group-text">días</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-danger">¡Atención! Esta acción no se puede deshacer.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelBulkDelete()">Cancelar</button>
+          <button type="button" class="btn btn-danger" [disabled]="deletingInProgress" (click)="deleteOldSessions()">
+            <span *ngIf="deletingInProgress"><i class="fas fa-spinner fa-spin"></i> Eliminando...</span>
+            <span *ngIf="!deletingInProgress">Eliminar chats antiguos</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

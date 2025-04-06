@@ -314,3 +314,254 @@
   color: white;
   border-color: #00b341;
 }
+
+/* Estilos para el botón de borrar chats antiguos */
+.admin-actions {
+  margin-bottom: 20px;
+  text-align: right;
+  padding: 10px;
+  background-color: rgba(26, 26, 46, 0.6);
+  border-radius: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-actions button {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.admin-actions button:hover {
+  background-color: #c1121f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.admin-actions button i {
+  font-size: 14px;
+}
+
+/* Estilos para los botones de acción en cada sesión */
+.session-actions {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+.session-item {
+  position: relative;
+}
+
+.session-item:hover .session-actions {
+  display: block;
+}
+
+.session-actions button {
+  background-color: rgba(230, 57, 70, 0.8);
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.session-actions button:hover {
+  background-color: #e63946;
+  transform: scale(1.1);
+}
+
+/* Estilos para el modal de confirmación */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 500px;
+  background-color: #1a1a2e;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content {
+  position: relative;
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(42, 42, 64, 0.8);
+}
+
+.modal-title {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modal-body {
+  padding: 20px;
+  color: #ccc;
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background-color: rgba(26, 26, 46, 0.8);
+}
+
+.close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close:hover {
+  color: white;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-danger {
+  background-color: #e63946;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #c1121f;
+}
+
+.btn-danger:disabled {
+  background-color: #7d7d7d;
+  cursor: not-allowed;
+}
+
+/* Estilos para el formulario dentro del modal */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: white;
+  font-weight: 500;
+}
+
+.input-group {
+  display: flex;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.input-group input {
+  flex: 1;
+  padding: 10px 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: white;
+  font-size: 16px;
+}
+
+.input-group input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.input-group-append {
+  display: flex;
+}
+
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  font-weight: 500;
+}
+
+.text-danger {
+  color: #e63946;
+  font-weight: 500;
+  margin-top: 15px;
+}
+
+/* Animación para el spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fa-spinner {
+  animation: spin 1s linear infinite;
+}

@@ -263,4 +263,58 @@ startNewSession(initialMessage: string = '¡Hola! Necesito ayuda.'): Observable<
       })
     );
   }
+
+  // Nuevo método para que los administradores borren sesiones de chat
+  deleteSession(sessionId: string): Observable<any> {
+    console.log(`Deleting chat session: ${sessionId}`);
+
+    // Verificar si el usuario es administrador
+    const currentUser = this.authService.getCurrentUser();
+    const userType = currentUser?.tipus_acc?.toLowerCase() || '';
+    const isUserAdmin = ['admin', 'administrador'].includes(userType);
+
+    if (!isUserAdmin) {
+      console.error('Permission denied: Only administrators can delete chat sessions');
+      return throwError(() => new Error('Permission denied: Only administrators can delete chat sessions'));
+    }
+
+    return this.http.delete<any>(`${this.apiUrl}/chat/sessions/${sessionId}`, {
+      headers: this.authService.getAuthHeaders()
+    }).pipe(
+      tap(response => {
+        console.log('Chat session deleted successfully:', response);
+      }),
+      catchError(error => {
+        console.error('Error deleting chat session:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // Método para borrar múltiples sesiones de chat (por ejemplo, más antiguas que cierta fecha)
+  deleteOldSessions(olderThanDays: number = 30): Observable<any> {
+    console.log(`Deleting chat sessions older than ${olderThanDays} days`);
+
+    // Verificar si el usuario es administrador
+    const currentUser = this.authService.getCurrentUser();
+    const userType = currentUser?.tipus_acc?.toLowerCase() || '';
+    const isUserAdmin = ['admin', 'administrador'].includes(userType);
+
+    if (!isUserAdmin) {
+      console.error('Permission denied: Only administrators can delete chat sessions');
+      return throwError(() => new Error('Permission denied: Only administrators can delete chat sessions'));
+    }
+
+    return this.http.delete<any>(`${this.apiUrl}/chat/sessions/old/${olderThanDays}`, {
+      headers: this.authService.getAuthHeaders()
+    }).pipe(
+      tap(response => {
+        console.log('Old chat sessions deleted successfully:', response);
+      }),
+      catchError(error => {
+        console.error('Error deleting old chat sessions:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

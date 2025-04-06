@@ -39,6 +39,13 @@ export class ChatAdminComponent implements OnInit, OnDestroy {
   currentUser: any;
   private subscriptions: Subscription[] = [];
   private pollingSubscription: Subscription | null = null;
+
+  // Nuevas propiedades para el manejo de borrado
+  showDeleteConfirm: boolean = false;
+  deleteSessionId: string | null = null;
+  showBulkDeleteConfirm: boolean = false;
+  daysToKeep: number = 30;
+  deletingInProgress: boolean = false;
   private sessionRefreshInterval: any;
   // In the constructor, make sure NotificationService is properly injected
   constructor(
@@ -271,4 +278,89 @@ event.preventDefault();
 this.sendMessage();
 }
 }
+
+  // Método para mostrar el diálogo de confirmación de borrado
+  confirmDeleteSession(sessionId: string, event: Event): void {
+    event.stopPropagation(); // Evitar que se seleccione la sesión al hacer clic en el botón de borrar
+    this.deleteSessionId = sessionId;
+    this.showDeleteConfirm = true;
+  }
+
+  // Método para cancelar el borrado
+  cancelDeleteSession(): void {
+    this.showDeleteConfirm = false;
+    this.deleteSessionId = null;
+  }
+
+  // Método para borrar una sesión específica
+  deleteSession(): void {
+    if (!this.deleteSessionId) return;
+
+    this.deletingInProgress = true;
+
+    this.chatService.deleteSession(this.deleteSessionId).subscribe({
+      next: () => {
+        // Eliminar la sesión de la lista
+        this.sessions = this.sessions.filter(s => s.session_id !== this.deleteSessionId);
+
+        // Si la sesión borrada era la seleccionada, limpiar la selección
+        if (this.selectedSessionId === this.deleteSessionId) {
+          this.selectedSessionId = null;
+          this.messages = [];
+        }
+
+        // Mostrar mensaje de éxito
+        alert('Sesión de chat eliminada correctamente');
+
+        // Limpiar estado
+        this.showDeleteConfirm = false;
+        this.deleteSessionId = null;
+        this.deletingInProgress = false;
+      },
+      error: (error) => {
+        console.error('Error al eliminar la sesión de chat:', error);
+        alert('Error al eliminar la sesión de chat: ' + (error.error?.message || 'Error desconocido'));
+        this.deletingInProgress = false;
+      }
+    });
+  }
+
+  // Método para mostrar el diálogo de confirmación de borrado masivo
+  confirmBulkDelete(): void {
+    this.showBulkDeleteConfirm = true;
+  }
+
+  // Método para cancelar el borrado masivo
+  cancelBulkDelete(): void {
+    this.showBulkDeleteConfirm = false;
+  }
+
+  // Método para borrar sesiones antiguas
+  deleteOldSessions(): void {
+    if (this.daysToKeep < 1) {
+      alert('Por favor, introduce un número válido de días');
+      return;
+    }
+
+    this.deletingInProgress = true;
+
+    this.chatService.deleteOldSessions(this.daysToKeep).subscribe({
+      next: (response) => {
+        // Recargar la lista de sesiones
+        this.loadSessions();
+
+        // Mostrar mensaje de éxito
+        alert(`Se han eliminado ${response.deleted_count || 'varias'} sesiones de chat antiguas`);
+
+        // Limpiar estado
+        this.showBulkDeleteConfirm = false;
+        this.deletingInProgress = false;
+      },
+      error: (error) => {
+        console.error('Error al eliminar sesiones antiguas:', error);
+        alert('Error al eliminar sesiones antiguas: ' + (error.error?.message || 'Error desconocido'));
+        this.deletingInProgress = false;
+      }
+    });
+  }
 }

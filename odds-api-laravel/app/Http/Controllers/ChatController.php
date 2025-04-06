@@ -371,4 +371,95 @@ class ChatController extends Controller
             return response()->json(['error' => 'Error al obtener sesiones activas'], 500);
         }
     }
+
+    /**
+ * Eliminar una sesión de chat específica
+ */
+public function deleteSession($sessionId)
+{
+    try {
+        // Verificar si el usuario es administrador
+        $user = auth()->user();
+        $isAdmin = in_array(strtolower($user->tipus_acc), ['admin', 'administrador']);
+
+        if (!$isAdmin) {
+            return response()->json([
+                'message' => 'No tienes permisos para eliminar sesiones de chat'
+            ], 403);
+        }
+
+        // Buscar la sesión
+        $session = ChatSession::where('session_id', $sessionId)->first();
+
+        if (!$session) {
+            return response()->json([
+                'message' => 'Sesión de chat no encontrada'
+            ], 404);
+        }
+
+        // Eliminar mensajes asociados
+        ChatMessage::where('chat_session_id', $sessionId)->delete();
+
+        // Eliminar la sesión
+        $session->delete();
+
+        return response()->json([
+            'message' => 'Sesión de chat eliminada correctamente'
+        ]);
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('Error al eliminar sesión de chat: ' . $e->getMessage());
+
+        return response()->json([
+            'message' => 'Error al eliminar la sesión de chat: ' . $e->getMessage()
+        ], 500);
+    }
 }
+
+/**
+ * Eliminar sesiones de chat antiguas
+ */
+public function deleteOldSessions($days = 30)
+{
+    try {
+        // Verificar si el usuario es administrador
+        $user = auth()->user();
+        $isAdmin = in_array(strtolower($user->tipus_acc), ['admin', 'administrador']);
+
+        if (!$isAdmin) {
+            return response()->json([
+                'message' => 'No tienes permisos para eliminar sesiones de chat'
+            ], 403);
+        }
+
+        // Calcular la fecha límite
+        $cutoffDate = now()->subDays($days);
+
+        // Obtener sesiones antiguas
+        $oldSessions = ChatSession::where('created_at', '<', $cutoffDate)->get();
+
+        $deletedCount = 0;
+
+        foreach ($oldSessions as $session) {
+            // Eliminar mensajes asociados
+            ChatMessage::where('chat_session_id', $session->session_id)->delete();
+
+            // Eliminar la sesión
+            $session->delete();
+
+            $deletedCount++;
+        }
+
+        return response()->json([
+            'message' => 'Sesiones de chat antiguas eliminadas correctamente',
+            'deleted_count' => $deletedCount
+        ]);
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('Error al eliminar sesiones de chat antiguas: ' . $e->getMessage());
+
+        return response()->json([
+            'message' => 'Error al eliminar sesiones de chat antiguas: ' . $e->getMessage()
+        ], 500);
+    }
+}
+}
+
