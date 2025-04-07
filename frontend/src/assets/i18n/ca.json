@@ -1,0 +1,35 @@
+{
+  "HEADER": {
+    "SPORTS": "Esports",
+    "LIVE": "En Directe",
+    "REWARDS": "Premis",
+    "PROMOTIONS": "Promocions",
+    "SEARCH_PLACEHOLDER": "Cerca equips o partits...",
+    "NO_RESULTS": "No s'han trobat resultats",
+    "LOGIN": "Iniciar Sessió",
+    "REGISTER": "Registrar-se",
+    "LOGOUT": "Tancar Sessió",
+    "PROFILE": "El Meu Perfil",
+    "MY_BETS": "Les Meves Apostes",
+    "HISTORY": "Historial",
+    "EDIT_PROFILE": "Editar Perfil"
+  },
+  "COMMON": {
+    "HOME": "Inici",
+    "BACK": "Tornar",
+    "SAVE": "Desar",
+    "CANCEL": "Cancel·lar",
+    "LOADING": "Carregant...",
+    "ERROR": "Error",
+    "SUCCESS": "Èxit",
+    "CONFIRM": "Confirmar",
+    "DELETE": "Eliminar",
+    "EDIT": "Editar",
+    "VIEW": "Veure",
+    "SEARCH": "Cercar",
+    "FILTER": "Filtrar",
+    "SORT": "Ordenar",
+    "NEXT": "Següent",
+    "PREVIOUS": "Anterior"
+  }
+}

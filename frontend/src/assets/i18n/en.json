@@ -1,0 +1,32 @@
+{
+  "HEADER": {
+    "SPORTS": "Sports",
+    "LIVE": "Live",
+    "REWARDS": "Rewards",
+    "PROMOTIONS": "Promotions",
+    "SEARCH_PLACEHOLDER": "Search teams or matches...",
+    "NO_RESULTS": "No results found",
+    "LOGIN": "Login",
+    "REGISTER": "Register",
+    "LOGOUT": "Logout",
+    "PROFILE": "My Profile"
+  },
+  "COMMON": {
+    "HOME": "Home",
+    "BACK": "Back",
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "LOADING": "Loading...",
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "CONFIRM": "Confirm",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "VIEW": "View",
+    "SEARCH": "Search",
+    "FILTER": "Filter",
+    "SORT": "Sort",
+    "NEXT": "Next",
+    "PREVIOUS": "Previous"
+  }
+}

@@ -4,12 +4,14 @@ import { AuthService } from '../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { ClickOutsideDirective } from '../directives/click-outside.directive';
 import { DailyWheelComponent } from '../daily-wheel/daily-wheel.component';
-// Remove RouterLinkActive import
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { debounceTime, distinctUntilChanged, filter, switchMap, catchError, timeout } from 'rxjs/operators';
 import { Subject, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { LanguageService } from '../services/language.service';
+// Add this import
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +19,11 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterLink,
-    // Remove RouterLinkActive,
     ClickOutsideDirective,
     DailyWheelComponent,
-    FormsModule
+    FormsModule,
+    // Add TranslateModule to imports
+    TranslateModule
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
@@ -38,10 +41,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private searchSubject = new Subject<string>();
   private apiUrl = environment.apiUrl;
   
+  // Add this property
+  currentLanguage: string = 'es';
+
   constructor(
     private authService: AuthService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +93,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.searchResults = [];
         this.showSearchResults = false;
       }
+    });
+    
+    // Subscribe to language changes
+    this.languageService.currentLang.subscribe(lang => {
+      this.currentLanguage = lang;
     });
   }
   
@@ -162,5 +174,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   
   ngOnDestroy() {
     this.searchSubject.complete();
+  }
+
+  // Update the toggleLanguage method
+  toggleLanguage(): void {
+    // Get all available languages
+    const languages = this.languageService.getAvailableLanguages();
+    
+    // Find the index of the current language
+    const currentIndex = languages.findIndex(lang => lang.code === this.currentLanguage);
+    
+    // Get the next language (cycle back to the first if at the end)
+    const nextIndex = (currentIndex + 1) % languages.length;
+    const nextLang = languages[nextIndex].code;
+    
+    // Set the new language
+    this.languageService.setLanguage(nextLang);
   }
 }

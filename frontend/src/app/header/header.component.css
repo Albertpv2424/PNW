@@ -531,3 +531,35 @@
 .search-results::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+
+/* Estilos para el botón de idioma */
+.language-toggle {
+  margin-right: 15px;
+}
+
+.language-button {
+  background-color: transparent;
+  border: 1px solid #00b341;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.language-button:hover {
+  background-color: rgba(0, 179, 65, 0.2);
+}
+
+.language-icon {
+  margin-right: 5px;
+  font-size: 16px;
+}
+
+.language-code {
+  font-weight: 500;
+  text-transform: uppercase;
+}

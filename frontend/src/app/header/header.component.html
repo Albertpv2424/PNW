@@ -4,17 +4,17 @@
   </div>
 
   <div class="nav-links">
-    <a class="nav-item" routerLink="/" [class.active]="isActive('/')">Deportes</a>
-    <a class="nav-item" routerLink="/live" [class.active]="isActive('/live')">En Vivo</a>
-    <a class="nav-item" routerLink="/premios" [class.active]="isActive('/premios')">Premios</a>
-    <a class="nav-item" routerLink="/promociones" [class.active]="isActive('/promociones')">Promociones</a>
+    <a class="nav-item" routerLink="/" [class.active]="isActive('/')">{{ 'HEADER.SPORTS' | translate }}</a>
+    <a class="nav-item" routerLink="/live" [class.active]="isActive('/live')">{{ 'HEADER.LIVE' | translate }}</a>
+    <a class="nav-item" routerLink="/premios" [class.active]="isActive('/premios')">{{ 'HEADER.REWARDS' | translate }}</a>
+    <a class="nav-item" routerLink="/promociones" [class.active]="isActive('/promociones')">{{ 'HEADER.PROMOTIONS' | translate }}</a>
   </div>
 
   <!-- Enhanced search container -->
   <div class="search-container">
     <input
       type="text"
-      placeholder="Buscar equipos o partidos..."
+      placeholder="{{ 'HEADER.SEARCH_PLACEHOLDER' | translate }}"
       [(ngModel)]="searchQuery"
       (input)="onSearch()"
       (blur)="closeSearchResults()"
@@ -33,6 +33,14 @@
   </div>
 
   <div class="user-section">
+    <!-- Language toggle button - added before the balance -->
+    <div class="language-toggle">
+      <button (click)="toggleLanguage()" class="language-button" title="Cambiar idioma">
+        <span class="language-icon">🌐</span>
+        <span class="language-code">{{ currentLanguage }}</span>
+      </button>
+    </div>
+
     <!-- Reemplazamos el balance con el estilo del perfil -->
     <div class="balance" *ngIf="username">
       <div class="profile-balance">
@@ -70,36 +78,35 @@
         </div>
 
         <!-- Menú desplegable -->
-        <!-- Update the profile menu items -->
         <div class="profile-menu" *ngIf="isProfileMenuOpen">
           <a routerLink="/profile" class="menu-item">
             <i class="menu-icon">👤</i>
-            <span>Mi Perfil</span>
+            <span>{{ 'HEADER.PROFILE' | translate }}</span>
           </a>
           <a routerLink="/profile/bets" class="menu-item">
             <i class="menu-icon">🎮</i>
-            <span>Mis Apuestas</span>
+            <span>{{ 'HEADER.MY_BETS' | translate }}</span>
           </a>
           <a routerLink="/profile/history" class="menu-item">
             <i class="menu-icon">📜</i>
-            <span>Historial</span>
+            <span>{{ 'HEADER.HISTORY' | translate }}</span>
           </a>
           <a routerLink="/profile/edit" class="menu-item">
             <i class="menu-icon">✏️</i>
-            <span>Editar Perfil</span>
+            <span>{{ 'HEADER.EDIT_PROFILE' | translate }}</span>
           </a>
           <div class="menu-divider"></div>
           <button (click)="logout()" class="menu-item logout-item">
             <i class="menu-icon">🚪</i>
-            <span>Cerrar Sesión</span>
+            <span>{{ 'HEADER.LOGOUT' | translate }}</span>
           </button>
         </div>
       </div>
 
       <!-- Auth buttons for non-logged in users -->
       <div class="auth-buttons" *ngIf="!username">
-        <a routerLink="/login" class="login-button">Iniciar sesión</a>
-        <a routerLink="/register" class="register-button">Registrarse</a>
+        <a routerLink="/login" class="login-button">{{ 'HEADER.LOGIN' | translate }}</a>
+        <a routerLink="/register" class="register-button">{{ 'HEADER.REGISTER' | translate }}</a>
       </div>
     </div>
   </div>

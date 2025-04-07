@@ -1,0 +1,32 @@
+{
+  "HEADER": {
+    "SPORTS": "Deportes",
+    "LIVE": "En Vivo",
+    "REWARDS": "Premios",
+    "PROMOTIONS": "Promociones",
+    "SEARCH_PLACEHOLDER": "Buscar equipos o partidos...",
+    "NO_RESULTS": "No se encontraron resultados",
+    "LOGIN": "Iniciar Sesión",
+    "REGISTER": "Registrarse",
+    "LOGOUT": "Cerrar Sesión",
+    "PROFILE": "Mi Perfil"
+  },
+  "COMMON": {
+    "HOME": "Inicio",
+    "BACK": "Volver",
+    "SAVE": "Guardar",
+    "CANCEL": "Cancelar",
+    "LOADING": "Cargando...",
+    "ERROR": "Error",
+    "SUCCESS": "Éxito",
+    "CONFIRM": "Confirmar",
+    "DELETE": "Eliminar",
+    "EDIT": "Editar",
+    "VIEW": "Ver",
+    "SEARCH": "Buscar",
+    "FILTER": "Filtrar",
+    "SORT": "Ordenar",
+    "NEXT": "Siguiente",
+    "PREVIOUS": "Anterior"
+  }
+}

@@ -19,13 +19,13 @@
   </div>
   <a routerLink="/" class="home-button">
     <span class="home-icon">🏠</span>
-    <span>Volver al inicio</span>
+    <span>{{ 'COMMON.HOME' | translate }}</span>
   </a>
 </div>
 
 <div class="profile-navigation">
-  <a routerLink="/profile" class="nav-item" [class.active]="activeTab === 'profile'">Perfil</a>
-  <a routerLink="/profile/bets" class="nav-item" [class.active]="activeTab === 'bets'">Mis Apuestas</a>
-  <a routerLink="/profile/history" class="nav-item" [class.active]="activeTab === 'history'">Historial</a>
-  <a routerLink="/profile/edit" class="nav-item" [class.active]="activeTab === 'edit'">Editar Perfil</a>
+  <a routerLink="/profile" class="nav-item" [class.active]="activeTab === 'profile'">{{ 'HEADER.PROFILE' | translate }}</a>
+  <a routerLink="/profile/bets" class="nav-item" [class.active]="activeTab === 'bets'">{{ 'HEADER.MY_BETS' | translate }}</a>
+  <a routerLink="/profile/history" class="nav-item" [class.active]="activeTab === 'history'">{{ 'HEADER.HISTORY' | translate }}</a>
+  <a routerLink="/profile/edit" class="nav-item" [class.active]="activeTab === 'edit'">{{ 'HEADER.EDIT_PROFILE' | translate }}</a>
 </div>

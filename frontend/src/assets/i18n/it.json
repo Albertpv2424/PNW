@@ -1,0 +1,35 @@
+{
+  "HEADER": {
+    "SPORTS": "Sport",
+    "LIVE": "In Diretta",
+    "REWARDS": "Premi",
+    "PROMOTIONS": "Promozioni",
+    "SEARCH_PLACEHOLDER": "Cerca squadre o partite...",
+    "NO_RESULTS": "Nessun risultato trovato",
+    "LOGIN": "Accedi",
+    "REGISTER": "Registrati",
+    "LOGOUT": "Esci",
+    "PROFILE": "Il Mio Profilo",
+    "MY_BETS": "Le Mie Scommesse",
+    "HISTORY": "Cronologia",
+    "EDIT_PROFILE": "Modifica Profilo"
+  },
+  "COMMON": {
+    "HOME": "Home",
+    "BACK": "Indietro",
+    "SAVE": "Salva",
+    "CANCEL": "Annulla",
+    "LOADING": "Caricamento...",
+    "ERROR": "Errore",
+    "SUCCESS": "Successo",
+    "CONFIRM": "Conferma",
+    "DELETE": "Elimina",
+    "EDIT": "Modifica",
+    "VIEW": "Visualizza",
+    "SEARCH": "Cerca",
+    "FILTER": "Filtra",
+    "SORT": "Ordina",
+    "NEXT": "Avanti",
+    "PREVIOUS": "Indietro"
+  }
+}
