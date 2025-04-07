@@ -1,36 +1,36 @@
 <footer class="footer">
   <div class="footer-container">
     <div class="footer-section">
-      <h3>Navegación</h3>
+      <h3>{{ 'FOOTER.NAVIGATION' | translate }}</h3>
       <ul class="footer-links">
-        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a></li>
-        <li><a routerLink="/live" routerLinkActive="active">En Vivo</a></li>
-        <li><a routerLink="/premios" routerLinkActive="active">Premios</a></li>
-        <li><a routerLink="/promociones" routerLinkActive="active">Promociones</a></li>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ 'FOOTER.HOME' | translate }}</a></li>
+        <li><a routerLink="/live" routerLinkActive="active">{{ 'FOOTER.LIVE' | translate }}</a></li>
+        <li><a routerLink="/premios" routerLinkActive="active">{{ 'FOOTER.REWARDS' | translate }}</a></li>
+        <li><a routerLink="/promociones" routerLinkActive="active">{{ 'FOOTER.PROMOTIONS' | translate }}</a></li>
       </ul>
     </div>
     
     <div class="footer-section">
-      <h3>Información</h3>
+      <h3>{{ 'FOOTER.INFORMATION' | translate }}</h3>
       <ul class="footer-links">
-        <li><a routerLink="/about" routerLinkActive="active">Sobre Nosotros</a></li>
-        <li><a routerLink="/terms" routerLinkActive="active">Términos y Condiciones</a></li>
-        <li><a routerLink="/privacy" routerLinkActive="active">Política de Privacidad</a></li>
+        <li><a routerLink="/about" routerLinkActive="active">{{ 'FOOTER.ABOUT_US' | translate }}</a></li>
+        <li><a routerLink="/terms" routerLinkActive="active">{{ 'FOOTER.TERMS' | translate }}</a></li>
+        <li><a routerLink="/privacy" routerLinkActive="active">{{ 'FOOTER.PRIVACY' | translate }}</a></li>
       </ul>
     </div>
     
     <div class="footer-section">
-      <h3>Ayuda</h3>
+      <h3>{{ 'FOOTER.HELP' | translate }}</h3>
       <ul class="footer-links">
-        <li><a routerLink="/faq" routerLinkActive="active">Preguntas Frecuentes</a></li>
-        <li><a routerLink="/how-to-play" routerLinkActive="active">Cómo Jugar</a></li>
-        <li><a routerLink="/responsible-gaming" routerLinkActive="active">Juego Responsable</a></li>
-        <li><a routerLink="/support" routerLinkActive="active">Soporte</a></li>
+        <li><a routerLink="/faq" routerLinkActive="active">{{ 'FOOTER.FAQ' | translate }}</a></li>
+        <li><a routerLink="/how-to-play" routerLinkActive="active">{{ 'FOOTER.HOW_TO_PLAY' | translate }}</a></li>
+        <li><a routerLink="/responsible-gaming" routerLinkActive="active">{{ 'FOOTER.RESPONSIBLE_GAMING' | translate }}</a></li>
+        <li><a routerLink="/support" routerLinkActive="active">{{ 'FOOTER.SUPPORT' | translate }}</a></li>
       </ul>
     </div>
     
     <div class="footer-section">
-      <h3>Síguenos</h3>
+      <h3>{{ 'FOOTER.FOLLOW_US' | translate }}</h3>
       <div class="social-links">
         <a href="https://www.facebook.com/profile.php?id=61574642387152" target="_blank" rel="noopener noreferrer" class="social-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -52,7 +52,7 @@
   </div>
   
   <div class="footer-bottom">
-    <p>&copy; {{ currentYear }} PNW - Todos los derechos reservados</p>
-    <p>Juega con responsabilidad. Solo para mayores de 18 años.</p>
+    <p>&copy; {{ currentYear }} PNW - {{ 'FOOTER.RIGHTS' | translate }}</p>
+    <p>{{ 'FOOTER.RESPONSIBLE_TEXT' | translate }}</p>
   </div>
 </footer>

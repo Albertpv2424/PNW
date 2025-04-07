@@ -10,6 +10,7 @@ import { NotificationService } from '../services/notification.service';
 import { FormsModule } from '@angular/forms';
 import { BetService } from '../services/bet.service';
 import { ProfileHeaderComponent } from '../profile-header/profile-header.component';
+import { TranslateModule } from '@ngx-translate/core'; // Add this import
 
 // Añadir la interfaz RedeemedPrize que falta
 interface RedeemedPrize {
@@ -33,7 +34,8 @@ interface RedeemedPrize {
     RouterLink,
     ReactiveFormsModule,
     FormsModule,
-    ProfileHeaderComponent // Add this line to import the component
+    ProfileHeaderComponent,
+    TranslateModule // Add this line to import the module
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
@@ -349,5 +351,15 @@ export class ProfileComponent implements OnInit {
     if (statusLower === 'ganada') return 'status-won';
     if (statusLower === 'perdida') return 'status-lost';
     return 'status-pending';
+  }
+  
+  // Add this method to translate bet status
+  getTranslatedStatus(status: string): string {
+    const statusLower = status.toLowerCase();
+    if (statusLower === 'ganada') return 'BETS.WON';
+    if (statusLower === 'perdida') return 'BETS.LOST';
+    if (statusLower === 'pendiente') return 'BETS.PENDING';
+    if (statusLower === 'cancelada') return 'BETS.CANCELED';
+    return status;
   }
 }

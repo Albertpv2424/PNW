@@ -9,7 +9,7 @@ export class LanguageService {
   // Default language
   private defaultLang = 'es';
   
-  // Available languages - Adding Italian and Catalan
+  // Available languages - All supported languages
   private languages = [
     { code: 'es', name: 'Español' },
     { code: 'en', name: 'English' },

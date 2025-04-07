@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, filter, switchMap, catchError, time
 import { Subject, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../services/language.service';
+import { LanguageSliderComponent } from '../language-slider/language-slider.component'; // Add this import
 // Add this import
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -22,6 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ClickOutsideDirective,
     DailyWheelComponent,
     FormsModule,
+    LanguageSliderComponent, // Add this line
     // Add TranslateModule to imports
     TranslateModule
   ],

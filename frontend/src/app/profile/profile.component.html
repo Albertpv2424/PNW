@@ -17,64 +17,64 @@
     <!-- Vista de perfil normal -->
     <ng-container *ngIf="!editMode">
       <div class="profile-section">
-        <h2>Información Personal</h2>
+        <h2>{{ 'PROFILE.PERSONAL_INFO' | translate }}</h2>
         <div class="info-grid">
           <div class="info-item">
             <span class="info-label">DNI/NIE:</span>
             <span class="info-value">{{ dni }}</span>
           </div>
           <div class="info-item">
-            <span class="info-label">Teléfono:</span>
-            <span class="info-value">{{ telefon || 'No especificado' }}</span>
+            <span class="info-label">{{ 'PROFILE.PHONE' | translate }}:</span>
+            <span class="info-value">{{ telefon || ('PROFILE.NOT_SPECIFIED' | translate) }}</span>
           </div>
           <div class="info-item">
-            <span class="info-label">Fecha de Nacimiento:</span>
+            <span class="info-label">{{ 'PROFILE.BIRTH_DATE' | translate }}:</span>
             <span class="info-value">{{ dataNaixement | date:'dd/MM/yyyy' }}</span>
           </div>
         </div>
       </div>
 
       <div class="profile-section">
-        <h2>Resumen de Actividad</h2>
+        <h2>{{ 'PROFILE.ACTIVITY_SUMMARY' | translate }}</h2>
         <div class="activity-summary">
           <div class="activity-card">
             <div class="activity-icon">🎮</div>
             <div class="activity-count">{{ stats.pendingBets }}</div>
-            <div class="activity-label">Apuestas Activas</div>
+            <div class="activity-label">{{ 'BETS.ACTIVE_BETS' | translate }}</div>
           </div>
           <div class="activity-card">
             <div class="activity-icon">✅</div>
             <div class="activity-count">{{ stats.wonBets }}</div>
-            <div class="activity-label">Apuestas Ganadas</div>
+            <div class="activity-label">{{ 'PROFILE.WON_BETS' | translate }}</div>
           </div>
           <div class="activity-card">
             <div class="activity-icon">❌</div>
             <div class="activity-count">{{ stats.lostBets }}</div>
-            <div class="activity-label">Apuestas Perdidas</div>
+            <div class="activity-label">{{ 'PROFILE.LOST_BETS' | translate }}</div>
           </div>
           <div class="activity-card">
             <div class="activity-icon">💰</div>
             <div class="activity-count">{{ stats.totalWinnings | number:'1.0-0' }}</div>
-            <div class="activity-label">Ganancias Totales</div>
+            <div class="activity-label">{{ 'PROFILE.TOTAL_WINNINGS' | translate }}</div>
           </div>
           <div class="activity-card">
             <div class="activity-icon">📊</div>
             <div class="activity-count">{{ stats.winRate | number:'1.1-1' }}%</div>
-            <div class="activity-label">% de Victoria</div>
+            <div class="activity-label">{{ 'PROFILE.WIN_RATE' | translate }}</div>
           </div>
         </div>
       </div>
 
       <!-- Add this section to your profile component template -->
       <div class="profile-section">
-        <h3>Premios Canjeados</h3>
+        <h3>{{ 'PRIZES.REDEEMED_PRIZES' | translate }}</h3>
 
         @if (loadingPrizes) {
-          <div class="loading-spinner">Cargando premios...</div>
+          <div class="loading-spinner">{{ 'COMMON.LOADING' | translate }}</div>
         } @else if (prizesError) {
           <div class="error-message">{{ prizesError }}</div>
         } @else if (redeemedPrizes.length === 0) {
-          <div class="empty-message">No has canjeado ningún premio todavía.</div>
+          <div class="empty-message">{{ 'PRIZES.NO_REDEEMED_PRIZES' | translate }}</div>
         } @else {
           <div class="prizes-grid">
             @for (prize of redeemedPrizes; track prize.id) {
@@ -86,10 +86,10 @@
                   <h4>{{ prize.titulo }}</h4>
                   <p *ngIf="prize.descripcion" class="description">{{ prize.descripcion }}</p>
                   <div class="prize-details">
-                    <p class="prize-date">Canjeado: {{ prize.fecha_canje | date:'dd/MM/yyyy' }}</p>
-                    <p class="prize-date">Válido hasta: {{ prize.fecha_limite | date:'dd/MM/yyyy' }}</p>
+                    <p class="prize-date">{{ 'PRIZES.REDEEMED' | translate }}: {{ prize.fecha_canje | date:'dd/MM/yyyy' }}</p>
+                    <p class="prize-date">{{ 'PRIZES.VALID_UNTIL' | translate }}: {{ prize.fecha_limite | date:'dd/MM/yyyy' }}</p>
                     <p class="prize-status" [class.used]="prize.usado">
-                      {{ prize.usado ? 'Usado' : 'Disponible' }}
+                      {{ prize.usado ? ('PRIZES.USED' | translate) : ('PRIZES.AVAILABLE' | translate) }}
                     </p>
                   </div>
                 </div>
@@ -99,17 +99,17 @@
         }
       </div>
       <div class="profile-section">
-        <h2>Últimas Apuestas</h2>
+        <h2>{{ 'BETS.RECENT_BETS' | translate }}</h2>
         <div class="recent-bets">
           <div class="loading-spinner" *ngIf="loadingRecentBets">
             <div class="spinner"></div>
-            <p>Cargando apuestas...</p>
+            <p>{{ 'BETS.LOADING_BETS' | translate }}</p>
           </div>
 
           <div class="empty-state" *ngIf="!loadingRecentBets && recentBets.length === 0">
             <div class="empty-icon">📊</div>
-            <p>No tienes apuestas recientes</p>
-            <a routerLink="/" class="action-button">Realizar una apuesta</a>
+            <p>{{ 'BETS.NO_RECENT_BETS' | translate }}</p>
+            <a routerLink="/" class="action-button">{{ 'BETS.PLACE_BET' | translate }}</a>
           </div>
 
           <div class="bets-list" *ngIf="!loadingRecentBets && recentBets.length > 0">
@@ -120,25 +120,25 @@
                  }">
               <div class="bet-header">
                 <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
-                <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ bet.status }}</span>
+                <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ getTranslatedStatus(bet.status) }}</span>
               </div>
 
               <div class="bet-details">
                 <h3 class="bet-match">{{ bet.match_info }}</h3>
                 <p class="bet-selection">
-                  <strong>Selección:</strong> {{ bet.prediction_choice }}
+                  <strong>{{ 'BETS.SELECTION' | translate }}:</strong> {{ bet.prediction_choice }}
                 </p>
                 <div class="bet-info">
                   <div class="bet-amount">
-                    <span>Apostado:</span>
+                    <span>{{ 'BETS.BET_AMOUNT' | translate }}:</span>
                     <strong>{{ bet.punts_proposats }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
                   </div>
                   <div class="bet-odds">
-                    <span>Cuota:</span>
+                    <span>{{ 'BETS.ODDS' | translate }}:</span>
                     <strong>{{ bet.cuota }}</strong>
                   </div>
                   <div class="bet-result" *ngIf="bet.status.toLowerCase() === 'ganada'">
-                    <span>Ganancia:</span>
+                    <span>{{ 'BETS.WINNINGS' | translate }}:</span>
                     <strong>{{ bet.punts_proposats * bet.cuota | number:'1.0-0' }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
                   </div>
                 </div>
@@ -146,7 +146,7 @@
             </div>
 
             <div class="view-all-bets">
-              <a routerLink="/profile/bets" class="view-all-link">Ver todas mis apuestas</a>
+              <a routerLink="/profile/bets" class="view-all-link">{{ 'BETS.VIEW_ALL_BETS' | translate }}</a>
             </div>
           </div>
         </div>
@@ -172,84 +172,75 @@
             </div>
           </div>
 
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="nick">Nombre de usuario</label>
-              <input type="text" id="nick" formControlName="nick" class="form-control">
-              <div class="form-error" *ngIf="profileForm.get('nick')?.invalid && profileForm.get('nick')?.touched">
-                El nombre de usuario es obligatorio
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="email">Correo electrónico</label>
-              <input type="email" id="email" formControlName="email" class="form-control">
-              <div class="form-error" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
-                Introduce un correo electrónico válido
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="telefon">Teléfono</label>
-              <input type="tel" id="telefon" formControlName="telefon" class="form-control">
+          <!-- Update the form labels and buttons to use translations -->
+          <div class="form-group">
+            <label for="nick">{{ 'PROFILE.USERNAME' | translate }}</label>
+            <input type="text" id="nick" formControlName="nick" class="form-control">
+            <div class="form-error" *ngIf="profileForm.get('nick')?.invalid && profileForm.get('nick')?.touched">
+              {{ 'ERRORS.REQUIRED' | translate }}
             </div>
           </div>
 
+          <div class="form-group">
+            <label for="email">{{ 'PROFILE.EMAIL' | translate }}</label>
+            <input type="email" id="email" formControlName="email" class="form-control">
+            <div class="form-error" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+              <span *ngIf="profileForm.get('email')?.errors?.['required']">{{ 'ERRORS.REQUIRED' | translate }}</span>
+              <span *ngIf="profileForm.get('email')?.errors?.['email']">{{ 'ERRORS.EMAIL_INVALID' | translate }}</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="telefon">{{ 'PROFILE.PHONE' | translate }}</label>
+            <input type="tel" id="telefon" formControlName="telefon" class="form-control">
+          </div>
+
+          <!-- Update password section -->
           <div class="password-section">
-            <h3>Cambiar contraseña</h3>
+            <h3>{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</h3>
             <div class="form-grid">
               <div class="form-group">
-                <label for="current_password">Contraseña actual</label>
+                <label for="current_password">{{ 'PROFILE.CURRENT_PASSWORD' | translate }}</label>
                 <input type="password" id="current_password" formControlName="current_password" class="form-control">
               </div>
 
               <div class="form-group">
-                <label for="new_password">Nueva contraseña</label>
+                <label for="new_password">{{ 'PROFILE.NEW_PASSWORD' | translate }}</label>
                 <input type="password" id="new_password" formControlName="new_password" class="form-control">
-                <div class="form-error" *ngIf="profileForm.get('new_password')?.value && profileForm.get('new_password')?.value.length < 8">
-                  La contraseña debe tener al menos 8 caracteres
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="confirm_password">Confirmar nueva contraseña</label>
-                <input type="password" id="confirm_password" formControlName="confirm_password" class="form-control">
-                <div class="form-error" *ngIf="profileForm.get('new_password')?.value !== profileForm.get('confirm_password')?.value && profileForm.get('confirm_password')?.value">
-                  Las contraseñas no coinciden
-                </div>
               </div>
             </div>
           </div>
 
+          <!-- Update buttons -->
           <div class="form-actions">
-            <button type="submit" class="save-button" [disabled]="profileForm.invalid">Guardar cambios</button>
+            <button type="submit" class="save-button" [disabled]="profileForm.invalid">{{ 'PROFILE.SAVE_CHANGES' | translate }}</button>
           </div>
         </form>
-
+          
         <!-- Sección para borrar cuenta -->
         <div class="delete-account-section">
-          <h3>Eliminar cuenta</h3>
-          <p class="warning-text">Esta acción es irreversible. Todos tus datos serán eliminados permanentemente.</p>
-          <button class="delete-button" (click)="showDeleteConfirmation()">Eliminar mi cuenta</button>
+          <h3>{{ 'PROFILE.DELETE_ACCOUNT' | translate }}</h3>
+          <p class="warning-text">{{ 'PROFILE.DELETE_WARNING' | translate }}</p>
+          <button class="delete-button" (click)="showDeleteConfirmation()">{{ 'PROFILE.DELETE_MY_ACCOUNT' | translate }}</button>
         </div>
       </div>
     </ng-container>
-
+          
     <!-- Modal de confirmación para borrar cuenta -->
     <div class="confirmation-modal" *ngIf="showDeleteModal">
       <div class="modal-content">
-        <h3>¿Estás seguro?</h3>
-        <p>Esta acción eliminará permanentemente tu cuenta y todos tus datos asociados. No podrás recuperarlos.</p>
-
+        <h3>{{ 'PROFILE.ARE_YOU_SURE' | translate }}</h3>
+        <p>{{ 'PROFILE.DELETE_CONFIRMATION_TEXT' | translate }}</p>
+    
         <div class="confirmation-input">
-          <label for="confirm-delete">Para confirmar, escribe "ELIMINAR"</label>
+          <label for="confirm-delete">{{ 'PROFILE.TYPE_DELETE' | translate }}</label>
           <input type="text" id="confirm-delete" [(ngModel)]="deleteConfirmText">
         </div>
-
+    
         <div class="modal-actions">
-          <button class="cancel-button" (click)="cancelDelete()">Cancelar</button>
+          <button class="cancel-button" (click)="cancelDelete()">{{ 'COMMON.CANCEL' | translate }}</button>
           <button class="confirm-button" [disabled]="deleteConfirmText !== 'ELIMINAR'" (click)="deleteAccount()">
-            Confirmar eliminación
+            {{ 'PROFILE.CONFIRM_DELETION' | translate }}
           </button>
         </div>
       </div>

@@ -33,12 +33,16 @@
   </div>
 
   <div class="user-section">
-    <!-- Language toggle button - added before the balance -->
-    <div class="language-toggle">
-      <button (click)="toggleLanguage()" class="language-button" title="Cambiar idioma">
-        <span class="language-icon">🌐</span>
-        <span class="language-code">{{ currentLanguage }}</span>
-      </button>
+
+
+    <div class="user-section">
+      <!-- Replace the language toggle button with our new slider -->
+      <div class="language-toggle">
+        <app-language-slider></app-language-slider>
+      </div>
+    
+      <!-- Rest of the user section remains the same -->
+      <!-- ... -->
     </div>
 
     <!-- Reemplazamos el balance con el estilo del perfil -->
