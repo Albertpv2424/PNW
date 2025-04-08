@@ -1,101 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LanguageService } from '../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-language-slider',
   standalone: true,
   imports: [CommonModule, TranslateModule],
-  template: `
-    <div class="language-slider">
-      <div class="slider-container">
-        <div class="slider-track">
-          <div 
-            *ngFor="let lang of languages" 
-            class="slider-item" 
-            [class.active]="lang.code === currentLang"
-            (click)="setLanguage(lang.code)">
-            <div class="lang-flag">
-              <img [src]="getFlagUrl(lang.code)" [alt]="lang.name" (error)="handleFlagError($event)">
-            </div>
-            <div class="lang-name">{{ lang.name }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .language-slider {
-      display: inline-block;
-      margin-left: 5px; /* Reducido de 15px a 5px */
-    }
-    
-    .slider-container {
-      background-color: rgba(0, 0, 0, 0.3);
-      border-radius: 20px;
-      padding: 5px;
-      border: 1px solid #00b341;
-      overflow-x: auto;
-      max-width: 250px; /* Aumentado de 200px a 250px */
-    }
-    
-    .slider-track {
-      display: flex;
-      gap: 5px; /* Reducido de 10px a 5px */
-    }
-    
-    .slider-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 5px 8px; /* Reducido de 5px 10px a 5px 8px */
-      border-radius: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      min-width: 35px; /* Reducido de 40px a 35px */
-      text-align: center;
-    }
-    
-    .slider-item:hover {
-      background-color: rgba(0, 179, 65, 0.2);
-    }
-    
-    .slider-item.active {
-      background-color: #00b341;
-    }
-    
-    .lang-flag {
-      margin-bottom: 2px;
-      width: 24px;
-      height: 18px;
-      overflow: hidden;
-      border-radius: 2px;
-    }
-    
-    .lang-flag img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .lang-name {
-      font-size: 12px;
-      color: white;
-    }
-
-    /* Hide scrollbar but keep functionality */
-    .slider-container::-webkit-scrollbar {
-      height: 0;
-      width: 0;
-    }
-  `]
+  templateUrl: './language-slider.component.html',
+  styleUrls: ['./language-slider.component.css']
 })
 export class LanguageSliderComponent implements OnInit {
   languages: { code: string, name: string }[] = [];
   currentLang: string = 'es';
+  isExpanded: boolean = false;
 
-  constructor(private languageService: LanguageService) {}
+  constructor(
+    private languageService: LanguageService,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
     this.languages = this.languageService.getAvailableLanguages();
@@ -104,8 +27,27 @@ export class LanguageSliderComponent implements OnInit {
     });
   }
 
+  toggleExpanded(event: Event): void {
+    event.stopPropagation();
+    this.isExpanded = !this.isExpanded;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    // Cerrar el panel si se hace clic fuera del componente
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.isExpanded = false;
+    }
+  }
+
   setLanguage(langCode: string): void {
     this.languageService.setLanguage(langCode);
+    this.isExpanded = false; // Colapsar después de seleccionar
+  }
+
+  getCurrentLanguageName(): string {
+    const lang = this.languages.find(l => l.code === this.currentLang);
+    return lang ? lang.name : 'Español';
   }
 
   getFlagUrl(langCode: string): string {
@@ -114,10 +56,17 @@ export class LanguageSliderComponent implements OnInit {
       'es': 'es',
       'en': 'gb', // Make sure this is 'gb' for Great Britain
       'it': 'it',
-      'ca': 'es', // Using Spain flag for Catalan
+      'ca': 'catalonia' // Usando la bandera catalana específica
     };
-    
+
     const countryCode = countryMap[langCode] || langCode;
+
+    // Caso especial para Cataluña
+    if (countryCode === 'catalonia') {
+      // Usar una imagen estática de la bandera catalana desde assets
+      return 'assets/flags/catalonia.png';
+    }
+
     // Use a more reliable flag CDN with HTTPS
     return `https://flagcdn.com/w40/${countryCode}.png`;
   }
@@ -127,13 +76,13 @@ export class LanguageSliderComponent implements OnInit {
     // Fallback to emoji flags if image fails to load
     const img = event.target;
     const langCode = img.alt.toLowerCase();
-    
+
     // Create a span with emoji flag as fallback
     const parent = img.parentNode;
     const span = document.createElement('span');
     span.textContent = this.getFlagEmoji(langCode);
     span.style.fontSize = '18px';
-    
+
     // Replace the img with the span
     parent.replaceChild(span, img);
   }
@@ -144,9 +93,9 @@ export class LanguageSliderComponent implements OnInit {
       'es': '🇪🇸',
       'en': '🇬🇧',
       'it': '🇮🇹',
-      'ca': '🇪🇸',
+      'ca': '🏴', // Emoji simple para Cataluña
     };
-    
+
     return flagMap[langCode] || '🌐';
   }
 }

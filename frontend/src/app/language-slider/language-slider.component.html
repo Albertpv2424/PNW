@@ -1,1 +1,23 @@
-<p>language-slider works!</p>
+<div class="language-slider">
+  <!-- Idioma actual (siempre visible) -->
+  <div class="current-language" (click)="toggleExpanded($event)">
+    <div class="lang-flag">
+      <img [src]="getFlagUrl(currentLang)" [alt]="getCurrentLanguageName()" (error)="handleFlagError($event)">
+    </div>
+    <div class="lang-name">{{ getCurrentLanguageName() }}</div>
+  </div>
+
+  <!-- Panel expandible con todos los idiomas -->
+  <div class="expanded-panel" *ngIf="isExpanded">
+    <div
+      *ngFor="let lang of languages"
+      class="slider-item"
+      [class.active]="lang.code === currentLang"
+      (click)="setLanguage(lang.code)">
+      <div class="lang-flag">
+        <img [src]="getFlagUrl(lang.code)" [alt]="lang.name" (error)="handleFlagError($event)">
+      </div>
+      <div class="lang-name">{{ lang.name }}</div>
+    </div>
+  </div>
+</div>

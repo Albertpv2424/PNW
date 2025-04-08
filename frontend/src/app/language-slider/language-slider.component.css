@@ -1,0 +1,120 @@
+.language-slider {
+  display: inline-flex;
+  position: relative;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.current-language {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 8px;
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: #00b341;
+  min-width: 60px; /* Ancho fijo mínimo */
+  width: 60px; /* Ancho fijo */
+  height: 50px; /* Altura fija */
+  text-align: center;
+}
+
+.expanded-panel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 5px;
+  border: 1px solid #00b341;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-width: 120px;
+}
+
+.slider-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 2px;
+  justify-content: flex-start; /* Alinear a la izquierda */
+  text-align: left; /* Texto alineado a la izquierda */
+}
+
+.slider-item:last-child {
+  margin-bottom: 0;
+}
+
+.slider-item:hover {
+  background-color: rgba(0, 179, 65, 0.2);
+}
+
+.slider-item.active {
+  background-color: rgba(0, 179, 65, 0.4);
+}
+
+.lang-flag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 5px;
+  width: 24px;
+  height: 18px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.lang-flag img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lang-name {
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  white-space: nowrap;
+  min-width: 60px; /* Ancho mínimo fijo para evitar cambios de tamaño */
+}
+
+.slider-item .lang-name {
+  text-align: left; /* Texto alineado a la izquierda en los items del slider */
+}
+
+.slider-item .lang-flag {
+  margin-right: 8px;
+  margin-bottom: 0;
+  min-width: 24px; /* Ancho fijo para las banderas */
+}
+
+/* Asegurar que el componente tenga un ancho fijo */
+.language-slider {
+  display: inline-flex;
+  position: relative;
+  margin: 0 auto;
+  justify-content: center;
+  width: 60px; /* Ancho fijo para todo el componente */
+}
+
+/* Asegurar que el panel expandido no afecte el layout */
+.expanded-panel {
+  position: absolute;
+  top: 100%;
+  left: 0; /* Alinear a la izquierda */
+  transform: none; /* Quitar la transformación que centraba el panel */
+  margin-top: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 5px;
+  border: 1px solid #00b341;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-width: 120px;
+}
