@@ -7,11 +7,13 @@ import { RouterModule } from '@angular/router';
 import { ProfileHeaderComponent } from '../profile-header/profile-header.component';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule, RouterModule, ProfileHeaderComponent], // Remove HeaderComponent
+  imports: [CommonModule, RouterModule, ProfileHeaderComponent, TranslateModule], // Add TranslateModule
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css']
 })
@@ -37,13 +39,20 @@ export class HistoryComponent implements OnInit {
   constructor(
     private betService: BetService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translateService: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.loadBetHistory();
     this.loadBetStats();
     this.loadUserInfo();
+    
+    // Establecer el título de la página basado en el idioma actual
+    this.translateService.get('HISTORY.TITLE').subscribe((title: string) => {
+      this.titleService.setTitle(`PNW - ${title}`);
+    });
   }
 
   loadBetHistory(): void {
@@ -57,11 +66,18 @@ export class HistoryComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading bet history:', error);
-        this.error = 'Error al cargar el historial de predicciones';
+        
+        // Usar traducción para el mensaje de error
+        this.translateService.get('HISTORY.LOAD_ERROR').subscribe((errorMsg: string) => {
+          this.error = errorMsg;
+        });
+        
         this.isLoading = false;
 
         if (error.status === 401) {
-          this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          this.translateService.get('AUTH.SESSION_EXPIRED').subscribe((errorMsg: string) => {
+            this.notificationService.showError(errorMsg);
+          });
           this.authService.logout();
         }
       }
@@ -89,13 +105,27 @@ export class HistoryComponent implements OnInit {
   // Format date for display
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
+    const currentLang = this.translateService.currentLang;
+    
+    // Usar el formato de fecha según el idioma
+    return date.toLocaleDateString(this.getLocaleForLanguage(currentLang), {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  // Obtener el locale según el idioma
+  private getLocaleForLanguage(lang: string): string {
+    switch (lang) {
+      case 'es': return 'es-ES';
+      case 'en': return 'en-US';
+      case 'it': return 'it-IT';
+      case 'ca': return 'ca-ES';
+      default: return 'es-ES';
+    }
   }
 
   // Get CSS class for bet status
@@ -105,6 +135,16 @@ export class HistoryComponent implements OnInit {
     if (statusLower === 'perdida') return 'status-lost';
     if (statusLower === 'pendiente') return 'status-pending';
     return '';
+  }
+
+  // Método para obtener la traducción del estado de la apuesta
+  getTranslatedStatus(status: string): string {
+    const statusLower = status.toLowerCase();
+    if (statusLower === 'ganada') return 'BETS.WON';
+    if (statusLower === 'perdida') return 'BETS.LOST';
+    if (statusLower === 'pendiente') return 'BETS.PENDING';
+    if (statusLower === 'cancelada') return 'BETS.CANCELED';
+    return status;
   }
 
   loadUserInfo(): void {

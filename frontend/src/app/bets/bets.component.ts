@@ -7,11 +7,12 @@ import { RouterModule } from '@angular/router';
 import { ProfileHeaderComponent } from '../profile-header/profile-header.component';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-bets',
   standalone: true,
-  imports: [CommonModule, RouterModule, ProfileHeaderComponent], // Remove HeaderComponent
+  imports: [CommonModule, RouterModule, ProfileHeaderComponent, TranslateModule], // Remove HeaderComponent
   templateUrl: './bets.component.html',
   styleUrls: ['./bets.component.css']
 })

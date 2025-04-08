@@ -156,17 +156,17 @@
     <!-- Vista de edición de perfil mejorada -->
     <ng-container *ngIf="editMode">
       <div class="profile-section">
-        <h2>Editar Perfil</h2>
+        <h2>{{ 'PROFILE.EDIT_PROFILE' | translate }}</h2>
         <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="edit-form">
           <div class="profile-image-section">
-            <h3>Foto de perfil</h3>
+            <h3>{{ 'PROFILE.PHOTO' | translate }}</h3>
             <div class="image-preview-container">
               <div class="image-preview" [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : (profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none')">
                 <span *ngIf="!imagePreview && !profileImage">{{ getInitials() }}</span>
               </div>
               <div class="image-upload">
                 <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*" class="file-input">
-                <label for="profile-image" class="file-label">Cambiar imagen</label>
+                <label for="profile-image" class="file-label">{{ 'PROFILE.CHANGE_IMAGE' | translate }}</label>
                 <p *ngIf="selectedFile" class="selected-file-name">{{ selectedFile.name }}</p>
               </div>
             </div>

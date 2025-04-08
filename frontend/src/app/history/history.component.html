@@ -1,12 +1,7 @@
-<!-- Reemplazar el header actual -->
-<!-- <app-header></app-header> -->
-
-<!-- Add background container -->
 <div class="background-container"></div>
 
 <div class="history-container">
   <div class="content-wrapper">
-    <!-- Añadir el header de perfil compartido -->
     <app-profile-header
       [username]="username"
       [email]="email"
@@ -15,81 +10,89 @@
       [activeTab]="'history'"
     ></app-profile-header>
 
-    <h1>Historial de Predicciones</h1>
+    <h1>{{ 'HISTORY.TITLE' | translate }}</h1>
 
-    <!-- Stats summary section -->
-    <div class="stats-summary">
-      <div class="stat-card">
-        <h3>Total Predicciones</h3>
-        <p class="stat-number">{{ stats.totalBets }}</p>
+    <!-- Updated stats-summary with better alignment -->
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-label">{{ 'HISTORY.TOTAL_BETS' | translate }}</div>
+        <div class="stat-value">{{ stats.totalBets }}</div>
       </div>
-      <div class="stat-card">
-        <h3>Predicciones Ganadas</h3>
-        <p class="stat-number win">{{ stats.wonBets }}</p>
+      
+      <div class="stat-box">
+        <div class="stat-label">{{ 'HISTORY.WON_BETS' | translate }}</div>
+        <div class="stat-value win">{{ stats.wonBets }}</div>
       </div>
-      <div class="stat-card">
-        <h3>Predicciones Perdidas</h3>
-        <p class="stat-number loss">{{ stats.lostBets }}</p>
+      
+      <div class="stat-box">
+        <div class="stat-label">{{ 'HISTORY.LOST_BETS' | translate }}</div>
+        <div class="stat-value loss">{{ stats.lostBets }}</div>
       </div>
-      <div class="stat-card">
-        <h3>Predicciones Pendientes</h3>
-        <p class="stat-number pending">{{ stats.pendingBets }}</p>
+      
+      <div class="stat-box">
+        <div class="stat-label">{{ 'HISTORY.PENDING_BETS' | translate }}</div>
+        <div class="stat-value pending">{{ stats.pendingBets }}</div>
       </div>
-      <div class="stat-card">
-        <h3>Ganancias Totales</h3>
-        <p class="stat-number">
+      
+      <div class="stat-box">
+        <div class="stat-label">{{ 'HISTORY.TOTAL_WINNINGS' | translate }}</div>
+        <div class="stat-value win">
           {{ stats.totalWinnings | number:'1.0-0' }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
-        </p>
+        </div>
       </div>
-      <div class="stat-card">
-        <h3>% de Victoria</h3>
-        <p class="stat-number">{{ stats.winRate | number:'1.1-1' }}%</p>
+      
+      <div class="stat-box">
+        <div class="stat-label">{{ 'HISTORY.WIN_RATE' | translate }}</div>
+        <div class="stat-value">{{ stats.winRate | number:'1.1-1' }}%</div>
       </div>
     </div>
 
-    <div class="loading-spinner" *ngIf="isLoading">
+    <!-- Rest of the component remains unchanged -->
+    <div class="loading-spinner" *ngIf="isLoading" id="loading-spinner">
       <div class="spinner"></div>
-      <p>Cargando historial...</p>
+      <p>{{ 'HISTORY.LOADING' | translate }}</p>
     </div>
 
-    <div class="error-message" *ngIf="error">
+    <div class="error-message" *ngIf="error" id="error-message">
       <p>{{ error }}</p>
-      <button (click)="loadBetHistory()">Reintentar</button>
+      <button (click)="loadBetHistory()" id="retry-button">{{ 'COMMON.RETRY' | translate }}</button>
     </div>
 
-    <!-- History List -->
-    <div class="bets-list" *ngIf="!isLoading && !error">
-      <div class="empty-state" *ngIf="betHistory.length === 0">
-        <p>No tienes historial de predicciones.</p>
-        <a routerLink="/" class="place-bet-btn">Realizar una predicción</a>
+    <div class="bets-list" *ngIf="!isLoading && !error" id="bets-history-list">
+      <div class="empty-state" *ngIf="betHistory.length === 0" id="empty-history">
+        <p>{{ 'HISTORY.NO_BETS' | translate }}</p>
+        <a routerLink="/" class="place-bet-btn" id="place-bet-button">{{ 'BETS.PLACE_BET' | translate }}</a>
       </div>
 
-      <div class="bet-card" *ngFor="let bet of betHistory"
+      <div class="bet-card" *ngFor="let bet of betHistory; let i = index" 
+           [id]="'bet-card-' + i"
            [ngClass]="{
              'won': bet.status.toLowerCase() === 'ganada',
              'lost': bet.status.toLowerCase() === 'perdida'
            }">
         <div class="bet-header">
           <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
-          <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ bet.status }}</span>
+          <span class="bet-status" [ngClass]="getStatusClass(bet.status)">
+            {{ getTranslatedStatus(bet.status) | translate }}
+          </span>
         </div>
 
         <div class="bet-details">
           <h3 class="bet-match">{{ bet.match_info }}</h3>
           <p class="bet-selection">
-            <strong>Selección:</strong> {{ bet.prediction_choice }}
+            <strong>{{ 'HISTORY.SELECTION' | translate }}:</strong> {{ bet.prediction_choice }}
           </p>
           <div class="bet-info">
             <div class="bet-amount">
-              <span>Apostado:</span>
+              <span>{{ 'HISTORY.BET_AMOUNT' | translate }}:</span>
               <strong>{{ bet.punts_proposats }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
             </div>
             <div class="bet-odds">
-              <span>Cuota:</span>
+              <span>{{ 'BETS.ODDS' | translate }}:</span>
               <strong>{{ bet.cuota }}</strong>
             </div>
             <div class="bet-result" *ngIf="bet.status.toLowerCase() === 'ganada'">
-              <span>Ganancia:</span>
+              <span>{{ 'BETS.WINNINGS' | translate }}:</span>
               <strong>{{ bet.punts_proposats * bet.cuota | number:'1.0-0' }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
             </div>
           </div>

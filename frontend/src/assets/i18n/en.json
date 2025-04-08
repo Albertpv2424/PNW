@@ -56,7 +56,12 @@
     "PENDING": "Pending",
     "CANCELED": "Canceled",
     "NO_BETS": "You don't have any bets",
-    "PLACE_BET": "Place Bet"
+    "PLACE_BET": "Place Bet",
+    "RECENT_BETS": "Recent Bets",
+    "ODDS": "Odds",
+    "WINNINGS": "Winnings",
+    "VIEW_ALL_BETS": "View All Bets",
+    "LOADING_BETS": "Loading bets..."
   },
   "PROFILE": {
     "PERSONAL_INFO": "Personal Information",
@@ -77,7 +82,17 @@
     "LOST_BETS": "Lost Bets",
     "PENDING_BETS": "Pending Bets",
     "WIN_RATE": "Win Rate",
-    "TOTAL_WINNINGS": "Total Winnings"
+    "TOTAL_WINNINGS": "Total Winnings",
+    "ACTIVITY_SUMMARY": "Activity Summary",
+    "EDIT_PROFILE": "Edit Profile",
+    "PHOTO": "Profile Photo",
+    "DELETE_ACCOUNT": "Delete Account",
+    "DELETE_WARNING": "Are you sure you want to delete your account? This action cannot be undone.",
+    "DELETE_MY_ACCOUNT": "Delete My Account",
+    "ARE_YOU_SURE": "Are you sure?",
+    "DELETE_CONFIRMATION_TEXT": "Once your account is deleted, you will not be able to recover your data. Are you sure you want to delete your account?",
+    "TYPE_DELETE": "Type 'DELETE' to confirm",
+    "CONFIRM_DELETION": "DELETE"
   },
   "REWARDS": {
     "DAILY_REWARDS": "Daily Rewards",
@@ -100,7 +115,10 @@
     "REDEEMED_PRIZES": "Redeemed Prizes",
     "REDEMPTION_DATE": "Redemption Date",
     "NO_PRIZES": "No prizes available",
-    "NO_REDEEMED_PRIZES": "You haven't redeemed any prizes"
+    "NO_REDEEMED_PRIZES": "You haven't redeemed any prizes",
+    "REDEEMED": "Redeemed",
+    "VALID_UNTIL": "Valid until",
+    "AVAILABLE": "Available"
   },
   "AUTH": {
     "LOGIN": "Login",
@@ -168,219 +186,172 @@
     "TEAM_TEXT": "We have a team of professionals passionate about sports and technology, dedicated to creating the best experience for our users."
   },
   "TERMS": {
-
-  "TITLE": "Terms and Conditions",
-  "LAST_UPDATE": "Last update: June 1, 2023",
-  "WELCOME": "Welcome to PNW. By accessing or using our service, you agree to be bound by these Terms and Conditions. Please read them carefully.",
-  "SECTION_1_TITLE": "1. Acceptance of Terms",
-  "SECTION_1_TEXT": "By registering, accessing or using our services, you confirm that you have read, understood and accepted these Terms and Conditions. If you do not agree with any part of these terms, you may not access the service.",
-  "SECTION_2_TITLE": "2. Eligibility",
-  "SECTION_2_TEXT": "To use our services, you must be at least 18 years old and reside in a jurisdiction where online betting is legal. It is your responsibility to ensure that your use of our services complies with applicable laws in your jurisdiction.",
-  "SECTION_3_TITLE": "3. User Accounts",
-  "SECTION_3_TEXT": "When creating an account, you agree to provide accurate, complete and up-to-date information. You are responsible for maintaining the confidentiality of your account and password, and agree not to share your access credentials with third parties.",
-  "SECTION_4_TITLE": "4. Bets and Payments",
-  "SECTION_4_TEXT": "All bets are subject to our betting rules. We reserve the right to refuse any bet at our discretion. Payments will be processed in accordance with our payment policies.",
-  "SECTION_5_TITLE": "5. Responsible Gaming",
-  "SECTION_5_TEXT": "We promote responsible gaming and offer tools to help users control their gaming activity. If you believe you may have a gambling problem, we recommend seeking professional help.",
-  "SECTION_6_TITLE": "6. Modifications",
-  "SECTION_6_TEXT": "We reserve the right to modify these terms at any time. Changes will take effect immediately after posting. Your continued use of the service after any changes constitutes your acceptance of the new terms."
+    "TITLE": "Terms and Conditions",
+    "LAST_UPDATE": "Last update: June 1, 2023",
+    "WELCOME": "Welcome to PNW. By accessing or using our service, you agree to be bound by these Terms and Conditions. Please read them carefully.",
+    "SECTION_1_TITLE": "1. Acceptance of Terms",
+    "SECTION_1_TEXT": "By registering, accessing or using our services, you confirm that you have read, understood and accepted these Terms and Conditions. If you do not agree with any part of these terms, you may not access the service.",
+    "SECTION_2_TITLE": "2. Eligibility",
+    "SECTION_2_TEXT": "To use our services, you must be at least 18 years old and reside in a jurisdiction where online betting is legal. It is your responsibility to ensure that your use of our services complies with applicable laws in your jurisdiction.",
+    "SECTION_3_TITLE": "3. User Accounts",
+    "SECTION_3_TEXT": "When creating an account, you agree to provide accurate, complete and up-to-date information. You are responsible for maintaining the confidentiality of your account and password, and agree not to share your access credentials with third parties.",
+    "SECTION_4_TITLE": "4. Bets and Payments",
+    "SECTION_4_TEXT": "All bets are subject to our betting rules. We reserve the right to refuse any bet at our discretion. Payments will be processed in accordance with our payment policies.",
+    "SECTION_5_TITLE": "5. Responsible Gaming",
+    "SECTION_5_TEXT": "We promote responsible gaming and offer tools to help users control their gaming activity. If you believe you may have a gambling problem, we recommend seeking professional help.",
+    "SECTION_6_TITLE": "6. Modifications",
+    "SECTION_6_TEXT": "We reserve the right to modify these terms at any time. Changes will take effect immediately after posting. Your continued use of the service after any changes constitutes your acceptance of the new terms."
   },
-"PRIVACY": {
-  "TITLE": "Privacy Policy",
-  "LAST_UPDATE": "Last update: June 1, 2023",
-  "INTRO_TEXT": "At PNW, we take the privacy of our users very seriously. This Privacy Policy describes how we collect, use, and protect your personal information.",
-  
-  "SECTION_1_TITLE": "1. Information We Collect",
-  "SECTION_1_INTRO": "We may collect the following types of information:",
-  "REGISTRATION_INFO": "Registration information",
-  "REGISTRATION_INFO_TEXT": "Name, email address, date of birth, etc.",
-  "TRANSACTION_INFO": "Transaction information",
-  "TRANSACTION_INFO_TEXT": "Details of your bets, deposits, and withdrawals.",
-  "TECHNICAL_INFO": "Technical information",
-  "TECHNICAL_INFO_TEXT": "IP address, browser type, device used, etc.",
-  "USAGE_INFO": "Usage information",
-  "USAGE_INFO_TEXT": "How you interact with our website and services.",
-  
-  "SECTION_2_TITLE": "2. How We Use Your Information",
-  "SECTION_2_INTRO": "We use your information to:",
-  "USE_1": "Provide and improve our services",
-  "USE_2": "Process your transactions",
-  "USE_3": "Verify your identity and prevent fraud",
-  "USE_4": "Communicate with you about our services",
-  "USE_5": "Comply with legal and regulatory obligations",
-  
-  "SECTION_3_TITLE": "3. Sharing Information",
-  "SECTION_3_INTRO": "We do not sell your personal information to third parties. We may share your information with:",
-  "SHARE_1": "Service providers that help us operate our business",
-  "SHARE_2": "Regulatory authorities when legally required",
-  "SHARE_3": "Affiliated entities within our corporate group",
-  
-  "SECTION_4_TITLE": "4. Data Security",
-  "SECTION_4_TEXT": "We implement technical and organizational security measures to protect your personal information against unauthorized access, loss, or alteration.",
-  
-  "SECTION_5_TITLE": "5. Your Rights",
-  "SECTION_5_INTRO": "Depending on your location, you may have the right to:",
-  "RIGHT_1": "Access your personal information",
-  "RIGHT_2": "Correct inaccurate information",
-  "RIGHT_3": "Delete your information",
-  "RIGHT_4": "Object to the processing of your data",
-  "RIGHT_5": "Withdraw your consent",
-  
-  "SECTION_6_TITLE": "6. Changes to this Policy",
-  "SECTION_6_TEXT": "We may update this Privacy Policy periodically. We will notify you of any significant changes through our website or by email.",
-  
-  "SECTION_7_TITLE": "7. Contact",
-  "SECTION_7_TEXT": "If you have questions about this Privacy Policy, please contact us through our Contact section."
-},
-"FAQ": {
-  "TITLE": "Frequently Asked Questions",
-  "CREATE_ACCOUNT": "How can I create an account?",
-  "CREATE_ACCOUNT_ANSWER": "To create an account, click on the 'Register' button at the top right of the page. Fill out the form with your personal details, create a secure password, and accept the terms and conditions. Then, click 'Register' to complete the process.",
-  
-  "PLACE_BET": "How can I place a bet?",
-  "PLACE_BET_ANSWER": "To place a bet, you must first log in to your account. Then, browse through the available sports, select an event, and click on the odds you want to bet on. Enter the amount you want to bet in the betting slip and click 'Place Bet' to confirm.",
-  
-  "REDEEM_POINTS": "How can I redeem my points for prizes?",
-  "REDEEM_POINTS_ANSWER": "To redeem your points for prizes, go to the 'Prizes' section in the main menu. There you will see all available prizes and the points required for each one. Click the 'Redeem' button next to the prize you want and confirm your selection.",
-  
-  "DAILY_WHEEL": "How does the daily fortune wheel work?",
-  "DAILY_WHEEL_ANSWER": "The daily fortune wheel is a reward you can claim once every 24 hours. Click on the wheel icon in the navigation bar and then on 'Spin Wheel'. You will win random points that will be automatically added to your account.",
-  
-  "FORGOT_PASSWORD": "What should I do if I forgot my password?",
-  "FORGOT_PASSWORD_ANSWER": "If you forgot your password, click on 'Login' and then on the 'Forgot your password?' link below the login form. Enter your email address and you will receive instructions to reset your password.",
-  
-  "CONTACT_SUPPORT": "How can I contact customer service?",
-  "CONTACT_SUPPORT_ANSWER": "You can contact our customer service through various options: live chat available 24/7, email at support@pnw.com, or through the contact form in the 'Support' section of our website.",
-  
-  "PRIZE_PROCESSING": "How long does it take to process prize redemptions?",
-  "PRIZE_PROCESSING_ANSWER": "Prize redemptions are typically processed within 24 to 48 business hours. Once processed, you will receive an email notification and you can view the status of your prize in the 'My Prizes' section of your profile.",
-  
-  "CHANGE_USERNAME": "Can I change my username?",
-  "CHANGE_USERNAME_ANSWER": "Yes, you can change your username. Go to 'My Profile', click on 'Edit Profile', and update your username in the corresponding field. Note that the username must be unique and cannot be in use by another user.",
-  
-  "VIEW_HISTORY": "How can I view my betting history?",
-  "VIEW_HISTORY_ANSWER": "To view your betting history, go to 'My Profile' and click on the 'History' tab. There you can see all your previous bets, including details such as the amount bet, odds, outcome, and winnings."
-},
-
-"HOW_TO_PLAY": {
-  "TITLE": "How to Play",
-  "STEP_1_TITLE": "Create an account",
-  "STEP_1_TEXT": "To get started, register on our platform by clicking \"Register\" at the top of the page. Fill out the form with your personal details and create a secure password.",
-  
-  "STEP_2_TITLE": "Explore sporting events",
-  "STEP_2_TEXT": "Browse through our wide selection of sporting events. You can filter by sport, league, or date to find the events that interest you the most.",
-  
-  "STEP_3_TITLE": "Select your bet",
-  "STEP_3_TEXT": "Click on the event you're interested in to see all available markets. Select the odds you want to bet on by clicking on them.",
-  
-  "STEP_4_TITLE": "Place your bet",
-  "STEP_4_TEXT": "Enter the amount you want to bet in the betting slip. Verify the details and confirm your bet by clicking \"Place Bet\".",
-  
-  "STEP_5_TITLE": "Track your bets",
-  "STEP_5_TEXT": "You can follow the progress of your bets in the \"My Bets\" section of your profile. There you will see the status of your active bets and can check your history.",
-  
-  "TIPS_TITLE": "Tips for beginners",
-  "TIP_1": "Start with small bets until you become familiar with the platform.",
-  "TIP_2": "Get well informed about the events you're going to bet on.",
-  "TIP_3": "Set a budget and stick to it.",
-  "TIP_4": "Take advantage of our promotions to maximize your winnings.",
-  "TIP_5": "Play responsibly and have fun."
-},
-"RESPONSIBLE_GAMING": {
-  "TITLE": "Responsible Gaming",
-  "INTRO_1": "At PNW, we are committed to promoting a safe and responsible gaming environment. We believe that sports betting should be a form of entertainment, not a source of problems.",
-  "INTRO_2": "We encourage you to follow these guidelines to maintain control of your gaming activity and enjoy a positive experience.",
-  
-  "GUIDELINES_TITLE": "Guidelines for responsible gaming",
-  
-  "SET_LIMITS_TITLE": "Set limits",
-  "SET_LIMITS_TEXT": "Define a clear budget for your bets and don't exceed it. Decide how much time and money you're willing to dedicate to betting and respect those limits.",
-  
-  "DONT_CHASE_LOSSES_TITLE": "Don't chase losses",
-  "DONT_CHASE_LOSSES_TEXT": "Accepting losses is part of the game. Don't try to recover lost money by increasing your bets, as this can lead to a dangerous cycle.",
-  
-  "KEEP_BALANCE_TITLE": "Maintain balance",
-  "KEEP_BALANCE_TEXT": "Sports betting should be just one part of your leisure activities. Make sure to maintain a healthy balance with other social and recreational activities.",
-  
-  "NO_INFLUENCE_TITLE": "Don't bet under the influence",
-  "NO_INFLUENCE_TEXT": "Avoid betting when you're under the influence of alcohol or other substances, as this can affect your ability to make rational decisions.",
-  
-  "TAKE_BREAKS_TITLE": "Take breaks",
-  "TAKE_BREAKS_TEXT": "It's important to take regular breaks. If you feel you're spending too much time betting, consider taking a break.",
-  
-  "TOOLS_TITLE": "Control tools",
-  "TOOLS_INTRO": "We offer several tools to help you maintain control of your gaming activity:",
-  
-  "DEPOSIT_LIMITS": "Deposit limits:",
-  "DEPOSIT_LIMITS_TEXT": "Set daily, weekly, or monthly limits for your deposits.",
-  
-  "TIME_LIMITS": "Time limits:",
-  "TIME_LIMITS_TEXT": "Configure reminders that alert you about how long you've been playing.",
-  
-  "SELF_EXCLUSION": "Self-exclusion:",
-  "SELF_EXCLUSION_TEXT": "If you need a longer break, you can self-exclude from our platform.",
-  
-  "ACCOUNT_HISTORY": "Account history:",
-  "ACCOUNT_HISTORY_TEXT": "Review your betting history to keep track of your activity.",
-  
-  "HELP_TITLE": "Need help?",
-  "HELP_TEXT": "If you or someone you know has problems with gambling, help is available. Contact one of these specialized organizations:",
-  
-  "HELP_RESOURCE_1_NAME": "GamCare",
-  "HELP_RESOURCE_1_PHONE": "Phone: 0808 8020 133",
-  "HELP_RESOURCE_1_WEB_LABEL": "Web:",
-  "HELP_RESOURCE_1_WEB_URL": "https://www.gamcare.org.uk",
-  "HELP_RESOURCE_1_WEB_DISPLAY": "gamcare.org.uk",
-  
-  "HELP_RESOURCE_2_NAME": "BeGambleAware",
-  "HELP_RESOURCE_2_PHONE": "Phone: 0808 8020 133",
-  "HELP_RESOURCE_2_WEB_LABEL": "Web:",
-  "HELP_RESOURCE_2_WEB_URL": "https://www.begambleaware.org",
-  "HELP_RESOURCE_2_WEB_DISPLAY": "begambleaware.org"
-},
-"SUPPORT": {
-  "TITLE": "Support",
-  "INTRO_TEXT": "We're here to help you with any questions or issues you may have. Check out our support options below.",
-  
-  "FAQ_TITLE": "Frequently Asked Questions",
-  "FAQ_TEXT": "Find quick answers to common questions in our",
-  "FAQ_LINK": "FAQ section",
-  
-  "EMAIL_TITLE": "Email",
-  "EMAIL_TEXT": "Send us an email at",
-  "EMAIL_ADDRESS": "predictnwinmail@gmail.com",
-  "EMAIL_RESPONSE_TIME": "and we'll respond within 24 hours.",
-  
-  "PHONE_TITLE": "Phone",
-  "PHONE_TEXT": "Call us at",
-  "PHONE_NUMBER": "+34 900 123 456",
-  "PHONE_HOURS": "from Monday to Friday, 9:00 AM to 8:00 PM, and Saturdays from 10:00 AM to 3:00 PM.",
-  
-  "LIVE_CHAT_TITLE": "Live Chat",
-  "LIVE_CHAT_TEXT": "Talk to one of our agents in real-time through our live chat, available in the bottom right corner of the screen.",
-  "OPEN_CHAT_BUTTON": "Open Chat Now",
-  
-  "CONTACT_FORM_TITLE": "Send us a Message",
-  "CONTACT_FORM_TEXT": "If you prefer, you can send us your inquiry through the form below.",
-  
-  "NAME_LABEL": "Name",
-  "NAME_PLACEHOLDER": "Your name",
-  
-  "EMAIL_LABEL": "Email",
-  "EMAIL_PLACEHOLDER": "Your email address",
-  
-  "ISSUE_TYPE_LABEL": "Issue Type",
-  "ISSUE_TYPE_PLACEHOLDER": "Describe the type of issue",
-  
-  "MESSAGE_LABEL": "Message",
-  "MESSAGE_PLACEHOLDER": "Write your message here...",
-  "MESSAGE_MIN_LENGTH": "Message must be at least 10 characters long",
-  
-  "SEND_BUTTON": "Send Message",
-  "SENDING": "Sending...",
-  "SUBMIT_SUCCESS": "Message sent successfully! We'll get back to you as soon as possible."
-},
-
+  "PRIVACY": {
+    "TITLE": "Privacy Policy",
+    "LAST_UPDATE": "Last update: June 1, 2023",
+    "INTRO_TEXT": "At PNW, we take the privacy of our users very seriously. This Privacy Policy describes how we collect, use, and protect your personal information.",
+    "SECTION_1_TITLE": "1. Information We Collect",
+    "SECTION_1_INTRO": "We may collect the following types of information:",
+    "REGISTRATION_INFO": "Registration information",
+    "REGISTRATION_INFO_TEXT": "Name, email address, date of birth, etc.",
+    "TRANSACTION_INFO": "Transaction information",
+    "TRANSACTION_INFO_TEXT": "Details of your bets, deposits, and withdrawals.",
+    "TECHNICAL_INFO": "Technical information",
+    "TECHNICAL_INFO_TEXT": "IP address, browser type, device used, etc.",
+    "USAGE_INFO": "Usage information",
+    "USAGE_INFO_TEXT": "How you interact with our website and services.",
+    "SECTION_2_TITLE": "2. How We Use Your Information",
+    "SECTION_2_INTRO": "We use your information to:",
+    "USE_1": "Provide and improve our services",
+    "USE_2": "Process your transactions",
+    "USE_3": "Verify your identity and prevent fraud",
+    "USE_4": "Communicate with you about our services",
+    "USE_5": "Comply with legal and regulatory obligations",
+    "SECTION_3_TITLE": "3. Sharing Information",
+    "SECTION_3_INTRO": "We do not sell your personal information to third parties. We may share your information with:",
+    "SHARE_1": "Service providers that help us operate our business",
+    "SHARE_2": "Regulatory authorities when legally required",
+    "SHARE_3": "Affiliated entities within our corporate group",
+    "SECTION_4_TITLE": "4. Data Security",
+    "SECTION_4_TEXT": "We implement technical and organizational security measures to protect your personal information against unauthorized access, loss, or alteration.",
+    "SECTION_5_TITLE": "5. Your Rights",
+    "SECTION_5_INTRO": "Depending on your location, you may have the right to:",
+    "RIGHT_1": "Access your personal information",
+    "RIGHT_2": "Correct inaccurate information",
+    "RIGHT_3": "Delete your information",
+    "RIGHT_4": "Object to the processing of your data",
+    "RIGHT_5": "Withdraw your consent",
+    "SECTION_6_TITLE": "6. Changes to this Policy",
+    "SECTION_6_TEXT": "We may update this Privacy Policy periodically. We will notify you of any significant changes through our website or by email.",
+    "SECTION_7_TITLE": "7. Contact",
+    "SECTION_7_TEXT": "If you have questions about this Privacy Policy, please contact us through our Contact section."
+  },
+  "FAQ": {
+    "TITLE": "Frequently Asked Questions",
+    "CREATE_ACCOUNT": "How can I create an account?",
+    "CREATE_ACCOUNT_ANSWER": "To create an account, click on the 'Register' button at the top right of the page. Fill out the form with your personal details, create a secure password, and accept the terms and conditions. Then, click 'Register' to complete the process.",
+    "PLACE_BET": "How can I place a bet?",
+    "PLACE_BET_ANSWER": "To place a bet, you must first log in to your account. Then, browse through the available sports, select an event, and click on the odds you want to bet on. Enter the amount you want to bet in the betting slip and click 'Place Bet' to confirm.",
+    "REDEEM_POINTS": "How can I redeem my points for prizes?",
+    "REDEEM_POINTS_ANSWER": "To redeem your points for prizes, go to the 'Prizes' section in the main menu. There you will see all available prizes and the points required for each one. Click the 'Redeem' button next to the prize you want and confirm your selection.",
+    "DAILY_WHEEL": "How does the daily fortune wheel work?",
+    "DAILY_WHEEL_ANSWER": "The daily fortune wheel is a reward you can claim once every 24 hours. Click on the wheel icon in the navigation bar and then on 'Spin Wheel'. You will win random points that will be automatically added to your account.",
+    "FORGOT_PASSWORD": "What should I do if I forgot my password?",
+    "FORGOT_PASSWORD_ANSWER": "If you forgot your password, click on 'Login' and then on the 'Forgot your password?' link below the login form. Enter your email address and you will receive instructions to reset your password.",
+    "CONTACT_SUPPORT": "How can I contact customer service?",
+    "CONTACT_SUPPORT_ANSWER": "You can contact our customer service through various options: live chat available 24/7, email at support@pnw.com, or through the contact form in the 'Support' section of our website.",
+    "PRIZE_PROCESSING": "How long does it take to process prize redemptions?",
+    "PRIZE_PROCESSING_ANSWER": "Prize redemptions are typically processed within 24 to 48 business hours. Once processed, you will receive an email notification and you can view the status of your prize in the 'My Prizes' section of your profile.",
+    "CHANGE_USERNAME": "Can I change my username?",
+    "CHANGE_USERNAME_ANSWER": "Yes, you can change your username. Go to 'My Profile', click on 'Edit Profile', and update your username in the corresponding field. Note that the username must be unique and cannot be in use by another user.",
+    "VIEW_HISTORY": "How can I view my betting history?",
+    "VIEW_HISTORY_ANSWER": "To view your betting history, go to 'My Profile' and click on the 'History' tab. There you can see all your previous bets, including details such as the amount bet, odds, outcome, and winnings."
+  },
+  "HOW_TO_PLAY": {
+    "TITLE": "How to Play",
+    "STEP_1_TITLE": "Create an account",
+    "STEP_1_TEXT": "To get started, register on our platform by clicking \"Register\" at the top of the page. Fill out the form with your personal details and create a secure password.",
+    "STEP_2_TITLE": "Explore sporting events",
+    "STEP_2_TEXT": "Browse through our wide selection of sporting events. You can filter by sport, league, or date to find the events that interest you the most.",
+    "STEP_3_TITLE": "Select your bet",
+    "STEP_3_TEXT": "Click on the event you're interested in to see all available markets. Select the odds you want to bet on by clicking on them.",
+    "STEP_4_TITLE": "Place your bet",
+    "STEP_4_TEXT": "Enter the amount you want to bet in the betting slip. Verify the details and confirm your bet by clicking \"Place Bet\".",
+    "STEP_5_TITLE": "Track your bets",
+    "STEP_5_TEXT": "You can follow the progress of your bets in the \"My Bets\" section of your profile. There you will see the status of your active bets and can check your history.",
+    "TIPS_TITLE": "Tips for beginners",
+    "TIP_1": "Start with small bets until you become familiar with the platform.",
+    "TIP_2": "Get well informed about the events you're going to bet on.",
+    "TIP_3": "Set a budget and stick to it.",
+    "TIP_4": "Take advantage of our promotions to maximize your winnings.",
+    "TIP_5": "Play responsibly and have fun."
+  },
+  "RESPONSIBLE_GAMING": {
+    "TITLE": "Responsible Gaming",
+    "INTRO_1": "At PNW, we are committed to promoting a safe and responsible gaming environment. We believe that sports betting should be a form of entertainment, not a source of problems.",
+    "INTRO_2": "We encourage you to follow these guidelines to maintain control of your gaming activity and enjoy a positive experience.",
+    "GUIDELINES_TITLE": "Guidelines for responsible gaming",
+    "SET_LIMITS_TITLE": "Set limits",
+    "SET_LIMITS_TEXT": "Define a clear budget for your bets and don't exceed it. Decide how much time and money you're willing to dedicate to betting and respect those limits.",
+    "DONT_CHASE_LOSSES_TITLE": "Don't chase losses",
+    "DONT_CHASE_LOSSES_TEXT": "Accepting losses is part of the game. Don't try to recover lost money by increasing your bets, as this can lead to a dangerous cycle.",
+    "KEEP_BALANCE_TITLE": "Maintain balance",
+    "KEEP_BALANCE_TEXT": "Sports betting should be just one part of your leisure activities. Make sure to maintain a healthy balance with other social and recreational activities.",
+    "NO_INFLUENCE_TITLE": "Don't bet under the influence",
+    "NO_INFLUENCE_TEXT": "Avoid betting when you're under the influence of alcohol or other substances, as this can affect your ability to make rational decisions.",
+    "TAKE_BREAKS_TITLE": "Take breaks",
+    "TAKE_BREAKS_TEXT": "It's important to take regular breaks. If you feel you're spending too much time betting, consider taking a break.",
+    "TOOLS_TITLE": "Control tools",
+    "TOOLS_INTRO": "We offer several tools to help you maintain control of your gaming activity:",
+    "DEPOSIT_LIMITS": "Deposit limits:",
+    "DEPOSIT_LIMITS_TEXT": "Set daily, weekly, or monthly limits for your deposits.",
+    "TIME_LIMITS": "Time limits:",
+    "TIME_LIMITS_TEXT": "Configure reminders that alert you about how long you've been playing.",
+    "SELF_EXCLUSION": "Self-exclusion:",
+    "SELF_EXCLUSION_TEXT": "If you need a longer break, you can self-exclude from our platform.",
+    "ACCOUNT_HISTORY": "Account history:",
+    "ACCOUNT_HISTORY_TEXT": "Review your betting history to keep track of your activity.",
+    "HELP_TITLE": "Need help?",
+    "HELP_TEXT": "If you or someone you know has problems with gambling, help is available. Contact one of these specialized organizations:",
+    "HELP_RESOURCE_1_NAME": "GamCare",
+    "HELP_RESOURCE_1_PHONE": "Phone: 0808 8020 133",
+    "HELP_RESOURCE_1_WEB_LABEL": "Web:",
+    "HELP_RESOURCE_1_WEB_URL": "https://www.gamcare.org.uk",
+    "HELP_RESOURCE_1_WEB_DISPLAY": "gamcare.org.uk",
+    "HELP_RESOURCE_2_NAME": "BeGambleAware",
+    "HELP_RESOURCE_2_PHONE": "Phone: 0808 8020 133",
+    "HELP_RESOURCE_2_WEB_LABEL": "Web:",
+    "HELP_RESOURCE_2_WEB_URL": "https://www.begambleaware.org",
+    "HELP_RESOURCE_2_WEB_DISPLAY": "begambleaware.org"
+  },
+  "SUPPORT": {
+    "TITLE": "Support",
+    "INTRO_TEXT": "We're here to help you with any questions or issues you may have. Check out our support options below.",
+    "FAQ_TITLE": "Frequently Asked Questions",
+    "FAQ_TEXT": "Find quick answers to common questions in our",
+    "FAQ_LINK": "FAQ section",
+    "EMAIL_TITLE": "Email",
+    "EMAIL_TEXT": "Send us an email at",
+    "EMAIL_ADDRESS": "predictnwinmail@gmail.com",
+    "EMAIL_RESPONSE_TIME": "and we'll respond within 24 hours.",
+    "PHONE_TITLE": "Phone",
+    "PHONE_TEXT": "Call us at",
+    "PHONE_NUMBER": "+34 900 123 456",
+    "PHONE_HOURS": "from Monday to Friday, 9:00 AM to 8:00 PM, and Saturdays from 10:00 AM to 3:00 PM.",
+    "LIVE_CHAT_TITLE": "Live Chat",
+    "LIVE_CHAT_TEXT": "Talk to one of our agents in real-time through our live chat, available in the bottom right corner of the screen.",
+    "OPEN_CHAT_BUTTON": "Open Chat Now",
+    "CONTACT_FORM_TITLE": "Send us a Message",
+    "CONTACT_FORM_TEXT": "If you prefer, you can send us your inquiry through the form below.",
+    "NAME_LABEL": "Name",
+    "NAME_PLACEHOLDER": "Your name",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "Your email address",
+    "ISSUE_TYPE_LABEL": "Issue Type",
+    "ISSUE_TYPE_PLACEHOLDER": "Describe the type of issue",
+    "MESSAGE_LABEL": "Message",
+    "MESSAGE_PLACEHOLDER": "Write your message here...",
+    "MESSAGE_MIN_LENGTH": "Message must be at least 10 characters long",
+    "SEND_BUTTON": "Send Message",
+    "SENDING": "Sending...",
+    "SUBMIT_SUCCESS": "Message sent successfully! We'll get back to you as soon as possible."
+  },
   "DAILY_WHEEL": {
     "TITLE": "Daily Wheel",
     "SPIN_BUTTON": "Spin",
@@ -399,23 +370,35 @@
     "VIDEOS_WATCHED_TODAY": "Videos watched today:",
     "POINTS_EARNED_TODAY": "Points earned today:"
   },
-  
-    "VIDEO_REWARDS": {
-      "TITLE": "Earn points by watching videos",
-      "INFO_TEXT": "Watch random videos and earn up to",
-      "POINTS_PER_VIDEO": "points for each completed video.",
-      "DAILY_LIMIT": "You can watch up to 5 videos per day.",
-      "START_BUTTON": "Start earning points",
-      "TIME_REMAINING": "Time remaining:",
-      "SECONDS": "seconds",
-      "VIDEO_COMPLETED": "Video completed!",
-      "POINTS_EARNED": "You earned",
-      "POINTS": "points",
-      "NEXT_VIDEO": "Watch another video",
-      "DAILY_LIMIT_REACHED": "Daily limit reached",
-      "LIMIT_REACHED_TEXT": "You have reached the daily video limit.",
-      "COME_BACK_TOMORROW": "Come back tomorrow to earn more points.",
-      "VIDEOS_WATCHED": "Videos watched today:",
-      "POINTS_EARNED_TODAY": "Points earned today:"
-    }
+  "VIDEO_REWARDS": {
+    "TITLE": "Earn points by watching videos",
+    "INFO_TEXT": "Watch random videos and earn up to",
+    "POINTS_PER_VIDEO": "points for each completed video.",
+    "DAILY_LIMIT": "You can watch up to 5 videos per day.",
+    "START_BUTTON": "Start earning points",
+    "TIME_REMAINING": "Time remaining:",
+    "SECONDS": "seconds",
+    "VIDEO_COMPLETED": "Video completed!",
+    "POINTS_EARNED": "You earned",
+    "POINTS": "points",
+    "NEXT_VIDEO": "Watch another video",
+    "DAILY_LIMIT_REACHED": "Daily limit reached",
+    "LIMIT_REACHED_TEXT": "You have reached the daily video limit.",
+    "COME_BACK_TOMORROW": "Come back tomorrow to earn more points.",
+    "VIDEOS_WATCHED": "Videos watched today:",
+    "POINTS_EARNED_TODAY": "Points earned today:"
+  },
+  "HISTORY": {
+    "TITLE": "Prediction History",
+    "TOTAL_BETS": "Total Bets",
+    "WON_BETS": "Won Bets",
+    "LOST_BETS": "Lost Bets",
+    "PENDING_BETS": "Pending Bets",
+    "TOTAL_WINNINGS": "Total Winnings",
+    "WIN_RATE": "Win Rate",
+    "LOADING": "Loading history...",
+    "NO_BETS": "You have no prediction history.",
+    "SELECTION": "Selection",
+    "BET_AMOUNT": "Bet Amount"
+  }
 }
