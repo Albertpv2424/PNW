@@ -6,11 +6,12 @@ import { RouterLink } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { ChatService } from '../services/chat.service';
 import { NotificationService } from '../services/notification.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-support',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslateModule],
   templateUrl: './support.component.html',
   styleUrl: './support.component.css'
 })
@@ -24,7 +25,8 @@ export class SupportComponent {
     private fb: FormBuilder,
     private http: HttpClient,
     private notificationService: NotificationService,
-    private chatService: ChatService // Añadir esta inyección
+    // Change from private to public so it can be accessed from the template
+    public chatService: ChatService
   ) {
     this.supportForm = this.fb.group({
       name: ['', [Validators.required]],

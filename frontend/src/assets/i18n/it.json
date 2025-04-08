@@ -146,5 +146,238 @@
     "FOLLOW_US": "Seguici",
     "RIGHTS": "Tutti i diritti riservati",
     "RESPONSIBLE_TEXT": "Gioca responsabilmente. Solo per persone maggiori di 18 anni."
-  }
+  },
+  "ABOUT": {
+    "TITLE": "Chi Siamo",
+    "OUR_HISTORY": "La Nostra Storia",
+    "HISTORY_TEXT": "PNW è stata fondata nel 2023 con la visione di creare una piattaforma di scommesse sportive diversa, focalizzata sull'esperienza dell'utente e sull'offerta di un ambiente sicuro e responsabile per gli appassionati di sport.",
+    "OUR_MISSION": "La Nostra Missione",
+    "MISSION_TEXT": "In PNW, la nostra missione è trasformare l'esperienza delle scommesse sportive, combinando tecnologia avanzata con un approccio incentrato sull'utente per creare una piattaforma divertente, equa e trasparente.",
+    "OUR_VALUES": "I Nostri Valori",
+    "TRANSPARENCY": "Trasparenza",
+    "TRANSPARENCY_TEXT": "Operiamo con totale chiarezza in tutte le nostre pratiche.",
+    "RESPONSIBILITY": "Responsabilità",
+    "RESPONSIBILITY_TEXT": "Promuoviamo il gioco responsabile e offriamo strumenti per aiutare i nostri utenti.",
+    "INNOVATION": "Innovazione",
+    "INNOVATION_TEXT": "Cerchiamo costantemente nuovi modi per migliorare la nostra piattaforma.",
+    "SECURITY": "Sicurezza",
+    "SECURITY_TEXT": "La protezione dei dati e dei fondi dei nostri utenti è la nostra priorità.",
+    "EXCELLENCE": "Eccellenza",
+    "EXCELLENCE_TEXT": "Ci impegniamo a offrire il miglior servizio possibile in tutti gli aspetti.",
+    "OUR_TEAM": "Il Nostro Team",
+    "TEAM_TEXT": "Abbiamo un team di professionisti appassionati di sport e tecnologia, dedicati a creare la migliore esperienza per i nostri utenti."
+  },
+
+"TERMS": {
+  "TITLE": "Termini e Condizioni",
+  "LAST_UPDATE": "Ultimo aggiornamento: 1 giugno 2023",
+  "WELCOME": "Benvenuto su PNW. Accedendo o utilizzando il nostro servizio, accetti di essere vincolato da questi Termini e Condizioni. Ti preghiamo di leggerli attentamente.",
+  "SECTION_1_TITLE": "1. Accettazione dei Termini",
+  "SECTION_1_TEXT": "Registrandoti, accedendo o utilizzando i nostri servizi, confermi di aver letto, compreso e accettato questi Termini e Condizioni. Se non sei d'accordo con qualsiasi parte di questi termini, non potrai accedere al servizio.",
+  "SECTION_2_TITLE": "2. Idoneità",
+  "SECTION_2_TEXT": "Per utilizzare i nostri servizi, devi avere almeno 18 anni e risiedere in una giurisdizione in cui le scommesse online sono legali. È tua responsabilità assicurarti che l'uso dei nostri servizi sia conforme alle leggi applicabili nella tua giurisdizione.",
+  "SECTION_3_TITLE": "3. Account Utente",
+  "SECTION_3_TEXT": "Quando crei un account, accetti di fornire informazioni accurate, complete e aggiornate. Sei responsabile del mantenimento della riservatezza del tuo account e della password, e accetti di non condividere le tue credenziali di accesso con terzi.",
+  "SECTION_4_TITLE": "4. Scommesse e Pagamenti",
+  "SECTION_4_TEXT": "Tutte le scommesse sono soggette alle nostre regole di scommessa. Ci riserviamo il diritto di rifiutare qualsiasi scommessa a nostra discrezione. I pagamenti saranno elaborati in conformità con le nostre politiche di pagamento.",
+  "SECTION_5_TITLE": "5. Gioco Responsabile",
+  "SECTION_5_TEXT": "Promuoviamo il gioco responsabile e offriamo strumenti per aiutare gli utenti a controllare la loro attività di gioco. Se ritieni di avere un problema con il gioco, ti consigliamo di cercare aiuto professionale.",
+  "SECTION_6_TITLE": "6. Modifiche",
+  "SECTION_6_TEXT": "Ci riserviamo il diritto di modificare questi termini in qualsiasi momento. Le modifiche entreranno in vigore immediatamente dopo la pubblicazione. Il tuo uso continuato del servizio dopo eventuali modifiche costituisce la tua accettazione dei nuovi termini."
+},
+"PRIVACY": {
+  "TITLE": "Politica sulla Privacy",
+  "LAST_UPDATE": "Ultimo aggiornamento: 1 giugno 2023",
+  "INTRO_TEXT": "In PNW, prendiamo molto sul serio la privacy dei nostri utenti. Questa Politica sulla Privacy descrive come raccogliamo, utilizziamo e proteggiamo le tue informazioni personali.",
+  
+  "SECTION_1_TITLE": "1. Informazioni che Raccogliamo",
+  "SECTION_1_INTRO": "Possiamo raccogliere i seguenti tipi di informazioni:",
+  "REGISTRATION_INFO": "Informazioni di registrazione",
+  "REGISTRATION_INFO_TEXT": "Nome, indirizzo email, data di nascita, ecc.",
+  "TRANSACTION_INFO": "Informazioni sulle transazioni",
+  "TRANSACTION_INFO_TEXT": "Dettagli delle tue scommesse, depositi e prelievi.",
+  "TECHNICAL_INFO": "Informazioni tecniche",
+  "TECHNICAL_INFO_TEXT": "Indirizzo IP, tipo di browser, dispositivo utilizzato, ecc.",
+  "USAGE_INFO": "Informazioni sull'utilizzo",
+  "USAGE_INFO_TEXT": "Come interagisci con il nostro sito web e i nostri servizi.",
+  
+  "SECTION_2_TITLE": "2. Come Utilizziamo le tue Informazioni",
+  "SECTION_2_INTRO": "Utilizziamo le tue informazioni per:",
+  "USE_1": "Fornire e migliorare i nostri servizi",
+  "USE_2": "Elaborare le tue transazioni",
+  "USE_3": "Verificare la tua identità e prevenire frodi",
+  "USE_4": "Comunicare con te riguardo ai nostri servizi",
+  "USE_5": "Rispettare gli obblighi legali e normativi",
+  
+  "SECTION_3_TITLE": "3. Condivisione delle Informazioni",
+  "SECTION_3_INTRO": "Non vendiamo le tue informazioni personali a terzi. Possiamo condividere le tue informazioni con:",
+  "SHARE_1": "Fornitori di servizi che ci aiutano a gestire la nostra attività",
+  "SHARE_2": "Autorità di regolamentazione quando legalmente richiesto",
+  "SHARE_3": "Entità affiliate all'interno del nostro gruppo aziendale",
+  
+  "SECTION_4_TITLE": "4. Sicurezza dei Dati",
+  "SECTION_4_TEXT": "Implementiamo misure di sicurezza tecniche e organizzative per proteggere le tue informazioni personali da accessi non autorizzati, perdita o alterazione.",
+  
+  "SECTION_5_TITLE": "5. I tuoi Diritti",
+  "SECTION_5_INTRO": "A seconda della tua posizione, potresti avere il diritto di:",
+  "RIGHT_1": "Accedere alle tue informazioni personali",
+  "RIGHT_2": "Correggere informazioni imprecise",
+  "RIGHT_3": "Eliminare le tue informazioni",
+  "RIGHT_4": "Opporti al trattamento dei tuoi dati",
+  "RIGHT_5": "Ritirare il tuo consenso",
+  
+  "SECTION_6_TITLE": "6. Modifiche a questa Politica",
+  "SECTION_6_TEXT": "Potremmo aggiornare periodicamente questa Politica sulla Privacy. Ti informeremo di eventuali modifiche significative attraverso il nostro sito web o via email.",
+  
+  "SECTION_7_TITLE": "7. Contatto",
+  "SECTION_7_TEXT": "Se hai domande su questa Politica sulla Privacy, contattaci tramite la nostra sezione Contatti."
+},
+"FAQ": {
+  "TITLE": "Domande Frequenti",
+  "CREATE_ACCOUNT": "Come posso creare un account?",
+  "CREATE_ACCOUNT_ANSWER": "Per creare un account, clicca sul pulsante 'Registrati' in alto a destra della pagina. Compila il modulo con i tuoi dati personali, crea una password sicura e accetta i termini e le condizioni. Quindi, clicca su 'Registrati' per completare il processo.",
+  
+  "PLACE_BET": "Come posso piazzare una scommessa?",
+  "PLACE_BET_ANSWER": "Per piazzare una scommessa, devi prima accedere al tuo account. Quindi, sfoglia gli sport disponibili, seleziona un evento e clicca sulla quota su cui vuoi scommettere. Inserisci l'importo che vuoi scommettere nella schedina e clicca su 'Scommetti' per confermare.",
+  
+  "REDEEM_POINTS": "Come posso riscattare i miei punti per i premi?",
+  "REDEEM_POINTS_ANSWER": "Per riscattare i tuoi punti per i premi, vai alla sezione 'Premi' nel menu principale. Lì vedrai tutti i premi disponibili e i punti necessari per ciascuno. Clicca sul pulsante 'Riscatta' accanto al premio che desideri e conferma la tua selezione.",
+  
+  "DAILY_WHEEL": "Come funziona la ruota della fortuna giornaliera?",
+  "DAILY_WHEEL_ANSWER": "La ruota della fortuna giornaliera è un premio che puoi richiedere una volta ogni 24 ore. Clicca sull'icona della ruota nella barra di navigazione e poi su 'Gira la Ruota'. Vincerai punti casuali che verranno automaticamente aggiunti al tuo account.",
+  
+  "FORGOT_PASSWORD": "Cosa devo fare se ho dimenticato la mia password?",
+  "FORGOT_PASSWORD_ANSWER": "Se hai dimenticato la tua password, clicca su 'Accedi' e poi sul link 'Hai dimenticato la password?' sotto il modulo di accesso. Inserisci il tuo indirizzo email e riceverai istruzioni per reimpostare la tua password.",
+  
+  "CONTACT_SUPPORT": "Come posso contattare il servizio clienti?",
+  "CONTACT_SUPPORT_ANSWER": "Puoi contattare il nostro servizio clienti attraverso varie opzioni: chat dal vivo disponibile 24/7, email a support@pnw.com, o tramite il modulo di contatto nella sezione 'Supporto' del nostro sito web.",
+  
+  "PRIZE_PROCESSING": "Quanto tempo ci vuole per elaborare i riscatti dei premi?",
+  "PRIZE_PROCESSING_ANSWER": "I riscatti dei premi vengono generalmente elaborati entro 24-48 ore lavorative. Una volta elaborato, riceverai una notifica via email e potrai visualizzare lo stato del tuo premio nella sezione 'I Miei Premi' del tuo profilo.",
+  
+  "CHANGE_USERNAME": "Posso cambiare il mio nome utente?",
+  "CHANGE_USERNAME_ANSWER": "Sì, puoi cambiare il tuo nome utente. Vai a 'Il Mio Profilo', clicca su 'Modifica Profilo' e aggiorna il tuo nome utente nel campo corrispondente. Tieni presente che il nome utente deve essere unico e non può essere utilizzato da un altro utente.",
+  
+  "VIEW_HISTORY": "Come posso visualizzare la mia cronologia delle scommesse?",
+  "VIEW_HISTORY_ANSWER": "Per visualizzare la tua cronologia delle scommesse, vai a 'Il Mio Profilo' e clicca sulla scheda 'Cronologia'. Lì potrai vedere tutte le tue scommesse precedenti, inclusi dettagli come l'importo scommesso, le quote, il risultato e le vincite."
+},
+
+"HOW_TO_PLAY": {
+  "TITLE": "Come Giocare",
+  "STEP_1_TITLE": "Crea un account",
+  "STEP_1_TEXT": "Per iniziare, registrati sulla nostra piattaforma cliccando su \"Registrati\" nella parte superiore della pagina. Compila il modulo con i tuoi dati personali e crea una password sicura.",
+  
+  "STEP_2_TITLE": "Esplora gli eventi sportivi",
+  "STEP_2_TEXT": "Sfoglia la nostra ampia selezione di eventi sportivi. Puoi filtrare per sport, campionato o data per trovare gli eventi che ti interessano di più.",
+  
+  "STEP_3_TITLE": "Seleziona la tua scommessa",
+  "STEP_3_TEXT": "Clicca sull'evento che ti interessa per vedere tutti i mercati disponibili. Seleziona la quota su cui vuoi scommettere cliccandoci sopra.",
+  
+  "STEP_4_TITLE": "Piazza la tua scommessa",
+  "STEP_4_TEXT": "Inserisci l'importo che desideri scommettere nella schedina. Verifica i dettagli e conferma la tua scommessa cliccando su \"Scommetti\".",
+  
+  "STEP_5_TITLE": "Segui le tue scommesse",
+  "STEP_5_TEXT": "Puoi seguire l'andamento delle tue scommesse nella sezione \"Le Mie Scommesse\" del tuo profilo. Lì vedrai lo stato delle tue scommesse attive e potrai controllare la tua cronologia.",
+  
+  "TIPS_TITLE": "Consigli per principianti",
+  "TIP_1": "Inizia con piccole scommesse finché non acquisisci familiarità con la piattaforma.",
+  "TIP_2": "Informati bene sugli eventi su cui intendi scommettere.",
+  "TIP_3": "Stabilisci un budget e rispettalo.",
+  "TIP_4": "Approfitta delle nostre promozioni per massimizzare le tue vincite.",
+  "TIP_5": "Gioca responsabilmente e divertiti."
+},
+"RESPONSIBLE_GAMING": {
+  "TITLE": "Gioco Responsabile",
+  "INTRO_1": "In PNW, ci impegniamo a promuovere un ambiente di gioco sicuro e responsabile. Crediamo che le scommesse sportive debbano essere una forma di intrattenimento, non una fonte di problemi.",
+  "INTRO_2": "Ti incoraggiamo a seguire queste linee guida per mantenere il controllo della tua attività di gioco e goderti un'esperienza positiva.",
+  
+  "GUIDELINES_TITLE": "Linee guida per un gioco responsabile",
+  
+  "SET_LIMITS_TITLE": "Stabilisci dei limiti",
+  "SET_LIMITS_TEXT": "Definisci un budget chiaro per le tue scommesse e non superarlo. Decidi quanto tempo e denaro sei disposto a dedicare alle scommesse e rispetta questi limiti.",
+  
+  "DONT_CHASE_LOSSES_TITLE": "Non inseguire le perdite",
+  "DONT_CHASE_LOSSES_TEXT": "Accettare le perdite fa parte del gioco. Non cercare di recuperare il denaro perso aumentando le tue scommesse, poiché questo può portare a un ciclo pericoloso.",
+  
+  "KEEP_BALANCE_TITLE": "Mantieni l'equilibrio",
+  "KEEP_BALANCE_TEXT": "Le scommesse sportive dovrebbero essere solo una parte delle tue attività di svago. Assicurati di mantenere un equilibrio sano con altre attività sociali e ricreative.",
+  
+  "NO_INFLUENCE_TITLE": "Non scommettere sotto l'influenza",
+  "NO_INFLUENCE_TEXT": "Evita di scommettere quando sei sotto l'influenza di alcol o altre sostanze, poiché questo può influire sulla tua capacità di prendere decisioni razionali.",
+  
+  "TAKE_BREAKS_TITLE": "Prenditi delle pause",
+  "TAKE_BREAKS_TEXT": "È importante prendersi delle pause regolari. Se senti che stai dedicando troppo tempo alle scommesse, considera di prenderti una pausa.",
+  
+  "TOOLS_TITLE": "Strumenti di controllo",
+  "TOOLS_INTRO": "Offriamo diversi strumenti per aiutarti a mantenere il controllo della tua attività di gioco:",
+  
+  "DEPOSIT_LIMITS": "Limiti di deposito:",
+  "DEPOSIT_LIMITS_TEXT": "Imposta limiti giornalieri, settimanali o mensili per i tuoi depositi.",
+  
+  "TIME_LIMITS": "Limiti di tempo:",
+  "TIME_LIMITS_TEXT": "Configura promemoria che ti avvisino del tempo che hai trascorso giocando.",
+  
+  "SELF_EXCLUSION": "Auto-esclusione:",
+  "SELF_EXCLUSION_TEXT": "Se hai bisogno di una pausa più lunga, puoi auto-escluderti dalla nostra piattaforma.",
+  
+  "ACCOUNT_HISTORY": "Cronologia dell'account:",
+  "ACCOUNT_HISTORY_TEXT": "Rivedi la tua cronologia di scommesse per tenere traccia della tua attività.",
+  
+  "HELP_TITLE": "Hai bisogno di aiuto?",
+  "HELP_TEXT": "Se tu o qualcuno che conosci ha problemi con il gioco d'azzardo, è disponibile aiuto. Contatta una di queste organizzazioni specializzate:",
+  
+  "HELP_RESOURCE_1_NAME": "Giocatori Anonimi Italia",
+  "HELP_RESOURCE_1_PHONE": "Telefono: 800 55 88 22",
+  "HELP_RESOURCE_1_WEB_LABEL": "Web:",
+  "HELP_RESOURCE_1_WEB_URL": "https://www.giocatorianonimi.org",
+  "HELP_RESOURCE_1_WEB_DISPLAY": "giocatorianonimi.org",
+  
+  "HELP_RESOURCE_2_NAME": "Centro Nazionale Dipendenze e Doping ISS",
+  "HELP_RESOURCE_2_PHONE": "Telefono: 800 55 88 22",
+  "HELP_RESOURCE_2_WEB_LABEL": "Web:",
+  "HELP_RESOURCE_2_WEB_URL": "https://www.iss.it/problemi-gioco",
+  "HELP_RESOURCE_2_WEB_DISPLAY": "iss.it/problemi-gioco"
+},
+"SUPPORT": {
+  "TITLE": "Supporto",
+  "INTRO_TEXT": "Siamo qui per aiutarti con qualsiasi domanda o problema tu possa avere. Consulta le nostre opzioni di supporto qui sotto.",
+  
+  "FAQ_TITLE": "Domande Frequenti",
+  "FAQ_TEXT": "Trova risposte rapide alle domande più comuni nella nostra sezione",
+  "FAQ_LINK": "Domande Frequenti",
+  
+  "EMAIL_TITLE": "Email",
+  "EMAIL_TEXT": "Inviaci un'email a",
+  "EMAIL_ADDRESS": "predictnwinmail@gmail.com",
+  "EMAIL_RESPONSE_TIME": "e ti risponderemo entro 24 ore.",
+  
+  "PHONE_TITLE": "Telefono",
+  "PHONE_TEXT": "Chiamaci al",
+  "PHONE_NUMBER": "+34 900 123 456",
+  "PHONE_HOURS": "dal lunedì al venerdì dalle 9:00 alle 20:00 e il sabato dalle 10:00 alle 15:00.",
+  
+  "LIVE_CHAT_TITLE": "Chat dal Vivo",
+  "LIVE_CHAT_TEXT": "Parla con uno dei nostri agenti in tempo reale attraverso la nostra chat dal vivo, disponibile nell'angolo in basso a destra dello schermo.",
+  "OPEN_CHAT_BUTTON": "Apri Chat Ora",
+  
+  "CONTACT_FORM_TITLE": "Inviaci un Messaggio",
+  "CONTACT_FORM_TEXT": "Se preferisci, puoi inviarci la tua richiesta tramite il modulo sottostante.",
+  
+  "NAME_LABEL": "Nome",
+  "NAME_PLACEHOLDER": "Il tuo nome",
+  
+  "EMAIL_LABEL": "Email",
+  "EMAIL_PLACEHOLDER": "Il tuo indirizzo email",
+  
+  "ISSUE_TYPE_LABEL": "Tipo di Problema",
+  "ISSUE_TYPE_PLACEHOLDER": "Descrivi il tipo di problema",
+  
+  "MESSAGE_LABEL": "Messaggio",
+  "MESSAGE_PLACEHOLDER": "Scrivi il tuo messaggio qui...",
+  "MESSAGE_MIN_LENGTH": "Il messaggio deve contenere almeno 10 caratteri",
+  
+  "SEND_BUTTON": "Invia Messaggio",
+  "SENDING": "Invio in corso...",
+  "SUBMIT_SUCCESS": "Messaggio inviato con successo! Ti risponderemo presto."
+}
 }

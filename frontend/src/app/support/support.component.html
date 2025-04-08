@@ -1,22 +1,21 @@
 <div class="page-container">
   <div class="content-card">
-    <h1>Soporte</h1>
+    <h1>{{ 'SUPPORT.TITLE' | translate }}</h1>
 
     <div class="support-intro">
       <p>
-        Estamos aquí para ayudarte con cualquier duda o problema que puedas tener.
-        Consulta nuestras opciones de soporte a continuación.
+        {{ 'SUPPORT.INTRO_TEXT' | translate }}
       </p>
     </div>
 
-    <div class="support-options">
+    <div class="support-options-grid">
       <div class="support-option">
         <div class="option-icon">📋</div>
         <div class="option-content">
-          <h2>Preguntas Frecuentes</h2>
+          <h2>{{ 'SUPPORT.FAQ_TITLE' | translate }}</h2>
           <p>
-            Encuentra respuestas rápidas a las preguntas más comunes en nuestra sección de
-            <a routerLink="/faq">Preguntas Frecuentes</a>.
+            {{ 'SUPPORT.FAQ_TEXT' | translate }}
+            <a routerLink="/faq">{{ 'SUPPORT.FAQ_LINK' | translate }}</a>.
           </p>
         </div>
       </div>
@@ -24,9 +23,9 @@
       <div class="support-option">
         <div class="option-icon">✉️</div>
         <div class="option-content">
-          <h2>Correo Electrónico</h2>
+          <h2>{{ 'SUPPORT.EMAIL_TITLE' | translate }}</h2>
           <p>
-            Envíanos un correo a <strong>predictnwinmail&#64;gmail.com</strong> y te responderemos en un plazo de 24 horas.
+            {{ 'SUPPORT.EMAIL_TEXT' | translate }} <strong>{{ 'SUPPORT.EMAIL_ADDRESS' | translate }}</strong> {{ 'SUPPORT.EMAIL_RESPONSE_TIME' | translate }}
           </p>
         </div>
       </div>
@@ -34,9 +33,9 @@
       <div class="support-option">
         <div class="option-icon">📞</div>
         <div class="option-content">
-          <h2>Teléfono</h2>
+          <h2>{{ 'SUPPORT.PHONE_TITLE' | translate }}</h2>
           <p>
-            Llámanos al <strong>+34 900 123 456</strong> de lunes a viernes de 9:00 a 20:00 y sábados de 10:00 a 15:00.
+            {{ 'SUPPORT.PHONE_TEXT' | translate }} <strong>{{ 'SUPPORT.PHONE_NUMBER' | translate }}</strong> {{ 'SUPPORT.PHONE_HOURS' | translate }}
           </p>
         </div>
       </div>
@@ -44,80 +43,71 @@
       <div class="support-option chat-option">
         <div class="option-icon">💬</div>
         <div class="option-content">
-          <h2>Chat en Vivo</h2>
+          <h2>{{ 'SUPPORT.LIVE_CHAT_TITLE' | translate }}</h2>
           <p>
-            Habla con uno de nuestros agentes en tiempo real a través de nuestro chat en vivo,
-            disponible en la esquina inferior derecha de la pantalla.
+            {{ 'SUPPORT.LIVE_CHAT_TEXT' | translate }}
           </p>
           <button class="chat-button" (click)="openChat()">
-            <i class="fas fa-comments"></i> Abrir Chat Ahora
+            <i class="fas fa-comments"></i> {{ 'SUPPORT.OPEN_CHAT_BUTTON' | translate }}
           </button>
         </div>
       </div>
     </div>
 
-    <div class="contact-form-container">
-      <h2>Envíanos un Mensaje</h2>
-      <p>
-        Si prefieres, puedes enviarnos tu consulta a través del siguiente formulario y
-        nos pondremos en contacto contigo lo antes posible.
-      </p>
+    <h2 class="contact-form-title">{{ 'SUPPORT.CONTACT_FORM_TITLE' | translate }}</h2>
+    <p class="contact-form-text">
+      {{ 'SUPPORT.CONTACT_FORM_TEXT' | translate }}
+    </p>
 
-      <form class="contact-form" [formGroup]="supportForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="name">Nombre</label>
-          <input type="text" id="name" formControlName="name" placeholder="Tu nombre">
-          <div class="error-message" *ngIf="nameControl?.invalid && nameControl?.touched">
-            El nombre es obligatorio
-          </div>
+    <form [formGroup]="supportForm" (ngSubmit)="onSubmit()" class="contact-form">
+      <div class="form-field">
+        <label for="name">{{ 'SUPPORT.NAME_LABEL' | translate }}</label>
+        <input type="text" id="name" formControlName="name" [attr.placeholder]="'SUPPORT.NAME_PLACEHOLDER' | translate">
+        <div class="error-message" *ngIf="nameControl?.invalid && nameControl?.touched">
+          {{ 'ERRORS.REQUIRED' | translate }}
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="email">Correo Electrónico</label>
-          <input type="email" id="email" formControlName="email" placeholder="Tu correo electrónico">
-          <div class="error-message" *ngIf="emailControl?.invalid && emailControl?.touched">
-            <span *ngIf="emailControl?.errors?.['required']">El correo electrónico es obligatorio</span>
-            <span *ngIf="emailControl?.errors?.['email']">Introduce un correo electrónico válido</span>
-          </div>
+      <div class="form-field">
+        <label for="email">{{ 'SUPPORT.EMAIL_LABEL' | translate }}</label>
+        <input type="email" id="email" formControlName="email" [attr.placeholder]="'SUPPORT.EMAIL_PLACEHOLDER' | translate">
+        <div class="error-message" *ngIf="emailControl?.invalid && emailControl?.touched">
+          <span *ngIf="emailControl?.errors?.['required']">{{ 'ERRORS.REQUIRED' | translate }}</span>
+          <span *ngIf="emailControl?.errors?.['email']">{{ 'ERRORS.EMAIL_INVALID' | translate }}</span>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="issue-type">Tipo de Consulta</label>
-          <select id="issue-type" formControlName="issueType">
-            <option value="">Selecciona una opción</option>
-            <option value="account">Cuenta</option>
-            <option value="bets">Apuestas</option>
-            <option value="prizes">Premios</option>
-            <option value="technical">Problemas Técnicos</option>
-            <option value="other">Otros</option>
-          </select>
-          <div class="error-message" *ngIf="issueTypeControl?.invalid && issueTypeControl?.touched">
-            Selecciona un tipo de consulta
-          </div>
+      <div class="form-field">
+        <label for="issue-type">{{ 'SUPPORT.ISSUE_TYPE_LABEL' | translate }}</label>
+        <input type="text" id="issue-type" formControlName="issueType" [attr.placeholder]="'SUPPORT.ISSUE_TYPE_PLACEHOLDER' | translate">
+        <div class="error-message" *ngIf="issueTypeControl?.invalid && issueTypeControl?.touched">
+          {{ 'ERRORS.REQUIRED' | translate }}
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="message">Mensaje</label>
-          <textarea id="message" formControlName="message" rows="5" placeholder="Describe tu consulta"></textarea>
-          <div class="error-message" *ngIf="messageControl?.invalid && messageControl?.touched">
-            <span *ngIf="messageControl?.errors?.['required']">El mensaje es obligatorio</span>
-            <span *ngIf="messageControl?.errors?.['minlength']">El mensaje debe tener al menos 10 caracteres</span>
-          </div>
+      <div class="form-field">
+        <label for="message">{{ 'SUPPORT.MESSAGE_LABEL' | translate }}</label>
+        <textarea id="message" formControlName="message" rows="5" [attr.placeholder]="'SUPPORT.MESSAGE_PLACEHOLDER' | translate"></textarea>
+        <div class="error-message" *ngIf="messageControl?.invalid && messageControl?.touched">
+          <span *ngIf="messageControl?.errors?.['required']">{{ 'ERRORS.REQUIRED' | translate }}</span>
+          <span *ngIf="messageControl?.errors?.['minlength']">{{ 'SUPPORT.MESSAGE_MIN_LENGTH' | translate }}</span>
         </div>
+      </div>
 
-        <div class="form-feedback">
-          <div class="success-message" *ngIf="submitSuccess">
-            ¡Mensaje enviado con éxito! Te responderemos lo antes posible.
-          </div>
-          <div class="error-message" *ngIf="submitError">
-            {{ submitError }}
-          </div>
-        </div>
-
-        <button type="submit" class="submit-btn" [disabled]="isSubmitting">
-          {{ isSubmitting ? 'Enviando...' : 'Enviar Consulta' }}
+      <div class="form-actions">
+        <button type="submit" class="submit-button" [disabled]="isSubmitting">
+          {{ 'SUPPORT.SEND_BUTTON' | translate }}
         </button>
-      </form>
-    </div>
+      </div>
+
+      <div class="form-feedback">
+        <div class="success-message" *ngIf="submitSuccess">
+          {{ 'SUPPORT.SUBMIT_SUCCESS' | translate }}
+        </div>
+        <div class="error-message" *ngIf="submitError">
+          {{ submitError }}
+        </div>
+      </div>
+    </form>
   </div>
 </div>

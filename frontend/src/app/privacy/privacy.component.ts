@@ -1,11 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-privacy',
-  imports: [],
   templateUrl: './privacy.component.html',
-  styleUrl: './privacy.component.css'
+  styleUrls: ['./privacy.component.css'],
+  standalone: true,
+  imports: [CommonModule, TranslateModule, RouterModule]
 })
-export class PrivacyComponent {
+export class PrivacyComponent implements OnInit {
 
+  constructor(
+    private titleService: Title,
+    private translateService: TranslateService
+  ) { }
+
+  ngOnInit(): void {
+    // Set page title based on current language
+    this.translateService.get('PRIVACY.TITLE').subscribe((title: string) => {
+      this.titleService.setTitle(`PNW - ${title}`);
+    });
+  }
 }

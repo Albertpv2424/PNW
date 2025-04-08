@@ -146,5 +146,239 @@
     "FOLLOW_US": "Síguenos",
     "RIGHTS": "Todos los derechos reservados",
     "RESPONSIBLE_TEXT": "Juega con responsabilidad. Solo para mayores de 18 años."
-  }
+  },
+  "ABOUT": {
+    "TITLE": "Sobre Nosotros",
+    "OUR_HISTORY": "Nuestra Historia",
+    "HISTORY_TEXT": "PNW nació en 2023 con la visión de crear una plataforma de apuestas deportivas diferente, centrada en la experiencia del usuario y en ofrecer un entorno seguro y responsable para los aficionados al deporte.",
+    "OUR_MISSION": "Nuestra Misión",
+    "MISSION_TEXT": "En PNW, nuestra misión es transformar la experiencia de las apuestas deportivas, combinando tecnología avanzada con un enfoque centrado en el usuario para crear una plataforma que sea divertida, justa y transparente.",
+    "OUR_VALUES": "Nuestros Valores",
+    "TRANSPARENCY": "Transparencia",
+    "TRANSPARENCY_TEXT": "Operamos con total claridad en todas nuestras prácticas.",
+    "RESPONSIBILITY": "Responsabilidad",
+    "RESPONSIBILITY_TEXT": "Promovemos el juego responsable y ofrecemos herramientas para ayudar a nuestros usuarios.",
+    "INNOVATION": "Innovación",
+    "INNOVATION_TEXT": "Buscamos constantemente nuevas formas de mejorar nuestra plataforma.",
+    "SECURITY": "Seguridad",
+    "SECURITY_TEXT": "La protección de los datos y fondos de nuestros usuarios es nuestra prioridad.",
+    "EXCELLENCE": "Excelencia",
+    "EXCELLENCE_TEXT": "Nos esforzamos por ofrecer el mejor servicio posible en todos los aspectos.",
+    "OUR_TEAM": "Nuestro Equipo",
+    "TEAM_TEXT": "Contamos con un equipo de profesionales apasionados por el deporte y la tecnología, dedicados a crear la mejor experiencia para nuestros usuarios."
+  },
+"TERMS": {
+
+  "TITLE": "Términos y Condiciones",
+  "LAST_UPDATE": "Última actualización: 1 de junio de 2023",
+  "WELCOME": "Bienvenido a PNW. Al acceder o utilizar nuestro servicio, usted acepta estar sujeto a estos Términos y Condiciones. Por favor, léalos detenidamente.",
+  "SECTION_1_TITLE": "1. Aceptación de los Términos",
+  "SECTION_1_TEXT": "Al registrarse, acceder o utilizar nuestros servicios, usted confirma que ha leído, entendido y aceptado estos Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no podrá acceder al servicio.",
+  "SECTION_2_TITLE": "2. Elegibilidad",
+  "SECTION_2_TEXT": "Para utilizar nuestros servicios, debe tener al menos 18 años de edad y residir en una jurisdicción donde las apuestas en línea sean legales. Es su responsabilidad asegurarse de que el uso de nuestros servicios cumple con las leyes aplicables en su jurisdicción.",
+  "SECTION_3_TITLE": "3. Cuentas de Usuario",
+  "SECTION_3_TEXT": "Al crear una cuenta, usted acepta proporcionar información precisa, completa y actualizada. Es responsable de mantener la confidencialidad de su cuenta y contraseña, y acepta no compartir sus credenciales de acceso con terceros.",
+  "SECTION_4_TITLE": "4. Apuestas y Pagos",
+  "SECTION_4_TEXT": "Todas las apuestas están sujetas a nuestras reglas de apuestas. Nos reservamos el derecho de rechazar cualquier apuesta a nuestra discreción. Los pagos se procesarán de acuerdo con nuestras políticas de pago.",
+  "SECTION_5_TITLE": "5. Juego Responsable",
+  "SECTION_5_TEXT": "Promovemos el juego responsable y ofrecemos herramientas para ayudar a los usuarios a controlar su actividad de juego. Si cree que puede tener un problema con el juego, le recomendamos que busque ayuda profesional.",
+  "SECTION_6_TITLE": "6. Modificaciones",
+  "SECTION_6_TEXT": "Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación. Su uso continuado del servicio después de cualquier cambio constituye su aceptación de los nuevos términos."
+},
+"PRIVACY": {
+  "TITLE": "Política de Privacidad",
+  "LAST_UPDATE": "Última actualización: 1 de junio de 2023",
+  "INTRO_TEXT": "En PNW, nos tomamos muy en serio la privacidad de nuestros usuarios. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos su información personal.",
+  
+  "SECTION_1_TITLE": "1. Información que Recopilamos",
+  "SECTION_1_INTRO": "Podemos recopilar los siguientes tipos de información:",
+  "REGISTRATION_INFO": "Información de registro",
+  "REGISTRATION_INFO_TEXT": "Nombre, dirección de correo electrónico, fecha de nacimiento, etc.",
+  "TRANSACTION_INFO": "Información de transacciones",
+  "TRANSACTION_INFO_TEXT": "Detalles de sus apuestas, depósitos y retiros.",
+  "TECHNICAL_INFO": "Información técnica",
+  "TECHNICAL_INFO_TEXT": "Dirección IP, tipo de navegador, dispositivo utilizado, etc.",
+  "USAGE_INFO": "Información de uso",
+  "USAGE_INFO_TEXT": "Cómo interactúa con nuestro sitio web y servicios.",
+  
+  "SECTION_2_TITLE": "2. Cómo Utilizamos su Información",
+  "SECTION_2_INTRO": "Utilizamos su información para:",
+  "USE_1": "Proporcionar y mejorar nuestros servicios",
+  "USE_2": "Procesar sus transacciones",
+  "USE_3": "Verificar su identidad y prevenir fraudes",
+  "USE_4": "Comunicarnos con usted sobre nuestros servicios",
+  "USE_5": "Cumplir con obligaciones legales y regulatorias",
+  
+  "SECTION_3_TITLE": "3. Compartir Información",
+  "SECTION_3_INTRO": "No vendemos su información personal a terceros. Podemos compartir su información con:",
+  "SHARE_1": "Proveedores de servicios que nos ayudan a operar nuestro negocio",
+  "SHARE_2": "Autoridades reguladoras cuando sea legalmente requerido",
+  "SHARE_3": "Entidades afiliadas dentro de nuestro grupo empresarial",
+  
+  "SECTION_4_TITLE": "4. Seguridad de los Datos",
+  "SECTION_4_TEXT": "Implementamos medidas de seguridad técnicas y organizativas para proteger su información personal contra acceso no autorizado, pérdida o alteración.",
+  
+  "SECTION_5_TITLE": "5. Sus Derechos",
+  "SECTION_5_INTRO": "Dependiendo de su ubicación, puede tener derecho a:",
+  "RIGHT_1": "Acceder a su información personal",
+  "RIGHT_2": "Corregir información inexacta",
+  "RIGHT_3": "Eliminar su información",
+  "RIGHT_4": "Oponerse al procesamiento de sus datos",
+  "RIGHT_5": "Retirar su consentimiento",
+  
+  "SECTION_6_TITLE": "6. Cambios a esta Política",
+  "SECTION_6_TEXT": "Podemos actualizar esta Política de Privacidad periódicamente. Le notificaremos cualquier cambio significativo a través de nuestro sitio web o por correo electrónico.",
+  
+  "SECTION_7_TITLE": "7. Contacto",
+  "SECTION_7_TEXT": "Si tiene preguntas sobre esta Política de Privacidad, por favor contáctenos a través de nuestra sección de Contacto."
+},
+
+"FAQ": {
+  "TITLE": "Preguntas Frecuentes",
+  "CREATE_ACCOUNT": "¿Cómo puedo crear una cuenta?",
+  "CREATE_ACCOUNT_ANSWER": "Para crear una cuenta, haz clic en el botón 'Registrarse' en la parte superior derecha de la página. Completa el formulario con tus datos personales, crea una contraseña segura y acepta los términos y condiciones. Luego, haz clic en 'Registrarse' para completar el proceso.",
+  
+  "PLACE_BET": "¿Cómo puedo realizar una apuesta?",
+  "PLACE_BET_ANSWER": "Para realizar una apuesta, primero debes iniciar sesión en tu cuenta. Luego, navega por los deportes disponibles, selecciona un evento y haz clic en la cuota que deseas apostar. Introduce la cantidad que quieres apostar en el cupón de apuestas y haz clic en 'Apostar' para confirmar.",
+  
+  "REDEEM_POINTS": "¿Cómo puedo canjear mis puntos por premios?",
+  "REDEEM_POINTS_ANSWER": "Para canjear tus puntos por premios, ve a la sección 'Premios' del menú principal. Allí verás todos los premios disponibles y los puntos necesarios para cada uno. Haz clic en el botón 'Canjear' junto al premio que deseas y confirma tu selección.",
+  
+  "DAILY_WHEEL": "¿Cómo funciona la rueda de la fortuna diaria?",
+  "DAILY_WHEEL_ANSWER": "La rueda de la fortuna diaria es una recompensa que puedes reclamar una vez cada 24 horas. Haz clic en el icono de la rueda en la barra de navegación y luego en 'Girar Rueda'. Ganarás puntos aleatorios que se añadirán automáticamente a tu cuenta.",
+  
+  "FORGOT_PASSWORD": "¿Qué hago si olvidé mi contraseña?",
+  "FORGOT_PASSWORD_ANSWER": "Si olvidaste tu contraseña, haz clic en 'Iniciar Sesión' y luego en el enlace '¿Has olvidado tu contraseña?' debajo del formulario de inicio de sesión. Introduce tu correo electrónico y recibirás instrucciones para restablecer tu contraseña.",
+  
+  "CONTACT_SUPPORT": "¿Cómo puedo contactar con el servicio de atención al cliente?",
+  "CONTACT_SUPPORT_ANSWER": "Puedes contactar con nuestro servicio de atención al cliente a través de varias opciones: chat en vivo disponible 24/7, correo electrónico a support@pnw.com, o a través del formulario de contacto en la sección 'Soporte' de nuestro sitio web.",
+  
+  "PRIZE_PROCESSING": "¿Cuánto tiempo tardan en procesarse los canjes de premios?",
+  "PRIZE_PROCESSING_ANSWER": "Los canjes de premios normalmente se procesan en un plazo de 24 a 48 horas laborables. Una vez procesado, recibirás una notificación por correo electrónico y podrás ver el estado de tu premio en la sección 'Mis Premios' de tu perfil.",
+  
+  "CHANGE_USERNAME": "¿Puedo cambiar mi nombre de usuario?",
+  "CHANGE_USERNAME_ANSWER": "Sí, puedes cambiar tu nombre de usuario. Ve a 'Mi Perfil', haz clic en 'Editar Perfil' y actualiza tu nombre de usuario en el campo correspondiente. Ten en cuenta que el nombre de usuario debe ser único y no puede estar en uso por otro usuario.",
+  
+  "VIEW_HISTORY": "¿Cómo puedo ver mi historial de apuestas?",
+  "VIEW_HISTORY_ANSWER": "Para ver tu historial de apuestas, ve a 'Mi Perfil' y haz clic en la pestaña 'Historial'. Allí podrás ver todas tus apuestas anteriores, incluyendo detalles como la cantidad apostada, las cuotas, el resultado y las ganancias."
+},
+
+"HOW_TO_PLAY": {
+  "TITLE": "Cómo Jugar",
+  "STEP_1_TITLE": "Crea una cuenta",
+  "STEP_1_TEXT": "Para comenzar, regístrate en nuestra plataforma haciendo clic en \"Registrarse\" en la parte superior de la página. Completa el formulario con tus datos personales y crea una contraseña segura.",
+  
+  "STEP_2_TITLE": "Explora los eventos deportivos",
+  "STEP_2_TEXT": "Navega por nuestra amplia selección de eventos deportivos. Puedes filtrar por deporte, liga o fecha para encontrar los eventos que más te interesen.",
+  
+  "STEP_3_TITLE": "Selecciona tu apuesta",
+  "STEP_3_TEXT": "Haz clic en el evento que te interese para ver todos los mercados disponibles. Selecciona la cuota que deseas apostar haciendo clic en ella.",
+  
+  "STEP_4_TITLE": "Realiza tu apuesta",
+  "STEP_4_TEXT": "Ingresa la cantidad que deseas apostar en el boleto de apuestas. Verifica los detalles y confirma tu apuesta haciendo clic en \"Apostar\".",
+  
+  "STEP_5_TITLE": "Sigue tus apuestas",
+  "STEP_5_TEXT": "Puedes seguir el progreso de tus apuestas en la sección \"Mis Apuestas\" de tu perfil. Allí verás el estado de tus apuestas activas y podrás consultar tu historial.",
+  
+  "TIPS_TITLE": "Consejos para principiantes",
+  "TIP_1": "Comienza con apuestas pequeñas hasta que te familiarices con la plataforma.",
+  "TIP_2": "Infórmate bien sobre los eventos en los que vas a apostar.",
+  "TIP_3": "Establece un presupuesto y respétalo.",
+  "TIP_4": "Aprovecha nuestras promociones para maximizar tus ganancias.",
+  "TIP_5": "Juega de forma responsable y diviértete."
+},
+"RESPONSIBLE_GAMING": {
+  "TITLE": "Juego Responsable",
+  "INTRO_1": "En PNW, nos comprometemos a promover un entorno de juego seguro y responsable. Creemos que las apuestas deportivas deben ser una forma de entretenimiento, no una fuente de problemas.",
+  "INTRO_2": "Te animamos a seguir estas pautas para mantener el control de tu actividad de juego y disfrutar de una experiencia positiva.",
+  
+  "GUIDELINES_TITLE": "Pautas para un juego responsable",
+  
+  "SET_LIMITS_TITLE": "Establece límites",
+  "SET_LIMITS_TEXT": "Define un presupuesto claro para tus apuestas y no lo superes. Decide cuánto tiempo y dinero estás dispuesto a dedicar a las apuestas y respeta esos límites.",
+  
+  "DONT_CHASE_LOSSES_TITLE": "No persigas pérdidas",
+  "DONT_CHASE_LOSSES_TEXT": "Aceptar las pérdidas es parte del juego. No intentes recuperar el dinero perdido aumentando tus apuestas, ya que esto puede llevar a un ciclo peligroso.",
+  
+  "KEEP_BALANCE_TITLE": "Mantén el equilibrio",
+  "KEEP_BALANCE_TEXT": "Las apuestas deportivas deben ser solo una parte de tus actividades de ocio. Asegúrate de mantener un equilibrio saludable con otras actividades sociales y recreativas.",
+  
+  "NO_INFLUENCE_TITLE": "No apuestes bajo la influencia",
+  "NO_INFLUENCE_TEXT": "Evita apostar cuando estés bajo la influencia del alcohol u otras sustancias, ya que esto puede afectar tu capacidad para tomar decisiones racionales.",
+  
+  "TAKE_BREAKS_TITLE": "Tómate descansos",
+  "TAKE_BREAKS_TEXT": "Es importante tomar descansos regulares. Si sientes que estás dedicando demasiado tiempo a las apuestas, considera tomarte un tiempo de descanso.",
+  
+  "TOOLS_TITLE": "Herramientas de control",
+  "TOOLS_INTRO": "Ofrecemos varias herramientas para ayudarte a mantener el control de tu actividad de juego:",
+  
+  "DEPOSIT_LIMITS": "Límites de depósito:",
+  "DEPOSIT_LIMITS_TEXT": "Establece límites diarios, semanales o mensuales para tus depósitos.",
+  
+  "TIME_LIMITS": "Límites de tiempo:",
+  "TIME_LIMITS_TEXT": "Configura recordatorios que te avisen del tiempo que llevas jugando.",
+  
+  "SELF_EXCLUSION": "Autoexclusión:",
+  "SELF_EXCLUSION_TEXT": "Si necesitas un descanso más largo, puedes autoexcluirte de nuestra plataforma.",
+  
+  "ACCOUNT_HISTORY": "Historial de cuenta:",
+  "ACCOUNT_HISTORY_TEXT": "Revisa tu historial de apuestas para mantener un seguimiento de tu actividad.",
+  
+  "HELP_TITLE": "¿Necesitas ayuda?",
+  "HELP_TEXT": "Si tú o alguien que conoces tiene problemas con el juego, hay ayuda disponible. Contacta con alguna de estas organizaciones especializadas:",
+  
+  "HELP_RESOURCE_1_NAME": "Jugadores Anónimos",
+  "HELP_RESOURCE_1_PHONE": "Teléfono: 900 200 225",
+  "HELP_RESOURCE_1_WEB_LABEL": "Web:",
+  "HELP_RESOURCE_1_WEB_URL": "https://jugadoresanonimos.org",
+  "HELP_RESOURCE_1_WEB_DISPLAY": "jugadoresanonimos.org",
+  
+  "HELP_RESOURCE_2_NAME": "FEJAR (Federación Española de Jugadores de Azar Rehabilitados)",
+  "HELP_RESOURCE_2_PHONE": "Teléfono: 900 100 100",
+  "HELP_RESOURCE_2_WEB_LABEL": "Web:",
+  "HELP_RESOURCE_2_WEB_URL": "https://fejar.org",
+  "HELP_RESOURCE_2_WEB_DISPLAY": "fejar.org"
+},
+"SUPPORT": {
+  "TITLE": "Soporte",
+  "INTRO_TEXT": "Estamos aquí para ayudarte con cualquier duda o problema que puedas tener. Consulta nuestras opciones de soporte a continuación.",
+  
+  "FAQ_TITLE": "Preguntas Frecuentes",
+  "FAQ_TEXT": "Encuentra respuestas rápidas a las preguntas más comunes en nuestra sección de",
+  "FAQ_LINK": "Preguntas Frecuentes",
+  
+  "EMAIL_TITLE": "Correo Electrónico",
+  "EMAIL_TEXT": "Envíanos un correo a",
+  "EMAIL_ADDRESS": "predictnwinmail@gmail.com",
+  "EMAIL_RESPONSE_TIME": "y te responderemos en un plazo de 24 horas.",
+  
+  "PHONE_TITLE": "Teléfono",
+  "PHONE_TEXT": "Llámanos al",
+  "PHONE_NUMBER": "+34 900 123 456",
+  "PHONE_HOURS": "de lunes a viernes de 9:00 a 20:00 y sábados de 10:00 a 15:00.",
+  
+  "LIVE_CHAT_TITLE": "Chat en Vivo",
+  "LIVE_CHAT_TEXT": "Habla con uno de nuestros agentes en tiempo real a través de nuestro chat en vivo, disponible en la esquina inferior derecha de la pantalla.",
+  "OPEN_CHAT_BUTTON": "Abrir Chat Ahora",
+  
+  "CONTACT_FORM_TITLE": "Envíanos un Mensaje",
+  "CONTACT_FORM_TEXT": "Si prefieres, puedes enviarnos tu consulta a través del siguiente formulario.",
+  
+  "NAME_LABEL": "Nombre",
+  "NAME_PLACEHOLDER": "Tu nombre",
+  
+  "EMAIL_LABEL": "Correo Electrónico",
+  "EMAIL_PLACEHOLDER": "Tu correo electrónico",
+  
+  "ISSUE_TYPE_LABEL": "Tipo de Problema",
+  "ISSUE_TYPE_PLACEHOLDER": "Describe el tipo de problema",
+  
+  "MESSAGE_LABEL": "Mensaje",
+  "MESSAGE_PLACEHOLDER": "Escribe tu mensaje aquí...",
+  "MESSAGE_MIN_LENGTH": "El mensaje debe tener al menos 10 caracteres",
+  
+  "SEND_BUTTON": "Enviar Mensaje",
+  "SENDING": "Enviando...",
+  "SUBMIT_SUCCESS": "¡Mensaje enviado con éxito! Te responderemos pronto."
+}
 }

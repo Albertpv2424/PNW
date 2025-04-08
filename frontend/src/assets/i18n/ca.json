@@ -145,6 +145,238 @@
     "SUPPORT": "Suport",
     "FOLLOW_US": "Segueix-nos",
     "RIGHTS": "Tots els drets reservats",
-    "RESPONSIBLE_TEXT": "Juga amb responsabilitat. Només per a persones majors de 18 anys."
-  }
+    "RESPONSIBLE_TEXT": "Juga amb responsabilitat. Només per a majors de 18 anys."
+  },
+  "ABOUT": {
+    "TITLE": "Sobre Nosaltres",
+    "OUR_HISTORY": "La Nostra Història",
+    "HISTORY_TEXT": "PNW va néixer el 2023 amb la visió de crear una plataforma d'apostes esportives diferent, centrada en l'experiència de l'usuari i en oferir un entorn segur i responsable per als aficionats a l'esport.",
+    "OUR_MISSION": "La Nostra Missió",
+    "MISSION_TEXT": "A PNW, la nostra missió és transformar l'experiència de les apostes esportives, combinant tecnologia avançada amb un enfocament centrat en l'usuari per crear una plataforma que sigui divertida, justa i transparent.",
+    "OUR_VALUES": "Els Nostres Valors",
+    "TRANSPARENCY": "Transparència",
+    "TRANSPARENCY_TEXT": "Operem amb total claredat en totes les nostres pràctiques.",
+    "RESPONSIBILITY": "Responsabilitat",
+    "RESPONSIBILITY_TEXT": "Promovem el joc responsable i oferim eines per ajudar els nostres usuaris.",
+    "INNOVATION": "Innovació",
+    "INNOVATION_TEXT": "Busquem constantment noves formes de millorar la nostra plataforma.",
+    "SECURITY": "Seguretat",
+    "SECURITY_TEXT": "La protecció de les dades i fons dels nostres usuaris és la nostra prioritat.",
+    "EXCELLENCE": "Excel·lència",
+    "EXCELLENCE_TEXT": "Ens esforcem per oferir el millor servei possible en tots els aspectes.",
+    "OUR_TEAM": "El Nostre Equip",
+    "TEAM_TEXT": "Comptem amb un equip de professionals apassionats per l'esport i la tecnologia, dedicats a crear la millor experiència per als nostres usuaris."
+  },
+
+"TERMS": {
+  "TITLE": "Termes i Condicions",
+  "LAST_UPDATE": "Última actualització: 1 de juny de 2023",
+  "WELCOME": "Benvingut a PNW. En accedir o utilitzar el nostre servei, accepteu estar subjecte a aquests Termes i Condicions. Si us plau, llegiu-los detingudament.",
+  "SECTION_1_TITLE": "1. Acceptació dels Termes",
+  "SECTION_1_TEXT": "En registrar-vos, accedir o utilitzar els nostres serveis, confirmeu que heu llegit, entès i acceptat aquests Termes i Condicions. Si no esteu d'acord amb alguna part d'aquests termes, no podreu accedir al servei.",
+  "SECTION_2_TITLE": "2. Elegibilitat",
+  "SECTION_2_TEXT": "Per utilitzar els nostres serveis, heu de tenir almenys 18 anys d'edat i residir en una jurisdicció on les apostes en línia siguin legals. És la vostra responsabilitat assegurar-vos que l'ús dels nostres serveis compleix amb les lleis aplicables a la vostra jurisdicció.",
+  "SECTION_3_TITLE": "3. Comptes d'Usuari",
+  "SECTION_3_TEXT": "En crear un compte, accepteu proporcionar informació precisa, completa i actualitzada. Sou responsable de mantenir la confidencialitat del vostre compte i contrasenya, i accepteu no compartir les vostres credencials d'accés amb tercers.",
+  "SECTION_4_TITLE": "4. Apostes i Pagaments",
+  "SECTION_4_TEXT": "Totes les apostes estan subjectes a les nostres regles d'apostes. Ens reservem el dret de rebutjar qualsevol aposta a la nostra discreció. Els pagaments es processaran d'acord amb les nostres polítiques de pagament.",
+  "SECTION_5_TITLE": "5. Joc Responsable",
+  "SECTION_5_TEXT": "Promovem el joc responsable i oferim eines per ajudar els usuaris a controlar la seva activitat de joc. Si creieu que podeu tenir un problema amb el joc, us recomanem que busqueu ajuda professional.",
+  "SECTION_6_TITLE": "6. Modificacions",
+  "SECTION_6_TEXT": "Ens reservem el dret de modificar aquests termes en qualsevol moment. Els canvis entraran en vigor immediatament després de la seva publicació. El vostre ús continuat del servei després de qualsevol canvi constitueix la vostra acceptació dels nous termes."
+},
+"PRIVACY": {
+  "TITLE": "Política de Privacitat",
+  "LAST_UPDATE": "Última actualització: 1 de juny de 2023",
+  "INTRO_TEXT": "A PNW, ens prenem molt seriosament la privacitat dels nostres usuaris. Aquesta Política de Privacitat descriu com recopilem, utilitzem i protegim la vostra informació personal.",
+  
+  "SECTION_1_TITLE": "1. Informació que Recopilem",
+  "SECTION_1_INTRO": "Podem recopilar els següents tipus d'informació:",
+  "REGISTRATION_INFO": "Informació de registre",
+  "REGISTRATION_INFO_TEXT": "Nom, adreça de correu electrònic, data de naixement, etc.",
+  "TRANSACTION_INFO": "Informació de transaccions",
+  "TRANSACTION_INFO_TEXT": "Detalls de les vostres apostes, dipòsits i retirades.",
+  "TECHNICAL_INFO": "Informació tècnica",
+  "TECHNICAL_INFO_TEXT": "Adreça IP, tipus de navegador, dispositiu utilitzat, etc.",
+  "USAGE_INFO": "Informació d'ús",
+  "USAGE_INFO_TEXT": "Com interactueu amb el nostre lloc web i serveis.",
+  
+  "SECTION_2_TITLE": "2. Com Utilitzem la vostra Informació",
+  "SECTION_2_INTRO": "Utilitzem la vostra informació per:",
+  "USE_1": "Proporcionar i millorar els nostres serveis",
+  "USE_2": "Processar les vostres transaccions",
+  "USE_3": "Verificar la vostra identitat i prevenir fraus",
+  "USE_4": "Comunicar-nos amb vosaltres sobre els nostres serveis",
+  "USE_5": "Complir amb obligacions legals i regulatòries",
+  
+  "SECTION_3_TITLE": "3. Compartir Informació",
+  "SECTION_3_INTRO": "No venem la vostra informació personal a tercers. Podem compartir la vostra informació amb:",
+  "SHARE_1": "Proveïdors de serveis que ens ajuden a operar el nostre negoci",
+  "SHARE_2": "Autoritats reguladores quan sigui legalment requerit",
+  "SHARE_3": "Entitats afiliades dins del nostre grup empresarial",
+  
+  "SECTION_4_TITLE": "4. Seguretat de les Dades",
+  "SECTION_4_TEXT": "Implementem mesures de seguretat tècniques i organitzatives per protegir la vostra informació personal contra accés no autoritzat, pèrdua o alteració.",
+  
+  "SECTION_5_TITLE": "5. Els vostres Drets",
+  "SECTION_5_INTRO": "Depenent de la vostra ubicació, podeu tenir dret a:",
+  "RIGHT_1": "Accedir a la vostra informació personal",
+  "RIGHT_2": "Corregir informació inexacta",
+  "RIGHT_3": "Eliminar la vostra informació",
+  "RIGHT_4": "Oposar-vos al processament de les vostres dades",
+  "RIGHT_5": "Retirar el vostre consentiment",
+  
+  "SECTION_6_TITLE": "6. Canvis a aquesta Política",
+  "SECTION_6_TEXT": "Podem actualitzar aquesta Política de Privacitat periòdicament. Us notificarem qualsevol canvi significatiu a través del nostre lloc web o per correu electrònic.",
+  
+  "SECTION_7_TITLE": "7. Contacte",
+  "SECTION_7_TEXT": "Si teniu preguntes sobre aquesta Política de Privacitat, si us plau contacteu-nos a través de la nostra secció de Contacte."
+},
+"FAQ": {
+  "TITLE": "Preguntes Freqüents",
+  "CREATE_ACCOUNT": "¿Com puc crear un compte?",
+  "CREATE_ACCOUNT_ANSWER": "Per crear un compte, feu clic al botó 'Registrar-se' a la part superior dreta de la pàgina. Ompliu el formulari amb les vostres dades personals, creeu una contrasenya segura i accepteu els termes i condicions. Després, feu clic a 'Registrar-se' per completar el procés.",
+  
+  "PLACE_BET": "¿Com puc realitzar una aposta?",
+  "PLACE_BET_ANSWER": "Per realitzar una aposta, primer heu d'iniciar sessió al vostre compte. Després, navegueu pels esports disponibles, seleccioneu un esdeveniment i feu clic a la quota que voleu apostar. Introduïu la quantitat que voleu apostar al cupó d'apostes i feu clic a 'Apostar' per confirmar.",
+  
+  "REDEEM_POINTS": "¿Com puc canviar els meus punts per premis?",
+  "REDEEM_POINTS_ANSWER": "Per canviar els vostres punts per premis, aneu a la secció 'Premis' del menú principal. Allà veureu tots els premis disponibles i els punts necessaris per a cadascun. Feu clic al botó 'Bescanviar' al costat del premi que voleu i confirmeu la vostra selecció.",
+  
+  "DAILY_WHEEL": "¿Com funciona la ruleta de la fortuna diària?",
+  "DAILY_WHEEL_ANSWER": "La ruleta de la fortuna diària és una recompensa que podeu reclamar una vegada cada 24 hores. Feu clic a la icona de la ruleta a la barra de navegació i després a 'Girar Ruleta'. Guanyareu punts aleatoris que s'afegiran automàticament al vostre compte.",
+  
+  "FORGOT_PASSWORD": "¿Què faig si he oblidat la meva contrasenya?",
+  "FORGOT_PASSWORD_ANSWER": "Si heu oblidat la vostra contrasenya, feu clic a 'Iniciar Sessió' i després a l'enllaç 'Has oblidat la teva contrasenya?' sota el formulari d'inici de sessió. Introduïu el vostre correu electrònic i rebreu instruccions per restablir la vostra contrasenya.",
+  
+  "CONTACT_SUPPORT": "¿Com puc contactar amb el servei d'atenció al client?",
+  "CONTACT_SUPPORT_ANSWER": "Podeu contactar amb el nostre servei d'atenció al client a través de diverses opcions: xat en viu disponible 24/7, correu electrònic a support@pnw.com, o a través del formulari de contacte a la secció 'Suport' del nostre lloc web.",
+  
+  "PRIZE_PROCESSING": "¿Quant temps tarden en processar-se els canvis de premis?",
+  "PRIZE_PROCESSING_ANSWER": "Els canvis de premis normalment es processen en un termini de 24 a 48 hores laborables. Un cop processat, rebreu una notificació per correu electrònic i podreu veure l'estat del vostre premi a la secció 'Els Meus Premis' del vostre perfil.",
+  
+  "CHANGE_USERNAME": "¿Puc canviar el meu nom d'usuari?",
+  "CHANGE_USERNAME_ANSWER": "Sí, podeu canviar el vostre nom d'usuari. Aneu a 'El Meu Perfil', feu clic a 'Editar Perfil' i actualitzeu el vostre nom d'usuari al camp corresponent. Tingueu en compte que el nom d'usuari ha de ser únic i no pot estar en ús per un altre usuari.",
+  
+  "VIEW_HISTORY": "¿Com puc veure el meu historial d'apostes?",
+  "VIEW_HISTORY_ANSWER": "Per veure el vostre historial d'apostes, aneu a 'El Meu Perfil' i feu clic a la pestanya 'Historial'. Allà podreu veure totes les vostres apostes anteriors, inclosos els detalls com la quantitat apostada, les quotes, el resultat i els guanys."
+},
+"HOW_TO_PLAY": {
+  "TITLE": "Com Jugar",
+  "STEP_1_TITLE": "Crea un compte",
+  "STEP_1_TEXT": "Per començar, registra't a la nostra plataforma fent clic a \"Registrar-se\" a la part superior de la pàgina. Completa el formulari amb les teves dades personals i crea una contrasenya segura.",
+  
+  "STEP_2_TITLE": "Explora els esdeveniments esportius",
+  "STEP_2_TEXT": "Navega per la nostra àmplia selecció d'esdeveniments esportius. Pots filtrar per esport, lliga o data per trobar els esdeveniments que més t'interessin.",
+  
+  "STEP_3_TITLE": "Selecciona la teva aposta",
+  "STEP_3_TEXT": "Fes clic a l'esdeveniment que t'interessi per veure tots els mercats disponibles. Selecciona la quota que vols apostar fent clic a sobre.",
+  
+  "STEP_4_TITLE": "Realitza la teva aposta",
+  "STEP_4_TEXT": "Introdueix la quantitat que vols apostar al tiquet d'apostes. Verifica els detalls i confirma la teva aposta fent clic a \"Apostar\".",
+  
+  "STEP_5_TITLE": "Segueix les teves apostes",
+  "STEP_5_TEXT": "Pots seguir el progrés de les teves apostes a la secció \"Les Meves Apostes\" del teu perfil. Allà veuràs l'estat de les teves apostes actives i podràs consultar el teu historial.",
+  
+  "TIPS_TITLE": "Consells per a principiants",
+  "TIP_1": "Comença amb apostes petites fins que et familiaritzis amb la plataforma.",
+  "TIP_2": "Informa't bé sobre els esdeveniments en els quals apostaràs.",
+  "TIP_3": "Estableix un pressupost i respecta'l.",
+  "TIP_4": "Aprofita les nostres promocions per maximitzar els teus guanys.",
+  "TIP_5": "Juga de forma responsable i diverteix-te."
+},
+"RESPONSIBLE_GAMING": {
+  "TITLE": "Joc Responsable",
+  "INTRO_1": "A PNW, ens comprometem a promoure un entorn de joc segur i responsable. Creiem que les apostes esportives han de ser una forma d'entreteniment, no una font de problemes.",
+  "INTRO_2": "T'animem a seguir aquestes pautes per mantenir el control de la teva activitat de joc i gaudir d'una experiència positiva.",
+  
+  "GUIDELINES_TITLE": "Pautes per a un joc responsable",
+  
+  "SET_LIMITS_TITLE": "Estableix límits",
+  "SET_LIMITS_TEXT": "Defineix un pressupost clar per a les teves apostes i no el superis. Decideix quant temps i diners estàs disposat a dedicar a les apostes i respecta aquests límits.",
+  
+  "DONT_CHASE_LOSSES_TITLE": "No persegueixis pèrdues",
+  "DONT_CHASE_LOSSES_TEXT": "Acceptar les pèrdues és part del joc. No intentis recuperar els diners perduts augmentant les teves apostes, ja que això pot portar a un cicle perillós.",
+  
+  "KEEP_BALANCE_TITLE": "Mantén l'equilibri",
+  "KEEP_BALANCE_TEXT": "Les apostes esportives han de ser només una part de les teves activitats d'oci. Assegura't de mantenir un equilibri saludable amb altres activitats socials i recreatives.",
+  
+  "NO_INFLUENCE_TITLE": "No apostis sota la influència",
+  "NO_INFLUENCE_TEXT": "Evita apostar quan estiguis sota la influència de l'alcohol o altres substàncies, ja que això pot afectar la teva capacitat per prendre decisions racionals.",
+  
+  "TAKE_BREAKS_TITLE": "Pren-te descansos",
+  "TAKE_BREAKS_TEXT": "És important prendre descansos regulars. Si sents que estàs dedicant massa temps a les apostes, considera prendre't un temps de descans.",
+  
+  "TOOLS_TITLE": "Eines de control",
+  "TOOLS_INTRO": "Oferim diverses eines per ajudar-te a mantenir el control de la teva activitat de joc:",
+  
+  "DEPOSIT_LIMITS": "Límits de dipòsit:",
+  "DEPOSIT_LIMITS_TEXT": "Estableix límits diaris, setmanals o mensuals per als teus dipòsits.",
+  
+  "TIME_LIMITS": "Límits de temps:",
+  "TIME_LIMITS_TEXT": "Configura recordatoris que t'avisin del temps que portes jugant.",
+  
+  "SELF_EXCLUSION": "Autoexclusió:",
+  "SELF_EXCLUSION_TEXT": "Si necessites un descans més llarg, pots autoexcloure't de la nostra plataforma.",
+  
+  "ACCOUNT_HISTORY": "Historial de compte:",
+  "ACCOUNT_HISTORY_TEXT": "Revisa el teu historial d'apostes per mantenir un seguiment de la teva activitat.",
+  
+  "HELP_TITLE": "Necessites ajuda?",
+  "HELP_TEXT": "Si tu o algú que coneixes té problemes amb el joc, hi ha ajuda disponible. Contacta amb alguna d'aquestes organitzacions especialitzades:",
+  
+  "HELP_RESOURCE_1_NAME": "Jugadors Anònims",
+  "HELP_RESOURCE_1_PHONE": "Telèfon: 900 200 225",
+  "HELP_RESOURCE_1_WEB_LABEL": "Web:",
+  "HELP_RESOURCE_1_WEB_URL": "https://jugadoresanonimos.org",
+  "HELP_RESOURCE_1_WEB_DISPLAY": "jugadoresanonimos.org",
+  
+  "HELP_RESOURCE_2_NAME": "Fundació Catalana pel Joc",
+  "HELP_RESOURCE_2_PHONE": "Telèfon: 900 100 100",
+  "HELP_RESOURCE_2_WEB_LABEL": "Web:",
+  "HELP_RESOURCE_2_WEB_URL": "https://fcjoc.org",
+  "HELP_RESOURCE_2_WEB_DISPLAY": "fcjoc.org"
+},
+"SUPPORT": {
+  "TITLE": "Suport",
+  "INTRO_TEXT": "Estem aquí per ajudar-te amb qualsevol dubte o problema que puguis tenir. Consulta les nostres opcions de suport a continuació.",
+  
+  "FAQ_TITLE": "Preguntes Freqüents",
+  "FAQ_TEXT": "Troba respostes ràpides a les preguntes més comunes a la nostra secció",
+  "FAQ_LINK": "Preguntes Freqüents",
+  
+  "EMAIL_TITLE": "Correu Electrònic",
+  "EMAIL_TEXT": "Envia'ns un correu a",
+  "EMAIL_ADDRESS": "predictnwinmail@gmail.com",
+  "EMAIL_RESPONSE_TIME": "i et respondrem en un termini de 24 hores.",
+  
+  "PHONE_TITLE": "Telèfon",
+  "PHONE_TEXT": "Truca'ns al",
+  "PHONE_NUMBER": "+34 900 123 456",
+  "PHONE_HOURS": "de dilluns a divendres de 9:00 a 20:00 i dissabtes de 10:00 a 15:00.",
+  
+  "LIVE_CHAT_TITLE": "Xat en Viu",
+  "LIVE_CHAT_TEXT": "Parla amb un dels nostres agents en temps real a través del nostre xat en viu, disponible a la cantonada inferior dreta de la pantalla.",
+  "OPEN_CHAT_BUTTON": "Obre Xat Ara",
+  
+  "CONTACT_FORM_TITLE": "Envia'ns un Missatge",
+  "CONTACT_FORM_TEXT": "Si ho prefereixes, pots enviar-nos la teva consulta a través del següent formulari.",
+  
+  "NAME_LABEL": "Nom",
+  "NAME_PLACEHOLDER": "El teu nom",
+  
+  "EMAIL_LABEL": "Correu Electrònic",
+  "EMAIL_PLACEHOLDER": "El teu correu electrònic",
+  
+  "ISSUE_TYPE_LABEL": "Tipus de Problema",
+  "ISSUE_TYPE_PLACEHOLDER": "Descriu el tipus de problema",
+  
+  "MESSAGE_LABEL": "Missatge",
+  "MESSAGE_PLACEHOLDER": "Escriu el teu missatge aquí...",
+  "MESSAGE_MIN_LENGTH": "El missatge ha de tenir almenys 10 caràcters",
+  
+  "SEND_BUTTON": "Enviar Missatge",
+  "SENDING": "Enviant...",
+  "SUBMIT_SUCCESS": "Missatge enviat amb èxit! Et respondrem aviat possible."
+}
 }
