@@ -4,11 +4,12 @@ import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-daily-wheel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './daily-wheel.component.html',
   styleUrls: ['./daily-wheel.component.css']
 })
@@ -36,7 +37,8 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
   constructor(
     private authService: AuthService,
     private notificationService: NotificationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -317,15 +319,14 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // También necesitamos corregir el mismo problema en awardPrize()
   awardPrize() {
     if (!this.selectedPrize) return;
-  
+
     // No longer need to store in localStorage since we're using the server
     this.canSpin = false;
-  
+
     console.log('Awarding prize:', this.selectedPrize);
-  
+
     // Corregir el problema de headers
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
@@ -333,7 +334,7 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
-  
+
     // Enviar al servidor con los headers correctos
     this.http.post(`${this.apiUrl}/daily-wheel/spin`, { points: this.selectedPrize }, { headers }).subscribe({
       next: (response: any) => {
@@ -355,7 +356,12 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
         const today = new Date().toISOString().split('T')[0];
         this.lastSpinDate = today;
 
-        this.notificationService.showSuccess(`¡Felicidades! Has ganado ${this.selectedPrize} puntos`);
+        // Use translation for success message
+        this.translateService.get('DAILY_WHEEL.CONGRATULATIONS').subscribe((congratsText: string) => {
+          this.translateService.get('DAILY_WHEEL.POINTS').subscribe((pointsText: string) => {
+            this.notificationService.showSuccess(`${congratsText} ${this.selectedPrize} ${pointsText}`);
+          });
+        });
 
         // Cerrar la ruleta después de 3 segundos
         setTimeout(() => {

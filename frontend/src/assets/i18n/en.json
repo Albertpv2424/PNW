@@ -379,5 +379,43 @@
   "SEND_BUTTON": "Send Message",
   "SENDING": "Sending...",
   "SUBMIT_SUCCESS": "Message sent successfully! We'll get back to you as soon as possible."
-}
+},
+
+  "DAILY_WHEEL": {
+    "TITLE": "Daily Wheel",
+    "SPIN_BUTTON": "Spin",
+    "SPINNING": "Spinning...",
+    "ALREADY_SPUN": "You have already spun today",
+    "SPIN_TOMORROW": "You can spin again tomorrow",
+    "YOU_WON": "You won!",
+    "TODAY_WON": "Today you won:",
+    "CONGRATULATIONS": "Congratulations! You won",
+    "POINTS": "points",
+    "EARN_POINTS": "Earn points by watching videos",
+    "WATCH_VIDEOS": "Watch random videos and earn up to",
+    "POINTS_PER_VIDEO": "points for each completed video.",
+    "VIDEOS_PER_DAY": "You can watch up to 5 videos per day.",
+    "START_EARNING": "Start earning points",
+    "VIDEOS_WATCHED_TODAY": "Videos watched today:",
+    "POINTS_EARNED_TODAY": "Points earned today:"
+  },
+  
+    "VIDEO_REWARDS": {
+      "TITLE": "Earn points by watching videos",
+      "INFO_TEXT": "Watch random videos and earn up to",
+      "POINTS_PER_VIDEO": "points for each completed video.",
+      "DAILY_LIMIT": "You can watch up to 5 videos per day.",
+      "START_BUTTON": "Start earning points",
+      "TIME_REMAINING": "Time remaining:",
+      "SECONDS": "seconds",
+      "VIDEO_COMPLETED": "Video completed!",
+      "POINTS_EARNED": "You earned",
+      "POINTS": "points",
+      "NEXT_VIDEO": "Watch another video",
+      "DAILY_LIMIT_REACHED": "Daily limit reached",
+      "LIMIT_REACHED_TEXT": "You have reached the daily video limit.",
+      "COME_BACK_TOMORROW": "Come back tomorrow to earn more points.",
+      "VIDEOS_WATCHED": "Videos watched today:",
+      "POINTS_EARNED_TODAY": "Points earned today:"
+    }
 }

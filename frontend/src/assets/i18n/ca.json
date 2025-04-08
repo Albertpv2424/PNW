@@ -378,5 +378,41 @@
   "SEND_BUTTON": "Enviar Missatge",
   "SENDING": "Enviant...",
   "SUBMIT_SUCCESS": "Missatge enviat amb èxit! Et respondrem aviat possible."
-}
+},
+  "DAILY_WHEEL": {
+    "TITLE": "Ruleta Diària",
+    "SPIN_BUTTON": "Girar",
+    "SPINNING": "Girant...",
+    "ALREADY_SPUN": "Ja has girat avui",
+    "SPIN_TOMORROW": "Podràs tornar a girar demà",
+    "YOU_WON": "Has guanyat!",
+    "TODAY_WON": "Avui has guanyat:",
+    "CONGRATULATIONS": "Felicitats! Has guanyat",
+    "POINTS": "punts",
+    "EARN_POINTS": "Guanya punts veient vídeos",
+    "WATCH_VIDEOS": "Mira vídeos aleatoris i guanya fins a",
+    "POINTS_PER_VIDEO": "punts per cada vídeo completat.",
+    "VIDEOS_PER_DAY": "Pots veure fins a 5 vídeos al dia.",
+    "START_EARNING": "Començar a guanyar punts",
+    "VIDEOS_WATCHED_TODAY": "Vídeos vistos avui:",
+    "POINTS_EARNED_TODAY": "Punts guanyats avui:"
+  },
+    "VIDEO_REWARDS": {
+      "TITLE": "Guanya punts veient vídeos",
+      "INFO_TEXT": "Mira vídeos aleatoris i guanya fins a",
+      "POINTS_PER_VIDEO": "punts per cada vídeo completat.",
+      "DAILY_LIMIT": "Pots veure fins a 5 vídeos al dia.",
+      "START_BUTTON": "Començar a guanyar punts",
+      "TIME_REMAINING": "Temps restant:",
+      "SECONDS": "segons",
+      "VIDEO_COMPLETED": "Vídeo completat!",
+      "POINTS_EARNED": "Has guanyat",
+      "POINTS": "punts",
+      "NEXT_VIDEO": "Veure un altre vídeo",
+      "DAILY_LIMIT_REACHED": "Límit diari assolit",
+      "LIMIT_REACHED_TEXT": "Has assolit el límit diari de vídeos.",
+      "COME_BACK_TOMORROW": "Torna demà per guanyar més punts.",
+      "VIDEOS_WATCHED": "Vídeos vistos avui:",
+      "POINTS_EARNED_TODAY": "Punts guanyats avui:"
+    }
 }

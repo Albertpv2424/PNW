@@ -8,11 +8,11 @@
 
     <div class="main-content">
       <div class="rewards-card">
-        <h2>Gana puntos viendo videos</h2>
+        <h2>{{ 'VIDEO_REWARDS.TITLE' | translate }}</h2>
 
         <div class="rewards-info">
-          <p>Mira videos aleatorios y gana hasta <span class="highlight">50 puntos</span> por cada video completado.</p>
-          <p class="small">Puedes ver hasta 5 videos al día.</p>
+          <p>{{ 'VIDEO_REWARDS.INFO_TEXT' | translate }} <span class="highlight">50 {{ 'VIDEO_REWARDS.POINTS_PER_VIDEO' | translate }}</span></p>
+          <p class="small">{{ 'VIDEO_REWARDS.DAILY_LIMIT' | translate }}</p>
         </div>
 
         <div class="video-container" *ngIf="currentVideo">
@@ -29,16 +29,16 @@
             </div>
 
             <div class="time-remaining">
-              Tiempo restante: {{remainingTime}} segundos
+              {{ 'VIDEO_REWARDS.TIME_REMAINING' | translate }} {{remainingTime}} {{ 'VIDEO_REWARDS.SECONDS' | translate }}
             </div>
           </div>
 
           <div class="video-completed" *ngIf="videoCompleted">
             <div class="success-icon">✓</div>
-            <h3>¡Video completado!</h3>
-            <p>Has ganado <span class="points-earned">{{pointsEarned}}</span> puntos</p>
+            <h3>{{ 'VIDEO_REWARDS.VIDEO_COMPLETED' | translate }}</h3>
+            <p>{{ 'VIDEO_REWARDS.POINTS_EARNED' | translate }} <span class="points-earned">{{pointsEarned}}</span> {{ 'VIDEO_REWARDS.POINTS' | translate }}</p>
             <button class="next-video-btn" (click)="loadNextVideo()" [disabled]="dailyLimitReached">
-              {{ dailyLimitReached ? 'Límite diario alcanzado' : 'Ver otro video' }}
+              {{ dailyLimitReached ? ('VIDEO_REWARDS.DAILY_LIMIT_REACHED' | translate) : ('VIDEO_REWARDS.NEXT_VIDEO' | translate) }}
             </button>
           </div>
         </div>
@@ -46,22 +46,22 @@
         <div class="start-container" *ngIf="!currentVideo && !dailyLimitReached">
           <button class="start-btn" (click)="startWatchingVideos()">
             <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon">
-            Comenzar a ganar puntos
+            {{ 'VIDEO_REWARDS.START_BUTTON' | translate }}
           </button>
         </div>
 
         <div class="limit-reached" *ngIf="dailyLimitReached && !currentVideo">
-          <p>Has alcanzado el límite diario de videos.</p>
-          <p>Vuelve mañana para ganar más puntos.</p>
+          <p>{{ 'VIDEO_REWARDS.LIMIT_REACHED_TEXT' | translate }}</p>
+          <p>{{ 'VIDEO_REWARDS.COME_BACK_TOMORROW' | translate }}</p>
         </div>
 
         <div class="stats">
           <div class="stat-item">
-            <span class="stat-label">Videos vistos hoy:</span>
+            <span class="stat-label">{{ 'VIDEO_REWARDS.VIDEOS_WATCHED' | translate }}</span>
             <span class="stat-value">{{videosWatchedToday}}/5</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Puntos ganados hoy:</span>
+            <span class="stat-label">{{ 'VIDEO_REWARDS.POINTS_EARNED_TODAY' | translate }}</span>
             <span class="stat-value">{{pointsEarnedToday}}</span>
           </div>
         </div>

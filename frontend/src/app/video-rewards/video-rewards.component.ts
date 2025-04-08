@@ -8,11 +8,12 @@ import { NotificationService } from '../services/notification.service';
 import { HeaderComponent } from '../header/header.component';
 import { environment } from '../../environments/environment';
 import { Subscription, interval } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-video-rewards',
   standalone: true,
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent, TranslateModule],
   templateUrl: './video-rewards.component.html',
   styleUrls: ['./video-rewards.component.css']
 })

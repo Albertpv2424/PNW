@@ -380,5 +380,43 @@
   "SEND_BUTTON": "Enviar Mensaje",
   "SENDING": "Enviando...",
   "SUBMIT_SUCCESS": "¡Mensaje enviado con éxito! Te responderemos pronto."
-}
-}
+},
+
+  "DAILY_WHEEL": {
+    "TITLE": "Ruleta Diaria",
+    "SPIN_BUTTON": "Girar",
+    "SPINNING": "Girando...",
+    "ALREADY_SPUN": "Ya has girado hoy",
+    "SPIN_TOMORROW": "Podrás volver a girar mañana",
+    "YOU_WON": "¡Has ganado!",
+    "TODAY_WON": "Hoy has ganado:",
+    "CONGRATULATIONS": "¡Felicidades! Has ganado",
+    "POINTS": "puntos",
+    "EARN_POINTS": "Gana puntos viendo vídeos",
+    "WATCH_VIDEOS": "Mira vídeos aleatorios y gana hasta",
+    "POINTS_PER_VIDEO": "puntos por cada vídeo completado.",
+    "VIDEOS_PER_DAY": "Puedes ver hasta 5 vídeos al día.",
+    "START_EARNING": "Comenzar a ganar puntos",
+    "VIDEOS_WATCHED_TODAY": "Vídeos vistos hoy:",
+    "POINTS_EARNED_TODAY": "Puntos ganados hoy:"
+  },
+  
+    "VIDEO_REWARDS": {
+      "TITLE": "Gana puntos viendo videos",
+      "INFO_TEXT": "Mira videos aleatorios y gana hasta",
+      "POINTS_PER_VIDEO": "puntos por cada video completado.",
+      "DAILY_LIMIT": "Puedes ver hasta 5 videos al día.",
+      "START_BUTTON": "Comenzar a ganar puntos",
+      "TIME_REMAINING": "Tiempo restante:",
+      "SECONDS": "segundos",
+      "VIDEO_COMPLETED": "¡Video completado!",
+      "POINTS_EARNED": "Has ganado",
+      "POINTS": "puntos",
+      "NEXT_VIDEO": "Ver otro video",
+      "DAILY_LIMIT_REACHED": "Límite diario alcanzado",
+      "LIMIT_REACHED_TEXT": "Has alcanzado el límite diario de videos.",
+      "COME_BACK_TOMORROW": "Vuelve mañana para ganar más puntos.",
+      "VIDEOS_WATCHED": "Videos vistos hoy:",
+      "POINTS_EARNED_TODAY": "Puntos ganados hoy:"
+    }
+  }

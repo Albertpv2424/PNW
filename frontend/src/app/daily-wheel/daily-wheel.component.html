@@ -6,7 +6,7 @@
 <div class="wheel-modal" *ngIf="isOpen">
   <div class="wheel-container">
     <div class="wheel-header">
-      <h2>Ruleta Diaria</h2>
+      <h2>{{ 'DAILY_WHEEL.TITLE' | translate }}</h2>
       <button class="close-button" (click)="toggleWheel()">×</button>
     </div>
     <div class="wheel-content">
@@ -14,17 +14,17 @@
 
       <div class="wheel-controls">
         <button class="spin-button" (click)="spinWheel()" [disabled]="!canSpin || isSpinning">
-          {{ isSpinning ? 'Girando...' : (canSpin ? 'Girar' : 'Ya has girado hoy') }}
+          {{ isSpinning ? ('DAILY_WHEEL.SPINNING' | translate) : (canSpin ? ('DAILY_WHEEL.SPIN_BUTTON' | translate) : ('DAILY_WHEEL.ALREADY_SPUN' | translate)) }}
         </button>
 
         <div class="wheel-info" *ngIf="!canSpin && !isSpinning">
-          Podrás volver a girar mañana
+          {{ 'DAILY_WHEEL.SPIN_TOMORROW' | translate }}
         </div>
       </div>
 
       <!-- Only show the prize after spinning is complete -->
       <div class="prize-display" *ngIf="selectedPrize && !isSpinning">
-        <p>¡Has ganado!</p>
+        <p>{{ 'DAILY_WHEEL.YOU_WON' | translate }}</p>
         <div class="prize-amount">
           {{ selectedPrize }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon">
         </div>
@@ -32,7 +32,7 @@
 
       <!-- Show last earned points when can't spin and no current prize selected -->
       <div class="prize-display" *ngIf="!canSpin && !selectedPrize && lastEarnedPoints">
-        <p>Hoy has ganado:</p>
+        <p>{{ 'DAILY_WHEEL.TODAY_WON' | translate }}</p>
         <div class="prize-amount">
           {{ lastEarnedPoints }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon">
         </div>
