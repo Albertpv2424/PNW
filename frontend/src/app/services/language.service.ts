@@ -14,7 +14,10 @@ export class LanguageService {
     { code: 'es', name: 'Español' },
     { code: 'en', name: 'English' },
     { code: 'it', name: 'Italiano' },
-    { code: 'ca', name: 'Català' }
+    { code: 'ca', name: 'Català' },
+    { code: 'fr', name: 'Français' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'zh', name: '中文' }
   ];
   
   // Current language subject

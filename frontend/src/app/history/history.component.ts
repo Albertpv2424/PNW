@@ -124,6 +124,9 @@ export class HistoryComponent implements OnInit {
       case 'en': return 'en-US';
       case 'it': return 'it-IT';
       case 'ca': return 'ca-ES';
+      case 'fr': return 'fr-FR';
+      case 'de': return 'de-DE';
+      case 'zh': return 'zh-CN';
       default: return 'es-ES';
     }
   }

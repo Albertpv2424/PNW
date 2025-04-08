@@ -56,7 +56,10 @@ export class LanguageSliderComponent implements OnInit {
       'es': 'es',
       'en': 'gb', // Make sure this is 'gb' for Great Britain
       'it': 'it',
-      'ca': 'catalonia' // Usando la bandera catalana específica
+      'ca': 'catalonia', // Usando la bandera catalana específica
+      'fr': 'fr',
+      'de': 'de',
+      'zh': 'cn'
     };
 
     const countryCode = countryMap[langCode] || langCode;
