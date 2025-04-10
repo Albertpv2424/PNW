@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-04-2025 a las 15:07:37
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Tiempo de generación: 10-04-2025 a las 20:13:15
+-- Versión del servidor: 10.4.25-MariaDB
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,12 +29,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `chat_messages` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` varchar(255) NOT NULL,
-  `admin_id` varchar(255) DEFAULT NULL,
-  `message` text NOT NULL,
+  `user_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `admin_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `read` tinyint(1) NOT NULL DEFAULT 0,
-  `chat_session_id` varchar(255) NOT NULL,
+  `chat_session_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -44,19 +44,9 @@ CREATE TABLE `chat_messages` (
 --
 
 INSERT INTO `chat_messages` (`id`, `user_id`, `admin_id`, `message`, `is_admin`, `read`, `chat_session_id`, `created_at`, `updated_at`) VALUES
-(17, 'Kakanata', NULL, '¡Hola! Necesito ayuda con mi cuenta.', 0, 0, 'a805ebab-34f0-47f5-9348-14d57d2c3272', '2025-04-06 10:04:00', '2025-04-06 10:04:00'),
-(18, 'Albertpv24', NULL, '¡Hola! Necesito ayuda con mi cuenta.', 0, 0, '4219dc2e-e69f-4df2-b79d-966c6a379f69', '2025-04-06 10:09:53', '2025-04-06 10:09:53'),
-(19, 'Kakanata', NULL, '¡Hola! Necesito ayuda con mi cuenta.', 0, 0, '8f96a629-656e-48b4-b4f4-45d1b7c35078', '2025-04-06 10:12:40', '2025-04-06 10:12:40'),
-(20, 'Popi', NULL, '¡Hola! Necesito ayuda con mi cuenta.', 0, 0, '1bd50c8f-926e-424b-ac07-d445818ef95f', '2025-04-06 10:17:19', '2025-04-06 10:17:19'),
-(21, 'Popi', NULL, 'Hola', 0, 0, '1bd50c8f-926e-424b-ac07-d445818ef95f', '2025-04-06 10:24:51', '2025-04-06 10:24:51'),
-(22, 'Albertpv24', NULL, '¡Hola! Necesito ayuda con mi cuenta.', 0, 0, '54ba0474-d66e-443f-a5b9-597d1a0a8273', '2025-04-06 10:34:37', '2025-04-06 10:34:37'),
-(23, 'Albertpv24', NULL, 'ajjajaja', 0, 0, '54ba0474-d66e-443f-a5b9-597d1a0a8273', '2025-04-06 10:34:44', '2025-04-06 10:34:44'),
-(24, 'admin', NULL, 'Hola', 1, 1, '54ba0474-d66e-443f-a5b9-597d1a0a8273', '2025-04-06 10:34:53', '2025-04-06 10:34:54'),
-(25, 'Albertpv24', NULL, 'Maricon', 0, 0, '54ba0474-d66e-443f-a5b9-597d1a0a8273', '2025-04-06 11:55:42', '2025-04-06 11:55:42'),
-(26, 'admin', NULL, 'Taputamare', 1, 1, '54ba0474-d66e-443f-a5b9-597d1a0a8273', '2025-04-06 11:55:50', '2025-04-06 11:55:54'),
-(27, 'Laura', NULL, '¡Hola! Necesito ayuda con mi cuenta.', 0, 0, '7a843244-d10d-46ba-99d8-6298664f420c', '2025-04-06 18:10:46', '2025-04-06 18:10:46'),
-(28, 'Laura', NULL, 'Hola soc la Laurix', 0, 0, '7a843244-d10d-46ba-99d8-6298664f420c', '2025-04-06 18:11:03', '2025-04-06 18:11:03'),
-(29, 'admin', NULL, 'Hola soc l Alberto', 1, 1, '7a843244-d10d-46ba-99d8-6298664f420c', '2025-04-06 18:11:19', '2025-04-06 18:11:23');
+(48, 'Albertpv24', NULL, '¡Hola! Necesito ayuda con mi cuenta.', 0, 0, 'b5802ba7-a15a-4250-b5fa-48cdf617db88', '2025-04-08 13:07:12', '2025-04-08 13:07:12'),
+(49, 'Albertpv24', NULL, 'Hola soc l omar', 0, 0, 'b5802ba7-a15a-4250-b5fa-48cdf617db88', '2025-04-08 13:07:21', '2025-04-08 13:07:21'),
+(50, 'admin', NULL, 'Hola omar', 1, 1, 'b5802ba7-a15a-4250-b5fa-48cdf617db88', '2025-04-08 13:07:29', '2025-04-08 13:07:33');
 
 -- --------------------------------------------------------
 
@@ -66,10 +56,10 @@ INSERT INTO `chat_messages` (`id`, `user_id`, `admin_id`, `message`, `is_admin`,
 
 CREATE TABLE `chat_sessions` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `session_id` varchar(255) NOT NULL,
-  `user_id` varchar(255) NOT NULL,
-  `admin_id` varchar(255) DEFAULT NULL,
-  `last_message` text DEFAULT NULL,
+  `session_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `admin_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_message` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_message_time` timestamp NULL DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -81,12 +71,7 @@ CREATE TABLE `chat_sessions` (
 --
 
 INSERT INTO `chat_sessions` (`id`, `session_id`, `user_id`, `admin_id`, `last_message`, `last_message_time`, `active`, `created_at`, `updated_at`) VALUES
-(6, 'a805ebab-34f0-47f5-9348-14d57d2c3272', 'Kakanata', 'admin', '¡Hola! Necesito ayuda con mi cuenta.', '2025-04-06 10:04:00', 1, '2025-04-06 10:04:00', '2025-04-06 10:04:00'),
-(7, '4219dc2e-e69f-4df2-b79d-966c6a379f69', 'Albertpv24', 'admin', '¡Hola! Necesito ayuda con mi cuenta.', '2025-04-06 10:09:53', 1, '2025-04-06 10:09:53', '2025-04-06 10:09:53'),
-(8, '8f96a629-656e-48b4-b4f4-45d1b7c35078', 'Kakanata', 'admin', '¡Hola! Necesito ayuda con mi cuenta.', '2025-04-06 10:12:40', 1, '2025-04-06 10:12:40', '2025-04-06 10:12:40'),
-(9, '1bd50c8f-926e-424b-ac07-d445818ef95f', 'Popi', 'admin', 'Hola', '2025-04-06 10:24:51', 1, '2025-04-06 10:17:19', '2025-04-06 10:24:51'),
-(10, '54ba0474-d66e-443f-a5b9-597d1a0a8273', 'Albertpv24', 'admin', 'Taputamare', '2025-04-06 11:55:50', 1, '2025-04-06 10:34:37', '2025-04-06 11:55:50'),
-(11, '7a843244-d10d-46ba-99d8-6298664f420c', 'Laura', 'admin', 'Hola soc l Alberto', '2025-04-06 18:11:19', 1, '2025-04-06 18:10:46', '2025-04-06 18:11:19');
+(20, 'b5802ba7-a15a-4250-b5fa-48cdf617db88', 'Albertpv24', 'admin', 'Hola omar', '2025-04-08 13:07:29', 1, '2025-04-08 13:07:12', '2025-04-08 13:07:29');
 
 -- --------------------------------------------------------
 
@@ -96,7 +81,7 @@ INSERT INTO `chat_sessions` (`id`, `session_id`, `user_id`, `admin_id`, `last_me
 
 CREATE TABLE `daily_rewards_tracking` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `wheel_spun` tinyint(1) NOT NULL DEFAULT 0,
   `wheel_points_earned` int(11) NOT NULL DEFAULT 0,
@@ -119,7 +104,11 @@ INSERT INTO `daily_rewards_tracking` (`id`, `usuari_nick`, `date`, `wheel_spun`,
 (2, 'Albertpv24', '2025-03-18', 1, 500, 0, 0, 0, 5, 0, 3600, '2025-03-18 15:37:00', '2025-03-18 20:45:07'),
 (6, 'Albertpv24', '2025-03-21', 1, 75, 0, 0, 0, 5, 0, 3600, '2025-03-21 09:25:58', '2025-03-21 09:35:44'),
 (8, 'Albertpv24', '2025-04-06', 1, 50, 0, 0, 0, 5, 0, 3600, '2025-04-06 12:01:15', '2025-04-06 12:01:15'),
-(9, 'Laura', '2025-04-06', 1, 100, 0, 0, 0, 5, 0, 3600, '2025-04-06 18:07:37', '2025-04-06 18:07:37');
+(9, 'Laura', '2025-04-06', 1, 100, 0, 0, 0, 5, 0, 3600, '2025-04-06 18:07:37', '2025-04-06 18:07:37'),
+(10, 'Albertpv24', '2025-04-07', 1, 200, 0, 0, 0, 5, 0, 3600, '2025-04-07 11:39:25', '2025-04-07 11:39:25'),
+(11, 'Albertpv24', '2025-04-08', 1, 75, 1, 30, 0, 5, 0, 3600, '2025-04-08 12:32:58', '2025-04-08 12:47:33'),
+(12, 'Popi', '2025-04-08', 1, 500, 0, 0, 0, 5, 0, 3600, '2025-04-08 12:56:17', '2025-04-08 12:56:22'),
+(13, 'Albertpv24', '2025-04-10', 1, 10, 0, 0, 0, 5, 0, 3600, '2025-04-10 12:11:56', '2025-04-10 12:11:56');
 
 -- --------------------------------------------------------
 
@@ -130,11 +119,11 @@ INSERT INTO `daily_rewards_tracking` (`id`, `usuari_nick`, `date`, `wheel_spun`,
 CREATE TABLE `detalle_prediccio` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `prediccio_proposada_id` bigint(20) UNSIGNED NOT NULL,
-  `match_id` varchar(255) NOT NULL,
-  `equipo` varchar(255) NOT NULL,
-  `tipo_apuesta` varchar(255) NOT NULL,
+  `match_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `equipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo_apuesta` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cuota` decimal(10,2) NOT NULL,
-  `match_info` varchar(255) NOT NULL,
+  `match_info` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -144,15 +133,42 @@ CREATE TABLE `detalle_prediccio` (
 --
 
 INSERT INTO `detalle_prediccio` (`id`, `prediccio_proposada_id`, `match_id`, `equipo`, `tipo_apuesta`, `cuota`, `match_info`, `created_at`, `updated_at`) VALUES
-(1, 1, '7870be3e8c8ac05798da0a844571f6f7', 'Aston Villa', 'h2h', 7.00, 'UEFA Champions League: Paris Saint Germain vs Aston Villa', '2025-03-18 15:25:38', '2025-03-18 15:25:38'),
-(2, 2, '2162b24f54d968d430da71037503dfcc', 'Barcelona', 'h2h', 1.40, 'UEFA Champions League: Barcelona vs Borussia Dortmund', '2025-03-18 15:27:19', '2025-03-18 15:27:19'),
-(3, 3, '669cb87a46c56ab00d788ec520481b3a', 'Leganés', 'h2h', 14.00, 'La Liga - Spain: Real Madrid vs Leganés', '2025-03-20 21:55:17', '2025-03-20 21:55:17'),
-(4, 3, 'de1a04fc86dc062151afe5c98a96258a', 'Alavés', 'h2h', 2.30, 'La Liga - Spain: Alavés vs Rayo Vallecano', '2025-03-20 21:55:17', '2025-03-20 21:55:17'),
-(5, 3, '2162b24f54d968d430da71037503dfcc', 'Barcelona', 'h2h', 1.40, 'UEFA Champions League: Barcelona vs Borussia Dortmund', '2025-03-20 21:55:17', '2025-03-20 21:55:17'),
-(6, 4, '268e4818f0941be692b1496fdf70dee4', 'Villarreal', 'h2h', 2.30, 'La Liga - Spain: Getafe vs Villarreal', '2025-03-21 09:03:42', '2025-03-21 09:03:42'),
-(7, 4, '3eac51545c1860f07789ca6be6464e58', 'Valladolid', 'h2h', 4.20, 'La Liga - Spain: Valladolid vs Getafe', '2025-03-21 09:03:42', '2025-03-21 09:03:42'),
-(11, 6, '09b2fe5e35e1c47aab13f282ecd01060', 'Empate', 'h2h', 2.50, 'La Liga - Spain: Villarreal vs Athletic Bilbao', '2025-04-06 18:09:27', '2025-04-06 18:09:27'),
-(12, 6, '00ae27af9b19dfb4b023588de87d0087', 'Empate', 'h2h', 3.70, 'La Liga - Spain: Celta Vigo vs Espanyol', '2025-04-06 18:09:27', '2025-04-06 18:09:27');
+(1, 1, '7870be3e8c8ac05798da0a844571f6f7', 'Aston Villa', 'h2h', '7.00', 'UEFA Champions League: Paris Saint Germain vs Aston Villa', '2025-03-18 15:25:38', '2025-03-18 15:25:38'),
+(2, 2, '2162b24f54d968d430da71037503dfcc', 'Barcelona', 'h2h', '1.40', 'UEFA Champions League: Barcelona vs Borussia Dortmund', '2025-03-18 15:27:19', '2025-03-18 15:27:19'),
+(3, 3, '669cb87a46c56ab00d788ec520481b3a', 'Leganés', 'h2h', '14.00', 'La Liga - Spain: Real Madrid vs Leganés', '2025-03-20 21:55:17', '2025-03-20 21:55:17'),
+(4, 3, 'de1a04fc86dc062151afe5c98a96258a', 'Alavés', 'h2h', '2.30', 'La Liga - Spain: Alavés vs Rayo Vallecano', '2025-03-20 21:55:17', '2025-03-20 21:55:17'),
+(5, 3, '2162b24f54d968d430da71037503dfcc', 'Barcelona', 'h2h', '1.40', 'UEFA Champions League: Barcelona vs Borussia Dortmund', '2025-03-20 21:55:17', '2025-03-20 21:55:17'),
+(6, 4, '268e4818f0941be692b1496fdf70dee4', 'Villarreal', 'h2h', '2.30', 'La Liga - Spain: Getafe vs Villarreal', '2025-03-21 09:03:42', '2025-03-21 09:03:42'),
+(7, 4, '3eac51545c1860f07789ca6be6464e58', 'Valladolid', 'h2h', '4.20', 'La Liga - Spain: Valladolid vs Getafe', '2025-03-21 09:03:42', '2025-03-21 09:03:42'),
+(11, 6, '09b2fe5e35e1c47aab13f282ecd01060', 'Empate', 'h2h', '2.50', 'La Liga - Spain: Villarreal vs Athletic Bilbao', '2025-04-06 18:09:27', '2025-04-06 18:09:27'),
+(12, 6, '00ae27af9b19dfb4b023588de87d0087', 'Empate', 'h2h', '3.70', 'La Liga - Spain: Celta Vigo vs Espanyol', '2025-04-06 18:09:27', '2025-04-06 18:09:27'),
+(13, 7, 'c250cd9784712b609000f9af50a0ba04', 'Real Madrid', 'h2h', '1.62', 'La Liga - Spain: Alavés vs Real Madrid', '2025-04-08 13:56:50', '2025-04-08 13:56:50'),
+(14, 7, '1ad1f20f8b22abf90405d038b86a49f2', 'Bayern München', 'h2h', '2.04', 'UEFA Champions League: Bayern München vs Internazionale Milano', '2025-04-08 13:56:50', '2025-04-08 13:56:50');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `idiomas`
+--
+
+CREATE TABLE `idiomas` (
+  `id` int(11) NOT NULL,
+  `codigo_iso` varchar(5) NOT NULL,
+  `nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `idiomas`
+--
+
+INSERT INTO `idiomas` (`id`, `codigo_iso`, `nombre`) VALUES
+(1, 'es', 'Español'),
+(2, 'en', 'English'),
+(3, 'it', 'Italiano'),
+(4, 'ca', 'Català'),
+(5, 'fr', 'Français'),
+(6, 'de', 'Deutsch'),
+(7, 'zh', '中文');
 
 -- --------------------------------------------------------
 
@@ -161,7 +177,7 @@ INSERT INTO `detalle_prediccio` (`id`, `prediccio_proposada_id`, `match_id`, `eq
 --
 
 CREATE TABLE `inscripcio_a_promos` (
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `promo_id` bigint(20) UNSIGNED NOT NULL,
   `data_inscripcio` timestamp NULL DEFAULT NULL,
   `compleix_requisits` tinyint(1) NOT NULL DEFAULT 0
@@ -183,7 +199,7 @@ INSERT INTO `inscripcio_a_promos` (`usuari_nick`, `promo_id`, `data_inscripcio`,
 --
 
 CREATE TABLE `limitacio` (
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `apostes_diaries` int(11) NOT NULL DEFAULT 0,
   `temps_diari` int(11) NOT NULL DEFAULT 0,
   `punts_apostats` int(11) NOT NULL DEFAULT 0,
@@ -198,7 +214,7 @@ CREATE TABLE `limitacio` (
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -237,8 +253,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) NOT NULL,
-  `token` varchar(255) NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -257,11 +273,11 @@ INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) NOT NULL,
-  `tokenable_id` varchar(50) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -325,7 +341,15 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (50, 'App\\Models\\User', 'Albertpv24', 'auth-token', '0021f47ef6b4c117058ad9b1453ca0215b586b40a6e0d5c3a659dde3c5eb7228', '[\"*\"]', '2025-04-06 18:05:35', NULL, '2025-04-06 12:18:11', '2025-04-06 18:05:35'),
 (51, 'App\\Models\\User', 'Laura', 'auth-token', 'd7562abeb69ffb0811aee8a73fa1899ba07cc14c08171c7689a6dd06d1344293', '[\"*\"]', '2025-04-06 18:09:27', NULL, '2025-04-06 18:07:00', '2025-04-06 18:09:27'),
 (52, 'App\\Models\\User', 'admin', 'auth-token', 'fa316a56456852730435d527df72505da84909fb05e925be6116d05906339d0b', '[\"*\"]', '2025-04-06 18:12:38', NULL, '2025-04-06 18:09:42', '2025-04-06 18:12:38'),
-(53, 'App\\Models\\User', 'Laura', 'auth-token', 'ab02d63af16bf96c7255a78904f19efd91406a3c7a44666a20d629533f37498a', '[\"*\"]', '2025-04-06 18:12:11', NULL, '2025-04-06 18:10:15', '2025-04-06 18:12:11');
+(53, 'App\\Models\\User', 'Laura', 'auth-token', 'ab02d63af16bf96c7255a78904f19efd91406a3c7a44666a20d629533f37498a', '[\"*\"]', '2025-04-06 18:12:11', NULL, '2025-04-06 18:10:15', '2025-04-06 18:12:11'),
+(54, 'App\\Models\\User', 'admin', 'auth-token', 'be4fac6833ed336eec3622eec5ab3ab3fb5cb2ab0e71d680c5a326423113633c', '[\"*\"]', '2025-04-07 16:17:27', NULL, '2025-04-07 11:37:47', '2025-04-07 16:17:27'),
+(55, 'App\\Models\\User', 'Albertpv24', 'auth-token', '3cf2b6a473a0df47edea9d52a3d9b1579bbe351cb6bc7117db35a31504e675eb', '[\"*\"]', '2025-04-08 12:19:45', NULL, '2025-04-07 11:38:03', '2025-04-08 12:19:45'),
+(56, 'App\\Models\\User', 'admin', 'auth-token', 'cae13185609b7a49b18b7da4da259be82ec852923e6b6c2b00c377162d4d882e', '[\"*\"]', '2025-04-08 16:16:58', NULL, '2025-04-08 11:28:25', '2025-04-08 16:16:58'),
+(57, 'App\\Models\\User', 'Albertpv24', 'auth-token', '07fc3bacb92d1c40277a73fad262104aad393a50fa0bbf1c6413cf5cbd8c862a', '[\"*\"]', '2025-04-08 12:52:25', NULL, '2025-04-08 12:19:54', '2025-04-08 12:52:25'),
+(58, 'App\\Models\\User', 'Albertpv24', 'auth-token', 'ad2fb8910d9dbcce2d90fbd452b2d63788e86bbcc5cfff7ced7e9a9a5e91c19d', '[\"*\"]', '2025-04-08 12:54:13', NULL, '2025-04-08 12:53:19', '2025-04-08 12:54:13'),
+(59, 'App\\Models\\User', 'Albertpv24', 'auth-token', '9bed56af30c67e8338c86caed0705dde5126687e0d9c928e90bec19d1539b0a8', '[\"*\"]', '2025-04-08 12:56:01', NULL, '2025-04-08 12:54:30', '2025-04-08 12:56:01'),
+(60, 'App\\Models\\User', 'Popi', 'auth-token', 'aa03b5062621fbc13de77fdccf37df1c79bf5b96c11f2d5f15276d5fa7f8f0b1', '[\"*\"]', '2025-04-08 12:58:34', NULL, '2025-04-08 12:56:10', '2025-04-08 12:58:34'),
+(61, 'App\\Models\\User', 'Albertpv24', 'auth-token', 'bf394cde99fb8754c6aa788bfdfb9667c3d61efb9a4759a0265fb00cffd14410', '[\"*\"]', '2025-04-10 16:12:51', NULL, '2025-04-08 12:58:43', '2025-04-10 16:12:51');
 
 -- --------------------------------------------------------
 
@@ -335,7 +359,7 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 
 CREATE TABLE `prediccions_sist` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `usuari_nick` varchar(50) DEFAULT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `prediccio_proposada_id` bigint(20) UNSIGNED NOT NULL,
   `resultat_prediccio_id` bigint(20) UNSIGNED DEFAULT NULL,
   `punts_apostats` int(11) NOT NULL,
@@ -361,12 +385,12 @@ INSERT INTO `prediccions_sist` (`id`, `usuari_nick`, `prediccio_proposada_id`, `
 
 CREATE TABLE `prediccio_proposada` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cuota` decimal(10,2) NOT NULL,
   `punts_proposats` decimal(10,2) NOT NULL,
-  `tipo_apuesta` enum('simple','parlay') NOT NULL DEFAULT 'simple',
-  `match_info` varchar(255) DEFAULT NULL,
-  `prediction_choice` varchar(255) DEFAULT NULL
+  `tipo_apuesta` enum('simple','parlay') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'simple',
+  `match_info` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `prediction_choice` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -374,11 +398,12 @@ CREATE TABLE `prediccio_proposada` (
 --
 
 INSERT INTO `prediccio_proposada` (`id`, `usuari_nick`, `cuota`, `punts_proposats`, `tipo_apuesta`, `match_info`, `prediction_choice`) VALUES
-(1, 'Wispy', 7.00, 25.00, 'simple', 'UEFA Champions League: Paris Saint Germain vs Aston Villa', NULL),
-(2, 'Wispy', 1.40, 1.00, 'simple', 'UEFA Champions League: Barcelona vs Borussia Dortmund', 'Barcelona'),
-(3, 'Albertpv24', 45.08, 1000.00, 'parlay', 'La Liga - Spain: Real Madrid vs Leganés + La Liga - Spain: Alavés vs Rayo Vallecano + UEFA Champions League: Barcelona vs Borussia Dortmund', 'Leganés + Alavés + Barcelona'),
-(4, 'Albertpv24', 9.66, 10.00, 'parlay', 'La Liga - Spain: Getafe vs Villarreal + La Liga - Spain: Valladolid vs Getafe', 'Villarreal + Valladolid'),
-(6, 'Laura', 9.25, 100.00, 'parlay', 'La Liga - Spain: Villarreal vs Athletic Bilbao + La Liga - Spain: Celta Vigo vs Espanyol', 'Empate + Empate');
+(1, 'Wispy', '7.00', '25.00', 'simple', 'UEFA Champions League: Paris Saint Germain vs Aston Villa', NULL),
+(2, 'Wispy', '1.40', '1.00', 'simple', 'UEFA Champions League: Barcelona vs Borussia Dortmund', 'Barcelona'),
+(3, 'Albertpv24', '45.08', '1000.00', 'parlay', 'La Liga - Spain: Real Madrid vs Leganés + La Liga - Spain: Alavés vs Rayo Vallecano + UEFA Champions League: Barcelona vs Borussia Dortmund', 'Leganés + Alavés + Barcelona'),
+(4, 'Albertpv24', '9.66', '10.00', 'parlay', 'La Liga - Spain: Getafe vs Villarreal + La Liga - Spain: Valladolid vs Getafe', 'Villarreal + Valladolid'),
+(6, 'Laura', '9.25', '100.00', 'parlay', 'La Liga - Spain: Villarreal vs Athletic Bilbao + La Liga - Spain: Celta Vigo vs Espanyol', 'Empate + Empate'),
+(7, 'Albertpv24', '3.30', '10.00', 'parlay', 'La Liga - Spain: Alavés vs Real Madrid + UEFA Champions League: Bayern München vs Internazionale Milano', 'Real Madrid + Bayern München');
 
 -- --------------------------------------------------------
 
@@ -393,25 +418,87 @@ CREATE TABLE `premis` (
   `cost` decimal(10,2) NOT NULL,
   `condicio` decimal(10,2) NOT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `premis`
 --
 
 INSERT INTO `premis` (`id`, `titol`, `descripcio`, `cost`, `condicio`, `image`) VALUES
-(1, 'Tour Per Lleida', 'Visita guiada por los lugares más emblemáticos de Lleida', 1500.00, 1.00, 'uploads/premios/tour.png'),
-(2, 'Karting Alpicat', 'Sesión de karting en el circuito de Alpicat', 2000.00, 1.00, 'uploads/premios/karting.png'),
-(3, 'Cena Gourmet', 'Cena para dos personas en un restaurante de alta cocina', 3000.00, 1.00, 'uploads/premios/cena.png'),
-(4, 'Entradas VIP Lleida Esportiu', 'Dos entradas VIP para un partido del Lleida Esportiu', 1000.00, 1.00, 'uploads/premios/entradas.png'),
-(5, 'Partit del Hoops Lleida', 'Entrada para un partido del Hoops Lleida en el Barris Nord', 500.00, 1.00, 'uploads/premios/tour.png'),
-(6, 'Escape Room Lleida', 'Experiencia de escape room para ti y tus amigos en Lleida', 2500.00, 1.00, 'uploads/premios/escape.png'),
-(7, 'Visita Guiada Museu de Lleida', 'Visita guiada al Museu de Lleida con acceso a todas las exposiciones', 800.00, 1.00, 'uploads/premios/museu.png'),
-(8, 'Entrada Camp Nou Experience', 'Visita al estadio del FC Barcelona con el tour completo', 3000.00, 1.00, 'uploads/premios/camp-nou.png'),
-(9, 'Visita a la Sagrada Familia', 'Entrada con audioguía para visitar la Sagrada Familia en Barcelona', 2800.00, 1.00, 'uploads/premios/sagrada.png'),
-(10, 'Tour por Montserrat', 'Excursión guiada a la montaña de Montserrat con visita al monasterio', 3500.00, 1.00, 'uploads/premios/montserrat.png'),
-(11, 'Entrada Partido RCD Espanyol', 'Entrada para un partido del RCD Espanyol en el RCDE Stadium', 10000.00, 1.00, 'uploads/premios/espanyol.png'),
-(12, 'Festival Castell de Peralada', 'Entrada para el prestigioso festival de música y danza en el Castell de Peralada', 2200.00, 1.00, 'uploads/premios/peralada.png');
+(1, 'Tour Per Lleida', 'Visita guiada por los lugares más emblemáticos de Lleida', '1500.00', '1.00', 'uploads/premios/tour.png'),
+(2, 'Karting Alpicat', 'Sesión de karting en el circuito de Alpicat', '2000.00', '1.00', 'uploads/premios/karting.png'),
+(3, 'Cena Gourmet', 'Cena para dos personas en un restaurante de alta cocina', '3000.00', '1.00', 'uploads/premios/cena.png'),
+(4, 'Entradas VIP Lleida Esportiu', 'Dos entradas VIP para un partido del Lleida Esportiu', '1000.00', '1.00', 'uploads/premios/entradas.png'),
+(5, 'Partit del Hoops Lleida', 'Entrada para un partido del Hoops Lleida en el Barris Nord', '500.00', '1.00', 'uploads/premios/tour.png'),
+(6, 'Escape Room Lleida', 'Experiencia de escape room para ti y tus amigos en Lleida', '2500.00', '1.00', 'uploads/premios/escape.png'),
+(7, 'Visita Guiada Museu de Lleida', 'Visita guiada al Museu de Lleida con acceso a todas las exposiciones', '800.00', '1.00', 'uploads/premios/museu.png'),
+(8, 'Entrada Camp Nou Experience', 'Visita al estadio del FC Barcelona con el tour completo', '3000.00', '1.00', 'uploads/premios/camp-nou.png'),
+(9, 'Visita a la Sagrada Familia', 'Entrada con audioguía para visitar la Sagrada Familia en Barcelona', '2800.00', '1.00', 'uploads/premios/sagrada.png'),
+(10, 'Tour por Montserrat', 'Excursión guiada a la montaña de Montserrat con visita al monasterio', '3500.00', '1.00', 'uploads/premios/montserrat.png'),
+(11, 'Entrada Partido RCD Espanyol', 'Entrada para un partido del RCD Espanyol en el RCDE Stadium', '10000.00', '1.00', 'uploads/premios/espanyol.png'),
+(12, 'Festival Castell de Peralada', 'Entrada para el prestigioso festival de música y danza en el Castell de Peralada', '2200.00', '1.00', 'uploads/premios/peralada.png');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `premis_traduccions`
+--
+
+CREATE TABLE `premis_traduccions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `premi_id` bigint(20) UNSIGNED NOT NULL,
+  `idioma_id` int(11) NOT NULL,
+  `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `premis_traduccions`
+--
+
+INSERT INTO `premis_traduccions` (`id`, `premi_id`, `idioma_id`, `titol`, `descripcio`) VALUES
+(1, 3, 4, 'Sopar Gourmet', 'Sopar per a dues persones en un restaurant d\'alta cuina\n'),
+(2, 3, 1, 'Cena gourmet', 'Cena para dos personas en un restaurante de alta cocina\n'),
+(3, 3, 2, 'Gourmet dinner', 'Dinner for two at a fine dining restaurant'),
+(4, 3, 3, 'Cena gourmet', 'Cena per due persone in un ristorante di alta cucina\n'),
+(5, 3, 5, 'Dîner gastronomique', 'Dîner pour deux personnes dans un restaurant gastronomique\n'),
+(6, 3, 6, 'Gourmet-Abendessen', 'Abendessen für zwei Personen in einem Gourmetrestaurant\n'),
+(7, 3, 7, '美食晚餐', '在高档餐厅为两人准备的晚餐'),
+(8, 1, 1, 'Tour por Lleida\r\n', 'Visita guiada por los lugares más emblemáticos de Lleida\r\n'),
+(9, 1, 2, 'Lleida tour', 'Guided tour of the most iconic places in Lleida\r\n'),
+(10, 1, 3, 'Tour per Lleida\r\n', 'Visita guidata dei luoghi più emblematici di Lleida\r\n'),
+(11, 1, 4, 'Tour per Lleida\r\n', 'Visita guiada pels llocs més emblemàtics de Lleida\r\n'),
+(12, 1, 5, 'Tour à Lleida', 'Visite guidée des lieux les plus emblématiques de Lleida\r\n'),
+(13, 1, 6, 'Tour durch Lleida\r\n', 'Geführte Tour zu den berühmtesten Orten in Lleida\n'),
+(14, 1, 7, '莱里达之旅', '莱里达最具代表性景点的导览'),
+(15, 2, 1, 'Karting Alpicat', 'Sesión de karting en el circuito de Alpicat'),
+(16, 2, 2, 'Karting Alpicat', 'Karting session at the Alpicat circuit'),
+(17, 2, 3, 'Karting Alpicat', 'Sessione di karting nel circuito di Alpicat'),
+(18, 2, 4, 'Karting Alpicat', 'Sessió de karting al circuit d\'Alpicat'),
+(19, 2, 5, 'Karting Alpicat', 'Séance de karting sur le circuit d\'Alpicat'),
+(20, 2, 6, 'Karting Alpicat', 'Karting-Session auf dem Alpicat-Kurs'),
+(21, 2, 7, '卡丁车阿尔皮卡特', '在阿尔皮卡特赛道的卡丁车体验'),
+(22, 4, 1, 'Entradas VIP Lleida Esportiu', 'Dos entradas VIP para un partido del Lleida Esportiu'),
+(23, 4, 2, 'VIP tickets Lleida Esportiu', 'Two VIP tickets for a Lleida Esportiu match'),
+(24, 4, 3, 'Biglietti VIP Lleida Esportiu', 'Due biglietti VIP per una partita del Lleida Esportiu'),
+(25, 4, 4, 'Entrades VIP Lleida Esportiu', 'Dues entrades VIP per a un partit del Lleida Esportiu'),
+(26, 4, 5, 'Billets VIP Lleida Esportiu', 'Deux billets VIP pour un match du Lleida Esportiu'),
+(27, 4, 6, 'VIP-Tickets Lleida Esportiu', 'Zwei VIP-Tickets für ein Spiel des Lleida Esportiu'),
+(29, 4, 7, '莱达体育 VIP 票', '两张莱达体育 VIP 票'),
+(30, 5, 1, 'Partido del Hoops Lleida', 'Entrada para un partido del Hoops Lleida en el Barris Nord'),
+(31, 5, 2, 'Hoops Lleida game', 'Ticket for a Hoops Lleida game at Barris Nord'),
+(32, 5, 3, 'Partita degli Hoops Lleida', 'Biglietto per una partita degli Hoops Lleida al Barris Nord'),
+(33, 5, 4, 'Partit del Hoops Lleida', 'Entrada per a un partit del Hoops Lleida al Barris Nord'),
+(34, 5, 5, 'Match des Hoops Lleida', 'Billet pour un match des Hoops Lleida au Barris Nord'),
+(35, 5, 6, 'Spiel der Hoops Lleida', 'Eintritt für ein Spiel der Hoops Lleida im Barris Nord'),
+(36, 5, 7, '莱达胡普斯比赛', '在巴里斯诺德观看莱达胡普斯比赛的门票'),
+(37, 6, 1, 'Escape Room Lleida', 'Experiencia de escape room para ti y tus amigos en Lleida'),
+(38, 6, 2, 'Escape Room Lleida', 'Escape room experience for you and your friends in Lleida'),
+(39, 6, 3, 'Escape Room Lleida', 'Esperienza di escape room per te e i tuoi amici a Lleida'),
+(40, 6, 4, 'Escape Room Lleida', 'Experiència d\'escape room per a tu i els teus amics a Lleida'),
+(41, 6, 5, 'Escape Room Lleida', 'Expérience d\'escape room pour toi et tes amis à Lleida'),
+(42, 6, 6, 'Escape Room Lleida', 'Escape Room-Erlebnis für dich und deine Freunde in Lleida'),
+(43, 6, 7, '莱达密室逃脱', '在莱达为你和你的朋友提供的密室逃脱体验');
 
 -- --------------------------------------------------------
 
@@ -421,7 +508,7 @@ INSERT INTO `premis` (`id`, `titol`, `descripcio`, `cost`, `condicio`, `image`) 
 
 CREATE TABLE `premis_usuaris` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `usuari_nick` varchar(50) NOT NULL,
+  `usuari_nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `premi_id` bigint(20) UNSIGNED NOT NULL,
   `data_reclamat` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_limit` datetime GENERATED ALWAYS AS (`data_reclamat` + interval 1 month) STORED,
@@ -434,7 +521,14 @@ CREATE TABLE `premis_usuaris` (
 
 INSERT INTO `premis_usuaris` (`id`, `usuari_nick`, `premi_id`, `data_reclamat`, `usat`) VALUES
 (1, 'Albertpv24', 1, '2025-03-21 09:02:30', 0),
-(2, 'Albertpv24', 2, '2025-03-21 09:02:40', 0);
+(2, 'Albertpv24', 2, '2025-03-21 09:02:40', 0),
+(4, 'Albertpv24', 4, '2025-04-10 12:17:01', 0),
+(5, 'Albertpv24', 4, '2025-04-10 12:17:14', 0),
+(6, 'Albertpv24', 3, '2025-04-10 15:11:19', 0),
+(7, 'Albertpv24', 3, '2025-04-10 15:11:51', 0),
+(8, 'Albertpv24', 3, '2025-04-10 15:15:55', 0),
+(9, 'Albertpv24', 3, '2025-04-10 15:19:39', 0),
+(10, 'Albertpv24', 3, '2025-04-10 15:23:31', 0);
 
 -- --------------------------------------------------------
 
@@ -450,7 +544,7 @@ CREATE TABLE `promos` (
   `data_final` date NOT NULL,
   `tipus_promocio` bigint(20) UNSIGNED DEFAULT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `promos`
@@ -465,13 +559,27 @@ INSERT INTO `promos` (`id`, `titol`, `descripcio`, `data_inici`, `data_final`, `
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `promos_traduccions`
+--
+
+CREATE TABLE `promos_traduccions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `promo_id` bigint(20) UNSIGNED NOT NULL,
+  `idioma_id` int(11) NOT NULL,
+  `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `resultat_prediccio`
 --
 
 CREATE TABLE `resultat_prediccio` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `resultat_prediccio` enum('Guanyat','Perdut','Empat') DEFAULT NULL,
-  `validacio` varchar(255) NOT NULL
+  `resultat_prediccio` enum('Guanyat','Perdut','Empat') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `validacio` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -494,8 +602,8 @@ INSERT INTO `resultat_prediccio` (`id`, `resultat_prediccio`, `validacio`) VALUE
 
 CREATE TABLE `tipus_promocio` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `titol` varchar(255) NOT NULL,
-  `descripcio` varchar(255) DEFAULT NULL
+  `titol` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -515,8 +623,8 @@ INSERT INTO `tipus_promocio` (`id`, `titol`, `descripcio`) VALUES
 
 CREATE TABLE `user_sist` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nick` varchar(50) NOT NULL,
-  `pswd` varchar(255) NOT NULL
+  `nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pswd` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -526,19 +634,19 @@ CREATE TABLE `user_sist` (
 --
 
 CREATE TABLE `usuaris` (
-  `nick` varchar(50) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `tipus_acc` enum('Usuari','Usuari_premium','Administrador') NOT NULL,
-  `pswd` varchar(255) NOT NULL,
-  `profile_image` varchar(255) DEFAULT NULL,
+  `nick` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipus_acc` enum('Usuari','Usuari_premium','Administrador') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pswd` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `saldo` decimal(10,2) NOT NULL DEFAULT 0.00,
   `creat_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `actualitzat_el` date DEFAULT NULL,
   `apostes_realitzades` int(11) NOT NULL DEFAULT 0,
   `temps_diari` int(11) NOT NULL DEFAULT 3600,
   `bloquejat` tinyint(1) NOT NULL DEFAULT 0,
-  `dni` varchar(9) NOT NULL,
-  `telefon` varchar(15) DEFAULT NULL,
+  `dni` varchar(9) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefon` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data_naixement` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -547,12 +655,12 @@ CREATE TABLE `usuaris` (
 --
 
 INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `profile_image`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`, `dni`, `telefon`, `data_naixement`) VALUES
-('admin', 'admin@admin.com', 'Administrador', '$2y$12$Z/YcfH1M3uHsmFh4pAgs1Oak.8TyilxKpdRDHRrq2vYOyVxd8/41a', NULL, 0.00, '2025-03-18 19:40:11', NULL, 0, 3600, 0, '', NULL, '2025-03-18'),
-('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$wyfpGoWwBl8VDWUEWdVXO.iZb2a5/l.jZwtFERfkjbpK.PKtJChha', 'uploads/profiles/profile_1742315811_67d9a12336465.png', 10042701.60, '2025-03-18 16:36:51', NULL, 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
-('Kakanata', 'kaka@gmail.com', 'Usuari', '$2y$12$m.5hQcP2Z5TwcwdafWw/7.7B6W27m5rVgOJ//dUq0jdrJyxwqCRNi', NULL, 0.00, '2025-04-06 12:03:48', NULL, 0, 3600, 0, '98746432P', '987654367', '2000-01-01'),
-('Laura', 'albertpv24@alumnes.ilerna.com', 'Usuari', '$2y$12$1fCV5x8BHiyha05jp6Vmh.sLbKqZv6Ab0mn8aypO9.f/W/2e3ygaW', NULL, 925.00, '2025-04-06 20:06:23', NULL, 0, 3600, 0, '98764738L', '645789876', '2005-05-22'),
-('Popi', 'popi@gmail.com', 'Usuari', '$2y$12$BX7MI1gk/wBpxU/TQ6WskeQws.qyY.deS2gXQC4o.AXY19OZ7dOl2', NULL, 1500.00, '2025-03-18 21:24:47', NULL, 0, 3600, 0, '34628123D', '389487231', '2025-03-18'),
-('Wispy', 'paudomec@alumnes.ilerna.com', 'Usuari', '$2y$12$iVGmPHaf.eyGoThYf99u1u4iA3xVcDDa1Gj7gc7WJHrQJ7.2ANdOu', 'uploads/profiles/profile_1742315104_67d99e60222b0.png', 197.40, '2025-03-18 16:25:04', NULL, 0, 3600, 0, '48059629W', '611411604', '2004-11-30');
+('admin', 'admin@admin.com', 'Administrador', '$2y$12$Z/YcfH1M3uHsmFh4pAgs1Oak.8TyilxKpdRDHRrq2vYOyVxd8/41a', NULL, '0.00', '2025-03-18 19:40:11', NULL, 0, 3600, 0, '', NULL, '2025-03-18'),
+('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$wyfpGoWwBl8VDWUEWdVXO.iZb2a5/l.jZwtFERfkjbpK.PKtJChha', 'uploads/profiles/profile_1742315811_67d9a12336465.png', '10026006.60', '2025-03-18 16:36:51', NULL, 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
+('Kakanata', 'kaka@gmail.com', 'Usuari', '$2y$12$m.5hQcP2Z5TwcwdafWw/7.7B6W27m5rVgOJ//dUq0jdrJyxwqCRNi', NULL, '0.00', '2025-04-06 12:03:48', NULL, 0, 3600, 0, '98746432P', '987654367', '2000-01-01'),
+('Laura', 'albertpv24@alumnes.ilerna.com', 'Usuari', '$2y$12$1fCV5x8BHiyha05jp6Vmh.sLbKqZv6Ab0mn8aypO9.f/W/2e3ygaW', NULL, '925.00', '2025-04-06 20:06:23', NULL, 0, 3600, 0, '98764738L', '645789876', '2005-05-22'),
+('Popi', 'popi@gmail.com', 'Usuari', '$2y$12$BX7MI1gk/wBpxU/TQ6WskeQws.qyY.deS2gXQC4o.AXY19OZ7dOl2', NULL, '2000.00', '2025-03-18 21:24:47', NULL, 0, 3600, 0, '34628123D', '389487231', '2025-03-18'),
+('Wispy', 'paudomec@alumnes.ilerna.com', 'Usuari', '$2y$12$iVGmPHaf.eyGoThYf99u1u4iA3xVcDDa1Gj7gc7WJHrQJ7.2ANdOu', 'uploads/profiles/profile_1742315104_67d99e60222b0.png', '197.40', '2025-03-18 16:25:04', NULL, 0, 3600, 0, '48059629W', '611411604', '2004-11-30');
 
 --
 -- Índices para tablas volcadas
@@ -589,6 +697,13 @@ ALTER TABLE `daily_rewards_tracking`
 ALTER TABLE `detalle_prediccio`
   ADD PRIMARY KEY (`id`),
   ADD KEY `detalle_prediccio_prediccio_proposada_id_foreign` (`prediccio_proposada_id`);
+
+--
+-- Indices de la tabla `idiomas`
+--
+ALTER TABLE `idiomas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `codigo_iso` (`codigo_iso`);
 
 --
 -- Indices de la tabla `inscripcio_a_promos`
@@ -646,6 +761,14 @@ ALTER TABLE `premis`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `premis_traduccions`
+--
+ALTER TABLE `premis_traduccions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `premi_idioma_unique` (`premi_id`,`idioma_id`),
+  ADD KEY `idioma_id` (`idioma_id`);
+
+--
 -- Indices de la tabla `premis_usuaris`
 --
 ALTER TABLE `premis_usuaris`
@@ -659,6 +782,14 @@ ALTER TABLE `premis_usuaris`
 ALTER TABLE `promos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `promos_tipus_promocio_foreign` (`tipus_promocio`);
+
+--
+-- Indices de la tabla `promos_traduccions`
+--
+ALTER TABLE `promos_traduccions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `promo_idioma_unique` (`promo_id`,`idioma_id`),
+  ADD KEY `idioma_id` (`idioma_id`);
 
 --
 -- Indices de la tabla `resultat_prediccio`
@@ -695,25 +826,31 @@ ALTER TABLE `usuaris`
 -- AUTO_INCREMENT de la tabla `chat_messages`
 --
 ALTER TABLE `chat_messages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `chat_sessions`
 --
 ALTER TABLE `chat_sessions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `daily_rewards_tracking`
 --
 ALTER TABLE `daily_rewards_tracking`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_prediccio`
 --
 ALTER TABLE `detalle_prediccio`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT de la tabla `idiomas`
+--
+ALTER TABLE `idiomas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -725,7 +862,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT de la tabla `prediccions_sist`
@@ -737,7 +874,7 @@ ALTER TABLE `prediccions_sist`
 -- AUTO_INCREMENT de la tabla `prediccio_proposada`
 --
 ALTER TABLE `prediccio_proposada`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `premis`
@@ -746,16 +883,28 @@ ALTER TABLE `premis`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT de la tabla `premis_traduccions`
+--
+ALTER TABLE `premis_traduccions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
 -- AUTO_INCREMENT de la tabla `premis_usuaris`
 --
 ALTER TABLE `premis_usuaris`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `promos`
 --
 ALTER TABLE `promos`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `promos_traduccions`
+--
+ALTER TABLE `promos_traduccions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `resultat_prediccio`
@@ -834,6 +983,13 @@ ALTER TABLE `prediccio_proposada`
   ADD CONSTRAINT `prediccio_proposada_usuari_nick_foreign` FOREIGN KEY (`usuari_nick`) REFERENCES `usuaris` (`nick`) ON DELETE CASCADE;
 
 --
+-- Filtros para la tabla `premis_traduccions`
+--
+ALTER TABLE `premis_traduccions`
+  ADD CONSTRAINT `premis_traduccions_idioma_id_foreign` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`id`),
+  ADD CONSTRAINT `premis_traduccions_premi_id_foreign` FOREIGN KEY (`premi_id`) REFERENCES `premis` (`id`) ON DELETE CASCADE;
+
+--
 -- Filtros para la tabla `premis_usuaris`
 --
 ALTER TABLE `premis_usuaris`
@@ -845,6 +1001,13 @@ ALTER TABLE `premis_usuaris`
 --
 ALTER TABLE `promos`
   ADD CONSTRAINT `promos_tipus_promocio_foreign` FOREIGN KEY (`tipus_promocio`) REFERENCES `tipus_promocio` (`id`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `promos_traduccions`
+--
+ALTER TABLE `promos_traduccions`
+  ADD CONSTRAINT `promos_traduccions_idioma_id_foreign` FOREIGN KEY (`idioma_id`) REFERENCES `idiomas` (`id`),
+  ADD CONSTRAINT `promos_traduccions_promo_id_foreign` FOREIGN KEY (`promo_id`) REFERENCES `promos` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

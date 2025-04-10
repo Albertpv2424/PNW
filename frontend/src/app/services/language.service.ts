@@ -6,9 +6,12 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class LanguageService {
+  // Implementa correctamente este método
   getLanguageName(currentLang: string): string {
-    throw new Error('Method not implemented.');
+    const language = this.languages.find(lang => lang.code === currentLang);
+    return language ? language.name : 'Español';
   }
+  
   // Default language
   private defaultLang = 'es';
   

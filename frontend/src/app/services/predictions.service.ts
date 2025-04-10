@@ -110,6 +110,8 @@ export class PredictionsService {
   getUserPremios(): Observable<any> {
     // Get the authentication token
     const token = localStorage.getItem('token');
+    // Get the current language from localStorage
+    const currentLang = localStorage.getItem('preferredLanguage') || 'es';
 
     if (!token) {
       console.error('No authentication token found');
@@ -125,16 +127,29 @@ export class PredictionsService {
       'Accept': 'application/json'
     };
 
-    // Include the headers in the request
-    return this.http.get(`${this.apiUrl}/user/premios`, { headers })
+    console.log('Getting user prizes with language:', currentLang);
+    
+    // Use the translated endpoint with language parameter
+    return this.http.get(`${this.apiUrl}/user/premios/translated?lang=${currentLang}`, { headers })
       .pipe(
         tap(response => {
-          console.log('User prizes response:', response);
+          console.log('User prizes response (translated):', response);
         }),
         catchError(error => {
-          console.error('Error fetching user prizes:', error);
-          return throwError(() => error);
+          console.error('Error fetching translated user prizes:', error);
+          
+          // If the translated endpoint fails, try the original endpoint
+          console.log('Falling back to original user/premios endpoint');
+          return this.http.get(`${this.apiUrl}/user/premios`, { headers })
+            .pipe(
+              tap(response => {
+                console.log('User prizes response (fallback):', response);
+              }),
+              catchError(fallbackError => {
+                console.error('Error fetching user prizes (fallback):', fallbackError);
+                return throwError(() => fallbackError);
+              })
+            );
         })
       );
-  }
-}
+}}

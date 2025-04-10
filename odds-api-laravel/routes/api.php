@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\ApuestaController;
-use App\Http\Controllers\PremioController;
 use App\Http\Controllers\PromocionController;
 use App\Http\Controllers\DailyWheelController;
 use App\Http\Controllers\VideoRewardsController;
@@ -17,6 +16,8 @@ use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\BetVerificationController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\PremiosController; // Importar PremiosController
+// use App\Http\Controllers\PremioController; // Comentamos esta línea ya que usaremos PremiosController
 
 /*
 |--------------------------------------------------------------------------
@@ -55,8 +56,8 @@ Route::post('/request-password-reset', [AuthController::class, 'requestPasswordR
 Route::post('/reset-password-with-token', [AuthController::class, 'resetPasswordWithToken']);
 
 // Rutas para premios (acceso público)
-Route::get('/premios', [PremioController::class, 'index']);
-Route::get('/premios/{id}', [PremioController::class, 'show']);
+Route::get('/premios', [PremiosController::class, 'index']);
+Route::get('/premios/{id}', [PremiosController::class, 'show']);
 
 // Rutas para promociones (acceso público)
 Route::get('/promociones', [PromocionController::class, 'index']);
@@ -69,9 +70,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/delete-account', [AuthController::class, 'deleteAccount']); // Alternativa para DELETE
     Route::post('/add-points', [AuthController::class, 'addPoints']);
 
-    // Premios de usuario
-    Route::post('/premios/{id}/canjear', [PremioController::class, 'canjear']);
-    Route::get('/user/premios', [PremioController::class, 'userPremios']);
+    // Premios de usuario - Ahora usando PremiosController
+    Route::post('/premios/{id}/canjear', [PremiosController::class, 'canjear']);
+    Route::get('/user/premios', [PremiosController::class, 'userPremios']);
+    Route::get('/user/premios/translated', [PremiosController::class, 'userPremiosTranslated']);
 
     // Promociones de usuario
     Route::post('/promociones/{id}/inscribir', [PromocionController::class, 'inscribir']);
@@ -139,8 +141,9 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('/stats/bets', [StatsController::class, 'betStats']);
     Route::get('/stats/prizes', [StatsController::class, 'prizeStats']);
 });
-
-// Añadir esta ruta junto con las demás rutas API
+    
+// Añade esta ruta junto a tus otras rutas de API
+Route::get('/check-translations', [PremiosController::class, 'checkTranslations']);
 // Contact form route
 // Update the contact route to use the same endpoint
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'sendContactForm']);
