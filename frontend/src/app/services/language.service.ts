@@ -6,6 +6,9 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class LanguageService {
+  getLanguageName(currentLang: string): string {
+    throw new Error('Method not implemented.');
+  }
   // Default language
   private defaultLang = 'es';
   
