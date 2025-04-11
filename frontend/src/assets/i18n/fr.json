@@ -144,7 +144,18 @@
         "NO_ACCOUNT": "Vous n'avez pas de compte?",
         "REMEMBER_ME": "Se souvenir de moi",
         "FORGOT_PASSWORD": "Mot de passe oublié?",
-        "USERNAME_OR_EMAIL": "Nom d'utilisateur ou email"
+        "USERNAME_OR_EMAIL": "Nom d'utilisateur ou email",
+        "RESET_PASSWORD": "Réinitialiser le mot de passe",
+    "RESET_INSTRUCTIONS": "Entrez votre email pour récupérer votre compte.",
+    "SEND_EMAIL": "Envoyer l'email",
+    "BACK_TO_LOGIN": "Retour à la connexion",
+    "EMAIL_SENT": "Email envoyé!",
+    "CHECK_INBOX": "Veuillez vérifier votre boîte de réception et suivre les instructions.",
+    "RESEND_EMAIL": "Renvoyer l'email",
+    "ENTER_NEW_PASSWORD": "Entrez votre nouveau mot de passe",
+    "NEW_PASSWORD": "Nouveau mot de passe",
+    "CONFIRM_PASSWORD": "Confirmer le mot de passe",
+    "RESET_PASSWORD_BUTTON": "Réinitialiser le mot de passe"
     },
     "ERRORS": {
         "REQUIRED": "Ce champ est obligatoire",

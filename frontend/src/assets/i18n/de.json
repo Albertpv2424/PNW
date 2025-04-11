@@ -144,7 +144,18 @@
         "NO_ACCOUNT": "Haben Sie kein Konto?",
         "REMEMBER_ME": "Angemeldet bleiben",
         "FORGOT_PASSWORD": "Passwort vergessen?",
-        "USERNAME_OR_EMAIL": "Benutzername oder E-Mail"
+        "USERNAME_OR_EMAIL": "Benutzername oder E-Mail",
+        "RESET_PASSWORD": "Passwort zurücksetzen",
+    "RESET_INSTRUCTIONS": "Geben Sie Ihre E-Mail-Adresse ein, um Ihr Konto wiederherzustellen.",
+    "SEND_EMAIL": "E-Mail senden",
+    "BACK_TO_LOGIN": "Zurück zur Anmeldung",
+    "EMAIL_SENT": "E-Mail gesendet!",
+    "CHECK_INBOX": "Bitte überprüfen Sie Ihren Posteingang und folgen Sie den Anweisungen.",
+    "RESEND_EMAIL": "E-Mail erneut senden",
+    "ENTER_NEW_PASSWORD": "Geben Sie Ihr neues Passwort ein",
+    "NEW_PASSWORD": "Neues Passwort",
+    "CONFIRM_PASSWORD": "Passwort bestätigen",
+    "RESET_PASSWORD_BUTTON": "Passwort zurücksetzen"
     },
     "ERRORS": {
         "REQUIRED": "Dieses Feld ist erforderlich",

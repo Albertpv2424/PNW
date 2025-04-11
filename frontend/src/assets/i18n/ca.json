@@ -144,7 +144,18 @@
     "NO_ACCOUNT": "No tens compte?",
     "REMEMBER_ME": "Recorda'm",
     "FORGOT_PASSWORD": "Has oblidat la contrasenya?",
-    "USERNAME_OR_EMAIL": "Usuari o correu electrònic"
+    "USERNAME_OR_EMAIL": "Usuari o correu electrònic",
+    "RESET_PASSWORD": "Restablir contrasenya",
+    "RESET_INSTRUCTIONS": "Introdueix el teu correu electrònic per recuperar el teu compte.",
+    "SEND_EMAIL": "Enviar correu electrònic",
+    "BACK_TO_LOGIN": "Tornar a l'inici de sessió",
+    "EMAIL_SENT": "Correu enviat!",
+    "CHECK_INBOX": "Si us plau, revisa la teva safata d'entrada i segueix les instruccions.",
+    "RESEND_EMAIL": "Reenviar correu",
+    "ENTER_NEW_PASSWORD": "Introdueix la teva nova contrasenya",
+    "NEW_PASSWORD": "Nova contrasenya",
+    "CONFIRM_PASSWORD": "Confirmar contrasenya",
+    "RESET_PASSWORD_BUTTON": "Canviar contrasenya"
   },
   "ERRORS": {
     "REQUIRED": "Aquest camp és obligatori",

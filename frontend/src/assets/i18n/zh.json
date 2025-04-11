@@ -144,7 +144,18 @@
         "NO_ACCOUNT": "没有账户？",
         "REMEMBER_ME": "记住我",
         "FORGOT_PASSWORD": "忘记密码？",
-        "USERNAME_OR_EMAIL": "用户名或电子邮箱"
+        "USERNAME_OR_EMAIL": "用户名或电子邮箱",
+        "RESET_PASSWORD": "重置密码",
+    "RESET_INSTRUCTIONS": "输入您的电子邮箱以恢复您的账户。",
+    "SEND_EMAIL": "发送电子邮件",
+    "BACK_TO_LOGIN": "返回登录",
+    "EMAIL_SENT": "邮件已发送！",
+    "CHECK_INBOX": "请检查您的收件箱并按照说明进行操作。",
+    "RESEND_EMAIL": "重新发送邮件",
+    "ENTER_NEW_PASSWORD": "输入您的新密码",
+    "NEW_PASSWORD": "新密码",
+    "CONFIRM_PASSWORD": "确认密码",
+    "RESET_PASSWORD_BUTTON": "重置密码"
     },
     "ERRORS": {
         "REQUIRED": "此字段为必填项",

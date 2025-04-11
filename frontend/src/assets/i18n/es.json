@@ -144,7 +144,18 @@
     "NO_ACCOUNT": "¿No tienes cuenta?",
     "REMEMBER_ME": "Recordarme",
     "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
-    "USERNAME_OR_EMAIL": "Usuario o correo electrónico"
+    "USERNAME_OR_EMAIL": "Usuario o correo electrónico",
+    "RESET_PASSWORD": "Restablecer contraseña",
+    "RESET_INSTRUCTIONS": "Introduce tu correo electrónico para recuperar tu cuenta.",
+    "SEND_EMAIL": "Enviar correo electrónico",
+    "BACK_TO_LOGIN": "Volver al inicio de sesión",
+    "EMAIL_SENT": "¡Correo enviado!",
+    "CHECK_INBOX": "Por favor, revisa tu bandeja de entrada y sigue las instrucciones.",
+    "RESEND_EMAIL": "Reenviar correo",
+    "ENTER_NEW_PASSWORD": "Introduce tu nueva contraseña",
+    "NEW_PASSWORD": "Nueva contraseña",
+    "CONFIRM_PASSWORD": "Confirmar contraseña",
+    "RESET_PASSWORD_BUTTON": "Cambiar contraseña"
   },
   "ERRORS": {
     "REQUIRED": "Este campo es obligatorio",

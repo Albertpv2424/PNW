@@ -6,10 +6,20 @@ import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 // Remove NotificationComponent import
 
+// Importar TranslateModule
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageSliderComponent } from '../../language-slider/language-slider.component';
+
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink], // Remove NotificationComponent
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    RouterLink,
+    TranslateModule,
+    LanguageSliderComponent
+  ],
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })
@@ -87,7 +97,19 @@ export class ResetPasswordComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  // Add these new methods
+  navigateToHome(): void {
+    this.router.navigate(['/']);
+  }
+
+  handleImageError(event: any): void {
+    console.error('Error loading logo image');
+    event.target.src = 'assets/logo-fallback.png'; // Imagen de respaldo
+  }
+
+  // Fix the resetPassword method name to match the HTML
+  resetPassword() {
+    // This is the same as the existing onSubmit method
     if (this.resetForm.valid) {
       // Check if passwords match
       if (this.resetForm.value.password !== this.resetForm.value.confirmPassword) {
