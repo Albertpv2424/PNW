@@ -223,10 +223,7 @@ export class ProfileComponent implements OnInit {
     // Use FormData approach for file uploads
     const formData = new FormData();
     
-    // Make sure these values are not null or undefined and are strings
-    formData.append('nick', this.profileForm.value.nick?.toString() || '');
-    formData.append('email', this.profileForm.value.email?.toString() || '');
-    formData.append('telefon', this.profileForm.value.telefon?.toString() || '');
+
     
     // Check password fields
     const currentPassword = this.profileForm.value.current_password;
@@ -376,33 +373,6 @@ export class ProfileComponent implements OnInit {
               // Return to profile view and navigate to profile page
               this.editMode = false;
               this.router.navigate(['/profile']);
-            }
-          },
-          error: (error) => {
-            console.error('Error updating profile:', error);
-            
-            // Handle validation errors from Laravel
-            if (error.status === 422 && error.error && error.error.errors) {
-              // Laravel validation errors
-              const validationErrors = error.error.errors;
-              console.log('Validation errors:', validationErrors);
-              
-              let errorMessage = 'Por favor corrige los siguientes errores:';
-              
-              // Build error message from validation errors
-              for (const field in validationErrors) {
-                if (validationErrors.hasOwnProperty(field)) {
-                  errorMessage += `\n- ${validationErrors[field][0]}`;
-                }
-              }
-              
-              this.notificationService.showError(errorMessage);
-            } else if (error.error && error.error.message) {
-              // Show specific error message from server
-              this.notificationService.showError(error.error.message);
-            } else {
-              // Generic error
-              this.notificationService.showError('Error al actualizar el perfil. Inténtalo de nuevo.');
             }
           }
         });
