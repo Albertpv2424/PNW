@@ -405,5 +405,10 @@
         "NO_BETS": "您没有任何预测历史。",
         "SELECTION": "选择",
         "BET_AMOUNT": "投注金额"
-    }
+    },
+    "CHAT": {
+    "TITLE": "在线支持",
+    "WELCOME_MESSAGE": "你好！今天我们能为您提供什么帮助？",
+    "INPUT_PLACEHOLDER": "输入消息..."
+  }
 }

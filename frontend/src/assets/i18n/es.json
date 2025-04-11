@@ -405,5 +405,11 @@
     "NO_BETS": "No tienes historial de predicciones.",
     "SELECTION": "Selección",
     "BET_AMOUNT": "Apostado"
+  },
+  "CHAT": {
+    "TITLE": "Soporte en línea",
+    "WELCOME_MESSAGE": "¡Hola! ¿En qué podemos ayudarte hoy?",
+    "INPUT_PLACEHOLDER": "Escribe un mensaje...",
+    "INITIAL_MESSAGE": "¡Hola! Necesito ayuda."
   }
 }

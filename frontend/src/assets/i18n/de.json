@@ -405,5 +405,11 @@
         "NO_BETS": "Sie haben keine Vorhersagehistorie.",
         "SELECTION": "Auswahl",
         "BET_AMOUNT": "Wetteinsatz"
-    }
+    },
+    "CHAT": {
+    "TITLE": "Online-Support",
+    "WELCOME_MESSAGE": "Hallo! Wie können wir Ihnen heute helfen?",
+    "INPUT_PLACEHOLDER": "Nachricht eingeben...",
+    "INITIAL_MESSAGE": "你好！我需要帮助。"
+  }
 }

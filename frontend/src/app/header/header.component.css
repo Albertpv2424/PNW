@@ -411,7 +411,6 @@
 }
 
 .rewards-icon:hover::after {
-  content: "Recompensas diarias";
   position: absolute;
   bottom: -30px;
   left: 50%;

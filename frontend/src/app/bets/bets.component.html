@@ -37,7 +37,7 @@
       <div class="bet-card" *ngFor="let bet of activeBets; let i = index" 
            [id]="'bet-card-' + i">
         <div class="bet-header">
-          <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
+          <span class="bet-date"></span>
           <span class="bet-status pending">{{ 'BETS.PENDING' | translate }}</span>
         </div>
 

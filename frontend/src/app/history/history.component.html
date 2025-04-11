@@ -71,7 +71,7 @@
              'lost': bet.status.toLowerCase() === 'perdida'
            }">
         <div class="bet-header">
-          <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
+          <span class="bet-date"></span>
           <span class="bet-status" [ngClass]="getStatusClass(bet.status)">
             {{ getTranslatedStatus(bet.status) | translate }}
           </span>

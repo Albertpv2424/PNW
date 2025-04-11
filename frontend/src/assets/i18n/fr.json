@@ -405,5 +405,11 @@
         "NO_BETS": "Vous n'avez aucun historique de prédictions.",
         "SELECTION": "Sélection",
         "BET_AMOUNT": "Montant du pari"
-    }
+    },
+    "CHAT": {
+    "TITLE": "Support en ligne",
+    "WELCOME_MESSAGE": "Bonjour ! Comment pouvons-nous vous aider aujourd'hui ?",
+    "INPUT_PLACEHOLDER": "Écrivez un message...",
+    "INITIAL_MESSAGE": "Bonjour ! J'ai besoin d'aide."
+  }
 }

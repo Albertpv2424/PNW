@@ -6,7 +6,7 @@
 <!-- Chat widget (when open) -->
 <div *ngIf="isOpen" class="chat-widget">
   <div class="chat-header" (click)="toggleChat()">
-    <h3>Soporte en línea</h3>
+    <h3>{{ 'CHAT.TITLE' | translate }}</h3>
     <button class="chat-toggle">
       <i class="fas fa-times"></i>
     </button>
@@ -21,7 +21,7 @@
     <!-- Empty state -->
     <div *ngIf="!loading && messages.length === 0" class="empty-state">
       <i class="fas fa-comment-dots"></i>
-      <p>¡Hola! ¿En qué podemos ayudarte hoy?</p>
+      <p>{{ 'CHAT.WELCOME_MESSAGE' | translate }}</p>
     </div>
 
     <!-- Messages -->
@@ -36,7 +36,7 @@
     <input
       type="text"
       [(ngModel)]="newMessage"
-      placeholder="Escribe un mensaje..."
+      placeholder="{{ 'CHAT.INPUT_PLACEHOLDER' | translate }}"
       (keyup.enter)="sendMessage()"
     >
     <button [disabled]="!newMessage.trim()" (click)="sendMessage()">

@@ -5,11 +5,12 @@ import { ChatService } from '../services/chat.service';
 import { AuthService } from '../services/auth.service';
 import { Subscription, interval, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
@@ -105,8 +106,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     console.log('Starting new chat session...');
 
     // Iniciar una nueva sesión con un mensaje inicial
-    const initialMessage = '¡Hola! Necesito ayuda con mi cuenta.';
-    this.chatService.startNewSession(initialMessage).subscribe({
+    this.chatService.startNewSession().subscribe({
       next: (response) => {
         console.log('New session created:', response);
         if (!response || !response.session_id) {

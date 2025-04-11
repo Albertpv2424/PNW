@@ -405,5 +405,11 @@
     "NO_BETS": "You have no prediction history.",
     "SELECTION": "Selection",
     "BET_AMOUNT": "Bet Amount"
+  },
+  "CHAT": {
+    "TITLE": "Online Support",
+    "WELCOME_MESSAGE": "Hello! How can we help you today?",
+    "INPUT_PLACEHOLDER": "Type a message...",
+    "INITIAL_MESSAGE": "Hello! I need help."
   }
 }

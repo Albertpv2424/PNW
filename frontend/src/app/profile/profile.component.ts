@@ -431,7 +431,7 @@ export class ProfileComponent implements OnInit {
 
   // Método para eliminar la cuenta - modificado para usar POST en lugar de DELETE
   deleteAccount(): void {
-    if (this.deleteConfirmText !== 'ELIMINAR') {
+    if (this.deleteConfirmText !== 'DELETE') {
       return;
     }
 

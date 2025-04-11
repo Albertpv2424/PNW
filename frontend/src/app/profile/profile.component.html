@@ -111,20 +111,19 @@
           </div>
 
           <div class="bets-list" *ngIf="!loadingRecentBets && recentBets.length > 0">
-            <div class="bet-card" *ngFor="let bet of recentBets" [ngClass]="{
-                   'won': bet.status.toLowerCase() === 'ganada',
-                   'lost': bet.status.toLowerCase() === 'perdida'
-                 }">
+            <!-- For recent bets section, update the bet status display -->
+            <div class="bet-card" *ngFor="let bet of recentBets">
               <div class="bet-header">
-                <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
-                <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ getTranslatedStatus(bet.status)
-                  }}</span>
+                <span class="bet-date"></span>
+                <span class="bet-status" [ngClass]="getStatusClass(bet.status)">
+                  {{ getTranslatedStatus(bet.status) | translate }}
+                </span>
               </div>
-
+              
               <div class="bet-details">
                 <h3 class="bet-match">{{ bet.match_info }}</h3>
                 <p class="bet-selection">
-                  <strong>{{ 'BETS.SELECTION' | translate }}:</strong> {{ bet.prediction_choice }}
+                  <strong>{{ 'HISTORY.SELECTION' | translate }}:</strong> {{ bet.prediction_choice }}
                 </p>
                 <div class="bet-info">
                   <div class="bet-amount">

@@ -405,5 +405,11 @@
     "NO_BETS": "Non hai ancora fatto nessuna predizione.",
     "SELECTION": "Selezione",
     "BET_AMOUNT": "Importo della Predizione"
+  },
+  "CHAT": {
+    "TITLE": "Supporto online",
+    "WELCOME_MESSAGE": "Ciao! Come possiamo aiutarti oggi?",
+    "INPUT_PLACEHOLDER": "Scrivi un messaggio...",
+    "INITIAL_MESSAGE": "Ciao! Ho bisogno di aiuto."
   }
 }

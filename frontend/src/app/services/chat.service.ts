@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap, catchError, throwError, map, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
+import { TranslateService } from '@ngx-translate/core'; // Add this import
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class ChatService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private translateService: TranslateService // Add this dependency
   ) {}
 
   startChatSession(initialMessage?: string): Observable<any> {
@@ -134,7 +136,12 @@ export class ChatService {
   }
 
 // Método mejorado para iniciar una nueva sesión
-startNewSession(initialMessage: string = '¡Hola! Necesito ayuda.'): Observable<any> {
+startNewSession(initialMessage?: string): Observable<any> {
+  // If no message is provided, use the translated default message
+  if (!initialMessage) {
+    initialMessage = this.translateService.instant('CHAT.INITIAL_MESSAGE');
+  }
+  
   console.log('Starting new chat session with initial message:', initialMessage);
 
   // Limpiar la bandera de necesidad de nueva sesión

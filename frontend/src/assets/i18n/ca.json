@@ -405,5 +405,11 @@
     "NO_BETS": "No hi ha prediccions.",
     "SELECTION": "Selecció",
     "BET_AMOUNT": "Quantitat Apostada"
+  },
+  "CHAT": {
+    "TITLE": "Suport en línia",
+    "WELCOME_MESSAGE": "Hola! En què podem ajudar-te avui?",
+    "INPUT_PLACEHOLDER": "Escriu un missatge...",
+    "INITIAL_MESSAGE": "Hola! Necessito ajuda."
   }
 }
