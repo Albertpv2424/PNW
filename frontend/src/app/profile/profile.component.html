@@ -3,13 +3,8 @@
 
 <div class="profile-container">
   <!-- Reemplazar el header actual con el componente compartido -->
-  <app-profile-header
-    [username]="username"
-    [email]="email"
-    [profileImage]="profileImage"
-    [saldo]="saldo"
-    [activeTab]="editMode ? 'edit' : 'profile'"
-  ></app-profile-header>
+  <app-profile-header [username]="username" [email]="email" [profileImage]="profileImage" [saldo]="saldo"
+    [activeTab]="editMode ? 'edit' : 'profile'"></app-profile-header>
 
   <!-- Eliminar la navegación existente ya que ahora está en el componente compartido -->
 
@@ -70,32 +65,35 @@
         <h3>{{ 'PRIZES.REDEEMED_PRIZES' | translate }}</h3>
 
         @if (loadingPrizes) {
-          <div class="loading-spinner">{{ 'COMMON.LOADING' | translate }}</div>
+        <div class="loading-spinner">{{ 'COMMON.LOADING' | translate }}</div>
         } @else if (prizesError) {
-          <div class="error-message">{{ prizesError }}</div>
+        <div class="error-message">{{ prizesError }}</div>
         } @else if (redeemedPrizes.length === 0) {
-          <div class="empty-message">{{ 'PRIZES.NO_REDEEMED_PRIZES' | translate }}</div>
+        <div class="empty-message">{{ 'PRIZES.NO_REDEEMED_PRIZES' | translate }}</div>
         } @else {
-          <div class="prizes-grid">
-            @for (prize of redeemedPrizes; track prize.id) {
-              <div class="prize-card">
-                <div class="prize-image">
-                  <img [src]="prize.image ? 'http://localhost:8000/' + prize.image : 'assets/premios/default.png'" [alt]="prize.titulo">
-                </div>
-                <div class="prize-info">
-                  <h4>{{ prize.titulo }}</h4>
-                  <p *ngIf="prize.descripcion" class="description">{{ prize.descripcion }}</p>
-                  <div class="prize-details">
-                    <p class="prize-date">{{ 'PRIZES.REDEEMED' | translate }}: {{ prize.fecha_canje | date:'dd/MM/yyyy' }}</p>
-                    <p class="prize-date">{{ 'PRIZES.VALID_UNTIL' | translate }}: {{ prize.fecha_limite | date:'dd/MM/yyyy' }}</p>
-                    <p class="prize-status" [class.used]="prize.usado">
-                      {{ prize.usado ? ('PRIZES.USED' | translate) : ('PRIZES.AVAILABLE' | translate) }}
-                    </p>
-                  </div>
-                </div>
+        <div class="prizes-grid">
+          @for (prize of redeemedPrizes; track prize.id) {
+          <div class="prize-card">
+            <div class="prize-image">
+              <img [src]="prize.image ? 'http://localhost:8000/' + prize.image : 'assets/premios/default.png'"
+                [alt]="prize.titulo">
+            </div>
+            <div class="prize-info">
+              <h4>{{ prize.titulo }}</h4>
+              <p *ngIf="prize.descripcion" class="description">{{ prize.descripcion }}</p>
+              <div class="prize-details">
+                <p class="prize-date">{{ 'PRIZES.REDEEMED' | translate }}: {{ prize.fecha_canje | date:'dd/MM/yyyy' }}
+                </p>
+                <p class="prize-date">{{ 'PRIZES.VALID_UNTIL' | translate }}: {{ prize.fecha_limite | date:'dd/MM/yyyy'
+                  }}</p>
+                <p class="prize-status" [class.used]="prize.usado">
+                  {{ prize.usado ? ('PRIZES.USED' | translate) : ('PRIZES.AVAILABLE' | translate) }}
+                </p>
               </div>
-            }
+            </div>
           </div>
+          }
+        </div>
         }
       </div>
       <div class="profile-section">
@@ -113,14 +111,14 @@
           </div>
 
           <div class="bets-list" *ngIf="!loadingRecentBets && recentBets.length > 0">
-            <div class="bet-card" *ngFor="let bet of recentBets"
-                 [ngClass]="{
+            <div class="bet-card" *ngFor="let bet of recentBets" [ngClass]="{
                    'won': bet.status.toLowerCase() === 'ganada',
                    'lost': bet.status.toLowerCase() === 'perdida'
                  }">
               <div class="bet-header">
                 <span class="bet-date">{{ formatDate(bet.created_at) }}</span>
-                <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ getTranslatedStatus(bet.status) }}</span>
+                <span class="bet-status" [ngClass]="getStatusClass(bet.status)">{{ getTranslatedStatus(bet.status)
+                  }}</span>
               </div>
 
               <div class="bet-details">
@@ -131,7 +129,8 @@
                 <div class="bet-info">
                   <div class="bet-amount">
                     <span>{{ 'BETS.BET_AMOUNT' | translate }}:</span>
-                    <strong>{{ bet.punts_proposats }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
+                    <strong>{{ bet.punts_proposats }} <img src="assets/monedapnw.png" alt="Moneda"
+                        class="coin-icon"></strong>
                   </div>
                   <div class="bet-odds">
                     <span>{{ 'BETS.ODDS' | translate }}:</span>
@@ -139,7 +138,8 @@
                   </div>
                   <div class="bet-result" *ngIf="bet.status.toLowerCase() === 'ganada'">
                     <span>{{ 'BETS.WINNINGS' | translate }}:</span>
-                    <strong>{{ bet.punts_proposats * bet.cuota | number:'1.0-0' }} <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon"></strong>
+                    <strong>{{ bet.punts_proposats * bet.cuota | number:'1.0-0' }} <img src="assets/monedapnw.png"
+                        alt="Moneda" class="coin-icon"></strong>
                   </div>
                 </div>
               </div>
@@ -161,11 +161,13 @@
           <div class="profile-image-section">
             <h3>{{ 'PROFILE.PHOTO' | translate }}</h3>
             <div class="image-preview-container">
-              <div class="image-preview" [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : (profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none')">
+              <div class="image-preview"
+                [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : (profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none')">
                 <span *ngIf="!imagePreview && !profileImage">{{ getInitials() }}</span>
               </div>
               <div class="image-upload">
-                <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*" class="file-input">
+                <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*"
+                  class="file-input">
                 <label for="profile-image" class="file-label">{{ 'PROFILE.CHANGE_IMAGE' | translate }}</label>
                 <p *ngIf="selectedFile" class="selected-file-name">{{ selectedFile.name }}</p>
               </div>
@@ -213,30 +215,31 @@
 
           <!-- Update buttons -->
           <div class="form-actions">
-            <button type="submit" class="save-button" [disabled]="profileForm.invalid">{{ 'PROFILE.SAVE_CHANGES' | translate }}</button>
+            <button type="submit" class="save-button">{{ 'PROFILE.SAVE_CHANGES' | translate }}</button>
           </div>
         </form>
-          
+
         <!-- Sección para borrar cuenta -->
         <div class="delete-account-section">
           <h3>{{ 'PROFILE.DELETE_ACCOUNT' | translate }}</h3>
           <p class="warning-text">{{ 'PROFILE.DELETE_WARNING' | translate }}</p>
-          <button class="delete-button" (click)="showDeleteConfirmation()">{{ 'PROFILE.DELETE_MY_ACCOUNT' | translate }}</button>
+          <button class="delete-button" (click)="showDeleteConfirmation()">{{ 'PROFILE.DELETE_MY_ACCOUNT' | translate
+            }}</button>
         </div>
       </div>
     </ng-container>
-          
+
     <!-- Modal de confirmación para borrar cuenta -->
     <div class="confirmation-modal" *ngIf="showDeleteModal">
       <div class="modal-content">
         <h3>{{ 'PROFILE.ARE_YOU_SURE' | translate }}</h3>
         <p>{{ 'PROFILE.DELETE_CONFIRMATION_TEXT' | translate }}</p>
-    
+
         <div class="confirmation-input">
           <label for="confirm-delete">{{ 'PROFILE.TYPE_DELETE' | translate }}</label>
           <input type="text" id="confirm-delete" [(ngModel)]="deleteConfirmText">
         </div>
-    
+
         <div class="modal-actions">
           <button class="cancel-button" (click)="cancelDelete()">{{ 'COMMON.CANCEL' | translate }}</button>
           <button class="confirm-button" [disabled]="deleteConfirmText !== 'ELIMINAR'" (click)="deleteAccount()">
