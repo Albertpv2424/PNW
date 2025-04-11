@@ -118,7 +118,12 @@
     "NO_REDEEMED_PRIZES": "No has bescanviat cap premi",
     "REDEEMED": "Bescanviat",
     "VALID_UNTIL": "Vàlida fins a",
-    "AVAILABLE": "Disponible"
+    "AVAILABLE": "Disponible",
+    "SORT_ASC": "Ordenar per Punts (Ascendent)",
+    "SORT_DESC": "Ordenar per Punts (Descendent)",
+    "LOADING": "Carregant premis...",
+    "NO_PRIZES_AVAILABLE": "No hi ha premis disponibles",
+    "REDEEM_BUTTON": "Bescanviar"
   },
   "AUTH": {
     "LOGIN": "Iniciar Sessió",

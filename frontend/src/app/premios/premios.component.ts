@@ -6,6 +6,7 @@ import { PredictionsService } from '../services/predictions.service';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 import { PremiosService } from '../services/premios.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Define interfaces for our data structures
 interface PremioAPI {
@@ -32,7 +33,8 @@ interface PremioUI {
   imports: [
     CommonModule,
     HeaderComponent,
-    CombinedBetComponent
+    CombinedBetComponent,
+    TranslateModule
   ],
   templateUrl: './premios.component.html',
   styleUrls: ['./premios.component.css']

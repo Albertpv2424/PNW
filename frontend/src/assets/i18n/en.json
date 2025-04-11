@@ -118,7 +118,12 @@
     "NO_REDEEMED_PRIZES": "You haven't redeemed any prizes",
     "REDEEMED": "Redeemed",
     "VALID_UNTIL": "Valid until",
-    "AVAILABLE": "Available"
+    "AVAILABLE": "Available",
+    "SORT_ASC": "Sort by Points (Ascending)",
+    "SORT_DESC": "Sort by Points (Descending)",
+    "LOADING": "Loading prizes...",
+    "NO_PRIZES_AVAILABLE": "No prizes available",
+    "REDEEM_BUTTON": "Redeem"
   },
   "AUTH": {
     "LOGIN": "Login",

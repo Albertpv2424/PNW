@@ -118,7 +118,12 @@
         "NO_REDEEMED_PRIZES": "Vous n'avez échangé aucun prix",
         "REDEEMED": "Échangé",
         "VALID_UNTIL": "Valide jusqu'au",
-        "AVAILABLE": "Disponible"
+        "AVAILABLE": "Disponible",
+        "SORT_ASC": "Trier par points (Croissant)",
+        "SORT_DESC": "Trier par points (Décroissant)",
+        "LOADING": "Chargement des récompenses...",
+        "NO_PRIZES_AVAILABLE": "Aucune récompense disponible",
+        "REDEEM_BUTTON": "Échanger"
     },
     "AUTH": {
         "LOGIN": "Se Connecter",

@@ -9,28 +9,28 @@
     <main class="main-content">
       <div class="premios-container">
         <div class="premios-header">
-          <h2>Premios Disponibles</h2>
+          <h2>{{ 'PRIZES.AVAILABLE_PRIZES' | translate }}</h2>
           <div class="filtros">
             <button class="filtro-button" (click)="ordenarPorPuntos()">
               @if (ordenAscendente) {
-                Ordenar: Menos a más puntos
+                {{ 'PRIZES.SORT_ASC' | translate }}
               } @else {
-                Ordenar: Más a menos puntos
+                {{ 'PRIZES.SORT_DESC' | translate }}
               }
             </button>
           </div>
         </div>
         
         @if (isLoading) {
-          <div class="loading-spinner">Cargando premios...</div>
+          <div class="loading-spinner">{{ 'PRIZES.LOADING' | translate }}</div>
         } @else if (errorMessage) {
           <div class="error-message">{{ errorMessage }}</div>
         } @else if (premiosFiltrados.length === 0) {
-          <div class="empty-message">No hay premios disponibles en este momento.</div>
+          <div class="empty-message">{{ 'PRIZES.NO_PRIZES_AVAILABLE' | translate }}</div>
         } @else {
           <div class="premios-grid">
             @if (isLoading) {
-              <div class="loading-spinner">Cargando premios...</div>
+              <div class="loading-spinner">{{ 'PRIZES.LOADING' | translate }}</div>
             } @else if (errorMessage) {
               <div class="error-message">{{ errorMessage }}</div>
             } @else {
@@ -43,7 +43,7 @@
                     <h3>{{ premio.name }}</h3>
                     <p *ngIf="premio.description" class="description">{{ premio.description }}</p>
                     <p class="points">{{ premio.points }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></p>
-                    <button class="canjear-button" (click)="onCanjear(premio.id)">{{ premio.buttonText }}</button>
+                    <button class="canjear-button" (click)="onCanjear(premio.id)">{{ 'PRIZES.REDEEM_BUTTON' | translate }}</button>
                   </div>
                 </div>
               }

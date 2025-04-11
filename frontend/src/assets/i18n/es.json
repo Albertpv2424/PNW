@@ -118,7 +118,12 @@
     "NO_REDEEMED_PRIZES": "No has canjeado ningún premio",
     "REDEEMED": "Canjeado",
     "VALID_UNTIL": "Válido hasta",
-    "AVAILABLE": "Disponible"
+    "AVAILABLE": "Disponible",
+    "SORT_ASC": "Ordenar por Puntos (Ascendente)",
+    "SORT_DESC": "Ordenar por Puntos (Descendente)",
+    "LOADING": "Cargando premios...",
+    "NO_PRIZES_AVAILABLE": "No hay premios disponibles",
+    "REDEEM_BUTTON": "Canjear"
   },
   "AUTH": {
     "LOGIN": "Iniciar Sesión",

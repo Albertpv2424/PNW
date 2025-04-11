@@ -118,7 +118,12 @@
     "NO_REDEEMED_PRIZES": "Non hai riscattato alcun premio",
     "REDEEMED": "Riscatta",
     "VALID_UNTIL": "Valido fino al",
-    "AVAILABLE": "Disponibile"
+    "AVAILABLE": "Disponibile",
+    "SORT_ASC": "Ordina per punti (Crescente)",
+    "SORT_DESC": "Ordina per punti (Decrescente)",
+    "LOADING": "Caricamento premi...",
+    "NO_PRIZES_AVAILABLE": "Nessun premio disponibile",
+    "REDEEM_BUTTON": "Riscatta"
   },
   "AUTH": {
     "LOGIN": "Accedi",

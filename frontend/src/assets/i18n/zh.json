@@ -118,7 +118,12 @@
         "NO_REDEEMED_PRIZES": "您没有兑换任何奖品",
         "REDEEMED": "已兑换",
         "VALID_UNTIL": "有效期至",
-        "AVAILABLE": "可用"
+        "AVAILABLE": "可用",
+        "SORT_ASC": "按积分排序（升序）",
+        "SORT_DESC": "按积分排序（降序）",
+        "LOADING": "正在加载奖品...",
+        "NO_PRIZES_AVAILABLE": "暂无可用奖品",
+        "REDEEM_BUTTON": "兑换"
     },
     "AUTH": {
         "LOGIN": "登录",

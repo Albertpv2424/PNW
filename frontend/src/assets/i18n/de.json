@@ -118,7 +118,12 @@
         "NO_REDEEMED_PRIZES": "Sie haben keine Preise eingelöst",
         "REDEEMED": "Eingelöst",
         "VALID_UNTIL": "Gültig bis",
-        "AVAILABLE": "Verfügbar"
+        "AVAILABLE": "Verfügbar",
+        "SORT_ASC": "Nach Punkten sortieren (Aufsteigend)",
+        "SORT_DESC": "Nach Punkten sortieren (Absteigend)",
+        "LOADING": "Laden...",
+        "NO_PRIZES_AVAILABLE": "Es sind keine Preise verfügbar",
+        "REDEEM_BUTTON": "Einlösen"
     },
     "AUTH": {
         "LOGIN": "Einloggen",
