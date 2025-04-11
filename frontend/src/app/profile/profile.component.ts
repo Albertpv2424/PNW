@@ -88,7 +88,22 @@ export class ProfileComponent implements OnInit {
       current_password: [''],
       new_password: [''],
       confirm_password: ['']
+    }, {
+      validators: this.passwordMatchValidator
     });
+  }
+
+  // Add this method to validate password matching
+  passwordMatchValidator(form: FormGroup) {
+    const newPassword = form.get('new_password')?.value;
+    const confirmPassword = form.get('confirm_password')?.value;
+    
+    if (newPassword && confirmPassword && newPassword !== confirmPassword) {
+      form.get('confirm_password')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+    
+    return null;
   }
 
   // Add this method to your ProfileComponent class
@@ -187,75 +202,211 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(): void {
+    console.log('Form submission started');
+    
     if (this.profileForm.invalid) {
+      // Show validation errors
+      Object.keys(this.profileForm.controls).forEach(key => {
+        const control = this.profileForm.get(key);
+        if (control) {
+          control.markAsTouched();
+        }
+      });
       return;
     }
 
-    // Crear FormData para enviar los datos
+    // Check if we need to upload a file
+    const hasFile = !!this.selectedFile;
+    
+    // In the updateProfile method, replace the problematic code:
+    if (hasFile) {
+    // Use FormData approach for file uploads
     const formData = new FormData();
-    formData.append('nick', this.profileForm.value.nick);
-    formData.append('email', this.profileForm.value.email);
-    formData.append('telefon', this.profileForm.value.telefon || '');
-
-    if (this.profileForm.value.current_password) {
-      formData.append('current_password', this.profileForm.value.current_password);
-      formData.append('new_password', this.profileForm.value.new_password);
+    
+    // Make sure these values are not null or undefined and are strings
+    formData.append('nick', this.profileForm.value.nick?.toString() || '');
+    formData.append('email', this.profileForm.value.email?.toString() || '');
+    formData.append('telefon', this.profileForm.value.telefon?.toString() || '');
+    
+    // Check password fields
+    const currentPassword = this.profileForm.value.current_password;
+    const newPassword = this.profileForm.value.new_password;
+    const confirmPassword = this.profileForm.value.confirm_password;
+    
+    if (currentPassword && newPassword) {
+      formData.append('current_password', currentPassword);
+      formData.append('new_password', newPassword);
+      formData.append('password_confirmation', confirmPassword || newPassword);
+    } else if ((currentPassword && !newPassword) || (!currentPassword && newPassword)) {
+      this.notificationService.showError('Debes completar ambos campos de contraseña');
+      return;
     }
-
+    
+    // Fix the TypeScript error by ensuring selectedFile is not null
     if (this.selectedFile) {
       formData.append('profile_image', this.selectedFile);
     }
-
-    // Ya no necesitamos enviar el token de aut
+    
+    // Get the token and create headers
     const token = localStorage.getItem('token');
-
-    // Create headers with the token
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
-    // Send the request with the token in headers
+    
+    // Send the request with FormData
     this.http.post('http://localhost:8000/api/update-profile', formData, { headers })
       .subscribe({
         next: (response: any) => {
           this.notificationService.showSuccess('Perfil actualizado correctamente');
-
+    
           // Update user data in localStorage and service
           if (response.user) {
             localStorage.setItem('currentUser', JSON.stringify(response.user));
             this.authService.updateCurrentUser(response.user);
-
+    
             // Update local data
             this.username = response.user.nick;
             this.email = response.user.email;
             this.profileImage = response.user.profile_image || null;
             this.telefon = response.user.telefon || '';
-
+    
             // Clear password fields
             this.profileForm.patchValue({
               current_password: '',
               new_password: '',
               confirm_password: ''
             });
-
+    
             // Return to profile view and navigate to profile page
             this.editMode = false;
-            this.router.navigate(['/profile']); // Add this line to redirect
+            this.router.navigate(['/profile']);
           }
         },
         error: (error) => {
           console.error('Error updating profile:', error);
-          let errorMessage = 'Error al actualizar el perfil.';
-
-          if (error.status === 401) {
-            errorMessage = 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.';
-          } else if (error.error?.message) {
-            errorMessage = error.error.message;
+          
+          // Handle validation errors from Laravel
+          if (error.status === 422 && error.error && error.error.errors) {
+            // Laravel validation errors
+            const validationErrors = error.error.errors;
+            console.log('Validation errors:', validationErrors);
+            
+            let errorMessage = 'Por favor corrige los siguientes errores:';
+            
+            // Build error message from validation errors
+            for (const field in validationErrors) {
+              if (validationErrors.hasOwnProperty(field)) {
+                errorMessage += `\n- ${validationErrors[field][0]}`;
+              }
+            }
+            
+            this.notificationService.showError(errorMessage);
+          } else if (error.error && error.error.message) {
+            // Show specific error message from server
+            this.notificationService.showError(error.error.message);
+          } else {
+            // Generic error
+            this.notificationService.showError('Error al actualizar el perfil. Inténtalo de nuevo.');
           }
-
-          this.notificationService.showError(errorMessage);
         }
       });
+    } else {
+      // Use JSON approach for non-file updates
+      // Define the object with an interface or type that allows additional properties
+      const updateData: {
+        nick: any;
+        email: any;
+        telefon: any;
+        current_password?: string;
+        new_password?: string;
+        password_confirmation?: string;
+        [key: string]: any; // This allows additional string properties
+      } = {
+        nick: this.profileForm.value.nick,
+        email: this.profileForm.value.email,
+        telefon: this.profileForm.value.telefon || ''
+      };
+      
+      // Check password fields
+      const currentPassword = this.profileForm.value.current_password;
+      const newPassword = this.profileForm.value.new_password;
+      
+      if (currentPassword && newPassword) {
+        updateData.current_password = currentPassword;
+        updateData.new_password = newPassword;
+        updateData.password_confirmation = this.profileForm.value.confirm_password || newPassword;
+      } else if ((currentPassword && !newPassword) || (!currentPassword && newPassword)) {
+        this.notificationService.showError('Debes completar ambos campos de contraseña');
+        return;
+      }
+      
+      // Get the token and create headers
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      });
+      
+      console.log('Sending profile update with JSON data:', updateData);
+      
+      // Send the request with JSON data
+      this.http.post('http://localhost:8000/api/update-profile', updateData, { headers })
+        .subscribe({
+          next: (response: any) => {
+            this.notificationService.showSuccess('Perfil actualizado correctamente');
+    
+            // Update user data in localStorage and service
+            if (response.user) {
+              localStorage.setItem('currentUser', JSON.stringify(response.user));
+              this.authService.updateCurrentUser(response.user);
+    
+              // Update local data
+              this.username = response.user.nick;
+              this.email = response.user.email;
+              this.profileImage = response.user.profile_image || null;
+              this.telefon = response.user.telefon || '';
+    
+              // Clear password fields
+              this.profileForm.patchValue({
+                current_password: '',
+                new_password: '',
+                confirm_password: ''
+              });
+    
+              // Return to profile view and navigate to profile page
+              this.editMode = false;
+              this.router.navigate(['/profile']);
+            }
+          },
+          error: (error) => {
+            console.error('Error updating profile:', error);
+            
+            // Handle validation errors from Laravel
+            if (error.status === 422 && error.error && error.error.errors) {
+              // Laravel validation errors
+              const validationErrors = error.error.errors;
+              console.log('Validation errors:', validationErrors);
+              
+              let errorMessage = 'Por favor corrige los siguientes errores:';
+              
+              // Build error message from validation errors
+              for (const field in validationErrors) {
+                if (validationErrors.hasOwnProperty(field)) {
+                  errorMessage += `\n- ${validationErrors[field][0]}`;
+                }
+              }
+              
+              this.notificationService.showError(errorMessage);
+            } else if (error.error && error.error.message) {
+              // Show specific error message from server
+              this.notificationService.showError(error.error.message);
+            } else {
+              // Generic error
+              this.notificationService.showError('Error al actualizar el perfil. Inténtalo de nuevo.');
+            }
+          }
+        });
+    }
   }
 
   // Add these properties to your ProfileComponent class
