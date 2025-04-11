@@ -126,20 +126,25 @@
         "REDEEM_BUTTON": "Einlösen"
     },
     "AUTH": {
-        "LOGIN": "Einloggen",
-        "REGISTER": "Registrieren",
+        "WELCOME": "Willkommen!",
         "USERNAME": "Benutzername",
         "EMAIL": "E-Mail",
         "PASSWORD": "Passwort",
-        "CONFIRM_PASSWORD": "Passwort bestätigen",
+        "DNI": "Ausweisnummer",
         "PHONE": "Telefon",
         "BIRTH_DATE": "Geburtsdatum",
+        "PROFILE_IMAGE": "Profilbild (optional)",
+        "PREVIEW": "Vorschau",
+        "SELECT_IMAGE": "Bild auswählen",
+        "TERMS_AGREEMENT": "Ich habe die AGB gelesen und akzeptiere sie.",
+        "CREATE_ACCOUNT": "KONTO ERSTELLEN",
+        "ALREADY_ACCOUNT": "Haben Sie bereits ein Konto?",
+        "LOGIN": "ANMELDEN",
+        "CREATE_NOW": "JETZT ERSTELLEN",
+        "NO_ACCOUNT": "Haben Sie kein Konto?",
+        "REMEMBER_ME": "Angemeldet bleiben",
         "FORGOT_PASSWORD": "Passwort vergessen?",
-        "NO_ACCOUNT": "Kein Konto?",
-        "ALREADY_ACCOUNT": "Sie haben bereits ein Konto?",
-        "SIGN_UP": "Anmelden",
-        "SIGN_IN": "Einloggen",
-        "TERMS": "Ich akzeptiere die Geschäftsbedingungen"
+        "USERNAME_OR_EMAIL": "Benutzername oder E-Mail"
     },
     "ERRORS": {
         "REQUIRED": "Dieses Feld ist erforderlich",
@@ -407,9 +412,9 @@
         "BET_AMOUNT": "Wetteinsatz"
     },
     "CHAT": {
-    "TITLE": "Online-Support",
-    "WELCOME_MESSAGE": "Hallo! Wie können wir Ihnen heute helfen?",
-    "INPUT_PLACEHOLDER": "Nachricht eingeben...",
-    "INITIAL_MESSAGE": "你好！我需要帮助。"
-  }
+        "TITLE": "Online-Support",
+        "WELCOME_MESSAGE": "Hallo! Wie können wir Ihnen heute helfen?",
+        "INPUT_PLACEHOLDER": "Nachricht eingeben...",
+        "INITIAL_MESSAGE": "你好！我需要帮助。"
+    }
 }

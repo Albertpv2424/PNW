@@ -1,16 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
-// Remove NotificationComponent import
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageSliderComponent } from '../../language-slider/language-slider.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink], // Remove NotificationComponent
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslateModule,
+    LanguageSliderComponent
+  ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -198,5 +205,15 @@ export class RegisterComponent implements OnInit {
       
       this.notificationService.showError(errorMessage);
     }
+  }
+  
+  // Add this method if it doesn't exist
+  handleImageError(event: any): void {
+    event.target.src = 'assets/logo-fallback.png';
+  }
+  
+  // Añadir este método al componente
+  navigateToHome(): void {
+    this.router.navigate(['/']);
   }
 }

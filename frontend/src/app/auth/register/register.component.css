@@ -37,14 +37,23 @@
     transition: transform 0.3s ease;
   }
   
+  /* Actualizar los estilos del logo */
   .logo {
     width: 150px;
     height: auto;
     display: block;
-    margin: 0 auto 20px;
+    margin: 25px auto 30px; /* Aumentar márgenes arriba y abajo */
     object-fit: contain;
   }
   
+  .logo-clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .logo-clickable:hover {
+    transform: scale(1.05);
+  }
   h1, .subtitle {
     color: white;
     text-align: center;
@@ -337,4 +346,25 @@
   
   .upload-button:hover {
     background-color: rgba(0, 179, 65, 0.4);
+  }
+  
+  /* Add this to your existing CSS */
+  .language-selector {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+  }
+  
+  /* Make sure the register container has position relative */
+  .register-container {
+    position: relative;
+    /* ... your existing styles ... */
+  }
+
+  .top-right-language {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
   }

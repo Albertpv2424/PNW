@@ -126,20 +126,25 @@
     "REDEEM_BUTTON": "Redeem"
   },
   "AUTH": {
-    "LOGIN": "Login",
-    "REGISTER": "Register",
+    "WELCOME": "Welcome!",
     "USERNAME": "Username",
     "EMAIL": "Email",
     "PASSWORD": "Password",
-    "CONFIRM_PASSWORD": "Confirm Password",
+    "DNI": "ID Number",
     "PHONE": "Phone",
     "BIRTH_DATE": "Birth Date",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "NO_ACCOUNT": "Don't have an account?",
+    "PROFILE_IMAGE": "Profile Picture (optional)",
+    "PREVIEW": "Preview",
+    "SELECT_IMAGE": "Select Image",
+    "TERMS_AGREEMENT": "I have read and accept the Terms and Conditions.",
+    "CREATE_ACCOUNT": "CREATE ACCOUNT",
     "ALREADY_ACCOUNT": "Already have an account?",
-    "SIGN_UP": "Sign Up",
-    "SIGN_IN": "Sign In",
-    "TERMS": "I agree to the terms and conditions"
+    "LOGIN": "LOG IN",
+    "CREATE_NOW": "CREATE NOW",
+    "NO_ACCOUNT": "Don't have an account?",
+    "REMEMBER_ME": "Remember me",
+    "FORGOT_PASSWORD": "Forgot password?",
+    "USERNAME_OR_EMAIL": "Username or email"
   },
   "ERRORS": {
     "REQUIRED": "This field is required",

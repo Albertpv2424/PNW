@@ -1,33 +1,43 @@
 <div class="login-container">
   <div class="login-card">
-    <img src="../../../assets/logo.jpg" alt="Logo" class="logo" (error)="handleImageError($event)">
-    <h1 style="color: white;">Bienvenido!</h1>
+    <!-- Añadir top-right-language si no existe -->
+    <div class="top-right-language">
+      <app-language-slider></app-language-slider>
+    </div>
+    
+    <!-- Actualizar el logo para que sea clickable y tenga márgenes -->
+    <img src="../../../assets/logo.jpg" alt="Logo" class="logo logo-clickable" 
+         (click)="navigateToHome()" 
+         (error)="handleImageError($event)">
+    
+    <h1 style="color: white;">{{ 'AUTH.WELCOME' | translate }}</h1>
 
+    <!-- Resto del formulario se mantiene igual -->
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="input-container">
         <input type="text" formControlName="email" placeholder="">
-        <label>Usuario o correo electrónico</label>
+        <label>{{ 'AUTH.USERNAME_OR_EMAIL' | translate }}</label>
       </div>
 
       <div class="input-container">
         <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="">
-        <label>Contraseña</label>
+        <label>{{ 'AUTH.PASSWORD' | translate }}</label>
         <span class="eye-icon" (click)="togglePassword()"></span>
       </div>
 
       <div class="options-container">
         <div class="remember-container">
           <input type="checkbox" id="remember" formControlName="remember">
-          <label for="remember">Recordarme</label>
+          <label for="remember">{{ 'AUTH.REMEMBER_ME' | translate }}</label>
         </div>
-        <a routerLink="/reset-password" class="forgot-link">Contraseña perdida</a>
+        <a routerLink="/reset-password" class="forgot-link">{{ 'AUTH.FORGOT_PASSWORD' | translate }}</a>
       </div>
 
-      <button type="submit" class="submit-button">Iniciar Sesión</button>
+      <button type="submit" class="submit-button">{{ 'AUTH.LOGIN' | translate }}</button>
 
       <div class="register-link">
-        <span>No tienes cuenta?</span>
-        <a routerLink="/register">CREAR AHORA</a>
+        <span>{{ 'AUTH.NO_ACCOUNT' | translate }}</span>
+        <a routerLink="/register">{{ 'AUTH.CREATE_NOW' | translate }}</a>
       </div>
     </form>
   </div>

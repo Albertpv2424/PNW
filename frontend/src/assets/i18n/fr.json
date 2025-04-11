@@ -126,20 +126,25 @@
         "REDEEM_BUTTON": "Échanger"
     },
     "AUTH": {
-        "LOGIN": "Se Connecter",
-        "REGISTER": "S'inscrire",
-        "USERNAME": "Nom d'Utilisateur",
+        "WELCOME": "Bienvenue!",
+        "USERNAME": "Nom d'utilisateur",
         "EMAIL": "Email",
-        "PASSWORD": "Mot de Passe",
-        "CONFIRM_PASSWORD": "Confirmer le Mot de Passe",
+        "PASSWORD": "Mot de passe",
+        "DNI": "Numéro d'identité",
         "PHONE": "Téléphone",
-        "BIRTH_DATE": "Date de Naissance",
-        "FORGOT_PASSWORD": "Mot de Passe Oublié ?",
-        "NO_ACCOUNT": "Pas de compte ?",
-        "ALREADY_ACCOUNT": "Vous avez déjà un compte ?",
-        "SIGN_UP": "Inscrivez-vous",
-        "SIGN_IN": "Connectez-vous",
-        "TERMS": "J'accepte les termes et conditions"
+        "BIRTH_DATE": "Date de naissance",
+        "PROFILE_IMAGE": "Photo de profil (optionnel)",
+        "PREVIEW": "Aperçu",
+        "SELECT_IMAGE": "Sélectionner une image",
+        "TERMS_AGREEMENT": "J'ai lu et j'accepte les Conditions Générales.",
+        "CREATE_ACCOUNT": "CRÉER UN COMPTE",
+        "ALREADY_ACCOUNT": "Vous avez déjà un compte?",
+        "LOGIN": "SE CONNECTER",
+        "CREATE_NOW": "CRÉER MAINTENANT",
+        "NO_ACCOUNT": "Vous n'avez pas de compte?",
+        "REMEMBER_ME": "Se souvenir de moi",
+        "FORGOT_PASSWORD": "Mot de passe oublié?",
+        "USERNAME_OR_EMAIL": "Nom d'utilisateur ou email"
     },
     "ERRORS": {
         "REQUIRED": "Ce champ est obligatoire",
@@ -407,9 +412,9 @@
         "BET_AMOUNT": "Montant du pari"
     },
     "CHAT": {
-    "TITLE": "Support en ligne",
-    "WELCOME_MESSAGE": "Bonjour ! Comment pouvons-nous vous aider aujourd'hui ?",
-    "INPUT_PLACEHOLDER": "Écrivez un message...",
-    "INITIAL_MESSAGE": "Bonjour ! J'ai besoin d'aide."
-  }
+        "TITLE": "Support en ligne",
+        "WELCOME_MESSAGE": "Bonjour ! Comment pouvons-nous vous aider aujourd'hui ?",
+        "INPUT_PLACEHOLDER": "Écrivez un message...",
+        "INITIAL_MESSAGE": "Bonjour ! J'ai besoin d'aide."
+    }
 }

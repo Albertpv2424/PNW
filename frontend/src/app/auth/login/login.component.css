@@ -33,12 +33,22 @@
     box-shadow: 0 0 30px rgba(0, 179, 65, 0.15);
   }
   
+  /* Actualizar los estilos del logo */
   .logo {
     width: 150px;
     height: auto;
     display: block;
-    margin: 0 auto 20px;
+    margin: 25px auto 30px; /* Aumentar márgenes arriba y abajo */
     object-fit: contain;
+  }
+  
+  .logo-clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .logo-clickable:hover {
+    transform: scale(1.05);
   }
   
   .input-container {
@@ -223,3 +233,32 @@
   .input-container input[type="text"] {
     padding-right: 40px;
   }
+  
+  /* Add this to your existing CSS */
+  .language-selector-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  /* Remove the absolute positioning styles if they exist */
+  .language-selector {
+    position: static;
+    top: auto;
+    right: auto;
+    z-index: auto;
+  }
+  
+  /* Make sure the login container has position relative */
+  .login-container {
+    position: relative;
+    /* ... your existing styles ... */
+  }
+
+  .top-right-language {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+}

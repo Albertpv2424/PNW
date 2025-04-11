@@ -1,65 +1,75 @@
 <div class="register-container">
-    <div class="register-card">
-      <img src="../../../assets/logo.jpg" alt="Logo" class="logo">
-      <h1>Bienvenido!</h1>
-
-      <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-       
-        <div class="input-container">
-          <input type="text" formControlName="nick" placeholder="Usuario">
-          <label>Usuario</label>
-        </div>
-
-        <div class="input-container">
-          <input type="email" formControlName="email" placeholder="Correo electrónico">
-          <label>Correo electrónico</label>
-        </div>
-
-        <div class="input-container">
-          <input [type]="showPassword ? 'text' : 'password'" formControlName="pswd" placeholder="Contraseña">
-          <label>Contraseña</label>
-          <span class="eye-icon" (click)="togglePassword()"></span>
-        </div>
-
-        <div class="input-container">
-          <input type="text" formControlName="dni" placeholder="DNI/NIE">
-          <label>DNI/NIE</label>
-        </div>
-
-        <div class="input-container">
-          <input type="tel" formControlName="telefon" placeholder="Teléfono">
-          <label>Teléfono</label>
-        </div>
-
-        <div class="input-container">
-          <input type="date" formControlName="data_naixement" placeholder="Fecha de nacimiento">
-          <label>Fecha de nacimiento</label>
-        </div>
-
-        <!-- Add profile image upload field -->
-        <div class="profile-image-container">
-          <label for="profile-image" class="profile-image-label">Foto de perfil (opcional)</label>
-          <div class="profile-preview" *ngIf="imagePreview">
-            <img [src]="imagePreview" alt="Vista previa" class="preview-image">
-          </div>
-          <div class="profile-upload">
-            <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*">
-            <label for="profile-image" class="upload-button">Seleccionar imagen</label>
-          </div>
-        </div>
-
-        <div class="checkbox-container">
-          <input type="checkbox" id="terms" formControlName="terms">
-          <label for="terms">He leído y acepto los Términos y Condiciones.</label>
-        </div>
-
-        <button type="submit" class="submit-button">CREAR CUENTA</button>
-        
-        <!-- Update login link section to match login component style -->
-        <div class="register-link">
-          <span>¿Ya tienes una cuenta?</span>
-          <a routerLink="/login">INICIAR SESIÓN</a>
-        </div>
-      </form>
+  <div class="register-card">
+    <!-- Añadir top-right-language si no existe -->
+    <div class="top-right-language">
+      <app-language-slider></app-language-slider>
     </div>
+    
+    <!-- Actualizar el logo para que sea clickable y tenga márgenes -->
+    <img src="../../../assets/logo.jpg" alt="Logo" class="logo logo-clickable" 
+         (click)="navigateToHome()" 
+         (error)="handleImageError($event)">
+    
+    <h1>{{ 'AUTH.WELCOME' | translate }}</h1>
+
+    <!-- Resto del formulario se mantiene igual -->
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+       
+      <div class="input-container">
+        <input type="text" formControlName="nick" placeholder="{{ 'AUTH.USERNAME' | translate }}">
+        <label>{{ 'AUTH.USERNAME' | translate }}</label>
+      </div>
+
+      <div class="input-container">
+        <input type="email" formControlName="email" placeholder="{{ 'AUTH.EMAIL' | translate }}">
+        <label>{{ 'AUTH.EMAIL' | translate }}</label>
+      </div>
+
+      <div class="input-container">
+        <input [type]="showPassword ? 'text' : 'password'" formControlName="pswd" placeholder="{{ 'AUTH.PASSWORD' | translate }}">
+        <label>{{ 'AUTH.PASSWORD' | translate }}</label>
+        <span class="eye-icon" (click)="togglePassword()"></span>
+      </div>
+
+      <div class="input-container">
+        <input type="text" formControlName="dni" placeholder="{{ 'AUTH.DNI' | translate }}">
+        <label>{{ 'AUTH.DNI' | translate }}</label>
+      </div>
+
+      <div class="input-container">
+        <input type="tel" formControlName="telefon" placeholder="{{ 'AUTH.PHONE' | translate }}">
+        <label>{{ 'AUTH.PHONE' | translate }}</label>
+      </div>
+
+      <div class="input-container">
+        <input type="date" formControlName="data_naixement" placeholder="{{ 'AUTH.BIRTH_DATE' | translate }}">
+        <label>{{ 'AUTH.BIRTH_DATE' | translate }}</label>
+      </div>
+
+      <!-- Add profile image upload field -->
+      <div class="profile-image-container">
+        <label for="profile-image" class="profile-image-label">{{ 'AUTH.PROFILE_IMAGE' | translate }}</label>
+        <div class="profile-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="{{ 'AUTH.PREVIEW' | translate }}" class="preview-image">
+        </div>
+        <div class="profile-upload">
+          <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*">
+          <label for="profile-image" class="upload-button">{{ 'AUTH.SELECT_IMAGE' | translate }}</label>
+        </div>
+      </div>
+
+      <div class="checkbox-container">
+        <input type="checkbox" id="terms" formControlName="terms">
+        <label for="terms">{{ 'AUTH.TERMS_AGREEMENT' | translate }}</label>
+      </div>
+
+      <button type="submit" class="submit-button">{{ 'AUTH.CREATE_ACCOUNT' | translate }}</button>
+      
+      <!-- Update login link section to match login component style -->
+      <div class="register-link">
+        <span>{{ 'AUTH.ALREADY_ACCOUNT' | translate }}</span>
+        <a routerLink="/login">{{ 'AUTH.LOGIN' | translate }}</a>
+      </div>
+    </form>
   </div>
+</div>
