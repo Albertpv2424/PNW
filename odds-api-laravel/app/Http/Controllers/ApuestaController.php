@@ -15,7 +15,7 @@ class ApuestaController extends Controller
     {
         // Log the incoming request for debugging
         Log::info('Apuesta request received', ['data' => $request->all()]);
-        
+
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
             'cuota' => 'required|numeric|min:1',
@@ -44,7 +44,7 @@ class ApuestaController extends Controller
         try {
             // Iniciar transacción
             DB::beginTransaction();
-            
+
             Log::info('Starting transaction for bet', [
                 'user' => $usuario->nick,
                 'amount' => $request->punts_proposats,
@@ -65,7 +65,7 @@ class ApuestaController extends Controller
 
             // Check if tipo_apuesta column exists
             $hasColumn = Schema::hasColumn('prediccio_proposada', 'tipo_apuesta');
-            
+
             // Crear la predicción propuesta
             $data = [
                 'usuari_nick' => $usuario->nick,
@@ -73,7 +73,7 @@ class ApuestaController extends Controller
                 'punts_proposats' => $request->punts_proposats,
                 'match_info' => $matchInfo, // Add match info here
             ];
-            
+
             // Add prediction choice for single bets
             if (count($request->selecciones) === 1) {
                 $data['prediction_choice'] = $request->selecciones[0]['teamName'];
@@ -86,7 +86,7 @@ class ApuestaController extends Controller
                     $teamSelections = array_map(function($seleccion) {
                         return $seleccion['teamName'];
                     }, $request->selecciones);
-                    
+
                     // Join all team names with a separator
                     $data['prediction_choice'] = implode(' + ', $teamSelections);
                 }
@@ -96,18 +96,18 @@ class ApuestaController extends Controller
             if ($hasColumn) {
                 $data['tipo_apuesta'] = $request->tipo_apuesta;
             }
-            
+
             // Add timestamps if they exist
             if (Schema::hasColumn('prediccio_proposada', 'created_at')) {
                 $data['created_at'] = now();
             }
-            
+
             if (Schema::hasColumn('prediccio_proposada', 'updated_at')) {
                 $data['updated_at'] = now();
             }
-            
+
             $prediccionPropuesta = DB::table('prediccio_proposada')->insertGetId($data);
-            
+
             Log::info('Created prediccio_proposada', ['id' => $prediccionPropuesta]);
 
             // Insertar los detalles de la predicción
@@ -123,7 +123,7 @@ class ApuestaController extends Controller
                     'updated_at' => now(),
                 ]);
             }
-            
+
             Log::info('Inserted bet details');
 
             // Restar puntos al usuario
@@ -171,7 +171,7 @@ class ApuestaController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error registering bet', [
-                'error' => $e->getMessage(), 
+                'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
                 'line' => $e->getLine(),
                 'file' => $e->getFile()
@@ -229,7 +229,7 @@ class ApuestaController extends Controller
 
             // Check if tipo_apuesta column exists
             $hasColumn = Schema::hasColumn('prediccio_proposada', 'tipo_apuesta');
-            
+
             // Crear la predicción propuesta
             $data = [
                 'usuari_nick' => $usuario->nick,
@@ -237,7 +237,7 @@ class ApuestaController extends Controller
                 'punts_proposats' => $request->punts_proposats,
                 'match_info' => $matchInfo, // Add match info here
             ];
-            
+
             // Add prediction choice for single bets
             if (count($request->selecciones) === 1) {
                 $data['prediction_choice'] = $request->selecciones[0]['teamName'];
@@ -250,18 +250,18 @@ class ApuestaController extends Controller
             if ($hasColumn) {
                 $data['tipo_apuesta'] = $request->tipo_apuesta;
             }
-            
+
             // Add timestamps if they exist
             if (Schema::hasColumn('prediccio_proposada', 'created_at')) {
                 $data['created_at'] = now();
             }
-            
+
             if (Schema::hasColumn('prediccio_proposada', 'updated_at')) {
                 $data['updated_at'] = now();
             }
-            
+
             $prediccionPropuesta = DB::table('prediccio_proposada')->insertGetId($data);
-            
+
             Log::info('Created prediccio_proposada', ['id' => $prediccionPropuesta]);
 
             // Insertar los detalles de la predicción
@@ -277,7 +277,7 @@ class ApuestaController extends Controller
                     'updated_at' => now(),
                 ]);
             }
-            
+
             Log::info('Inserted bet details');
 
             // Restar puntos al usuario
@@ -299,7 +299,7 @@ class ApuestaController extends Controller
                 throw new \Exception('Saldo insuficiente para realizar esta apuesta');
             }
 
-            // Use raw DB query to update saldo
+            // Use raw DB query to update saldo 
             $updated = DB::statement("UPDATE usuaris SET saldo = ? WHERE nick = ?", [$newSaldo, $usuario->nick]);
 
             if (!$updated) {
@@ -325,7 +325,7 @@ class ApuestaController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error registering bet', [
-                'error' => $e->getMessage(), 
+                'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
                 'line' => $e->getLine(),
                 'file' => $e->getFile()

@@ -123,7 +123,8 @@
         "SORT_DESC": "Nach Punkten sortieren (Absteigend)",
         "LOADING": "Laden...",
         "NO_PRIZES_AVAILABLE": "Es sind keine Preise verfügbar",
-        "REDEEM_BUTTON": "Einlösen"
+        "REDEEM_BUTTON": "Einlösen",
+        "USED": "Verwendet"
     },
     "AUTH": {
         "WELCOME": "Willkommen!",

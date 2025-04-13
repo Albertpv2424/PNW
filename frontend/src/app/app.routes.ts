@@ -16,18 +16,15 @@ import { PromotionsComponent } from './admin/promotions/promotions.component';
 import { BetVerificationComponent } from './admin/bet-verification/bet-verification.component';
 import { BetsComponent } from './bets/bets.component';
 import { HistoryComponent } from './history/history.component';
-
-// Importar componentes de información
 import { AboutComponent } from './about/about.component';
 import { TermsComponent } from './terms/terms.component';
 import { PrivacyComponent } from './privacy/privacy.component';
-
-// Importar componentes de ayuda
 import { FaqComponent } from './faq/faq.component';
 import { HowToPlayComponent } from './how-to-play/how-to-play.component';
 import { ResponsibleGamingComponent } from './responsible-gaming/responsible-gaming.component';
 import { SupportComponent } from './support/support.component';
 import { ChatAdminComponent } from './chat-admin/chat-admin.component';
+import { PrizeRedemptionsComponent } from './admin/prize-redemptions/prize-redemptions.component';
 
 
 export const routes: Routes = [
@@ -78,11 +75,8 @@ export const routes: Routes = [
       { path: 'prizes', component: PrizesComponent },
       { path: 'promotions', component: PromotionsComponent},
       { path: 'bet-verification', component: BetVerificationComponent },
-      {
-        path: 'chat',
-        component: ChatAdminComponent,
-      }
-      // Add other admin routes here
+      { path: 'chat', component: ChatAdminComponent},
+      { path: 'prize-redemptions', component: PrizeRedemptionsComponent },
     ]
   },
 

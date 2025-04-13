@@ -123,7 +123,8 @@
         "SORT_DESC": "按积分排序（降序）",
         "LOADING": "正在加载奖品...",
         "NO_PRIZES_AVAILABLE": "暂无可用奖品",
-        "REDEEM_BUTTON": "兑换"
+        "REDEEM_BUTTON": "兑换",
+        "USED": "已使用"
     },
     "AUTH": {
         "WELCOME": "欢迎！",

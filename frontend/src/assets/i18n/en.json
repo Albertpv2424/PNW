@@ -123,7 +123,8 @@
     "SORT_DESC": "Sort by Points (Descending)",
     "LOADING": "Loading prizes...",
     "NO_PRIZES_AVAILABLE": "No prizes available",
-    "REDEEM_BUTTON": "Redeem"
+    "REDEEM_BUTTON": "Redeem",
+    "USED": "Used"
   },
   "AUTH": {
     "WELCOME": "Welcome!",

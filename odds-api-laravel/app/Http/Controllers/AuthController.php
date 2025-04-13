@@ -365,7 +365,7 @@ class AuthController extends Controller
                 Log::info('Attempting to send password reset email to: ' . $user->email);
                 Mail::to($user->email)->send(new PasswordResetMail($resetUrl));
                 Log::info('Password reset email sent successfully');
-                
+
                 return response()->json([
                     'message' => 'Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.',
                     'success' => true
@@ -373,7 +373,7 @@ class AuthController extends Controller
             } catch (\Exception $e) {
                 Log::error('Failed to send password reset email: ' . $e->getMessage());
                 Log::error('Error details: ' . $e->getTraceAsString());
-                
+
                 return response()->json([
                     'message' => 'Error al enviar el correo electrónico: ' . $e->getMessage(),
                     'success' => false
@@ -476,7 +476,7 @@ class AuthController extends Controller
             unlink(public_path($user->profile_image));
         }
 
-        // Eliminar el usuario
+        // Eliminar el usuario 
         $user->delete();
 
         // Registrar la eliminación en el log

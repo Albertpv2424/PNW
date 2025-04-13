@@ -43,4 +43,9 @@ export class NotificationService {
       duration
     });
   }
+
+  showWarning(message: string): void {
+    // Use translation if it exists, otherwise use the message directly
+    const translatedMessage = this.translateService.instant(message);
+  }
 }

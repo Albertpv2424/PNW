@@ -122,6 +122,10 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::post('/prizes/{id}', [PrizeController::class, 'update']);
     Route::delete('/prizes/{id}', [PrizeController::class, 'destroy']);
 
+    // Verificación de premios canjeados
+    Route::get('/prize-redemptions', [PrizeController::class, 'getRedemptions']);
+    Route::post('/prize-redemptions/{id}/verify', [PrizeController::class, 'verifyRedemption']);
+
     // Gestión de promociones
     Route::get('/promotions', [PromotionController::class, 'index']);
     Route::get('/promotions/{id}', [PromotionController::class, 'show']);
@@ -141,7 +145,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('/stats/bets', [StatsController::class, 'betStats']);
     Route::get('/stats/prizes', [StatsController::class, 'prizeStats']);
 });
-    
+
 // Añade esta ruta junto a tus otras rutas de API
 Route::get('/check-translations', [PremiosController::class, 'checkTranslations']);
 // Contact form route
