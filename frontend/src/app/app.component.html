@@ -1,7 +1,9 @@
-<app-notification></app-notification>
 <app-header *ngIf="showHeaderFooter"></app-header>
-<main>
-  <router-outlet></router-outlet>
-</main>
+<router-outlet></router-outlet>
 <app-footer *ngIf="showHeaderFooter"></app-footer>
-<app-chat></app-chat>
+
+<!-- Only show chat when showHeaderFooter is true -->
+<app-chat *ngIf="showHeaderFooter"></app-chat>
+
+<!-- Always show notifications -->
+<app-notification></app-notification>

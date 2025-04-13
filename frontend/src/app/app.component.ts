@@ -31,16 +31,14 @@ export class AppComponent implements OnInit {
     // Detectar cambios de ruta y hacer scroll al inicio
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
+    ).subscribe((event: NavigationEnd) => {
+      // Scroll to top on navigation
       window.scrollTo(0, 0);
-    });
 
-    // Subscribe to router events to determine when to show/hide header and footer
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      // Hide header and footer on profile, login, register, and admin pages
+      // Check current route to determine when to show/hide header, footer and chat
       const url = event.url;
+
+      // Hide header, footer and chat on these pages
       this.showHeaderFooter = !(
         url.includes('/profile') ||
         url.includes('/login') ||
@@ -48,6 +46,8 @@ export class AppComponent implements OnInit {
         url.includes('/admin') ||
         url.includes('/reset-password')
       );
+
+      console.log('Route changed to:', url, 'showHeaderFooter:', this.showHeaderFooter);
     });
   }
 }

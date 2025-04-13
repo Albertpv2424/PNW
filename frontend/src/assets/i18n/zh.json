@@ -426,6 +426,7 @@
     "CHAT": {
         "TITLE": "在线支持",
         "WELCOME_MESSAGE": "你好！今天我们能为您提供什么帮助？",
-        "INPUT_PLACEHOLDER": "输入消息..."
+        "INPUT_PLACEHOLDER": "输入消息...",
+        "INITIAL_MESSAGE": "你好！我需要帮助。"
     }
 }
