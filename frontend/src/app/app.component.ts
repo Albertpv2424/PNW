@@ -5,13 +5,21 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { ChatComponent } from './chat/chat.component';
+import { NotificationComponent } from './auth/notification/notification.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, CommonModule, ChatComponent]
+  imports: [
+    RouterOutlet,
+    HeaderComponent,
+    FooterComponent,
+    CommonModule,
+    ChatComponent,
+    NotificationComponent
+  ]
 })
 export class AppComponent implements OnInit {
   title = 'frontend';
@@ -34,9 +42,9 @@ export class AppComponent implements OnInit {
       // Hide header and footer on profile, login, register, and admin pages
       const url = event.url;
       this.showHeaderFooter = !(
-        url.includes('/profile') || 
-        url.includes('/login') || 
-        url.includes('/register') || 
+        url.includes('/profile') ||
+        url.includes('/login') ||
+        url.includes('/register') ||
         url.includes('/admin') ||
         url.includes('/reset-password')
       );

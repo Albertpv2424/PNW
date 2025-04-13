@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 // Import TranslateModule
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -32,6 +33,8 @@ export const appConfig: ApplicationConfig = {
         return next(req);
       }
     ])),
+    // Add animations provider
+    provideAnimations(),
     // Add TranslateModule provider
     importProvidersFrom(
       TranslateModule.forRoot({

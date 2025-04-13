@@ -1,7 +1,7 @@
+<app-notification></app-notification>
 <app-header *ngIf="showHeaderFooter"></app-header>
-<main class="main-content">
+<main>
   <router-outlet></router-outlet>
 </main>
-<!-- Chat component (only visible when not in admin pages) -->
-<app-chat *ngIf="showHeaderFooter"></app-chat>
 <app-footer *ngIf="showHeaderFooter"></app-footer>
+<app-chat></app-chat>
