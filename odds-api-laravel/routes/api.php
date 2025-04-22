@@ -144,6 +144,15 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::get('/stats/users', [StatsController::class, 'userStats']);
     Route::get('/stats/bets', [StatsController::class, 'betStats']);
     Route::get('/stats/prizes', [StatsController::class, 'prizeStats']);
+    
+    // Gestión de limitaciones de usuarios
+    Route::get('/user-limitations', 'App\Http\Controllers\Admin\UserLimitationsController@getAllUsersLimitations');
+    Route::get('/user-limitations/{username}', 'App\Http\Controllers\Admin\UserLimitationsController@getUserLimitations');
+    Route::put('/user-limitations/{username}', 'App\Http\Controllers\Admin\UserLimitationsController@updateUserLimitations');
+    Route::post('/user-limitations/{username}/reset', 'App\Http\Controllers\Admin\UserLimitationsController@resetUserLimitations');
+    Route::put('/user-limitations/{username}/toggle', 'App\Http\Controllers\Admin\UserLimitationsController@toggleUserLimitations');
+    Route::get('/user-limitations/defaults', 'App\Http\Controllers\Admin\UserLimitationsController@getDefaultLimitations');
+    Route::post('/user-limitations/global', 'App\Http\Controllers\Admin\UserLimitationsController@setGlobalLimitations');
 });
 
 // Añade esta ruta junto a tus otras rutas de API

@@ -8,9 +8,59 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+use App\Models\DailyRewardsTracking;
 
 class ApuestaController extends Controller
 {
+    /**
+     * Verificar si el usuario ha alcanzado sus límites de apuestas
+     */
+    private function checkUserLimitations($user)
+    {
+        $today = Carbon::today();
+        
+        // Obtener o crear registro de seguimiento diario
+        $dailyTracking = DailyRewardsTracking::firstOrCreate(
+            ['usuari_nick' => $user->nick, 'date' => $today],
+            [
+                'bets_today' => 0,
+                'max_daily_bets' => 5, // Valor predeterminado
+                'betting_time_today' => 0,
+                'max_daily_betting_time' => 3600 // 1 hora en segundos
+            ]
+        );
+        
+        // Verificar límite diario de apuestas
+        if ($dailyTracking->bets_today >= $dailyTracking->max_daily_bets) {
+            return [
+                'limited' => true,
+                'reason' => 'betting_limit',
+                'message' => 'Has alcanzado el límite diario de apuestas',
+                'remaining_bets' => 0,
+                'max_daily_bets' => $dailyTracking->max_daily_bets
+            ];
+        }
+        
+        // Verificar límite diario de tiempo
+        if ($dailyTracking->betting_time_today >= $dailyTracking->max_daily_betting_time) {
+            return [
+                'limited' => true,
+                'reason' => 'time_limit',
+                'message' => 'Has alcanzado el límite diario de tiempo de apuestas',
+                'remaining_time' => 0,
+                'max_daily_betting_time' => $dailyTracking->max_daily_betting_time
+            ];
+        }
+        
+        return [
+            'limited' => false,
+            'remaining_bets' => $dailyTracking->max_daily_bets - $dailyTracking->bets_today,
+            'remaining_time' => $dailyTracking->max_daily_betting_time - $dailyTracking->betting_time_today,
+            'tracking' => $dailyTracking
+        ];
+    }
+
     public function registrarApuesta(Request $request)
     {
         // Log the incoming request for debugging
@@ -39,6 +89,17 @@ class ApuestaController extends Controller
         if (!$usuario) {
             Log::error('User not authenticated');
             return response()->json(['error' => 'Usuario no autenticado'], 401);
+        }
+
+        // Verificar limitaciones de apuestas
+        $limitCheck = $this->checkUserLimitations($usuario);
+        if ($limitCheck['limited']) {
+            Log::warning('User reached betting limits', [
+                'user' => $usuario->nick,
+                'reason' => $limitCheck['reason'],
+                'message' => $limitCheck['message']
+            ]);
+            return response()->json(['error' => $limitCheck['message']], 403);
         }
 
         try {
@@ -152,6 +213,12 @@ class ApuestaController extends Controller
                 throw new \Exception('No se pudo actualizar el saldo del usuario');
             }
 
+            // Actualizar contadores de apuestas y tiempo
+            $dailyTracking = $limitCheck['tracking'];
+            $dailyTracking->bets_today += 1;
+            $dailyTracking->betting_time_today += 60; // Añadir 1 minuto por apuesta
+            $dailyTracking->save();
+
             // Verify the update worked by fetching the new saldo
             $verifiedSaldo = DB::table('usuaris')->where('nick', $usuario->nick)->value('saldo');
             Log::info('Updated user points', [
@@ -166,7 +233,12 @@ class ApuestaController extends Controller
             DB::commit();
             Log::info('Transaction committed successfully');
 
-            return response()->json(['message' => 'Apuesta registrada con éxito', 'id' => $prediccionPropuesta]);
+            return response()->json([
+                'message' => 'Apuesta registrada con éxito', 
+                'id' => $prediccionPropuesta,
+                'remaining_bets' => $dailyTracking->max_daily_bets - $dailyTracking->bets_today,
+                'remaining_time' => $dailyTracking->max_daily_betting_time - $dailyTracking->betting_time_today
+            ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -184,6 +256,14 @@ class ApuestaController extends Controller
     {
         try {
             $user = auth()->user();
+            
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no autenticado'], 401);
+            }
+            
+            // Iniciar transacción
+            DB::beginTransaction();
+            
             $today = Carbon::today();
 
             // Get or create daily tracking record
@@ -191,12 +271,15 @@ class ApuestaController extends Controller
                 ['usuari_nick' => $user->nick, 'date' => $today],
                 [
                     'bets_today' => 0,
-                    'betting_time_today' => 0
+                    'max_daily_bets' => 5, // Default value
+                    'betting_time_today' => 0,
+                    'max_daily_betting_time' => 3600 // Default: 1 hour in seconds
                 ]
             );
 
             // Check daily bet limit
             if ($dailyTracking->bets_today >= $dailyTracking->max_daily_bets) {
+                DB::rollBack();
                 return response()->json([
                     'error' => 'Has alcanzado el límite diario de apuestas'
                 ], 403);
@@ -204,17 +287,30 @@ class ApuestaController extends Controller
 
             // Check daily time limit
             if ($dailyTracking->betting_time_today >= $dailyTracking->max_daily_betting_time) {
+                DB::rollBack();
                 return response()->json([
                     'error' => 'Has alcanzado el límite diario de tiempo de apuestas'
                 ], 403);
             }
+            
+            // Validate request data
+            $validator = Validator::make($request->all(), [
+                'cuota' => 'required|numeric|min:1',
+                'punts_proposats' => 'required|numeric|min:1',
+                'selecciones' => 'required|array|min:1',
+                'selecciones.*.matchId' => 'required|string',
+                'selecciones.*.teamName' => 'required|string',
+                'selecciones.*.betType' => 'required|string',
+                'selecciones.*.odds' => 'required|numeric',
+                'selecciones.*.matchInfo' => 'required|string',
+                'tipo_apuesta' => 'required|string|in:simple,parlay',
+            ]);
 
-            // Update betting counters
-            $dailyTracking->bets_today += 1;
-            $dailyTracking->betting_time_today += 60; // Add 1 minute per bet
-            $dailyTracking->save();
+            if ($validator->fails()) {
+                DB::rollBack();
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
 
-            // Continue with existing bet creation logic
             // Extract match info from the first selection or create a combined string
             $matchInfo = '';
             if (count($request->selecciones) === 1) {
@@ -232,7 +328,7 @@ class ApuestaController extends Controller
 
             // Crear la predicción propuesta
             $data = [
-                'usuari_nick' => $usuario->nick,
+                'usuari_nick' => $user->nick,
                 'cuota' => $request->cuota,
                 'punts_proposats' => $request->punts_proposats,
                 'match_info' => $matchInfo, // Add match info here
@@ -278,17 +374,9 @@ class ApuestaController extends Controller
                 ]);
             }
 
-            Log::info('Inserted bet details');
-
             // Restar puntos al usuario
-            // Get the user's current saldo and log it for debugging
-            $oldSaldo = DB::table('usuaris')->where('nick', $usuario->nick)->value('saldo');
-            Log::info('Current user saldo before update', [
-                'user' => $usuario->nick,
-                'saldo' => $oldSaldo,
-                'type' => gettype($oldSaldo)
-            ]);
-
+            $oldSaldo = DB::table('usuaris')->where('nick', $user->nick)->value('saldo');
+            
             // Convert to float to ensure proper calculation
             $oldSaldo = (float) $oldSaldo;
             $puntsProposats = (float) $request->punts_proposats;
@@ -296,31 +384,33 @@ class ApuestaController extends Controller
 
             // Ensure we're not going negative
             if ($newSaldo < 0) {
+                DB::rollBack();
                 throw new \Exception('Saldo insuficiente para realizar esta apuesta');
             }
 
             // Use raw DB query to update saldo 
-            $updated = DB::statement("UPDATE usuaris SET saldo = ? WHERE nick = ?", [$newSaldo, $usuario->nick]);
+            $updated = DB::statement("UPDATE usuaris SET saldo = ? WHERE nick = ?", [$newSaldo, $user->nick]);
 
             if (!$updated) {
+                DB::rollBack();
                 throw new \Exception('No se pudo actualizar el saldo del usuario');
             }
 
-            // Verify the update worked by fetching the new saldo
-            $verifiedSaldo = DB::table('usuaris')->where('nick', $usuario->nick)->value('saldo');
-            Log::info('Updated user points', [
-                'user' => $usuario->nick,
-                'old_saldo' => $oldSaldo,
-                'new_saldo' => $newSaldo,
-                'verified_saldo' => $verifiedSaldo,
-                'deducted' => $puntsProposats
-            ]);
+            // Update betting counters
+            $dailyTracking->bets_today += 1;
+            $dailyTracking->betting_time_today += 60; // Add 1 minute per bet
+            $dailyTracking->save();
 
             // Confirmar transacción
             DB::commit();
             Log::info('Transaction committed successfully');
 
-            return response()->json(['message' => 'Apuesta registrada con éxito', 'id' => $prediccionPropuesta]);
+            return response()->json([
+                'message' => 'Apuesta registrada con éxito', 
+                'id' => $prediccionPropuesta,
+                'remaining_bets' => $dailyTracking->max_daily_bets - $dailyTracking->bets_today,
+                'remaining_time' => $dailyTracking->max_daily_betting_time - $dailyTracking->betting_time_today
+            ]);
 
         } catch (\Exception $e) {
             DB::rollBack();

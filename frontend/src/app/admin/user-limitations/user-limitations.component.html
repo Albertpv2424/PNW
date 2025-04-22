@@ -1,0 +1,196 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Gestión de Restricciones de Usuario</h5>
+          <button class="btn btn-light btn-sm" (click)="openGlobalLimitationsModal()">
+            Establecer Límites Globales
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- Buscador de usuarios -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Buscar usuario..." 
+                       [(ngModel)]="searchTerm" (keyup)="filterUsers()">
+                <button class="btn btn-outline-secondary" type="button">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Lista de usuarios -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header bg-light">
+                  <h6 class="mb-0">Lista de Usuarios y sus Restricciones</h6>
+                </div>
+                <div class="card-body">
+                  <div *ngIf="loading" class="text-center py-3">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                  </div>
+                  
+                  <div *ngIf="!loading && filteredUsers.length === 0" class="alert alert-info">
+                    No se encontraron usuarios con los criterios de búsqueda
+                  </div>
+                  
+                  <div *ngIf="!loading && filteredUsers.length > 0" class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Usuario</th>
+                          <th>Apuestas Hoy</th>
+                          <th>Tiempo Hoy</th>
+                          <th>Restricciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let user of filteredUsers" 
+                            [class.table-active]="selectedUser && selectedUser.username === user.username"
+                            (click)="selectUser(user)">
+                          <td>{{ user.username }}</td>
+                          <td>{{ user.bets_today }} / {{ user.max_daily_bets }}</td>
+                          <td>{{ formatTime(user.betting_time_today) }} / {{ formatTime(user.max_daily_betting_time) }}</td>
+                          <td class="restrictions-column">
+                            <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" role="switch" 
+                                    [checked]="isLimitationsEnabled(user)"
+                                    (change)="toggleLimitations(user, $event)">
+                              <label class="form-check-label">
+                                {{ isLimitationsEnabled(user) ? 'Activas' : 'Inactivas' }}
+                              </label>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Detalles del usuario seleccionado -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header bg-light">
+                  <h6 class="mb-0">Detalles de Restricciones</h6>
+                </div>
+                <div class="card-body">
+                  <div *ngIf="!selectedUser" class="alert alert-info">
+                    Selecciona un usuario para ver y editar sus restricciones
+                  </div>
+                  
+                  <div *ngIf="selectedUser">
+                    <h5 class="mb-3">Usuario: {{ selectedUser.username }}</h5>
+                    
+                    <div class="row mb-4">
+                      <div class="col-md-6">
+                        <div class="card bg-light">
+                          <div class="card-body">
+                            <h6 class="card-title">Apuestas Diarias</h6>
+                            <p class="card-text">
+                              <span class="fs-4">{{ selectedUser.bets_today }} / {{ selectedUser.max_daily_bets }}</span><br>
+                              <small>Restantes: {{ selectedUser.max_daily_bets - selectedUser.bets_today }}</small>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <div class="card bg-light">
+                          <div class="card-body">
+                            <h6 class="card-title">Tiempo de Juego</h6>
+                            <p class="card-text">
+                              <span class="fs-4">{{ formatTime(selectedUser.betting_time_today) }} / {{ formatTime(selectedUser.max_daily_betting_time) }}</span><br>
+                              <small>Restante: {{ formatTime(selectedUser.max_daily_betting_time - selectedUser.betting_time_today) }}</small>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div *ngIf="!editMode">
+                      <div class="d-flex justify-content-between mb-3">
+                        <button class="btn btn-primary" (click)="toggleEditMode()">
+                          Editar Restricciones
+                        </button>
+                        <button class="btn btn-warning" (click)="resetLimitations()">
+                          Reiniciar Contadores
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div *ngIf="editMode">
+                      <form>
+                        <div class="mb-3">
+                          <label for="maxDailyBets" class="form-label">Máximo de apuestas diarias</label>
+                          <input type="number" class="form-control" id="maxDailyBets" 
+                                [(ngModel)]="maxDailyBets" name="maxDailyBets" min="1" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label for="maxDailyBettingTime" class="form-label">Máximo tiempo diario (segundos)</label>
+                          <input type="number" class="form-control" id="maxDailyBettingTime" 
+                                [(ngModel)]="maxDailyBettingTime" name="maxDailyBettingTime" min="60" step="60" required>
+                          <small class="form-text text-muted">{{ formatTime(maxDailyBettingTime) }}</small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                          <button type="button" class="btn btn-secondary" (click)="toggleEditMode()">
+                            Cancelar
+                          </button>
+                          <button type="button" class="btn btn-success" (click)="updateLimitations()">
+                            Guardar Cambios
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para establecer límites globales -->
+<div class="modal" [class.show]="showGlobalLimitationsModal" [style.display]="showGlobalLimitationsModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Establecer Limitaciones Globales</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeGlobalLimitationsModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Estos límites se aplicarán a todos los usuarios. Los usuarios con limitaciones deshabilitadas no se verán afectados.</p>
+        
+        <form>
+          <div class="mb-3">
+            <label for="globalMaxDailyBets" class="form-label">Máximo de apuestas diarias</label>
+            <input type="number" class="form-control" id="globalMaxDailyBets" [(ngModel)]="globalLimitations.max_daily_bets" name="globalMaxDailyBets" min="1" required>
+          </div>
+          
+          <div class="mb-3">
+            <label for="globalMaxDailyBettingTime" class="form-label">Máximo tiempo diario (segundos)</label>
+            <input type="number" class="form-control" id="globalMaxDailyBettingTime" [(ngModel)]="globalLimitations.max_daily_betting_time" name="globalMaxDailyBettingTime" min="60" step="60" required>
+            <small class="form-text text-muted">{{ formatTime(globalLimitations.max_daily_betting_time) }}</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeGlobalLimitationsModal()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="saveGlobalLimitations()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="showGlobalLimitationsModal"></div>

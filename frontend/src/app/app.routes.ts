@@ -25,6 +25,7 @@ import { ResponsibleGamingComponent } from './responsible-gaming/responsible-gam
 import { SupportComponent } from './support/support.component';
 import { ChatAdminComponent } from './chat-admin/chat-admin.component';
 import { PrizeRedemptionsComponent } from './admin/prize-redemptions/prize-redemptions.component';
+import { UserLimitationsComponent } from './admin/user-limitations/user-limitations.component';
 
 
 export const routes: Routes = [
@@ -77,6 +78,7 @@ export const routes: Routes = [
       { path: 'bet-verification', component: BetVerificationComponent },
       { path: 'chat', component: ChatAdminComponent},
       { path: 'prize-redemptions', component: PrizeRedemptionsComponent },
+      { path: 'user-restrictions', component: UserLimitationsComponent },
     ]
   },
 
