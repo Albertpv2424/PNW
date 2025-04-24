@@ -194,21 +194,21 @@
 }
 
 .edit-btn {
-  background-color: #e3f2fd;
-  color: #1976d2;
+  background-color: #2196f3;
+  color: #ffffff;
 }
 
 .edit-btn:hover {
-  background-color: #bbdefb;
+  background-color: #1976d2;
 }
 
 .delete-btn {
-  background-color: #ffebee;
-  color: #d32f2f;
+  background-color: #f44336;
+  color: #ffffff;
 }
 
 .delete-btn:hover {
-  background-color: #ffcdd2;
+  background-color: #d32f2f;
 }
 
 /* Estilos para el estado de carga */

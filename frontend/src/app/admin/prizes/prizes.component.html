@@ -1,151 +1,149 @@
-<div class="admin-dashboard">
-  <div class="dashboard-content">
-    <main class="main-content">
-      <div class="prizes-header">
-        <h2>Premios Disponibles</h2>
-        <div class="actions">
-          <div class="search-container">
-            <input 
-              type="text" 
-              placeholder="Buscar premio..." 
-              [(ngModel)]="searchTerm"
-              (input)="searchPrizes()"
-            >
-          </div>
-          <button class="add-prize-btn" (click)="openPrizeForm()">Añadir Premio</button>
-        </div>
+<div class="admin-container">
+  <div class="component-header">
+    <h2>Gestión de Premios</h2>
+    <div class="actions">
+      <div class="search-container">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="searchPrizes()" 
+          placeholder="Buscar premios..."
+        >
+        <i class="fas fa-search search-icon"></i>
       </div>
-
-      <div class="prizes-table-container" *ngIf="!isLoading; else loadingTemplate">
-        <table class="prizes-table" *ngIf="filteredPrizes.length > 0; else noPrizesTemplate">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Imagen</th>
-              <th>Título</th>
-              <th>Descripción</th>
-              <th>Coste (Puntos)</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let prize of filteredPrizes">
-              <td>{{ prize.id }}</td>
-              <td>
-                <div class="prize-image-container">
-                  <img [src]="prize.image" alt="{{ prize.titol }}" class="prize-thumbnail" 
-                       (error)="handleImageError(prize)">
-                </div>
-              </td>
-              <td>{{ prize.titol }}</td>
-              <td>{{ prize.descripcio }}</td>
-              <td>
-                {{ prize.cost | number:'1.0-0' }}
-                <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
-              </td>
-              <td class="actions-cell">
-                <div class="action-buttons">
-                  <button class="action-btn edit-btn" (click)="openPrizeForm(prize)">Editar</button>
-                  <button class="action-btn delete-btn" (click)="confirmDeletePrize(prize.id)">Eliminar</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <ng-template #noPrizesTemplate>
-          <div class="no-prizes">
-            <p>No se encontraron premios.</p>
-          </div>
-        </ng-template>
-      </div>
-      
-      <ng-template #loadingTemplate>
-        <div class="loading">
-          <p>Cargando premios...</p>
-        </div>
-      </ng-template>
-    </main>
-  </div>
-</div>
-
-<!-- Modal para crear/editar premio -->
-<div class="modal" *ngIf="showPrizeForm">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>{{ isEditing ? 'Editar Premio' : 'Crear Premio' }}</h2>
-      <button class="close-btn" (click)="closePrizeForm()">&times;</button>
+      <button class="primary-btn" (click)="openPrizeForm()">
+        <i class="fas fa-plus"></i> Nuevo Premio
+      </button>
     </div>
-    <div class="modal-body">
-      <form [formGroup]="prizeForm" (ngSubmit)="submitPrizeForm()">
-        <div class="form-group">
-          <label for="titol">Título:</label>
-          <input type="text" id="titol" formControlName="titol">
-          <div class="error" *ngIf="prizeForm.get('titol')?.invalid && prizeForm.get('titol')?.touched">
-            El título es requerido
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    Cargando premios...
+  </div>
+
+  <div class="no-data" *ngIf="!isLoading && filteredPrizes.length === 0">
+    No hay premios disponibles. Crea un nuevo premio para comenzar.
+  </div>
+
+  <div class="table-container" *ngIf="!isLoading && filteredPrizes.length > 0">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Imagen</th>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Puntos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prize of filteredPrizes">
+          <td class="id-cell">{{ prize.id }}</td>
+          <td>
+            <div class="image-container">
+              <img 
+                [src]="prize.image ? (prize.image.startsWith('http') ? prize.image : 'http://localhost:8000/' + prize.image) : 'assets/prizes/default.png'" 
+                alt="{{ prize.titol }}"
+                class="thumbnail"
+                (error)="handleImageError($event)"
+              >
+            </div>
+          </td>
+          <td class="title-cell">{{ prize.titol }}</td>
+          <td>{{ prize.descripcio }}</td>
+          <td class="points-cell">{{ prize.cost }}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-btn edit-btn" (click)="openPrizeForm(prize)" title="Editar">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="action-btn delete-btn" (click)="confirmDeletePrize(prize.id)" title="Eliminar">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para crear/editar premio -->
+  <div class="modal" *ngIf="showPrizeForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditing ? 'Editar' : 'Nuevo' }} Premio</h2>
+        <button class="close-btn" (click)="closePrizeForm()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="prizeForm" (ngSubmit)="submitPrizeForm()">
+          <div class="form-group">
+            <label for="titol">Título:</label>
+            <input type="text" id="titol" formControlName="titol" class="form-control">
+            <div class="error" *ngIf="prizeForm.get('titol')?.invalid && prizeForm.get('titol')?.touched">
+              El título es requerido
+            </div>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="descripcio">Descripción:</label>
-          <textarea id="descripcio" formControlName="descripcio" rows="3"></textarea>
-          <div class="error" *ngIf="prizeForm.get('descripcio')?.invalid && prizeForm.get('descripcio')?.touched">
-            La descripción es requerida
+          
+          <div class="form-group">
+            <label for="descripcio">Descripción:</label>
+            <textarea id="descripcio" formControlName="descripcio" rows="3" class="form-control"></textarea>
+            <div class="error" *ngIf="prizeForm.get('descripcio')?.invalid && prizeForm.get('descripcio')?.touched">
+              La descripción es requerida
+            </div>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="cost">Coste (Puntos):</label>
-          <input type="number" id="cost" formControlName="cost" min="1">
-          <div class="error" *ngIf="prizeForm.get('cost')?.invalid && prizeForm.get('cost')?.touched">
-            El coste debe ser un número positivo
+          
+          <div class="form-row">
+            <div class="form-group half-width">
+              <label for="cost">Puntos:</label>
+              <input type="number" id="cost" formControlName="cost" class="form-control">
+              <div class="error" *ngIf="prizeForm.get('cost')?.invalid && prizeForm.get('cost')?.touched">
+                El valor de puntos debe ser mayor a 0
+              </div>
+            </div>
+            
+            <div class="form-group half-width">
+              <label for="condicio">Condición:</label>
+              <input type="number" id="condicio" formControlName="condicio" class="form-control">
+            </div>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="condicio">Condición:</label>
-          <input type="number" id="condicio" formControlName="condicio" min="1">
-        </div>
-        
-        <div class="form-group">
-          <label for="image">Imagen:</label>
-          <div class="image-preview-container">
+          
+          <div class="form-group">
+            <label for="image">Imagen:</label>
+            <input type="file" id="image" (change)="onFileSelected($event)" class="form-control">
+            
             <div class="image-preview" *ngIf="imagePreview">
-              <img [src]="imagePreview" alt="Vista previa" class="preview-image">
-            </div>
-            <div class="image-upload">
-              <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*" class="file-input">
-              <label for="image" class="file-label">Seleccionar imagen</label>
-              <p *ngIf="selectedFile" class="selected-file-name">{{ selectedFile.name }}</p>
+              <img [src]="imagePreview" alt="Vista previa">
             </div>
           </div>
-        </div>
+          
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" (click)="closePrizeForm()">Cancelar</button>
+            <button type="submit" class="submit-btn" [disabled]="prizeForm.invalid">
+              {{ isEditing ? 'Actualizar' : 'Crear' }} Premio
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de confirmación para eliminar -->
+  <div class="modal" *ngIf="showDeleteConfirm">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h2>Confirmar Eliminación</h2>
+        <button class="close-btn" (click)="cancelDeletePrize()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estás seguro de que deseas eliminar este premio? Esta acción no se puede deshacer.</p>
         
         <div class="form-actions">
-          <button type="button" class="cancel-btn" (click)="closePrizeForm()">Cancelar</button>
-          <button type="submit" class="submit-btn" [disabled]="prizeForm.invalid">
-            {{ isEditing ? 'Actualizar' : 'Crear' }}
+          <button type="button" class="cancel-btn" (click)="cancelDeletePrize()">Cancelar</button>
+          <button type="button" class="delete-btn" style="padding: 10px 15px;" (click)="deletePrize()">
+            Eliminar Premio
           </button>
         </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- Modal de confirmación para eliminar premio -->
-<div class="modal" *ngIf="showDeleteConfirm">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Confirmar Eliminación</h2>
-      <button class="close-btn" (click)="cancelDeletePrize()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <p>¿Estás seguro de que deseas eliminar este premio? Esta acción no se puede deshacer.</p>
-      
-      <div class="form-actions">
-        <button type="button" class="cancel-btn" (click)="cancelDeletePrize()">Cancelar</button>
-        <button type="button" class="delete-btn" (click)="deletePrize()">Eliminar</button>
       </div>
     </div>
   </div>
-</div>

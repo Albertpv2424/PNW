@@ -14,7 +14,7 @@ import { AdminService } from '../../services/admin.service';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule], // Remove RouterLink
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  styleUrls: ['../shared/admin-shared.css', './users.component.css']
 })
 export class UsersComponent implements OnInit {
   users: any[] = [];

@@ -1,161 +1,169 @@
-<div class="admin-dashboard">
-  <div class="dashboard-content">
-    <main class="main-content">
-      <div class="users-header">
-        <h2>Usuarios Registrados</h2>
-        <div class="actions">
-          <div class="search-container">
-            <input 
-              type="text" 
-              placeholder="Buscar usuario..." 
-              [(ngModel)]="searchTerm"
-              (input)="searchUsers()"
-            >
-          </div>
-          <button class="add-user-btn" (click)="openUserForm()">Añadir Usuario</button>
-        </div>
+<div class="admin-container">
+  <div class="component-header">
+    <h2>Usuarios Registrados</h2>
+    <div class="actions">
+      <div class="search-container">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="searchUsers()" 
+          placeholder="Buscar usuarios..."
+        >
+        <i class="fas fa-search search-icon"></i>
       </div>
-
-      <div class="users-table-container" *ngIf="!isLoading; else loadingTemplate">
-        <table class="users-table" *ngIf="filteredUsers.length > 0; else noUsersTemplate">
-          <thead>
-            <tr>
-              <th>Nick</th>
-              <th>Email</th>
-              <th>DNI</th>
-              <th>Teléfono</th>
-              <th>Fecha Nacimiento</th>
-              <th>Tipo</th>
-              <th>Saldo</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of filteredUsers">
-              <td>
-                <div class="user-cell">
-                  <div class="user-avatar" 
-                       [style.background-image]="user.profile_image ? (user.profile_image.startsWith('http') ? 'url(' + user.profile_image + ')' : 'url(http://localhost:8000/' + user.profile_image + ')') : 'none'">
-                    <span *ngIf="!user.profile_image">{{ getUserInitials(user.nick) }}</span>
-                  </div>
-                  {{ user.nick }}
-                </div>
-              </td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.dni }}</td>
-              <td>{{ user.telefon || 'N/A' }}</td>
-              <td>{{ formatDate(user.data_naixement) }}</td>
-              <td>{{ user.tipus_acc }}</td>
-              <td>
-                {{ user.saldo | number:'1.0-0' }}
-                <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
-              </td>
-              <td class="actions-cell">
-                <button class="action-btn edit-btn" (click)="openUserForm(user)">Editar</button>
-                <button class="action-btn balance-btn" (click)="openBalanceForm(user)">Saldo</button>
-                <button class="action-btn delete-btn" (click)="confirmDeleteUser(user.id)">Eliminar</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <ng-template #noUsersTemplate>
-          <div class="no-users">
-            <p>No se encontraron usuarios.</p>
-          </div>
-        </ng-template>
-      </div>
-      
-      <ng-template #loadingTemplate>
-        <div class="loading">
-          <p>Cargando usuarios...</p>
-        </div>
-      </ng-template>
-    </main>
-  </div>
-</div>
-
-<!-- Modal para crear/editar usuario -->
-<div class="modal" *ngIf="showUserForm">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>{{ isEditing ? 'Editar Usuario' : 'Crear Usuario' }}</h2>
-      <button class="close-btn" (click)="closeUserForm()">&times;</button>
+      <button class="primary-btn" (click)="openUserForm()">
+        <i class="fas fa-plus"></i> Nuevo Usuario
+      </button>
     </div>
-    <div class="modal-body">
-      <form [formGroup]="userForm" (ngSubmit)="submitUserForm()">
-        <!-- Add profile image preview at the top of the form -->
-        <div class="form-group profile-image-group">
-          <label>Imagen de perfil:</label>
-          <div class="profile-preview">
-            <div class="user-avatar large-avatar" 
-                 [style.background-image]="selectedUser && selectedUser.profile_image ? (selectedUser.profile_image.startsWith('http') ? 'url(' + selectedUser.profile_image + ')' : 'url(http://localhost:8000/' + selectedUser.profile_image + ')') : 'none'">
-              <span *ngIf="!selectedUser || !selectedUser.profile_image">{{ selectedUser ? getUserInitials(selectedUser.nick) : '' }}</span>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    Cargando usuarios...
+  </div>
+
+  <div class="no-data" *ngIf="!isLoading && filteredUsers.length === 0">
+    No hay usuarios disponibles. Crea un nuevo usuario para comenzar.
+  </div>
+
+  <div class="table-container" *ngIf="!isLoading && filteredUsers.length > 0">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Email</th>
+          <th>DNI</th>
+          <th>Teléfono</th>
+          <th>Tipo</th>
+          <th>Saldo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td class="id-cell">{{ user.id }}</td>
+          <td>
+            <div class="user-cell">
+              <div class="user-avatar" 
+                   [style.background-image]="user.profile_image ? (user.profile_image.startsWith('http') ? 'url(' + user.profile_image + ')' : 'url(http://localhost:8000/' + user.profile_image + ')') : 'none'">
+                <span *ngIf="!user.profile_image">{{ getUserInitials(user.nick) }}</span>
+              </div>
+              {{ user.nick }}
+            </div>
+          </td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.dni }}</td>
+          <td>{{ user.telefon || 'N/A' }}</td>
+          <td>
+            <span class="type-badge" [ngClass]="'type-' + (user.tipus_acc === 'Usuario' ? '1' : '2')">
+              {{ user.tipus_acc }}
+            </span>
+          </td>
+          <td class="points-cell">
+            {{ user.saldo | number:'1.0-0' }}
+            <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon">
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-btn edit-btn" (click)="openUserForm(user)" title="Editar">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="action-btn balance-btn" (click)="openBalanceForm(user)" title="Saldo">
+                <i class="fas fa-coins"></i>
+              </button>
+              <button class="action-btn delete-btn" (click)="confirmDeleteUser(user.id)" title="Eliminar">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para crear/editar usuario -->
+  <div class="modal" *ngIf="showUserForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ isEditing ? 'Editar Usuario' : 'Crear Usuario' }}</h2>
+        <button class="close-btn" (click)="closeUserForm()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido del formulario -->
+        <form [formGroup]="userForm" (ngSubmit)="submitUserForm()">
+          <!-- Add profile image preview at the top of the form -->
+          <div class="form-group profile-image-group">
+            <label>Imagen de perfil:</label>
+            <div class="profile-preview">
+              <div class="user-avatar large-avatar" 
+                     [style.background-image]="selectedUser && selectedUser.profile_image ? (selectedUser.profile_image.startsWith('http') ? 'url(' + selectedUser.profile_image + ')' : 'url(http://localhost:8000/' + selectedUser.profile_image + ')') : 'none'">
+                <span *ngIf="!selectedUser || !selectedUser.profile_image">{{ selectedUser ? getUserInitials(selectedUser.nick) : '' }}</span>
+              </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Continue with the rest of the form fields -->
-        <div class="form-group">
-          <label for="nick">Nick:</label>
-          <input type="text" id="nick" formControlName="nick">
-          <div class="error" *ngIf="userForm.get('nick')?.invalid && userForm.get('nick')?.touched">
-            El nick es requerido
+          
+          <!-- Continue with the rest of the form fields -->
+          <div class="form-group">
+            <label for="nick">Nick:</label>
+            <input type="text" id="nick" formControlName="nick">
+            <div class="error" *ngIf="userForm.get('nick')?.invalid && userForm.get('nick')?.touched">
+              El nick es requerido
+            </div>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" formControlName="email">
-          <div class="error" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
-            Email inválido
+          
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" formControlName="email">
+            <div class="error" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+              Email inválido
+            </div>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="password">{{ isEditing ? 'Contraseña (dejar en blanco para mantener)' : 'Contraseña:' }}</label>
-          <input type="password" id="password" formControlName="password">
-          <div class="error" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
-            La contraseña es requerida
+          
+          <div class="form-group">
+            <label for="password">{{ isEditing ? 'Contraseña (dejar en blanco para mantener)' : 'Contraseña:' }}</label>
+            <input type="password" id="password" formControlName="password">
+            <div class="error" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+              La contraseña es requerida
+            </div>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="dni">DNI:</label>
-          <input type="text" id="dni" formControlName="dni">
-          <div class="error" *ngIf="userForm.get('dni')?.invalid && userForm.get('dni')?.touched">
-            El DNI es requerido
+          
+          <div class="form-group">
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" formControlName="dni">
+            <div class="error" *ngIf="userForm.get('dni')?.invalid && userForm.get('dni')?.touched">
+              El DNI es requerido
+            </div>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="telefon">Teléfono:</label>
-          <input type="text" id="telefon" formControlName="telefon">
-        </div>
-        
-        <div class="form-group">
-          <label for="data_naixement">Fecha de nacimiento:</label>
-          <input type="date" id="data_naixement" formControlName="data_naixement">
-          <div class="error" *ngIf="userForm.get('data_naixement')?.invalid && userForm.get('data_naixement')?.touched">
-            La fecha de nacimiento es requerida
+          
+          <div class="form-group">
+            <label for="telefon">Teléfono:</label>
+            <input type="text" id="telefon" formControlName="telefon">
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="saldo">Saldo:</label>
-          <input type="number" id="saldo" formControlName="saldo" min="0">
-          <div class="error" *ngIf="userForm.get('saldo')?.invalid && userForm.get('saldo')?.touched">
-            El saldo debe ser un número positivo
+          
+          <div class="form-group">
+            <label for="data_naixement">Fecha de nacimiento:</label>
+            <input type="date" id="data_naixement" formControlName="data_naixement">
+            <div class="error" *ngIf="userForm.get('data_naixement')?.invalid && userForm.get('data_naixement')?.touched">
+              La fecha de nacimiento es requerida
+            </div>
           </div>
-        </div>
-        
-        <div class="form-actions">
-          <button type="button" class="cancel-btn" (click)="closeUserForm()">Cancelar</button>
-          <button type="submit" class="submit-btn" [disabled]="userForm.invalid">
-            {{ isEditing ? 'Actualizar' : 'Crear' }}
-          </button>
-        </div>
-      </form>
+          
+          <div class="form-group">
+            <label for="saldo">Saldo:</label>
+            <input type="number" id="saldo" formControlName="saldo" min="0">
+            <div class="error" *ngIf="userForm.get('saldo')?.invalid && userForm.get('saldo')?.touched">
+              El saldo debe ser un número positivo
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" (click)="closeUserForm()">Cancelar</button>
+            <button type="submit" class="submit-btn" [disabled]="userForm.invalid">
+              {{ isEditing ? 'Actualizar' : 'Crear' }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

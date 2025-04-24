@@ -331,96 +331,13 @@
 /* Import shared admin styles */
 @import '../shared/admin-shared.css';
 
-/* Users Header - Styled like Promociones */
-.users-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.users-header h2 {
-  margin: 0;
-  color: #1a237e;
-  font-size: 24px;
-  font-weight: 600;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-}
-
-.search-container {
-  position: relative;
-}
-
-.search-container input {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 250px;
-  font-size: 14px;
-}
-
-.add-user-btn {
-  background-color: #1a237e;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.3s;
-}
-
-.add-user-btn:hover {
-  background-color: #3949ab;
-}
-
-/* Table Styles */
-.users-table-container {
-  overflow-x: auto;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.users-table {
+/* Estilos específicos para el componente de usuarios */
+:host {
+  display: block;
   width: 100%;
-  border-collapse: collapse;
 }
 
-.users-table th,
-.users-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-.users-table th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-  color: #333;
-}
-
-.users-table tr:hover {
-  background-color: #f9f9f9;
-}
-
-/* Mantener los estilos específicos para usuarios */
-.user-avatar-container {
-  width: 40px;
-  height: 40px;
-  overflow: hidden;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5f5f5;
-}
-
-/* User cell with avatar styling */
+/* Estilos para los avatares de usuario */
 .user-cell {
   display: flex;
   align-items: center;
@@ -443,58 +360,98 @@
   overflow: hidden;
 }
 
-.user-role {
+/* Estilos para los tipos de usuario */
+.type-badge {
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 12px;
+  padding: 5px 10px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
 }
 
-.role-admin {
-  background-color: #1a237e;
-  color: white;
+.type-1 {
+  background-color: #e3f2fd;
+  color: #0d47a1;
 }
 
-.role-user {
-  background-color: #4caf50;
-  color: white;
+.type-2 {
+  background-color: #e8f5e9;
+  color: #1b5e20;
 }
 
-.user-balance {
-  font-weight: 500;
+/* Estilos para el saldo */
+.points-cell {
+  font-weight: 600;
+  color: #ff6f00;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.actions-cell {
-  width: 150px;
+.coin-icon {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
 }
 
+/* Estilos para el formulario de perfil */
+.profile-image-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-preview {
+  margin-top: 10px;
+}
+
+.large-avatar {
+  width: 80px;
+  height: 80px;
+  font-size: 28px;
+}
+
+/* Botones de acción */
 .action-buttons {
   display: flex;
   gap: 8px;
+  justify-content: center;
 }
 
 .action-btn {
-  padding: 6px 12px;
-  border: none;
+  width: 32px;
+  height: 32px;
   border-radius: 4px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 13px;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 }
 
 .edit-btn {
   background-color: #2196f3;
-  color: white;
+  color: #ffffff;
 }
 
 .edit-btn:hover {
   background-color: #1976d2;
 }
 
+.balance-btn {
+  background-color: #ff9800;
+  color: #ffffff;
+}
+
+.balance-btn:hover {
+  background-color: #f57c00;
+}
+
 .delete-btn {
   background-color: #f44336;
-  color: white;
+  color: #ffffff;
 }
 
 .delete-btn:hover {
@@ -503,7 +460,7 @@
 
 .balance-btn {
   background-color: #ff9800;
-  color: white;
+  color: #ffffff;
 }
 
 .balance-btn:hover {

@@ -143,12 +143,15 @@ export class PrizesComponent implements OnInit {
     );
   }
 
-  openPrizeForm(prize: Prize | null = null): void {
+  // Asegúrate de que estos métodos estén correctamente implementados
+  openPrizeForm(prize?: Prize): void {
+    console.log('openPrizeForm called with prize:', prize);
+    this.selectedPrize = prize || null;
     this.isEditing = !!prize;
-    this.selectedPrize = prize;
+    
     this.imagePreview = null;
     this.selectedFile = null;
-
+  
     if (prize) {
       // Editing existing prize
       this.prizeForm.patchValue({
@@ -284,6 +287,7 @@ export class PrizesComponent implements OnInit {
   }
 
   confirmDeletePrize(id: number): void {
+    console.log('confirmDeletePrize called with id:', id);
     this.deletePrizeId = id;
     this.showDeleteConfirm = true;
   }
@@ -314,10 +318,12 @@ export class PrizesComponent implements OnInit {
     });
   }
 
-  // Método para manejar errores de carga de imágenes
-  handleImageError(prize: Prize): void {
-    console.log('Error loading image for prize:', prize.id);
-    prize.image = 'assets/premios/default.png';
+  // Add this method to your component class
+  handleImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      target.src = 'assets/prizes/default.png';
+    }
   }
 
   // Añadir este método después del método handleImageError
