@@ -374,4 +374,10 @@ private submitRequest(data: any, options: any): void {
     }
   });
 }
+handleImageError(event: Event): void {
+  const target = event.target as HTMLImageElement;
+  if (target) {
+    target.src = 'assets/promociones/default.png';
+  }
+}
 }
