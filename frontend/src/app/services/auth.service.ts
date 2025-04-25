@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
 
 // Update the User interface to include profile_image
 interface User {
@@ -33,7 +34,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService // Añade esto
   ) {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
@@ -64,6 +66,17 @@ export class AuthService {
         localStorage.setItem('currentUser', JSON.stringify(response.user));
         localStorage.setItem('token', response.token);
         this.currentUserSubject.next(response.user);
+      }),
+      catchError((error) => {
+        if (error.status === 403 && error.error?.reason === 'time_limit') {
+          // Mostrar mensaje de bloqueo por tiempo usando NotificationService
+          this.notificationService.showError('Has superado el tiempo máximo de juego diario. No puedes iniciar sesión hasta mañana.');
+          // Asegurarse de que no se guarde ningún usuario ni token
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('token');
+          this.currentUserSubject.next(null);
+        }
+        return throwError(() => error);
       })
     );
 }

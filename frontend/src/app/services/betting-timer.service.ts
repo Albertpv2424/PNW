@@ -141,7 +141,9 @@ export class BettingTimerService {
 
   // Redirigir al usuario a una página de límite alcanzado
   private redirectToLimitPage(): void {
-    this.router.navigate(['/limit-reached']);
+    // Cerrar la sesión del usuario
+    this.notificationService.showWarning('Has alcanzado tu límite diario de tiempo de apuestas. Se cerrará tu sesión.');
+    this.authService.logout();
   }
 
   // Obtener el tiempo restante como Observable
