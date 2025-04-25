@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './user-limitations.component.html',
-  styleUrls: ['./user-limitations.component.css']
+  styleUrls: ['./user-limitations.component.css', '../shared/admin-shared.css']
 })
 export class UserLimitationsComponent implements OnInit {
   usersLimitations: any[] = [];
