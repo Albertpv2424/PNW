@@ -1,146 +1,268 @@
-.redemptions-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+/* Estilos específicos para el componente de canjes de premios */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.admin-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  color: #1a237e;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.search-container {
+  position: relative;
+  width: 300px;
 }
 
 .search-container input {
-  padding: 8px 12px;
+  width: 100%;
+  padding: 10px 12px;
+  padding-right: 35px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: 250px;
+  font-size: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.filter-container select {
-  padding: 8px 12px;
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.filter-container {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  background-color: #f5f5f5;
   border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 500;
 }
 
-.redemptions-table-container {
+.filter-btn.active {
+  background-color: #1a237e;
+  color: white;
+  border-color: #1a237e;
+}
+
+.table-container {
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  margin-bottom: 2rem;
 }
 
-.redemptions-table {
+table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.redemptions-table th,
-.redemptions-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-.redemptions-table th {
-  background-color: #f8f9fa;
-  font-weight: 600;
-}
-
-.redemptions-table tr:hover {
+th {
   background-color: #f5f5f5;
-}
-
-.user-info,
-.prize-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.user-nick,
-.prize-title {
+  color: #333;
   font-weight: 500;
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
 }
 
-.user-email,
-.prize-description {
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.points-cell {
+  font-weight: 600;
+  color: #ff6f00;
+}
+
+.email-text, .description-text {
   font-size: 0.85rem;
   color: #666;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
-.status-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 500;
+.status-cell {
+  display: flex;
+  align-items: center;
+}
+
+.status-icon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .status-used {
-  background-color: #d4edda;
-  color: #155724;
+  color: #2e7d32;
 }
 
 .status-unused {
-  background-color: #f8d7da;
-  color: #721c24;
+  color: #c62828;
 }
 
 .action-buttons {
   display: flex;
-  gap: 5px;
+  gap: 8px;
+  align-items: ce;
 }
 
-.mark-used-btn,
-.mark-unused-btn {
-  padding: 6px 10px;
+.action-btn {
+  padding: 6px 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 13px;
+  transition: background-color 0.3s;
 }
 
 .mark-used-btn {
-  background-color: #28a745;
+  background-color: #2196f3;
   color: white;
+}
+
+.mark-used-btn:hover {
+  background-color: #1976d2;
 }
 
 .mark-unused-btn {
-  background-color: #dc3545;
+  background-color: #f44336;
   color: white;
 }
 
-.no-data-message {
+.mark-unused-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Loading and Empty States */
+.loading, .no-redemptions {
   padding: 30px;
   text-align: center;
   color: #666;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.loading-container {
-  display: flex;
-  flex-direction: column;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+
+  .filter-container {
+    width: 100%;
+  }
+
+  .filter-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: inline-block;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  width: 80px;
+  text-align: center;
 }
 
-.spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-top: 4px solid #3498db;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
+.status-used {
+  background-color: #e8f5e9;
+  color: #1b5e20;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.status-unused {
+  background-color: #faa59f;
+  color: #f44336;
 }
 
-tr.used {
-  background-color: #f8fff8;
+.status-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-btn i {
+  font-size: 16px;
+}
+
+.mark-used-btn {
+  background-color: #1b5e20;
+  color: white;
+}
+
+.mark-used-btn:hover {
+  background-color: #115a16;
+}
+
+.mark-unused-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.mark-unused-btn:hover {
+  background-color: #d32f2f;
 }

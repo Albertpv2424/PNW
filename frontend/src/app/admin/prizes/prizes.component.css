@@ -104,12 +104,6 @@
   overflow-y: auto;
 }
 
-/* Unificando los Diseños de Administración
-
-Entiendo que necesitas que los tres componentes administrativos (Promociones, Premios y Usuarios) tengan exactamente el mismo diseño, manteniendo las características específicas de cada uno como las imágenes de usuario. Vamos a corregir esto.
-
-## 1. Actualización del CSS para Premios:
-
 /* Import shared admin styles */
 @import '../shared/admin-shared.css';
 

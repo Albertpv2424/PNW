@@ -1,98 +1,111 @@
-<div class="admin-dashboard">
-  <div class="dashboard-content">
-    <main class="main-content">
-      <div class="redemptions-header">
-        <h2>Verificación de Premios Canjeados</h2>
-        <div class="actions">
-          <div class="search-container">
-            <input
-              type="text"
-              placeholder="Buscar por usuario o premio..."
-              [(ngModel)]="searchTerm"
-              (input)="onSearchChange()"
-            >
-          </div>
-          <div class="filter-container">
-            <select [(ngModel)]="statusFilter" (change)="onStatusFilterChange(statusFilter)">
-              <option value="all">Todos</option>
-              <option value="used">Usados</option>
-              <option value="unused">No usados</option>
-            </select>
-          </div>
-        </div>
-      </div>
+<div class="admin-content">
+  <h1 class="page-title">Verificación de Premios Canjeados</h1>
 
-      <div class="redemptions-table-container" *ngIf="!isLoading; else loadingTemplate">
-        <table class="redemptions-table" *ngIf="filteredRedemptions.length > 0; else noRedemptionsTemplate">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Usuario</th>
-              <th>Premio</th>
-              <th>Coste</th>
-              <th>Fecha Canje</th>
-              <th>Fecha Límite</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let redemption of filteredRedemptions" [ngClass]="{'used': redemption.usado}">
-              <td>{{ redemption.id }}</td>
-              <td>
-                <div class="user-info">
-                  <span class="user-nick">{{ redemption.usuari_nick }}</span>
-                  <span class="user-email">{{ redemption.email }}</span>
-                </div>
-              </td>
-              <td>
-                <div class="prize-info">
-                  <span class="prize-title">{{ redemption.premio_titulo }}</span>
-                  <span class="prize-description">{{ redemption.premio_descripcion }}</span>
-                </div>
-              </td>
-              <td>{{ redemption.cost }} pts</td>
-              <td>{{ formatDate(redemption.data_reclamat) }}</td>
-              <td>{{ formatDate(redemption.data_limit) }}</td>
-              <td>
-                <span class="status-badge" [ngClass]="{'status-used': redemption.usado, 'status-unused': !redemption.usado}">
-                  {{ redemption.usado ? 'Usado' : 'No usado' }}
-                </span>
-              </td>
-              <td>
-                <div class="action-buttons">
-                  <button
-                    *ngIf="!redemption.usado"
-                    class="mark-used-btn"
-                    (click)="updateRedemptionStatus(redemption, true)"
-                  >
-                    Marcar como usado
-                  </button>
-                  <button
-                    *ngIf="redemption.usado"
-                    class="mark-unused-btn"
-                    (click)="updateRedemptionStatus(redemption, false)"
-                  >
-                    Marcar como no usado
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <ng-template #noRedemptionsTemplate>
-          <div class="no-data-message">
-            <p>No se encontraron canjes de premios.</p>
-          </div>
-        </ng-template>
-      </div>
+  <div class="actions">
+    <div class="search-container">
+      <input 
+        type="text" 
+        placeholder="Buscar por usuario o premio..." 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearchChange()"
+      >
+      <i class="fas fa-search search-icon"></i>
+    </div>
 
-      <ng-template #loadingTemplate>
-        <div class="loading-container">
-          <div class="spinner"></div>
-          <p>Cargando canjes de premios...</p>
-        </div>
-      </ng-template>
-    </main>
+    <div class="filter-container">
+      <button 
+        class="filter-btn" 
+        [class.active]="statusFilter === 'all'"
+        (click)="onStatusFilterChange('all')"
+      >
+        Todos
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="statusFilter === 'used'"
+        (click)="onStatusFilterChange('used')"
+      >
+        Usados
+      </button>
+      <button 
+        class="filter-btn" 
+        [class.active]="statusFilter === 'unused'"
+        (click)="onStatusFilterChange('unused')"
+      >
+        No Usados
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <p>Cargando canjes de premios...</p>
+  </div>
+
+  <div *ngIf="!isLoading && filteredRedemptions.length === 0" class="no-redemptions">
+    <p>No se encontraron canjes de premios</p>
+  </div>
+
+  <div *ngIf="!isLoading && filteredRedemptions.length > 0" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Premio</th>
+          <th>Puntos</th>
+          <th>Fecha Canje</th>
+          <th>Fecha Límite</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let redemption of filteredRedemptions">
+          <td>{{ redemption.id }}</td>
+          <td>
+            <div>{{ redemption.usuari_nick }}</div>
+            <div class="email-text">{{ redemption.email }}</div>
+          </td>
+          <td>
+            <div>{{ redemption.premio_titulo }}</div>
+            <div class="description-text">{{ redemption.premio_descripcion }}</div>
+          </td>
+          <td class="points-cell">{{ redemption.cost }}</td>
+          <td>{{ formatDate(redemption.data_reclamat) }}</td>
+          <td>{{ formatDate(redemption.data_limit) }}</td>
+          <td>
+            <div class="status-cell">
+              <span 
+                class="status-badge" 
+                [class.status-used]="redemption.usado" 
+                [class.status-unused]="!redemption.usado"
+              >
+                {{ redemption.usado ? 'USADO' : 'NO USADO' }}
+              </span>
+            </div>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button 
+                *ngIf="redemption.usado" 
+                class="action-btn mark-unused-btn"
+                (click)="updateRedemptionStatus(redemption, false)"
+                title="Marcar como no usado"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+              <button 
+                *ngIf="!redemption.usado" 
+                class="action-btn mark-used-btn"
+                (click)="updateRedemptionStatus(redemption, true)"
+                title="Marcar como usado"
+              >
+                <i class="fas fa-check"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

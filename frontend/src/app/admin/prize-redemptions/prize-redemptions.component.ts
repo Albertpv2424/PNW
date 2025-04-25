@@ -23,7 +23,7 @@ interface PrizeRedemption {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './prize-redemptions.component.html',
-  styleUrls: ['./prize-redemptions.component.css']
+  styleUrls: ['./prize-redemptions.component.css', '../shared/admin-shared.css']
 })
 export class PrizeRedemptionsComponent implements OnInit {
   redemptions: PrizeRedemption[] = [];
