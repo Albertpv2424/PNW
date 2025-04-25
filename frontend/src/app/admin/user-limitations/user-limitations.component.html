@@ -49,14 +49,15 @@
                 [class.selected]="selectedUser && selectedUser.username === user.username"
                 (click)="selectUser(user)">
               <td class="username-cell">{{ user.username }}</td>
-              <td class="bets-cell">{{ user.daily_bets_count }} / {{ user.max_daily_bets }}</td>
-              <td class="time-cell">{{ formatTime(user.daily_betting_time) }}</td>
+              <td class="bets-cell">{{ user.bets_today }} / {{ user.max_daily_bets }}</td>
+              <td class="time-cell">{{ formatTime(user.betting_time_today) }} / {{ formatTime(user.max_daily_betting_time) }}</td>
               <td class="restrictions-cell">
                 <label class="toggle-switch">
                   <input 
                     type="checkbox" 
                     [checked]="isLimitationsEnabled(user)" 
                     (change)="toggleLimitations(user, $event)"
+                    (click)="$event.stopPropagation()"
                   >
                   <span class="toggle-slider"></span>
                   <span class="toggle-label">{{ isLimitationsEnabled(user) ? 'Activas' : 'Inactivas' }}</span>
@@ -127,17 +128,17 @@
           <div class="current-usage">
             <div class="usage-item">
               <span class="usage-label">Apuestas realizadas hoy:</span>
-              <span class="usage-value">{{ selectedUser.daily_bets_count }} / {{ selectedUser.max_daily_bets }}</span>
+              <span class="usage-value">{{ selectedUser.bets_today }} / {{ selectedUser.max_daily_bets }}</span>
               <div class="progress-bar">
-                <div class="progress-fill" [style.width.%]="(selectedUser.daily_bets_count / selectedUser.max_daily_bets) * 100"></div>
+                <div class="progress-fill" [style.width.%]="(selectedUser.bets_today / selectedUser.max_daily_bets) * 100"></div>
               </div>
             </div>
             
             <div class="usage-item">
               <span class="usage-label">Tiempo de apuestas hoy:</span>
-              <span class="usage-value">{{ formatTime(selectedUser.daily_betting_time) }} / {{ formatTime(selectedUser.max_daily_betting_time) }}</span>
+              <span class="usage-value">{{ formatTime(selectedUser.betting_time_today) }} / {{ formatTime(selectedUser.max_daily_betting_time) }}</span>
               <div class="progress-bar">
-                <div class="progress-fill" [style.width.%]="(selectedUser.daily_betting_time / selectedUser.max_daily_betting_time) * 100"></div>
+                <div class="progress-fill" [style.width.%]="(selectedUser.betting_time_today / selectedUser.max_daily_betting_time) * 100"></div>
               </div>
             </div>
           </div>
