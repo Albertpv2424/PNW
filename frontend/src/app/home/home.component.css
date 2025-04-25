@@ -405,7 +405,7 @@
   color: #333;
 }
 
-/* Add this to the top of your home component CSS */
+/* Add these styles to the top of your home component CSS */
 .content-container {
   padding-top: 70px; /* Adjust this value based on your header height */
 }

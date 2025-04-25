@@ -54,4 +54,12 @@ export class UserLimitationsService {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/user/limitations`, { headers });
   }
+
+  // Add this method to the UserLimitationsService class
+  
+  // Actualizar el tiempo gastado por el usuario
+  updateUserTimeSpent(timeSpent: number): Observable<any> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.post<any>(`${this.apiUrl}/user/update-time-spent`, { time_spent: timeSpent }, { headers });
+  }
 }

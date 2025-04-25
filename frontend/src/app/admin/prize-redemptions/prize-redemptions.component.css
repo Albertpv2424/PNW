@@ -40,7 +40,7 @@
 }
 
 .search-container input {
-  width: 100%;
+  width: 85%;
   padding: 10px 12px;
   padding-right: 35px;
   border: 1px solid #ddd;
@@ -274,12 +274,12 @@ tr:hover {
 }
 
 .mark-used-btn {
-  background-color: #2196f3;
+  background-color: #3db540;
   color: white;
 }
 
 .mark-used-btn:hover {
-  background-color: #1976d2;
+  background-color: #358838;
 }
 
 .mark-unused-btn {

@@ -1,0 +1,12 @@
+<div class="betting-timer-container">
+  <div class="timer-label">{{ 'BETTING_TIMER.REMAINING_TIME' | translate }}</div>
+  <div class="timer-display" [style.color]="getTimerColor()">
+    {{ formattedTime }}
+  </div>
+  <div class="timer-progress-container">
+    <div class="timer-progress-bar" 
+         [style.width.%]="percentageRemaining"
+         [style.background-color]="getTimerColor()">
+    </div>
+  </div>
+</div>

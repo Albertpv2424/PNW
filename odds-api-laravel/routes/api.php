@@ -174,3 +174,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/chat/sessions/{sessionId}', [ChatController::class, 'deleteSession'])->middleware('auth:sanctum');
     Route::delete('/chat/sessions/old/{days?}', [ChatController::class, 'deleteOldSessions'])->middleware('auth:sanctum');
 });
+
+// Add these routes to your api.php file
+
+// Rutas para limitaciones de usuario
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user/limitations', 'App\Http\Controllers\UserLimitationsController@getCurrentUserLimitations');
+    Route::post('/user/update-time-spent', 'App\Http\Controllers\UserLimitationsController@updateTimeSpent');
+});

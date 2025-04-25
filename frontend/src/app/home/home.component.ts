@@ -27,10 +27,20 @@ interface OddEvent {
   // ... otros campos que vengan de la API
 }
 
+// Add BettingTimerComponent to the imports
+import { BettingTimerComponent } from '../betting-timer/betting-timer.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, BetPopupComponent, CombinedBetComponent, HeaderComponent],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    BetPopupComponent, 
+    CombinedBetComponent, 
+    HeaderComponent,
+    BettingTimerComponent // Add this line
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

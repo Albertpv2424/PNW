@@ -71,6 +71,11 @@
     "VIEW_ALL_BETS": "Ver Todas las Apuestas",
     "LOADING_BETS": "Cargando apuestas..."
   },
+  "BETTING_TIMER": {
+    "REMAINING_TIME": "Tiempo restante",
+    "TIME_LIMIT_REACHED": "Límite de tiempo alcanzado",
+    "DAILY_LIMIT_RESET": "El límite se reiniciará a medianoche"
+  },
   "CHAT": {
     "TITLE": "Soporte en línea",
     "WELCOME_MESSAGE": "¡Hola! ¿En qué podemos ayudarte hoy?",
