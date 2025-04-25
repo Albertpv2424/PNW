@@ -1,39 +1,41 @@
 <div class="admin-content">
-  <h1 class="page-title">Verificación de Premios Canjeados</h1>
+  <div class="page-header">
+    <h1 class="page-title">Verificación de Premios Canjeados</h1>
+    
+    <div class="header-actions">
+      <div class="search-container">
+        <input 
+          type="text" 
+          placeholder="Buscar por usuario o premio..." 
+          [(ngModel)]="searchTerm" 
+          (input)="onSearchChange()"
+        >
+        <i class="fas fa-search search-icon"></i>
+      </div>
 
-  <div class="actions">
-    <div class="search-container">
-      <input 
-        type="text" 
-        placeholder="Buscar por usuario o premio..." 
-        [(ngModel)]="searchTerm" 
-        (input)="onSearchChange()"
-      >
-      <i class="fas fa-search search-icon"></i>
-    </div>
-
-    <div class="filter-container">
-      <button 
-        class="filter-btn" 
-        [class.active]="statusFilter === 'all'"
-        (click)="onStatusFilterChange('all')"
-      >
-        Todos
-      </button>
-      <button 
-        class="filter-btn" 
-        [class.active]="statusFilter === 'used'"
-        (click)="onStatusFilterChange('used')"
-      >
-        Usados
-      </button>
-      <button 
-        class="filter-btn" 
-        [class.active]="statusFilter === 'unused'"
-        (click)="onStatusFilterChange('unused')"
-      >
-        No Usados
-      </button>
+      <div class="filter-container">
+        <button 
+          class="filter-btn" 
+          [class.active]="statusFilter === 'all'"
+          (click)="onStatusFilterChange('all')"
+        >
+          Todos
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="statusFilter === 'used'"
+          (click)="onStatusFilterChange('used')"
+        >
+          Usados
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="statusFilter === 'unused'"
+          (click)="onStatusFilterChange('unused')"
+        >
+          No Usados
+        </button>
+      </div>
     </div>
   </div>
 

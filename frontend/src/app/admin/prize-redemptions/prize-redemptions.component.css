@@ -10,18 +10,28 @@
   margin: 0 auto;
 }
 
-.page-title {
-  color: #1a237e;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-.actions {
+/* Nuevo estilo para el encabezado con título, buscador y filtros alineados */
+.page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.page-title {
+  color: #1a237e;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .search-container {
@@ -60,6 +70,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
   font-weight: 500;
+  font-size: 13px;
 }
 
 .filter-btn.active {
@@ -68,6 +79,7 @@
   border-color: #1a237e;
 }
 
+/* Resto de estilos sin cambios */
 .table-container {
   background-color: white;
   border-radius: 8px;
@@ -86,38 +98,40 @@ th {
   color: #333;
   font-weight: 500;
   text-align: left;
-  padding: 12px 15px;
+  padding: 10px 12px;
   border-bottom: 1px solid #ddd;
+  font-size: 13px;
 }
 
 td {
-  padding: 12px 15px;
+  padding: 8px 12px;
   border-bottom: 1px solid #eee;
   vertical-align: middle;
+  font-size: 13px;
 }
 
 tr:last-child td {
   border-bottom: none;
 }
 
+tr:hover {
+  background-color: #f9f9f9;
+}
+
 .points-cell {
   font-weight: 600;
   color: #ff6f00;
+  font-size: 13px;
+  text-align: center;
 }
 
 .email-text, .description-text {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #666;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .status-cell {
-  display: flex;
-  align-items: center;
-}
-
-.status-icon {
-  font-size: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,6 +155,10 @@ tr:last-child td {
   padding: 6px 12px;
   border: none;
   border-radius: 4px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   font-size: 13px;
   transition: background-color 0.3s;
@@ -179,7 +197,12 @@ tr:last-child td {
   .actions {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 15px;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
   }
 
   .search-container {
@@ -188,6 +211,7 @@ tr:last-child td {
 
   .filter-container {
     width: 100%;
+    justify-content: space-between;
   }
 
   .filter-btn {
@@ -242,20 +266,20 @@ tr:last-child td {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 }
 
 .action-btn i {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .mark-used-btn {
-  background-color: #1b5e20;
+  background-color: #2196f3;
   color: white;
 }
 
 .mark-used-btn:hover {
-  background-color: #115a16;
+  background-color: #1976d2;
 }
 
 .mark-unused-btn {
