@@ -455,7 +455,330 @@
   opacity: 0.7;
 }
 
-/* Adjust padding to accommodate the icon */
+/* Añadir estos estilos para el contenedor del temporizador */
+.timer-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 0 8%;
+}
+
+/* Actualizar el estilo de la imagen de perfil */
+.profile-image {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.username {
+  color: white;
+  font-weight: 500;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.balance {
+  background-color: #2a2a40;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.currency {
+  color: #e63946;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.amount {
+  color: white;
+  font-weight: bold;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+/* Auth buttons styling */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Cambiar los botones de autenticación */
+.login-button {
+  background-color: #00b341; /* Cambiado de #e63946 a #00b341 */
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.login-button:hover {
+  background-color: #00cc4a; /* Cambiado de #d62b39 a #00cc4a */
+  transform: translateY(-2px);
+}
+
+.register-button {
+  background-color: transparent;
+  border: 1px solid #00b341; /* Cambiado de #e63946 a #00b341 */
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.register-button:hover {
+  background-color: rgba(0, 179, 65, 0.2); /* Cambiado para usar verde */
+  transform: translateY(-2px);
+}
+
+.logout-button {
+  background-color: transparent;
+  border: 1px solid #00b341; /* Cambiado de #e63946 a #00b341 */
+  color: #00b341; /* Cambiado de #e63946 a #00b341 */
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: #00b341; /* Cambiado de #e63946 a #00b341 */
+  color: white;
+}
+
+/* Cambiar el color de la moneda */
+.currency {
+  color: #00b341; /* Cambiado de #e63946 a #00b341 */
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.nav-links a.active {
+  color: white;
+  background-color: #00b341;
+  font-weight: bold;
+}
+
+/* Cambiar el emoji de moneda por la imagen */
+/* Estilo para la moneda en el header */
+.coin-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  object-fit: contain;
+}
+
+/* Eliminar el estilo anterior de la moneda */
+.currency {
+  display: none;
+}
+
+/* Estilos para el balance en el header (igual que en el perfil) */
+.profile-balance {
+  display: flex;
+  align-items: center;
+  background-color: rgba(30, 30, 40, 0.9);
+  padding: 8px 12px;
+  border-radius: 20px;
+  margin-right: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.balance-icon {
+  margin-right: 8px;
+}
+
+.balance-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.balance-amount {
+  display: flex;
+  align-items: baseline;
+}
+
+.integer-part {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.decimal-part {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+/* Eliminar estilos anteriores que puedan interferir */
+.balance {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+}
+
+.user-balance {
+  display: none;
+}
+
+.coin-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.balance-amount {
+  display: flex;
+  align-items: baseline;
+}
+
+.integer-part {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.decimal-part {
+  color: rgba(255, 255, 255, 0.6); /* Decimales en un tono más oscuro */
+  font-size: 14px; /* Ligeramente más pequeño que la parte entera */
+}
+
+.rewards-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  position: relative;
+  cursor: pointer;
+  color: #1a1a2e; /* Color dorado para el regalo */
+  transition: transform 0.2s ease;
+}
+
+.rewards-icon:hover {
+  transform: scale(1.2);
+}
+
+.rewards-icon:hover::after {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+
+
+/* Modificar el balance para que incluya el icono de recompensas */
+.balance {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Updated search container styles */
+.search-container {
+  position: relative;
+  width: 300px;
+  margin: 0 15px;
+}
+
+
+
+/* Add a search icon using a different approach */
+.search-container::before {
+  content: "🔍";
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Actualizar los estilos existentes para el timer-wrapper */
+.timer-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+  flex: 1;
+  max-width: 300px;
+  height: 70px; /* Aumentar la altura del header */
+}
+
+/* Actualizar la altura del header */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 80px; /* Aumentar la altura del header */
+  background-color: rgba(26, 26, 46, 0.9);
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Asegurarse de que el logo se ajuste correctamente */
+.logo {
+  height: 50px; /* Aumentar el tamaño del logo */
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+/* Ensure user section is properly aligned */
+.user-section {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
 .search-input {
   padding-left: 40px;
 }

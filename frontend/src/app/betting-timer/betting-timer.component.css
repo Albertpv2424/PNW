@@ -1,33 +1,90 @@
 .betting-timer-container {
-  background-color: var(--card-bg, #ffffff);
-  border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgba(26, 26, 46, 0.7);
+  border-radius: 6px;
+  padding: 10px 16px;
   width: 100%;
-  max-width: 300px;
+  max-width: 280px; /* Aumentado para dar más espacio */
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin: 0 auto; /* Centrado horizontal */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.timer-label {
-  font-size: 14px;
-  color: var(--text-secondary, #666666);
-  margin-bottom: 4px;
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
 }
 
 .timer-display {
-  font-size: 24px;
+  font-size: 24px; /* Aumentado para mayor visibilidad */
   font-weight: bold;
-  font-family: monospace;
-  margin-bottom: 8px;
+  font-family: 'Roboto Mono', monospace;
+  text-align: center;
+  color: #00ff41;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.7);
+  margin-bottom: 4px;
+  letter-spacing: 1px; /* Mejor espaciado entre caracteres */
 }
 
 .timer-progress-container {
   height: 6px;
-  background-color: var(--border-color, #e0e0e0);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
   overflow: hidden;
+  margin: 3px 0;
+  width: 100%;
 }
 
 .timer-progress-bar {
   height: 100%;
   transition: width 1s linear, background-color 0.5s ease;
+  background-color: #00b341;
+}
+
+/* Sección de estadísticas completamente separada */
+.stats-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 35%;
+  padding-top: 2px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+}
+
+.stat-icon {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-right: 3px;
+}
+
+.stat-value {
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.stat-max {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 3px;
+}
+
+/* Animación para cuando el tiempo está por acabarse */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.timer-display.warning {
+  animation: pulse 1.5s infinite;
 }

@@ -1,12 +1,28 @@
 <div class="betting-timer-container">
-  <div class="timer-label">{{ 'BETTING_TIMER.REMAINING_TIME' | translate }}</div>
-  <div class="timer-display" [style.color]="getTimerColor()">
-    {{ formattedTime }}
+  <div class="timer-section">
+    <div class="timer-display" [style.color]="getTimerColor()">
+      {{ formattedTime }}
+    </div>
+
+    <div class="timer-progress-container">
+      <div class="timer-progress-bar"
+           [style.width.%]="percentageRemaining"
+           [style.background-color]="getTimerColor()">
+      </div>
+    </div>
   </div>
-  <div class="timer-progress-container">
-    <div class="timer-progress-bar" 
-         [style.width.%]="percentageRemaining"
-         [style.background-color]="getTimerColor()">
+
+  <div class="stats-section">
+    <div class="stat-item">
+      <div class="stat-icon">🎮</div>
+      <div class="stat-value">{{ betsPlaced }}</div>
+      <div class="stat-max">máx.5</div>
+    </div>
+
+    <div class="stat-item">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-value">{{ hoursSpent }}h{{ minutesSpent }}m</div>
+      <div class="stat-max">máx.1h</div>
     </div>
   </div>
 </div>

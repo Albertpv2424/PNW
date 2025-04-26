@@ -1,18 +1,19 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service';
-import { Router, RouterLink } from '@angular/router';
-import { ClickOutsideDirective } from '../directives/click-outside.directive';
-import { DailyWheelComponent } from '../daily-wheel/daily-wheel.component';
+import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Subject, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, switchMap, catchError, timeout } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { debounceTime, distinctUntilChanged, filter, switchMap, catchError, timeout } from 'rxjs/operators';
-import { Subject, of } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { ClickOutsideDirective } from '../directives/click-outside.directive';
+import { DailyWheelComponent } from '../daily-wheel/daily-wheel.component';
+import { LanguageSliderComponent } from '../language-slider/language-slider.component';
 import { LanguageService } from '../services/language.service';
-import { LanguageSliderComponent } from '../language-slider/language-slider.component'; // Add this import
-// Add this import
 import { TranslateModule } from '@ngx-translate/core';
+import { BettingTimerComponent } from '../betting-timer/betting-timer.component';
 
 @Component({
   selector: 'app-header',
@@ -23,9 +24,9 @@ import { TranslateModule } from '@ngx-translate/core';
     ClickOutsideDirective,
     DailyWheelComponent,
     FormsModule,
-    LanguageSliderComponent, // Add this line
-    // Add TranslateModule to imports
-    TranslateModule
+    LanguageSliderComponent,
+    TranslateModule,
+    BettingTimerComponent // Add this line to include the component in imports
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
@@ -35,14 +36,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   profileImage: string | null = null;
   isProfileMenuOpen = false;
   saldo: number = 0;
-  
+
   // Search functionality
   searchQuery: string = '';
   searchResults: any[] = [];
   showSearchResults: boolean = false;
   private searchSubject = new Subject<string>();
   private apiUrl = environment.apiUrl;
-  
+
   // Add this property
   currentLanguage: string = 'es';
 
@@ -61,7 +62,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.profileImage = user && user.profile_image ? user.profile_image : null;
       this.saldo = user ? user.saldo : 0;
     });
-    
+
     // Set up search with debounce and error handling
     // In the ngOnInit method, update the search pipe configuration:
     this.searchSubject.pipe(
@@ -96,18 +97,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.showSearchResults = false;
       }
     });
-    
+
     // Subscribe to language changes
     this.languageService.currentLang.subscribe(lang => {
       this.currentLanguage = lang;
     });
   }
-  
+
   isActive(route: string): boolean {
     return this.router.url === route ||
            (route === '/' && (this.router.url === '/home' || this.router.url === ''));
   }
-  
+
   onSearch() {
     console.log('Search query:', this.searchQuery);
     if (this.searchQuery.length >= 3) {
@@ -117,7 +118,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.showSearchResults = false;
     }
   }
-  
+
   selectResult(result: any) {
     console.log('Selected result:', result);
     // Navigate to the event details page
@@ -126,13 +127,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.searchResults = [];
     this.showSearchResults = false;
   }
-  
+
   closeSearchResults() {
     setTimeout(() => {
       this.showSearchResults = false;
     }, 200);
   }
-  
+
   toggleProfileMenu() {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
 
@@ -173,7 +174,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
     }
   }
-  
+
   ngOnDestroy() {
     this.searchSubject.complete();
   }
@@ -182,14 +183,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleLanguage(): void {
     // Get all available languages
     const languages = this.languageService.getAvailableLanguages();
-    
+
     // Find the index of the current language
     const currentIndex = languages.findIndex(lang => lang.code === this.currentLanguage);
-    
+
     // Get the next language (cycle back to the first if at the end)
     const nextIndex = (currentIndex + 1) % languages.length;
     const nextLang = languages[nextIndex].code;
-    
+
     // Set the new language
     this.languageService.setLanguage(nextLang);
   }

@@ -32,4 +32,10 @@ export class BetService {
     const headers = this.authService.getAuthHeaders();
     return this.http.get<any>(`${this.apiUrl}/user/bets/stats`, { headers });
   }
+
+  // Get count of bets placed today
+  getTodayBetsCount(): Observable<number> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.get<number>(`${this.apiUrl}/user/bets/today/count`, { headers });
+  }
 }
