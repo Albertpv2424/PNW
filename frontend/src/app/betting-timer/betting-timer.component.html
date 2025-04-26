@@ -16,13 +16,13 @@
     <div class="stat-item">
       <div class="stat-icon">🎮</div>
       <div class="stat-value">{{ betsPlaced }}</div>
-      <div class="stat-max">máx.5</div>
+      <div class="stat-max">máx.{{ maxDailyBets }}</div>
     </div>
 
     <div class="stat-item">
       <div class="stat-icon">⏱️</div>
       <div class="stat-value">{{ hoursSpent }}h{{ minutesSpent }}m</div>
-      <div class="stat-max">máx.1h</div>
+      <div class="stat-max">máx.{{ formatMaxTime() }}</div>
     </div>
   </div>
 </div>

@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BettingTimerService } from '../services/betting-timer.service';
 import { Subscription } from 'rxjs';
 import { BetService } from '../services/bet.service';
+import { UserLimitationsService } from '../services/user-limitations.service';
 
 @Component({
   selector: 'app-betting-timer',
@@ -15,7 +16,7 @@ import { BetService } from '../services/bet.service';
 export class BettingTimerComponent implements OnInit, OnDestroy {
   // Propiedades principales
   remainingTime: number = 0;
-  maxDailyTime: number = 0;
+  // Eliminada la declaración duplicada de maxDailyTime
   formattedTime: string = '00:00:00';
   percentageRemaining: number = 100;
   betsPlaced: number = 0;
@@ -30,22 +31,27 @@ export class BettingTimerComponent implements OnInit, OnDestroy {
   private maxTimeSubscription: Subscription | null = null;
   private betsSubscription: Subscription | null = null;
 
+  // Añadir propiedades para los límites máximos
+  maxDailyBets: number = 5; // Valor por defecto
+  maxDailyTime: number = 3600; // Valor por defecto (1 hora)
+
   constructor(
-    private bettingTimerService: BettingTimerService,
-    private betService: BetService
-  ) {}
+    private timerService: BettingTimerService,
+    private betService: BetService,
+    private userLimitationsService: UserLimitationsService // Añadir este servicio
+  ) { }
 
   ngOnInit(): void {
     // Inicializar el temporizador
-    this.bettingTimerService.initTimer();
+    this.timerService.initTimer();
 
     // Suscribirse al tiempo restante
-    this.timerSubscription = this.bettingTimerService.getRemainingTime().subscribe(time => {
+    this.timerSubscription = this.timerService.getRemainingTime().subscribe(time => {
       this.remainingTime = time;
       this.formattedTime = this.formatTime(time);
 
       // Obtener el tiempo máximo diario para calcular el porcentaje
-      this.maxTimeSubscription = this.bettingTimerService.getMaxDailyTime().subscribe(maxTime => {
+      this.maxTimeSubscription = this.timerService.getMaxDailyTime().subscribe(maxTime => {
         this.maxDailyTime = maxTime;
 
         if (this.maxDailyTime > 0) {
@@ -64,6 +70,9 @@ export class BettingTimerComponent implements OnInit, OnDestroy {
 
     // Actualizar las apuestas cada minuto
     setInterval(() => this.loadBetsPlacedToday(), 60000);
+
+    // Cargar los límites del usuario
+    this.loadUserLimitations();
   }
 
   ngOnDestroy(): void {
@@ -123,5 +132,32 @@ export class BettingTimerComponent implements OnInit, OnDestroy {
    */
   get isWarning(): boolean {
     return this.percentageRemaining <= 20;
+  }
+
+  // Añadir método para cargar los límites del usuario
+  loadUserLimitations(): void {
+    this.userLimitationsService.getCurrentUserLimitations().subscribe({
+      next: (data) => {
+        if (data) {
+          this.maxDailyBets = data.max_daily_bets || 5;
+          this.maxDailyTime = data.max_daily_betting_time || 3600;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar límites de usuario:', error);
+      }
+    });
+  }
+
+  // Añadir método para formatear el tiempo máximo
+  formatMaxTime(): string {
+    const hours = Math.floor(this.maxDailyTime / 3600);
+    const minutes = Math.floor((this.maxDailyTime % 3600) / 60);
+
+    if (hours > 0) {
+      return `${hours}h${minutes > 0 ? minutes + 'm' : ''}`;
+    } else {
+      return `${minutes}m`;
+    }
   }
 }
