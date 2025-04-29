@@ -176,7 +176,6 @@ export class HomeComponent implements OnInit {
           }
         },
         error: (error) => {
-          console.error('Error cargando partidos destacados:', error);
         }
       });
     });
@@ -239,14 +238,12 @@ export class HomeComponent implements OnInit {
         );
 
         // Add console log to debug available sports
-        console.log('Available sports after filtering:', this.sports);
 
         this.loading = false;
       },
       error: (error) => {
         this.error = 'Error al cargar los deportes';
         this.loading = false;
-        console.error('Error:', error);
       }
     });
   }
@@ -267,7 +264,6 @@ export class HomeComponent implements OnInit {
 
     this.oddsService.getOdds(sportKey).subscribe({
       next: (data: OddEvent[]) => {
-        console.log(`Loaded odds for ${sportKey}:`, data);
 
         // Add unique IDs to events if they don't have one
         const eventsWithIds = data.map((event, index) => ({
@@ -296,7 +292,6 @@ export class HomeComponent implements OnInit {
       error: (error) => {
         this.error = 'Error al cargar las cuotas';
         this.loading = false;
-        console.error('Error:', error);
       }
     });
   }
@@ -315,7 +310,6 @@ export class HomeComponent implements OnInit {
   // Update the openBetPopup method to accept the matchId parameter
   // Modificar el método openBetPopup para que use el servicio de selecciones
   openBetPopup(teamName: string, betType: string, odds: number, homeTeam: string, awayTeam: string, matchId: string, leagueName?: string) {
-    console.log('Toggling selection for:', teamName, betType, odds);
 
     // Create a more descriptive matchInfo
     const matchInfo = leagueName
@@ -350,11 +344,7 @@ export class HomeComponent implements OnInit {
 
   // Método para procesar la apuesta
   placeBet(betData: {amount: number, odds: number}) {
-    console.log('Apuesta realizada:', {
-      ...this.selectedBet,
-      amount: betData.amount,
-      potentialWin: betData.amount * betData.odds
-    });
+    
   }
 
   // Añadir este método para verificar si una selección está activa
@@ -390,11 +380,9 @@ export class HomeComponent implements OnInit {
    * Fallback method for team logo errors
    */
   handleTeamLogoError(event: any, teamName: string): void {
-    console.warn(`Error loading team logo for: ${teamName}`);
 
     // Caso especial para St. Pauli
     if (teamName.toLowerCase().includes('pauli')) {
-      console.log('Cargando imagen local para St. Pauli');
       event.target.src = 'assets/teams/st-pauli.png';
       return;
     }
@@ -404,7 +392,6 @@ export class HomeComponent implements OnInit {
         teamName.toLowerCase().includes('psg') ||
         teamName.toLowerCase().includes('saint-germain') ||
         teamName.toLowerCase().includes('saint germain')) {
-      console.log('Cargando imagen local para Paris Saint-Germain');
       event.target.src = 'assets/teams/psg.png';
       return;
     }
@@ -413,7 +400,6 @@ export class HomeComponent implements OnInit {
     if (teamName.toLowerCase().includes('bodo') ||
         teamName.toLowerCase().includes('glimt') ||
         teamName.toLowerCase().includes('bodø')) {
-      console.log('Cargando imagen local para Bodø/Glimt');
       event.target.src = 'assets/teams/bodo-glimt.png';
       return;
     }
@@ -422,7 +408,6 @@ export class HomeComponent implements OnInit {
     if (teamName.toLowerCase().includes('djurgarden') ||
         teamName.toLowerCase().includes('djurgardens') ||
         teamName.toLowerCase().includes('djurgården')) {
-      console.log('Cargando imagen local para Djurgårdens IF');
       event.target.src = 'assets/teams/djurgardens.png';
       return;
     }
@@ -431,7 +416,6 @@ export class HomeComponent implements OnInit {
     if (teamName.toLowerCase().includes('jagiellonia') ||
         teamName.toLowerCase().includes('bialystok') ||
         teamName.toLowerCase().includes('białystok')) {
-      console.log('Cargando imagen local para Jagiellonia Białystok');
       event.target.src = 'assets/teams/jagiellonia.png';
       return;
     }
@@ -514,7 +498,6 @@ export class HomeComponent implements OnInit {
    */
   // Add this method if it doesn't exist
   handleFlagError(event: any, country: string): void {
-    console.error(`Error loading flag for ${country}`);
     // Set a default flag or hide the image
     event.target.style.display = 'none';
   }
@@ -558,10 +541,8 @@ export class HomeComponent implements OnInit {
         // Shuffle and take only 2 random prizes
         this.premios = this.shuffleArray([...allPremios]).slice(0, 5);
         
-        console.log('Loaded random prizes:', this.premios);
       },
       error: (error) => {
-        console.error('Error loading prizes:', error);
       }
     });
   }
@@ -585,7 +566,6 @@ export class HomeComponent implements OnInit {
   }
   
   handlePremioImageError(event: any, premio: any): void {
-    console.warn(`Error loading prize image:`, premio?.name || 'Unknown prize');
     event.target.src = 'assets/premios/default.png';
   }
 
@@ -637,7 +617,6 @@ export class HomeComponent implements OnInit {
   
   // Añade este método a tu HomeComponent
   handlePlayerImageError(event: any, playerName: string): void {
-    console.warn(`Error loading image for player: ${playerName}`);
     // Establecer una imagen por defecto
     event.target.src = 'assets/players/default.png';
   
@@ -648,7 +627,6 @@ export class HomeComponent implements OnInit {
   
   // Method to view promotion details
   viewPromocion(id: number): void {
-    console.log('Viewing promotion with ID:', id);
     this.router.navigate(['/promociones', id]);
   }
   promociones: Promocion[] = [];
@@ -672,7 +650,6 @@ export class HomeComponent implements OnInit {
   loadPromociones(): void {
     this.predictionsService.getPromociones().subscribe({
       next: (data) => {
-        console.log('Promociones cargadas (raw data):', data);
         
         // Map the API response to the format needed for the carousel
         this.promociones = data.map((promo: any) => {
@@ -701,16 +678,13 @@ export class HomeComponent implements OnInit {
             end_date: promo.data_final || promo.fecha_fin || promo.end_date || ''
           };
           
-          console.log('Mapped promotion:', mappedPromo);
           return mappedPromo;
         });
         
         if (this.promociones.length === 0) {
-          console.warn('No se encontraron promociones disponibles');
         }
       },
       error: (error) => {
-        console.error('Error al cargar promociones:', error);
         // Initialize with empty array in case of error
         this.promociones = [];
       }
@@ -718,7 +692,6 @@ export class HomeComponent implements OnInit {
   }
   // Add this method to handle promotion image errors
   handlePromocionImageError(event: any, promocion: any): void {
-    console.warn(`Error loading image for promotion: ${promocion.title}`);
     // Set a default image
     event.target.src = 'assets/promociones/default.png';
   }

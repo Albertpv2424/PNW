@@ -27,7 +27,6 @@ export const appConfig: ApplicationConfig = {
               .set('Accept', 'application/json')
               .set('Content-Type', 'application/json')
           });
-          console.log('Interceptor añadiendo token a la solicitud:', authReq);
           return next(authReq);
         }
         return next(req);

@@ -1,6 +1,7 @@
 <!-- Background div -->
 <div class="background-container"></div>
 
+
 <div class="main-layout">
   <!-- Use the new header component -->
   <app-header [username]="username" (logoutEvent)="logout()"></app-header>
@@ -38,6 +39,20 @@
 
     <!-- Main content with matches -->
     <main class="main-content">
+
+      <!-- Banner Antiludopatía -->
+<div class="antiludopatia-banner">
+  <div class="banner-content">
+    <div class="banner-icon">
+      <i class="fas fa-shield-alt"></i>
+    </div>
+    <div class="banner-text">
+      <h3>Juego Responsable</h3>
+      <p>En PNW promovemos el juego responsable y la prevención de la ludopatía. Apuesta con moderación y establece límites.</p>
+    </div>
+    <a href="/responsible-gaming" class="banner-link">Más información</a>
+  </div>
+</div>
       <!-- Carousel de Promociones -->
       <!-- Promociones Destacadas section -->
       <section class="promociones-carousel">

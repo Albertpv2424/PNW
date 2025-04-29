@@ -1176,3 +1176,72 @@
   background: #ffd700;
   color: #333;
 }
+
+/* Banner Antiludopatía */
+.antiludopatia-banner {
+  background: linear-gradient(45deg, #1a237e, #283593);
+  color: white;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 1.5rem;
+}
+
+.banner-icon {
+  font-size: 2.5rem;
+  color: #4CAF50;
+}
+
+.banner-text {
+  flex: 1;
+}
+
+.banner-text h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.banner-text p {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.banner-link {
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.banner-link:hover {
+  background-color: #45a049;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .banner-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .banner-icon {
+    margin-bottom: 1rem;
+  }
+  
+  .banner-link {
+    margin-top: 1rem;
+  }
+}
