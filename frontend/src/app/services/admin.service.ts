@@ -18,7 +18,7 @@ export class AdminService {
 
   // Método para obtener los headers de autenticación
   // Update the getAuthHeaders method
-  private getAuthHeaders(isFormData: boolean = false): HttpHeaders {
+  public getAuthHeaders(isFormData: boolean = false): HttpHeaders {
     const token = this.authService.getToken();
 
     if (!token) {
@@ -76,9 +76,31 @@ export class AdminService {
 
   // Eliminar un usuario
   deleteUser(id: number): Observable<any> {
+    if (!id) {
+      console.error('ID de usuario inválido:', id);
+      return throwError(() => new Error('ID de usuario no válido'));
+    }
+    
+    console.log(`Intentando eliminar usuario con ID: ${id}`);
+    console.log('URL completa:', `${this.apiUrl}/users/${id}`);
+    
     return this.http.delete<any>(`${this.apiUrl}/users/${id}`, {
       headers: this.getAuthHeaders()
-    });
+    }).pipe(
+      tap(response => console.log('Respuesta de eliminación:', response)),
+      catchError(error => {
+        console.error('Error detallado al eliminar usuario:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message
+        });
+        
+        // Mensaje de error más descriptivo
+        const errorMessage = error.error?.message || 'Error al eliminar el usuario';
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
   // Actualizar el saldo de un usuario
@@ -92,8 +114,8 @@ export class AdminService {
     const headers = this.authService.getAuthHeaders();
     console.log('Request headers:', headers);
 
-    // Make the request with detailed error handling
-    return this.http.put(`${environment.apiUrl}/admin/users/${userId}/balance`, payload, {
+    // Make the request with detailed error handling - changed from PUT to POST
+    return this.http.post(`${environment.apiUrl}/admin/users/${userId}/balance`, payload, {
       headers: headers
     }).pipe(
       tap(response => console.log('Balance update response:', response)),

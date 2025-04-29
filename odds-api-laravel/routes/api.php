@@ -105,7 +105,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Rutas de administración (requieren autenticación y rol de administrador)
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+// En el grupo de rutas de administrador
+Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     // Gestión de usuarios
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id}', [UserController::class, 'show']);

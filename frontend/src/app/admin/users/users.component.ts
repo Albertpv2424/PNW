@@ -291,30 +291,34 @@ export class UsersComponent implements OnInit {
     return;
   }
 
-  confirmDeleteUser(userId: number | null): void {
+  // Fix the confirmDeleteUser method to handle the ID directly
+  confirmDeleteUser(userId: number): void {
+    console.log('Confirming deletion of user with ID:', userId);
+    
+    // Store the ID directly instead of trying to access user.id
     this.deleteUserId = userId;
     this.showDeleteConfirm = true;
   }
-
+  
   deleteUser(): void {
     if (!this.deleteUserId) {
       this.notificationService.showError('Error: ID de usuario no válido');
       return;
     }
-
-    console.log('Deleting user ID:', this.deleteUserId);
-
-    // Now this will work correctly
+  
+    console.log('Deleting user with ID:', this.deleteUserId);
+  
     this.adminService.deleteUser(this.deleteUserId).subscribe({
       next: () => {
         this.notificationService.showSuccess('Usuario eliminado correctamente');
-        this.loadUsers();
+        this.loadUsers(); // Reload the user list
         this.showDeleteConfirm = false;
         this.deleteUserId = null;
       },
       error: (error) => {
         console.error('Error deleting user:', error);
-        this.notificationService.showError('Error al eliminar el usuario');
+        const errorMsg = error.error?.message || 'Error desconocido al eliminar el usuario';
+        this.notificationService.showError('Error: ' + errorMsg);
       }
     });
   }

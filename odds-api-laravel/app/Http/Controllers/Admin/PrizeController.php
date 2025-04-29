@@ -425,4 +425,33 @@ class PrizeController extends Controller
             ], 500);
         }
     }
+
+    private function handlePrizeImage(Request $request)
+    {
+        try {
+            if (!$request->hasFile('image')) {
+                return null;
+            }
+
+            $image = $request->file('image');
+
+            if (!$image->isValid()) {
+                return null;
+            }
+
+            $fileName = 'prize_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $path = 'uploads/prizes';
+
+            if (!file_exists(public_path($path))) {
+                mkdir(public_path($path), 0755, true);
+            }
+
+            $image->move(public_path($path), $fileName);
+
+            return $path . '/' . $fileName;
+        } catch (\Exception $e) {
+            Log::error('Error al procesar la imagen del premio: ' . $e->getMessage());
+            return null;
+        }
+    }
 }

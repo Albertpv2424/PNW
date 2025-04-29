@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -89,14 +90,17 @@ class UserController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'nick' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
+            'nick' => 'required|string|max:255|unique:usuaris,nick',
+            'email' => 'required|string|email|max:255|unique:usuaris,email',
             'password' => 'required|string|min:8',
-            'nom' => 'required|string|max:255',
-            'cognoms' => 'required|string|max:255',
-            'data_naix' => 'required|date',
-            'tipus_acc' => 'required|string|in:Usuario',
-            'saldo' => 'nullable|numeric|min:0'
+            'nom' => 'nullable|string|max:255',
+            'cognoms' => 'nullable|string|max:255',
+            'data_naixement' => 'nullable|date',
+            'tipus_acc' => 'nullable|string',
+            'dni' => 'nullable|string|max:20',
+            'telefon' => 'nullable|string|max:20',
+            'saldo' => 'nullable|numeric|min:0',
+            'profile_image' => 'nullable|image|max:2048'
         ]);
 
         if ($validator->fails()) {
@@ -108,11 +112,20 @@ class UserController extends Controller
         $user->nick = $request->nick;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->nom = $request->nom;
-        $user->cognoms = $request->cognoms;
-        $user->data_naix = $request->data_naix;
-        $user->tipus_acc = $request->tipus_acc;
-        $user->saldo = $request->saldo ?? 0;
+        $user->nom = $request->input('nom', '');
+        $user->cognoms = $request->input('cognoms', '');
+        $user->data_naix = $request->input('data_naixement');
+        $user->tipus_acc = $request->input('tipus_acc', 'Usuari');
+        $user->dni = $request->input('dni', '');
+        $user->telefon = $request->input('telefon', '');
+        $user->saldo = $request->input('saldo', 0);
+        
+        // Procesar la imagen de perfil si se proporciona
+        if ($request->hasFile('profile_image')) {
+            $path = $request->file('profile_image')->store('profile_images', 'public');
+            $user->profile_image = $path;
+        }
+        
         $user->save();
 
         return response()->json([
@@ -140,12 +153,13 @@ class UserController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:usuaris,email,' . $user->id,
             'nom' => 'required|string|max:255',
             'cognoms' => 'required|string|max:255',
             'data_naix' => 'required|date',
             'password' => 'nullable|string|min:8',
-            'saldo' => 'nullable|numeric|min:0'
+            'saldo' => 'nullable|numeric|min:0',
+            'profile_image' => 'nullable|image|max:2048' // Permitir actualizar imagen de perfil
         ]);
 
         if ($validator->fails()) {
@@ -165,6 +179,17 @@ class UserController extends Controller
         if ($request->has('saldo')) {
             $user->saldo = $request->saldo;
         }
+        
+        // Procesar la imagen de perfil si se proporciona
+        if ($request->hasFile('profile_image')) {
+            // Eliminar la imagen anterior si existe
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+            
+            $path = $request->file('profile_image')->store('profile_images', 'public');
+            $user->profile_image = $path;
+        }
 
         $user->save();
 
@@ -177,7 +202,90 @@ class UserController extends Controller
     /**
      * Eliminar un usuario
      */
+    /**
+     * Eliminar un usuario
+     */
     public function destroy($id)
+    {
+        // Verificar si el usuario tiene permisos de administrador
+        if (!$this->isAdmin()) {
+            return response()->json(['message' => 'No tienes permisos de administrador'], 403);
+        }
+    
+        // Registrar información de depuración
+        Log::info('Intento de eliminar usuario con ID: ' . $id);
+    
+        // Buscar el usuario
+        $user = User::find($id);
+    
+        if (!$user) {
+            Log::error('Usuario no encontrado con ID: ' . $id);
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+    
+        // No permitir eliminar usuarios administradores
+        if (strtolower($user->tipus_acc) === 'administrador' || strtolower($user->tipus_acc) === 'admin') {
+            Log::warning('Intento de eliminar un usuario administrador: ' . $user->nick);
+            return response()->json(['message' => 'No se pueden eliminar usuarios administradores'], 403);
+        }
+    
+        try {
+            // Eliminar la imagen de perfil si existe
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+    
+            // Eliminar el usuario
+            $user->delete();
+            Log::info('Usuario eliminado correctamente: ' . $user->nick);
+    
+            return response()->json(['message' => 'Usuario eliminado con éxito']);
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar usuario: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al eliminar el usuario: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Actualizar el saldo de un usuario específico
+     */
+    public function updateBalance(Request $request, $nick)
+    {
+        // Verificar si el usuario tiene permisos de administrador
+        if (!$this->isAdmin()) {
+            return response()->json(['message' => 'No tienes permisos de administrador'], 403);
+        }
+
+        // Buscar el usuario por nick
+        $user = User::where('nick', $nick)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+        // Validar los datos de entrada
+        $validator = Validator::make($request->all(), [
+            'saldo' => 'required|numeric|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Actualizar el saldo
+        $user->saldo = $request->saldo;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Saldo actualizado correctamente',
+            'saldo' => $user->saldo
+        ]);
+    }
+
+    /**
+     * Actualizar la imagen de perfil de un usuario
+     */
+    public function updateProfileImage(Request $request, $id)
     {
         // Verificar si el usuario tiene permisos de administrador
         if (!$this->isAdmin()) {
@@ -191,92 +299,29 @@ class UserController extends Controller
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
-        // No permitir eliminar usuarios administradores
-        if (strtolower($user->tipus_acc) === 'admin') {
-            return response()->json(['message' => 'No se pueden eliminar usuarios administradores'], 403);
-        }
-
-        // Eliminar el usuario
-        $user->delete();
-
-        return response()->json(['message' => 'Usuario eliminado con éxito']);
-    }
-
-    /**
-     * Actualizar el saldo de un usuario
-     */
-    public function updateBalance(Request $request, $nick)
-    {
-        // Verificar si el usuario tiene permisos de administrador
-        if (!$this->isAdmin()) {
-            return response()->json(['message' => 'No tienes permisos de administrador'], 403);
-        }
-
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'amount' => 'required|numeric'
+            'profile_image' => 'required|image|max:2048'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Buscar el usuario por nick
-        $user = User::where('nick', $nick)->first();
-
-        if (!$user) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        // Eliminar la imagen anterior si existe
+        if ($user->profile_image) {
+            Storage::disk('public')->delete($user->profile_image);
         }
 
-        // Actualizar el saldo
-        $user->saldo += $request->amount;
-
-        // No permitir saldos negativos
-        if ($user->saldo < 0) {
-            $user->saldo = 0;
-        }
-
+        // Guardar la nueva imagen
+        $path = $request->file('profile_image')->store('profile_images', 'public');
+        $user->profile_image = $path;
         $user->save();
 
         return response()->json([
-            'message' => 'Saldo actualizado con éxito',
-            'user' => $user
-        ]);
-    }
-
-    /**
-     * Cambiar el tipo de cuenta de un usuario
-     */
-    public function changeRole(Request $request, $nick)
-    {
-        // Verificar si el usuario tiene permisos de administrador
-        if (!$this->isAdmin()) {
-            return response()->json(['message' => 'No tienes permisos de administrador'], 403);
-        }
-
-        // Validar los datos de entrada
-        $validator = Validator::make($request->all(), [
-            'role' => 'required|string|in:Usuario,Admin'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        // Buscar el usuario por nick
-        $user = User::where('nick', $nick)->first();
-
-        if (!$user) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
-        }
-
-        // Actualizar el tipo de cuenta
-        $user->tipus_acc = $request->role;
-        $user->save();
-
-        return response()->json([
-            'message' => 'Tipo de cuenta actualizado con éxito',
-            'user' => $user
+            'message' => 'Imagen de perfil actualizada con éxito',
+            'user' => $user,
+            'profile_image_url' => url('storage/' . $path)
         ]);
     }
 }

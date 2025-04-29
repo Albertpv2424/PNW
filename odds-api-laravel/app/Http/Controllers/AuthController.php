@@ -524,9 +524,4 @@ public function addPoints(Request $request)
         return response()->json(['message' => 'Error al procesar la solicitud'], 500);
     }
 }
-
-
 }
-
-// Añade este método al final de la clase AuthController
-
