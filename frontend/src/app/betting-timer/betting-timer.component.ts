@@ -68,8 +68,8 @@ export class BettingTimerComponent implements OnInit, OnDestroy {
     // Obtener las apuestas realizadas hoy
     this.loadBetsPlacedToday();
 
-    // Actualizar las apuestas cada minuto
-    setInterval(() => this.loadBetsPlacedToday(), 60000);
+    // Actualizar las apuestas cada 30 segundos en lugar de cada minuto
+    setInterval(() => this.loadBetsPlacedToday(), 30000);
 
     // Cargar los límites del usuario
     this.loadUserLimitations();
@@ -118,6 +118,7 @@ export class BettingTimerComponent implements OnInit, OnDestroy {
   loadBetsPlacedToday(): void {
     this.betsSubscription = this.betService.getTodayBetsCount().subscribe({
       next: (count) => {
+        console.log('Apuestas realizadas hoy:', count);
         this.betsPlaced = count;
       },
       error: (error) => {
