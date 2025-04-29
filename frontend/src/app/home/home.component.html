@@ -38,6 +38,96 @@
 
     <!-- Main content with matches -->
     <main class="main-content">
+      <!-- Carousel de Promociones -->
+      <!-- Promociones Destacadas section -->
+      <section class="promociones-carousel">
+        <div class="carousel-container">
+          <h2 class="carousel-title">Promociones Destacadas</h2>
+          
+          <div class="carousel-wrapper" *ngIf="promociones.length > 0">
+            <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPromocionIndex) + '%)'">
+              <div class="promocion-slide" *ngFor="let promocion of promociones; let i = index">
+                <div class="promocion-card">
+                  <div class="promocion-image">
+                    <img [src]="promocion.image_url" [alt]="promocion.title" (error)="handlePromocionImageError($event, promocion)">
+                  </div>
+                  <div class="promocion-content">
+                    <span class="promocion-type">{{ promocion.type }}</span>
+                    <h3 class="promocion-title">{{ promocion.title }}</h3>
+                    <p class="promocion-description">{{ promocion.description }}</p>
+                    <div class="promocion-footer">
+                      <span class="promocion-date">Válido: {{ promocion.end_date | date:'dd/MM/yyyy' }}</span>
+                      <button class="promocion-button" (click)="viewPromocion(promocion.id)">INSCRIBIRSE</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="carousel-controls" *ngIf="promociones.length > 1">
+            <button class="carousel-button prev" (click)="prevPromocion()">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="carousel-indicators">
+              <div 
+                class="carousel-indicator" 
+                *ngFor="let promocion of promociones; let i = index"
+                [class.active]="i === currentPromocionIndex"
+                (click)="goToPromocion(i)">
+              </div>
+            </div>
+            <button class="carousel-button next" (click)="nextPromocion()">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Premios Destacados section -->
+      <section class="premios-carousel">
+        <div class="carousel-container">
+          <h2 class="carousel-title">Premios Destacados</h2>
+          
+          <div class="carousel-wrapper" *ngIf="premios.length > 0">
+            <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPremioIndex) + '%)'">
+              <div class="premio-slide" *ngFor="let premio of premios; let i = index">
+                <div class="premio-card">
+                  <div class="premio-image">
+                    <img [src]="premio.image" [alt]="premio.name" (error)="handlePremioImageError($event, premio)">
+                  </div>
+                  <div class="premio-content">
+                    <h3 class="premio-title">{{ premio.name }}</h3>
+                    <p class="premio-description">{{ premio.description }}</p>
+                    <div class="premio-footer">
+                      <span class="premio-points">{{ premio.points }} puntos</span>
+                      <button class="premio-button" (click)="viewPremio(premio.id)">CANJEAR</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="carousel-controls" *ngIf="premios.length > 1">
+            <button class="carousel-button prev" (click)="prevPremio()">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="carousel-indicators">
+              <div 
+                class="carousel-indicator" 
+                *ngFor="let premio of premios; let i = index"
+                [class.active]="i === currentPremioIndex"
+                (click)="goToPremio(i)">
+              </div>
+            </div>
+            <button class="carousel-button next" (click)="nextPremio()">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
       <h1>Deportes Disponibles</h1>
 
       <div *ngIf="error" class="alert alert-danger">
@@ -289,12 +379,4 @@
       </a>
     </li>
   </ul>
-</div>
-
-<!-- Add this to your home component HTML where the search bar is located -->
-<div class="header-container">
-  <div class="search-container">
-    <!-- Your existing search bar -->
-  </div>
-  <app-betting-timer class="timer-container"></app-betting-timer>
 </div>

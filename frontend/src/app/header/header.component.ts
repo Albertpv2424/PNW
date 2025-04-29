@@ -194,4 +194,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Set the new language
     this.languageService.setLanguage(nextLang);
   }
+  
+  // Add this method if it doesn't exist
+  isUserLoggedIn(): boolean {
+    const isLoggedIn = this.authService.isLoggedIn();
+    console.log('User logged in status:', isLoggedIn);
+    return isLoggedIn;
+  }
 }

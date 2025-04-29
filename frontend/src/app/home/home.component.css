@@ -156,7 +156,31 @@
   margin: 0;
   height: 70px; /* Fixed height */
 }
+/* Update the match-header to use flex with space-between */
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #1a1a27;
+  border-bottom: 1px solid #2a2a3c;
+}
 
+/* Update the match-date style to align right */
+.match-date {
+  font-size: 14px;
+  color: #888;
+  margin-left: auto; /* This pushes the date to the right */
+  text-align: right;
+}
+
+/* Update the match-league style to align left */
+.match-league {
+  font-size: 14px;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+}
 .odds-container-new {
   display: flex;
   width: 100%;
@@ -782,4 +806,373 @@
   border-radius: 50%;
   background-color: transparent;
   padding: 2px;
+}
+
+/* Carousel Styles */
+.promociones-carousel {
+  margin: 2rem 0;
+  padding: 0 1rem;
+}
+
+.carousel-container {
+
+  border-radius: 10px;
+  padding: 1.5rem;
+ 
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-title {
+  color: white;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.promocion-slide {
+  min-width: 100%;
+  flex: 0 0 100%;
+}
+
+.promocion-card {
+  display: flex;
+  background-color: rgba(30, 30, 45, 0.7);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 230px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.promocion-image {
+  flex: 0 0 40%;
+  overflow: hidden;
+}
+
+.promocion-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promocion-content {
+  flex: 0 0 60%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.promocion-type {
+  background-color: #00b341;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  align-self: flex-start;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.promocion-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.promocion-description {
+  flex-grow: 1;
+  margin: 0 0 1rem 0;
+  color: #cccccc;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.promocion-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.promocion-date {
+  color: #aaaaaa;
+  font-size: 0.9rem;
+}
+
+.promocion-button {
+  background-color: #00b341;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.promocion-button:hover {
+  background-color: #00cc4a;
+  transform: translateY(-2px);
+}
+
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.carousel-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
+  color: white;
+}
+
+.carousel-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.carousel-indicator.active {
+  background-color: #00b341;
+  transform: scale(1.2);
+}
+
+/* Slogan Container Styles */
+.slogan-container {
+  text-align: center;
+  margin: 20px 0 30px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  color: white;
+}
+
+.slogan-container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.slogan-text {
+  font-size: 1.2rem;
+  font-weight: 300;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Premios Showcase Styles */
+.premios-showcase {
+  margin: 30px 0;
+}
+
+.premios-container {
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.carousel-title {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.premios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+/* Premios Carousel Styles */
+.premios-carousel {
+  margin-bottom: 2rem;
+}
+
+.premio-card {
+  display: flex;
+  background-color: #1e1e2d;
+  border-radius: 8px;
+  overflow: hidden;
+ 
+  height: 100%;
+  min-height: 250px;
+}
+
+.premio-image {
+  width: 40%;
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #222;
+}
+
+.premio-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.premio-content {
+  width: 60%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.premio-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.premio-description {
+  flex-grow: 1;
+  margin-bottom: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.premio-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.premio-points {
+  font-weight: bold;
+  color: yellow;
+  font-size: 1.1rem;
+}
+
+.premio-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.premio-button:hover {
+  background-color: #388e3c;
+}
+
+/* Carousel Controls */
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.carousel-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  margin: 0 10px;
+}
+
+.carousel-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-indicators {
+  display: flex;
+  gap: 8px;
+  margin: 0 15px;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.carousel-indicator.active {
+  background-color: #4caf50;
+}
+
+/* Ensure carousel track transitions smoothly */
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: 100%;
+}
+
+.premio-slide {
+  min-width: 100%;
+  flex: 0 0 100%;
+
+}
+.premios-carousel {
+  margin-bottom: 2rem;
+}
+.ver-todos-link {
+  display: inline-block;
+  color: #ffd700;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 16px;
+  border: 1px solid #ffd700;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.ver-todos-link:hover {
+  background: #ffd700;
+  color: #333;
 }

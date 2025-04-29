@@ -33,6 +33,8 @@ export class AuthGuard implements CanActivate {
       }
     }
 
+    // In your canActivate method, add this log
+    console.log('AuthGuard checking route access, user logged in:', this.authService.isLoggedIn());
     return true;
   }
 }

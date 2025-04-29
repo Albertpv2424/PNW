@@ -9,11 +9,20 @@ import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
 import { TeamBadgeService } from '../services/team-badge.service';
 import { HeaderComponent } from '../header/header.component';
 import { TennisPlayersService } from '../services/tennis-players.service';
+import { PredictionsService } from '../services/predictions.service';
 
 interface Sport {
   key: string;
   title: string;
   country?: string;  // Add the country property as optional
+}
+interface Promocion {
+  id: number;
+  title: string;
+  description: string;
+  type: string;
+  image_url: string;
+  end_date: string;
 }
 
 interface OddEvent {
@@ -92,10 +101,10 @@ export class HomeComponent implements OnInit {
     private betSelectionsService: BetSelectionsService,
     public teamBadgeService: TeamBadgeService,
     private router: Router,  // Add Router to constructor
-    public tennisPlayersService: TennisPlayersService // Add this line
+    public tennisPlayersService: TennisPlayersService, // Add this line
+    private predictionsService: PredictionsService
   ) {}
 
-  // Modificar el método ngOnInit para redirigir a los administradores
   ngOnInit() {
     // Check if user is admin and redirect to dashboard
     const currentUser = this.authService.getCurrentUser();
@@ -108,7 +117,9 @@ export class HomeComponent implements OnInit {
     // Continue with normal initialization for non-admin users
     this.loadSports();
     this.loadUserInfo();
-    this.loadFeaturedMatches(); // This will now work correctly
+    this.loadFeaturedMatches();
+    this.loadPremios();
+    this.loadPromociones(); // Add this line to load promotions
   }
 
   // Make sure this method is defined in the class
@@ -527,62 +538,188 @@ export class HomeComponent implements OnInit {
     this.isMenuOpen = false;
   }
 
-  // Add these methods to your HomeComponent class
-
-// Add this method to handle sport selection
-selectSport(sportKey: string): void {
-// Call the existing loadOdds method which already sets selectedSportKey
-this.loadOdds(sportKey);
-}
-
-// Update the getSportIcon method to include flags for all sports
-getSportIcon(sportKey: string): string {
-// Return appropriate emoji based on sport key
-if (sportKey.includes('tennis')) {
-return '🎾'; // Tennis ball
-} else if (sportKey.includes('baseball') || sportKey.includes('mlb')) {
-return '⚾'; // Baseball
-} else if (sportKey.includes('basketball') || sportKey.includes('nba') || sportKey.includes('euroleague')) {
-return '🏀'; // Basketball
-} else if (sportKey.includes('soccer')) {
-return '⚽'; // Soccer/Football
-} else {
-return ''; // Default - no icon
-}
-}
-
-isSoccerSport(sportKey: string): boolean {
-  return sportKey.includes('soccer');
-}
-
-// Add these methods to display tennis player images
-// Add this method to check if a player is a tennis player
-isTennisPlayer(playerName: string): boolean {
-  // Check if we're in a tennis sport context
-  const isTennisSport = this.selectedSportKey &&
-    (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'));
-
-  if (!isTennisSport) {
-    return false;
+  // Add these properties for the premios carousel
+  premios: any[] = [];
+  currentPremioIndex: number = 0;
+  
+  // Add this method to load premios with random selection
+  loadPremios(): void {
+    this.predictionsService.getPremios().subscribe({
+      next: (data: any[]) => {
+        // Map all prizes
+        const allPremios = data.map(premio => ({
+          id: premio.id,
+          name: premio.titol,
+          description: premio.descripcio,
+          points: premio.cost,
+          image: premio.image ? `http://localhost:8000/${premio.image}` : 'assets/premios/default.png'
+        }));
+        
+        // Shuffle and take only 2 random prizes
+        this.premios = this.shuffleArray([...allPremios]).slice(0, 5);
+        
+        console.log('Loaded random prizes:', this.premios);
+      },
+      error: (error) => {
+        console.error('Error loading prizes:', error);
+      }
+    });
+  }
+  
+  // Add these methods for premio carousel navigation
+  nextPremio(): void {
+    this.currentPremioIndex = (this.currentPremioIndex + 1) % this.premios.length;
+  }
+  
+  prevPremio(): void {
+    this.currentPremioIndex = this.currentPremioIndex > 0 ? 
+      this.currentPremioIndex - 1 : this.premios.length - 1;
+  }
+  
+  goToPremio(index: number): void {
+    this.currentPremioIndex = index;
+  }
+  
+  viewPremio(id: number): void {
+    this.router.navigate(['/premios', id]);
+  }
+  
+  handlePremioImageError(event: any, premio: any): void {
+    console.warn(`Error loading prize image:`, premio?.name || 'Unknown prize');
+    event.target.src = 'assets/premios/default.png';
   }
 
-  // Check if the player has a custom image
-  return this.tennisPlayersService.hasCustomImage(playerName);
-}
-
-// Add this method to get the player image
-getPlayerImage(playerName: string): string {
-  return this.tennisPlayersService.getPlayerImagePath(playerName);
-}
-
-// Añade este método a tu HomeComponent
-handlePlayerImageError(event: any, playerName: string): void {
-  console.warn(`Error loading image for player: ${playerName}`);
-  // Establecer una imagen por defecto
-  event.target.src = 'assets/players/default.png';
-
-  // Remove the call to handleImageError since it doesn't exist in the service
-  // Just log the error and set the default image
-}
-
-}
+  // Add this method to handle sport selection
+  selectSport(sportKey: string): void {
+  // Call the existing loadOdds method which already sets selectedSportKey
+  this.loadOdds(sportKey);
+  }
+  
+  // Update the getSportIcon method to include flags for all sports
+  getSportIcon(sportKey: string): string {
+  // Return appropriate emoji based on sport key
+  if (sportKey.includes('tennis')) {
+  return '🎾'; // Tennis ball
+  } else if (sportKey.includes('baseball') || sportKey.includes('mlb')) {
+  return '⚾'; // Baseball
+  } else if (sportKey.includes('basketball') || sportKey.includes('nba') || sportKey.includes('euroleague')) {
+  return '🏀'; // Basketball
+  } else if (sportKey.includes('soccer')) {
+  return '⚽'; // Soccer/Football
+  } else {
+  return ''; // Default - no icon
+  }
+  }
+  
+  isSoccerSport(sportKey: string): boolean {
+    return sportKey.includes('soccer');
+  }
+  
+  // Add these methods to display tennis player images
+  // Add this method to check if a player is a tennis player
+  isTennisPlayer(playerName: string): boolean {
+    // Check if we're in a tennis sport context
+    const isTennisSport = this.selectedSportKey &&
+      (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'));
+  
+    if (!isTennisSport) {
+      return false;
+    }
+  
+    // Check if the player has a custom image
+    return this.tennisPlayersService.hasCustomImage(playerName);
+  }
+  
+  // Add this method to get the player image
+  getPlayerImage(playerName: string): string {
+    return this.tennisPlayersService.getPlayerImagePath(playerName);
+  }
+  
+  // Añade este método a tu HomeComponent
+  handlePlayerImageError(event: any, playerName: string): void {
+    console.warn(`Error loading image for player: ${playerName}`);
+    // Establecer una imagen por defecto
+    event.target.src = 'assets/players/default.png';
+  
+    // Remove the call to handleImageError since it doesn't exist in the service
+    // Just log the error and set the default image
+  }
+  // Make sure these methods are in your HomeComponent class
+  
+  // Method to view promotion details
+  viewPromocion(id: number): void {
+    console.log('Viewing promotion with ID:', id);
+    this.router.navigate(['/promociones', id]);
+  }
+  promociones: Promocion[] = [];
+  currentPromocionIndex: number = 0;
+  
+  // Methods for carousel navigation
+  prevPromocion(): void {
+    this.currentPromocionIndex = this.currentPromocionIndex > 0 ? 
+      this.currentPromocionIndex - 1 : this.promociones.length - 1;
+  }
+  
+  nextPromocion(): void {
+    this.currentPromocionIndex = (this.currentPromocionIndex + 1) % this.promociones.length;
+  }
+  
+  goToPromocion(index: number): void {
+    this.currentPromocionIndex = index;
+  }
+  
+  // Replace your current loadPromociones method with this one
+  loadPromociones(): void {
+    this.predictionsService.getPromociones().subscribe({
+      next: (data) => {
+        console.log('Promociones cargadas (raw data):', data);
+        
+        // Map the API response to the format needed for the carousel
+        this.promociones = data.map((promo: any) => {
+          // Check if we have a tipo_promocio object or just a string
+          let type = '';
+          if (promo.tipo_promocio) {
+            if (typeof promo.tipo_promocio === 'object') {
+              type = promo.tipo_promocio.titol || 'GENERAL';
+            } else {
+              type = promo.tipo_promocio || 'GENERAL';
+            }
+          } else if (promo.tipo) {
+            type = promo.tipo;
+          } else if (promo.type) {
+            type = promo.type;
+          } else {
+            type = 'GENERAL';
+          }
+          
+          const mappedPromo = {
+            id: promo.id,
+            title: promo.titol || promo.titulo || promo.title || 'Apuesta Segura',
+            description: promo.descripcio || promo.descripcion || promo.description || 'Recupera tu apuesta si pierdes en tu primera predicción',
+            type: type,
+            image_url: promo.image ? `http://localhost:8000/${promo.image}` : 'assets/promociones/default.png',
+            end_date: promo.data_final || promo.fecha_fin || promo.end_date || ''
+          };
+          
+          console.log('Mapped promotion:', mappedPromo);
+          return mappedPromo;
+        });
+        
+        if (this.promociones.length === 0) {
+          console.warn('No se encontraron promociones disponibles');
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar promociones:', error);
+        // Initialize with empty array in case of error
+        this.promociones = [];
+      }
+    });
+  }
+  // Add this method to handle promotion image errors
+  handlePromocionImageError(event: any, promocion: any): void {
+    console.warn(`Error loading image for promotion: ${promocion.title}`);
+    // Set a default image
+    event.target.src = 'assets/promociones/default.png';
+  }
+  }

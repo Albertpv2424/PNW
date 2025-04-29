@@ -22,7 +22,6 @@ export class TeamBadgeService {
     // Caso especial para St. Pauli - usar directamente la imagen local
     if (normalizedName.includes('st-pauli') || normalizedName.includes('st.pauli') ||
         normalizedName.includes('sankt-pauli') || normalizedName === 'pauli') {
-      console.log('Usando imagen local para St. Pauli');
       return 'assets/teams/st-pauli.png';
     }
 
@@ -30,42 +29,36 @@ export class TeamBadgeService {
     if ((normalizedName.includes('paris') || normalizedName.includes('psg') ||
          normalizedName.includes('saint-germain') || normalizedName.includes('saint germain')) &&
         (context?.toLowerCase().includes('champions') || context?.toLowerCase().includes('uefa'))) {
-      console.log('Usando imagen local para Paris Saint-Germain');
       return 'assets/teams/psg.png';
     }
 
     // Caso especial para Bodø/Glimt en Europa League
     if (normalizedName.includes('bodo') || normalizedName.includes('glimt') ||
         normalizedName.includes('bodo/glimt') || normalizedName.includes('bodø')) {
-      console.log('Usando imagen local para Bodø/Glimt');
       return 'assets/teams/bodo-glimt.png';
     }
 
     // Caso especial para Djurgårdens IF en Conference League
     if (normalizedName.includes('djurgarden') || normalizedName.includes('djurgardens') ||
         normalizedName.includes('djurgårdens') || normalizedName.includes('djurgårdens if')) {
-      console.log('Usando imagen local para Djurgårdens IF');
       return 'assets/teams/djurgardens.png';
     }
 
     // Caso especial para Jagiellonia Białystok en Conference League
     if (normalizedName.includes('jagiellonia') || normalizedName.includes('bialystok') ||
         normalizedName.includes('białystok') || normalizedName.includes('jagiellonia bialystok')) {
-      console.log('Usando imagen local para Jagiellonia Białystok');
       return 'assets/teams/jagiellonia.png';
     }
 
     // Caso especial para Bayern Munich - siempre usar la API para fútbol
     if ((normalizedName.includes('bayern') || normalizedName.includes('munich')) &&
         !normalizedName.includes('basket') && !normalizedName.includes('baloncesto')) {
-      console.log('Usando API para Bayern Munich (fútbol)');
       return `https://media.api-sports.io/football/teams/157.png`;
     }
 
     // Caso especial para Inter Milan - siempre usar la API
     if (normalizedName.includes('inter') &&
         (normalizedName.includes('milan') || normalizedName.includes('milano'))) {
-      console.log('Usando API para Inter Milan');
       return `https://media.api-sports.io/football/teams/505.png`;
     }
 
@@ -73,20 +66,17 @@ export class TeamBadgeService {
     if ((normalizedName === 'milan' || normalizedName.includes('ac-milan') ||
          normalizedName.includes('ac milan')) &&
         !normalizedName.includes('basket') && !normalizedName.includes('baloncesto')) {
-      console.log('Usando API para AC Milan');
       return `https://media.api-sports.io/football/teams/489.png`;
     }
 
     // Caso especial para equipos de MLB
     if (this.isMLBTeam(normalizedName)) {
-      console.log('Usando API para equipo MLB:', teamName);
       const abbr = this.getMLBTeamAbbreviation(normalizedName);
       return `https://a.espncdn.com/i/teamlogos/mlb/500/${abbr}.png`;
     }
 
     // Caso especial para equipos de la NBA
     if (this.isNBATeam(normalizedName)) {
-      console.log('Usando API para equipo NBA:', teamName);
       const abbr = this.getNBATeamAbbreviation(normalizedName);
       return `https://a.espncdn.com/i/teamlogos/nba/500/${abbr}.png`;
     }
@@ -99,7 +89,6 @@ export class TeamBadgeService {
                      context.toLowerCase().includes('euroleague') ||
                      context.toLowerCase().includes('basket') ||
                      context.toLowerCase().includes('baloncesto'))))) {
-      console.log('Usando imagen local para Milano Basket');
       return 'assets/teams/milano-basket.png';
     }
 
@@ -110,7 +99,6 @@ export class TeamBadgeService {
                      context.toLowerCase().includes('euroleague') ||
                      context.toLowerCase().includes('basket') ||
                      context.toLowerCase().includes('baloncesto'))))) {
-      console.log('Usando imagen local para Paris Basket');
       return 'assets/teams/paris-basket.png';
     }
 
@@ -122,7 +110,6 @@ export class TeamBadgeService {
                      context.toLowerCase().includes('euroleague') ||
                      context.toLowerCase().includes('basket') ||
                      context.toLowerCase().includes('baloncesto'))))) {
-      console.log('Usando imagen local para Virtus Bologna');
       return 'assets/teams/virtus-bologna.png';
     }
 
