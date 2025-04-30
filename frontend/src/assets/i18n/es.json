@@ -71,11 +71,6 @@
     "VIEW_ALL_BETS": "Ver Todas las Apuestas",
     "LOADING_BETS": "Cargando apuestas..."
   },
-  "BETTING_TIMER": {
-    "REMAINING_TIME": "Tiempo restante",
-    "TIME_LIMIT_REACHED": "Límite de tiempo alcanzado",
-    "DAILY_LIMIT_RESET": "El límite se reiniciará a medianoche"
-  },
   "CHAT": {
     "TITLE": "Soporte en línea",
     "WELCOME_MESSAGE": "¡Hola! ¿En qué podemos ayudarte hoy?",
@@ -197,15 +192,37 @@
     "BET_AMOUNT": "Apostado"
   },
   "HOME": {
-    "FEATURED_MATCHES": "Partidos Destacados",
-    "POPULAR_SPORTS": "Deportes Populares",
+    "FEATURED_COMPETITIONS": "Competiciones destacadas",
     "AVAILABLE_SPORTS": "Deportes Disponibles",
-    "ODDS": "Cuotas",
-    "LOCAL": "Local",
-    "DRAW": "Empate",
-    "VISITOR": "Visitante",
-    "BET_NOW": "Apostar Ahora",
-    "UPCOMING_MATCHES": "Próximos Partidos"
+    "LOADING_DATA": "Cargando datos...",
+    "FEATURED_MATCHES": "Partidos Destacados",
+    "VS": "VS",
+    "HOME": "LOCAL",
+    "AWAY": "VISITANTE",
+    "DRAW": "EMPATE",
+    "NO_ODDS_AVAILABLE": "No hay cuotas disponibles para este partido.",
+    "WELCOME_TITLE": "¡Bienvenido a PNW!",
+    "WELCOME_TEXT": "Selecciona una competición de la izquierda para ver los partidos disponibles.",
+    "ODDS_FOR": "Cuotas para",
+    "PROFILE": "Perfil",
+    "MY_BETS": "Mis Apuestas",
+    "LOGOUT": "Cerrar sesión",
+    "NEED_HELP": "¿Necesitas ayuda con el juego?",
+    "CARE_MESSAGE": "En PNW nos preocupamos por tu bienestar. Jugar debe ser divertido, no un problema.",
+    "WARNING_SIGNS_TITLE": "¿Te identificas con alguna de estas señales?",
+    "WARNING_SIGN_1": "Juegas más tiempo o dinero del que habías planeado",
+    "WARNING_SIGN_2": "Has intentado reducir o dejar de jugar sin éxito",
+    "WARNING_SIGN_3": "El juego te ha causado problemas económicos o personales",
+    "WARNING_SIGN_4": "Piensas en el juego constantemente",
+    "PLATFORM_TITLE": "PNW: Una plataforma comprometida con el juego responsable",
+    "PLATFORM_DESCRIPTION": "Somos más que una web de predicciones deportivas. Nuestro objetivo principal es combatir la ludopatía ofreciendo:",
+    "PLATFORM_FEATURE_1": "Herramientas de autocontrol con límites de tiempo y predicciones personalizables",
+    "PLATFORM_FEATURE_2": "Sistema de premios diseñados para fomentar actividades fuera de casa",
+    "PLATFORM_FEATURE_3": "Experiencias reales que te ayudan a reconectar con el mundo exterior",
+    "PLATFORM_FEATURE_4": "Apoyo profesional y recursos para quienes necesitan ayuda",
+    "GET_HELP_NOW": "Obtener ayuda ahora",
+    "DISCOVER_PRIZES": "Descubre nuestros premios de actividades",
+    "FEATURED_PROMOTIONS": "Promociones Destacadas"
   },
   "HOW_TO_PLAY": {
     "TITLE": "Cómo Jugar",
