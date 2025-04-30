@@ -12,23 +12,23 @@
       <h2>Competiciones destacadas</h2>
       <div class="leagues-list">
         <div class="leagues-list">
-          <div 
-            *ngFor="let sport of sports" 
-            class="league-item" 
+          <div
+            *ngFor="let sport of sports"
+            class="league-item"
             [class.active]="selectedSportKey === sport.key"
             (click)="selectSport(sport.key)">
             <div class="league-info">
               <!-- Sport icon -->
               <span class="sport-icon">{{ getSportIcon(sport.key) }}</span>
-              
+
               <!-- Country flag -->
-              <img 
-                *ngIf="sport.country" 
-                class="league-flag" 
-                [src]="getCountryFlag(sport.country)" 
-                [alt]="sport.country" 
+              <img
+                *ngIf="sport.country"
+                class="league-flag"
+                [src]="getCountryFlag(sport.country)"
+                [alt]="sport.country"
                 (error)="handleFlagError($event, sport.country)">
-                
+
               <span class="league-name">{{ sport.title }}</span>
             </div>
             <span class="chevron">›</span>
@@ -40,109 +40,142 @@
     <!-- Main content with matches -->
     <main class="main-content">
 
-      <!-- Banner Antiludopatía -->
-<div class="antiludopatia-banner">
-  <div class="banner-content">
-    <div class="banner-icon">
-      <i class="fas fa-shield-alt"></i>
-    </div>
-    <div class="banner-text">
-      <h3>Juego Responsable</h3>
-      <p>En PNW promovemos el juego responsable y la prevención de la ludopatía. Apuesta con moderación y establece límites.</p>
-    </div>
-    <a href="/responsible-gaming" class="banner-link">Más información</a>
-  </div>
-</div>
-      <!-- Carousel de Promociones -->
-      <!-- Promociones Destacadas section -->
-      <section class="promociones-carousel">
-        <div class="carousel-container">
-          <h2 class="carousel-title">Promociones Destacadas</h2>
-          
-          <div class="carousel-wrapper" *ngIf="promociones.length > 0">
-            <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPromocionIndex) + '%)'">
-              <div class="promocion-slide" *ngFor="let promocion of promociones; let i = index">
-                <div class="promocion-card">
-                  <div class="promocion-image">
-                    <img [src]="promocion.image_url" [alt]="promocion.title" (error)="handlePromocionImageError($event, promocion)">
-                  </div>
-                  <div class="promocion-content">
-                    <span class="promocion-type">{{ promocion.type }}</span>
-                    <h3 class="promocion-title">{{ promocion.title }}</h3>
-                    <p class="promocion-description">{{ promocion.description }}</p>
-                    <div class="promocion-footer">
-                      <span class="promocion-date">Válido: {{ promocion.end_date | date:'dd/MM/yyyy' }}</span>
-                      <button class="promocion-button" (click)="viewPromocion(promocion.id)">INSCRIBIRSE</button>
+      <!-- Contenido destacado - Solo visible cuando no hay deporte seleccionado Y el usuario no está logueado -->
+      <div *ngIf="!selectedSportKey && !username" class="featured-content">
+        <!-- Banner Antiludopatía -->
+        <div class="antiludopatia-banner">
+          <div class="banner-content">
+            <div class="banner-header">
+              <div class="banner-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div class="banner-title">
+                <h3>¿Necesitas ayuda con el juego?</h3>
+                <p>En PNW nos preocupamos por tu bienestar. Jugar debe ser divertido, no un problema.</p>
+              </div>
+            </div>
+
+            <div class="banner-question">
+              <h4>¿Te identificas con alguna de estas señales?</h4>
+              <ul>
+                <li>Juegas más tiempo o dinero del que habías planeado</li>
+                <li>Has intentado reducir o dejar de jugar sin éxito</li>
+                <li>El juego te ha causado problemas económicos o personales</li>
+                <li>Piensas en el juego constantemente</li>
+              </ul>
+            </div>
+
+            <div class="banner-initiatives">
+              <h4>PNW: Una plataforma comprometida con el juego responsable</h4>
+              <p>Somos más que una web de predicciones deportivas. Nuestro objetivo principal es combatir la ludopatía ofreciendo:</p>
+              <ul>
+                <li>Herramientas de autocontrol con límites de tiempo y predicciones personalizables</li>
+                <li>Sistema de premios diseñados para fomentar actividades fuera de casa</li>
+                <li>Experiencias reales que te ayudan a reconectar con el mundo exterior</li>
+                <li>Entradas a eventos deportivos, culturales y actividades al aire libre</li>
+                <li>Apoyo profesional y recursos para quienes necesitan ayuda</li>
+              </ul>
+            </div>
+
+            <!-- En la sección del banner, actualizar el enlace para que coincida con el ID correcto -->
+            <div class="banner-actions">
+              <a href="/responsible-gaming" class="banner-link">Obtener ayuda ahora</a>
+              <a href="#premios-destacados" class="banner-link secondary" id="premios-link">Descubre nuestros premios de actividades</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel de Promociones -->
+        <section class="promociones-carousel">
+          <div class="carousel-container">
+            <h2 class="carousel-title">Promociones Destacadas</h2>
+
+            <div class="carousel-wrapper" *ngIf="promociones.length > 0">
+              <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPromocionIndex) + '%)'">
+                <div class="promocion-slide" *ngFor="let promocion of promociones; let i = index">
+                  <div class="promocion-card">
+                    <div class="promocion-image">
+                      <img [src]="promocion.image_url" [alt]="promocion.title" (error)="handlePromocionImageError($event, promocion)">
+                    </div>
+                    <div class="promocion-content">
+                      <span class="promocion-type">{{ promocion.type }}</span>
+                      <h3 class="promocion-title">{{ promocion.title }}</h3>
+                      <p class="promocion-description">{{ promocion.description }}</p>
+                      <div class="promocion-footer">
+                        <span class="promocion-date">Válido: {{ promocion.end_date | date:'dd/MM/yyyy' }}</span>
+                        <button class="promocion-button" (click)="viewPromocion(promocion.id)">INSCRIBIRSE</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div class="carousel-controls" *ngIf="promociones.length > 1">
-            <button class="carousel-button prev" (click)="prevPromocion()">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-            <div class="carousel-indicators">
-              <div 
-                class="carousel-indicator" 
-                *ngFor="let promocion of promociones; let i = index"
-                [class.active]="i === currentPromocionIndex"
-                (click)="goToPromocion(i)">
-              </div>
-            </div>
-            <button class="carousel-button next" (click)="nextPromocion()">
-              <i class="fas fa-chevron-right"></i>
-            </button>
-          </div>
-        </div>
-      </section>
 
-      <!-- Premios Destacados section -->
-      <section class="premios-carousel">
-        <div class="carousel-container">
-          <h2 class="carousel-title">Premios Destacados</h2>
-          
-          <div class="carousel-wrapper" *ngIf="premios.length > 0">
-            <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPremioIndex) + '%)'">
-              <div class="premio-slide" *ngFor="let premio of premios; let i = index">
-                <div class="premio-card">
-                  <div class="premio-image">
-                    <img [src]="premio.image" [alt]="premio.name" (error)="handlePremioImageError($event, premio)">
-                  </div>
-                  <div class="premio-content">
-                    <h3 class="premio-title">{{ premio.name }}</h3>
-                    <p class="premio-description">{{ premio.description }}</p>
-                    <div class="premio-footer">
-                      <span class="premio-points">{{ premio.points }} puntos</span>
-                      <button class="premio-button" (click)="viewPremio(premio.id)">CANJEAR</button>
+            <div class="carousel-controls" *ngIf="promociones.length > 1">
+              <button class="carousel-button prev" (click)="prevPromocion()">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="carousel-indicators">
+                <div
+                  class="carousel-indicator"
+                  *ngFor="let promocion of promociones; let i = index"
+                  [class.active]="i === currentPromocionIndex"
+                  (click)="goToPromocion(i)">
+                </div>
+              </div>
+              <button class="carousel-button next" (click)="nextPromocion()">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Premios Destacados section -->
+        <section class="premios-carousel" id="premios-destacados">
+          <div class="carousel-container">
+            <h2 class="carousel-title">Premios Destacados</h2>
+
+            <div class="carousel-wrapper" *ngIf="premios.length > 0">
+              <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPremioIndex) + '%)'">
+                <div class="premio-slide" *ngFor="let premio of premios; let i = index">
+                  <div class="premio-card">
+                    <div class="premio-image">
+                      <img [src]="premio.image" [alt]="premio.name" (error)="handlePremioImageError($event, premio)">
+                    </div>
+                    <div class="premio-content">
+                      <h3 class="premio-title">{{ premio.name }}</h3>
+                      <p class="premio-description">{{ premio.description }}</p>
+                      <div class="premio-footer">
+                        <span class="premio-points">{{ premio.points }} puntos</span>
+                        <button class="premio-button" (click)="viewPremio(premio.id)">CANJEAR</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div class="carousel-controls" *ngIf="premios.length > 1">
-            <button class="carousel-button prev" (click)="prevPremio()">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-            <div class="carousel-indicators">
-              <div 
-                class="carousel-indicator" 
-                *ngFor="let premio of premios; let i = index"
-                [class.active]="i === currentPremioIndex"
-                (click)="goToPremio(i)">
-              </div>
-            </div>
-            <button class="carousel-button next" (click)="nextPremio()">
-              <i class="fas fa-chevron-right"></i>
-            </button>
-          </div>
-        </div>
-      </section>
 
+            <div class="carousel-controls" *ngIf="premios.length > 1">
+              <button class="carousel-button prev" (click)="prevPremio()">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="carousel-indicators">
+                <div
+                  class="carousel-indicator"
+                  *ngFor="let premio of premios; let i = index"
+                  [class.active]="i === currentPremioIndex"
+                  (click)="goToPremio(i)">
+                </div>
+              </div>
+              <button class="carousel-button next" (click)="nextPremio()">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Título de deportes - Siempre visible -->
       <h1>Deportes Disponibles</h1>
 
       <div *ngIf="error" class="alert alert-danger">
@@ -153,7 +186,7 @@
         Cargando datos...
       </div>
 
-      <!-- Partidos destacados - Nueva sección -->
+      <!-- El resto del contenido permanece igual -->
       <!-- Partidos destacados - Solo se muestran cuando no hay liga seleccionada -->
       <div class="featured-matches" *ngIf="!selectedSportKey && featuredMatches.length > 0">
         <h3>Partidos Destacados</h3>
@@ -170,7 +203,7 @@
                 <div class="team home-team">
                   <!-- For featured matches section -->
                   <div class="team-logo">
-                    <img *ngIf="isTennisPlayer(event.home_team)" 
+                    <img *ngIf="isTennisPlayer(event.home_team)"
                          [src]="getPlayerImage(event.home_team)"
                          alt="{{ event.home_team }}"
                          class="player-image"
@@ -187,7 +220,7 @@
                 <div class="team away-team">
                   <div class="team-logo">
                     <!-- Fix: Add check for tennis player for away team -->
-                    <img *ngIf="isTennisPlayer(event.away_team)" 
+                    <img *ngIf="isTennisPlayer(event.away_team)"
                          [src]="getPlayerImage(event.away_team)"
                          alt="{{ event.away_team }}"
                          class="player-image"
@@ -252,7 +285,7 @@
 
           <div *ngIf="selectedSportKey && odds.length > 0" class="matches-container">
             <h2>{{ getSelectedSportTitle() }}</h2>
-            
+
             <div class="matches-grid">
               @for (event of odds; track event.id) {
                 <div class="match-card">
@@ -260,13 +293,13 @@
                     <span class="match-date">{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
                     <span class="match-league">{{ event.league || event.sport_title }}</span>
                   </div>
-                  
+
                   <!-- Special handling for tennis matches -->
                   <div class="match-teams" [class.tennis-match]="selectedSportKey === 'tennis_atp_miami_open'">
                     <div class="team home-team">
                       <!-- For selected league section - home team -->
                       <div class="team-logo">
-                        <img *ngIf="isTennisPlayer(event.home_team)" 
+                        <img *ngIf="isTennisPlayer(event.home_team)"
                              [src]="getPlayerImage(event.home_team)"
                              alt="{{ event.home_team }}"
                              class="player-image"
@@ -283,7 +316,7 @@
                     <div class="team away-team">
                       <!-- For selected league section - away team -->
                       <div class="team-logo">
-                        <img *ngIf="isTennisPlayer(event.away_team)" 
+                        <img *ngIf="isTennisPlayer(event.away_team)"
                              [src]="getPlayerImage(event.away_team)"
                              alt="{{ event.away_team }}"
                              class="player-image"
@@ -297,7 +330,7 @@
                       <div class="team-name">{{ event.away_team }}</div>
                     </div>
                   </div>
-                  
+
                   <!-- Nueva sección de cuotas mejorada -->
                   <div class="match-odds-new">
                     @if (event.bookmakers && event.bookmakers.length > 0 && event.bookmakers[0].markets && event.bookmakers[0].markets.length > 0) {
@@ -306,7 +339,7 @@
                           <div class="odd-column">
                             <div class="odd-label-new">{{ outcome.name === 'Draw' ? 'EMPATE' : (outcome.name === event.home_team ? 'LOCAL' : 'VISITANTE') }}</div>
                             <!-- Fix the button in the selected league section -->
-                            <button 
+                            <button
                               class="odd-button-new"
                               [class.active]="isSelectionActive(event.id || '', outcome.name)"
                               (click)="openBetPopup(

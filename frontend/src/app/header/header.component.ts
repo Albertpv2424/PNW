@@ -201,4 +201,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     console.log('User logged in status:', isLoggedIn);
     return isLoggedIn;
   }
+  
+  // Añadir este método al HeaderComponent
+  // Modificar el método navigateToHome para resetear la selección de deportes
+  navigateToHome(): void {
+    // Emitir un evento personalizado que el HomeComponent pueda escuchar
+    const resetEvent = new CustomEvent('reset-sport-selection', {
+      bubbles: true,
+      detail: { reset: true }
+    });
+    window.dispatchEvent(resetEvent);
+    
+    // Navegar a la página principal
+    this.router.navigate(['/']);
+  }
 }

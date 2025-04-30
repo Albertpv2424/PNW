@@ -43,10 +43,10 @@ import { BettingTimerComponent } from '../betting-timer/betting-timer.component'
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule, 
-    BetPopupComponent, 
-    CombinedBetComponent, 
+    CommonModule,
+    RouterModule,
+    BetPopupComponent,
+    CombinedBetComponent,
     HeaderComponent,
     BettingTimerComponent // Add this line
   ],
@@ -105,6 +105,7 @@ export class HomeComponent implements OnInit {
     private predictionsService: PredictionsService
   ) {}
 
+  // Añadir al ngOnInit del HomeComponent
   ngOnInit() {
     // Check if user is admin and redirect to dashboard
     const currentUser = this.authService.getCurrentUser();
@@ -120,6 +121,19 @@ export class HomeComponent implements OnInit {
     this.loadFeaturedMatches();
     this.loadPremios();
     this.loadPromociones(); // Add this line to load promotions
+    
+    // Escuchar el evento para resetear la selección de deportes
+    window.addEventListener('reset-sport-selection', () => {
+      this.selectedSportKey = '';
+      // Opcional: recargar los partidos destacados
+      this.loadFeaturedMatches();
+    });
+  }
+
+  // Asegúrate de limpiar el event listener en ngOnDestroy
+  ngOnDestroy() {
+    // Eliminar el event listener para evitar memory leaks
+    window.removeEventListener('reset-sport-selection', () => {});
   }
 
   // Make sure this method is defined in the class
@@ -344,7 +358,7 @@ export class HomeComponent implements OnInit {
 
   // Método para procesar la apuesta
   placeBet(betData: {amount: number, odds: number}) {
-    
+
   }
 
   // Añadir este método para verificar si una selección está activa
@@ -524,7 +538,7 @@ export class HomeComponent implements OnInit {
   // Add these properties for the premios carousel
   premios: any[] = [];
   currentPremioIndex: number = 0;
-  
+
   // Add this method to load premios with random selection
   loadPremios(): void {
     this.predictionsService.getPremios().subscribe({
@@ -537,34 +551,34 @@ export class HomeComponent implements OnInit {
           points: premio.cost,
           image: premio.image ? `http://localhost:8000/${premio.image}` : 'assets/premios/default.png'
         }));
-        
+
         // Shuffle and take only 2 random prizes
         this.premios = this.shuffleArray([...allPremios]).slice(0, 5);
-        
+
       },
       error: (error) => {
       }
     });
   }
-  
+
   // Add these methods for premio carousel navigation
   nextPremio(): void {
     this.currentPremioIndex = (this.currentPremioIndex + 1) % this.premios.length;
   }
-  
+
   prevPremio(): void {
-    this.currentPremioIndex = this.currentPremioIndex > 0 ? 
+    this.currentPremioIndex = this.currentPremioIndex > 0 ?
       this.currentPremioIndex - 1 : this.premios.length - 1;
   }
-  
+
   goToPremio(index: number): void {
     this.currentPremioIndex = index;
   }
-  
+
   viewPremio(id: number): void {
     this.router.navigate(['/premios', id]);
   }
-  
+
   handlePremioImageError(event: any, premio: any): void {
     event.target.src = 'assets/premios/default.png';
   }
@@ -574,7 +588,7 @@ export class HomeComponent implements OnInit {
   // Call the existing loadOdds method which already sets selectedSportKey
   this.loadOdds(sportKey);
   }
-  
+
   // Update the getSportIcon method to include flags for all sports
   getSportIcon(sportKey: string): string {
   // Return appropriate emoji based on sport key
@@ -590,67 +604,67 @@ export class HomeComponent implements OnInit {
   return ''; // Default - no icon
   }
   }
-  
+
   isSoccerSport(sportKey: string): boolean {
     return sportKey.includes('soccer');
   }
-  
+
   // Add these methods to display tennis player images
   // Add this method to check if a player is a tennis player
   isTennisPlayer(playerName: string): boolean {
     // Check if we're in a tennis sport context
     const isTennisSport = this.selectedSportKey &&
       (this.selectedSportKey.includes('tennis') || this.selectedSportKey.includes('atp'));
-  
+
     if (!isTennisSport) {
       return false;
     }
-  
+
     // Check if the player has a custom image
     return this.tennisPlayersService.hasCustomImage(playerName);
   }
-  
+
   // Add this method to get the player image
   getPlayerImage(playerName: string): string {
     return this.tennisPlayersService.getPlayerImagePath(playerName);
   }
-  
+
   // Añade este método a tu HomeComponent
   handlePlayerImageError(event: any, playerName: string): void {
     // Establecer una imagen por defecto
     event.target.src = 'assets/players/default.png';
-  
+
     // Remove the call to handleImageError since it doesn't exist in the service
     // Just log the error and set the default image
   }
   // Make sure these methods are in your HomeComponent class
-  
+
   // Method to view promotion details
   viewPromocion(id: number): void {
     this.router.navigate(['/promociones', id]);
   }
   promociones: Promocion[] = [];
   currentPromocionIndex: number = 0;
-  
+
   // Methods for carousel navigation
   prevPromocion(): void {
-    this.currentPromocionIndex = this.currentPromocionIndex > 0 ? 
+    this.currentPromocionIndex = this.currentPromocionIndex > 0 ?
       this.currentPromocionIndex - 1 : this.promociones.length - 1;
   }
-  
+
   nextPromocion(): void {
     this.currentPromocionIndex = (this.currentPromocionIndex + 1) % this.promociones.length;
   }
-  
+
   goToPromocion(index: number): void {
     this.currentPromocionIndex = index;
   }
-  
+
   // Replace your current loadPromociones method with this one
   loadPromociones(): void {
     this.predictionsService.getPromociones().subscribe({
       next: (data) => {
-        
+
         // Map the API response to the format needed for the carousel
         this.promociones = data.map((promo: any) => {
           // Check if we have a tipo_promocio object or just a string
@@ -668,7 +682,7 @@ export class HomeComponent implements OnInit {
           } else {
             type = 'GENERAL';
           }
-          
+
           const mappedPromo = {
             id: promo.id,
             title: promo.titol || promo.titulo || promo.title || 'Apuesta Segura',
@@ -677,10 +691,10 @@ export class HomeComponent implements OnInit {
             image_url: promo.image ? `http://localhost:8000/${promo.image}` : 'assets/promociones/default.png',
             end_date: promo.data_final || promo.fecha_fin || promo.end_date || ''
           };
-          
+
           return mappedPromo;
         });
-        
+
         if (this.promociones.length === 0) {
         }
       },
@@ -695,4 +709,27 @@ export class HomeComponent implements OnInit {
     // Set a default image
     event.target.src = 'assets/promociones/default.png';
   }
+
+  ngAfterViewInit() {
+    // Configurar el desplazamiento suave para los enlaces de anclaje
+    const anchorLinks = document.querySelectorAll('.antiludopatia-banner a[href^="#"]');
+
+    // Use arrow function to preserve 'this' context
+    anchorLinks.forEach(anchor => {
+      anchor.addEventListener('click', (e: Event) => {
+        e.preventDefault();
+
+        const targetId = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+        const targetElement = document.querySelector(targetId || '');
+
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
   }
+  }
+

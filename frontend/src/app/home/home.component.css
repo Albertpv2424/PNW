@@ -818,7 +818,7 @@
 
   border-radius: 10px;
   padding: 1.5rem;
- 
+
   position: relative;
   overflow: hidden;
 }
@@ -1026,6 +1026,8 @@
 /* Premios Carousel Styles */
 .premios-carousel {
   margin-bottom: 2rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
 }
 
 .premio-card {
@@ -1033,7 +1035,7 @@
   background-color: #1e1e2d;
   border-radius: 8px;
   overflow: hidden;
- 
+
   height: 100%;
   min-height: 250px;
 }
@@ -1177,71 +1179,223 @@
   color: #333;
 }
 
-/* Banner Antiludopatía */
+/* Banner Antiludopatía - Versión mejorada */
 .antiludopatia-banner {
-  background: linear-gradient(45deg, #1a237e, #283593);
+  background: linear-gradient(to right, #1a1a2e, #252a3d, #1a1a2e);
   color: white;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 2rem;
+  margin: 2rem 0;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  border-left: 6px solid #00b341;
+  position: relative;
+  overflow: hidden;
+}
+
+.antiludopatia-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.05;
+  z-index: 1;
 }
 
 .banner-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  gap: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.banner-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
 .banner-icon {
-  font-size: 2.5rem;
-  color: #4CAF50;
+  font-size: 3rem;
+  color: #00b341;
+  margin-right: 1.5rem;
 }
 
-.banner-text {
+.banner-title {
   flex: 1;
 }
 
-.banner-text h3 {
+.banner-title h3 {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #00b341;
 }
 
-.banner-text p {
+.banner-title p {
   margin: 0.5rem 0 0;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   opacity: 0.9;
 }
 
+.banner-question {
+  background-color: rgba(0, 179, 65, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  border-left: 4px solid #00b341;
+}
+
+.banner-question h4 {
+  color: #00b341;
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.banner-question ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.banner-question li {
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.banner-question li:before {
+  content: "•";
+  color: #00b341;
+  font-weight: bold;
+  display: inline-block;
+  width: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.banner-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
 .banner-link {
-  background-color: #4CAF50;
+  background-color: #00b341;
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
   text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.3s;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .banner-link:hover {
-  background-color: #45a049;
+  background-color: #009935;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.banner-link.secondary {
+  background-color: transparent;
+  border: 2px solid #00b341;
+  color: #00b341;
+}
+
+.banner-link.secondary:hover {
+  background-color: rgba(0, 179, 65, 0.1);
+}
+
+.banner-initiatives {
+  background-color: rgba(0, 179, 65, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  border-left: 4px solid #00b341;
+}
+
+.banner-initiatives h4 {
+  color: #00b341;
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.banner-initiatives p {
+  margin: 0.5rem 0 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.banner-initiatives ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.banner-initiatives li {
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.banner-initiatives li:before {
+  content: "✓";
+  color: #00b341;
+  font-weight: bold;
+  display: inline-block;
+  width: 1.5rem;
+  font-size: 1.2rem;
+}
+
+/* Smooth scroll behavior for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Add some padding to the section targets for better scrolling experience */
+section[id] {
+  scroll-margin-top: 80px;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .banner-content {
+  .banner-header {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .banner-icon {
+    margin-right: 0;
     margin-bottom: 1rem;
   }
-  
-  .banner-link {
-    margin-top: 1rem;
+
+  .banner-actions {
+    flex-direction: column;
   }
+}
+
+@keyframes highlight {
+  0% { box-shadow: 0 0 0 rgba(0, 179, 65, 0); }
+  50% { box-shadow: 0 0 20px rgba(0, 179, 65, 0.5); }
+  100% { box-shadow: 0 0 0 rgba(0, 179, 65, 0); }
+}
+
+.highlight-section {
+  animation: highlight 1s ease-in-out;
+  border-radius: 8px;
 }
