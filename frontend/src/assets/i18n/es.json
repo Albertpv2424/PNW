@@ -69,7 +69,9 @@
     "ODDS": "Cuotas",
     "WINNINGS": "Ganancias",
     "VIEW_ALL_BETS": "Ver Todas las Apuestas",
-    "LOADING_BETS": "Cargando apuestas..."
+    "LOADING_BETS": "Cargando apuestas...",
+    "NO_RECENT_BETS": "No hay apuestas recientes",
+    "NO_ACTIVE_BETS": "No hay apuestas activas"
   },
   "CHAT": {
     "TITLE": "Soporte en línea",

@@ -10,6 +10,7 @@ import { TeamBadgeService } from '../services/team-badge.service';
 import { HeaderComponent } from '../header/header.component';
 import { TennisPlayersService } from '../services/tennis-players.service';
 import { PredictionsService } from '../services/predictions.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Sport {
   key: string;
@@ -48,7 +49,8 @@ import { BettingTimerComponent } from '../betting-timer/betting-timer.component'
     BetPopupComponent,
     CombinedBetComponent,
     HeaderComponent,
-    BettingTimerComponent // Add this line
+    BettingTimerComponent,
+    TranslateModule // Añadir el módulo de traducción aquí
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']

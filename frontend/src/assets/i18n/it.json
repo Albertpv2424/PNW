@@ -69,7 +69,9 @@
     "ODDS": "Quote",
     "WINNINGS": "Vincite",
     "VIEW_ALL_BETS": "Visualizza Tutte le Scommesse",
-    "LOADING_BETS": "Caricamento Scommesse..."
+    "LOADING_BETS": "Caricamento Scommesse...",
+    "NO_RECENT_BETS": "Nessuna scommessa recente",
+    "NO_ACTIVE_BETS": "Nessuna scommessa attiva"
   },
   "CHAT": {
     "TITLE": "Supporto online",

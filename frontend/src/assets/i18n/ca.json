@@ -69,7 +69,9 @@
     "ODDS": "Quotes",
     "WINNINGS": "Guanys",
     "VIEW_ALL_BETS": "Veure Totes les Apostes",
-    "LOADING_BETS": "Carregant apostes..."
+    "LOADING_BETS": "Carregant apostes...",
+    "NO_RECENT_BETS": "No hi ha apostes recents",
+    "NO_ACTIVE_BETS": "No hi ha apostes actives"
   },
   "CHAT": {
     "TITLE": "Suport en línia",

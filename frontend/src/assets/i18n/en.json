@@ -69,7 +69,9 @@
     "ODDS": "Odds",
     "WINNINGS": "Winnings",
     "VIEW_ALL_BETS": "View All Bets",
-    "LOADING_BETS": "Loading bets..."
+    "LOADING_BETS": "Loading bets...",
+    "NO_RECENT_BETS": "No recent bets",
+    "NO_ACTIVE_BETS": "No active bets"
   },
   "CHAT": {
     "TITLE": "Online Support",

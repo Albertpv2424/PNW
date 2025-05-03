@@ -69,7 +69,9 @@
     "ODDS": "赔率",
     "WINNINGS": "收益",
     "VIEW_ALL_BETS": "查看所有投注",
-    "LOADING_BETS": "加载投注..."
+    "LOADING_BETS": "加载投注...",
+    "NO_RECENT_BETS": "最近没有投注",
+    "NO_ACTIVE_BETS": "当前没有投注"
   },
   "CHAT": {
     "TITLE": "在线支持",

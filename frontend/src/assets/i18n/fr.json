@@ -69,7 +69,9 @@
     "ODDS": "Cotes",
     "WINNINGS": "Gains",
     "VIEW_ALL_BETS": "Voir Tous les Paris",
-    "LOADING_BETS": "Chargement des paris..."
+    "LOADING_BETS": "Chargement des paris...",
+    "NO_RECENT_BETS": "Aucun pari récent",
+    "NO_ACTIVE_BETS": "Aucun pari actif"
   },
   "CHAT": {
     "TITLE": "Support en ligne",

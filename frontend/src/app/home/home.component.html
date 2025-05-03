@@ -9,7 +9,7 @@
   <div class="content-container">
     <!-- Left sidebar with leagues -->
     <aside class="sidebar">
-      <h2>Competiciones destacadas</h2>
+      <h2>{{ 'HOME.FEATURED_COMPETITIONS' | translate }}</h2>
       <div class="leagues-list">
         <div class="leagues-list">
           <div
@@ -50,37 +50,37 @@
                 <i class="fas fa-shield-alt"></i>
               </div>
               <div class="banner-title">
-                <h3>¿Necesitas ayuda con el juego?</h3>
-                <p>En PNW nos preocupamos por tu bienestar. Jugar debe ser divertido, no un problema.</p>
+                <h3>{{ 'HOME.WARNING_SIGNS_TITLE' | translate }}</h3>
+                <p>{{ 'HOME.CARE_MESSAGE' | translate }}</p>
               </div>
             </div>
 
             <div class="banner-question">
-              <h4>¿Te identificas con alguna de estas señales?</h4>
+              <h4>{{ 'HOME.WARNING_SIGNS_TITLE' | translate }}</h4>
               <ul>
-                <li>Juegas más tiempo o dinero del que habías planeado</li>
-                <li>Has intentado reducir o dejar de jugar sin éxito</li>
-                <li>El juego te ha causado problemas económicos o personales</li>
-                <li>Piensas en el juego constantemente</li>
+                <li>{{ 'HOME.WARNING_SIGN_1' | translate }}</li>
+                <li>{{ 'HOME.WARNING_SIGN_2' | translate }}</li>
+                <li>{{ 'HOME.WARNING_SIGN_3' | translate }}</li>
+                <li>{{ 'HOME.WARNING_SIGN_4' | translate }}</li>
               </ul>
             </div>
 
             <div class="banner-initiatives">
-              <h4>PNW: Una plataforma comprometida con el juego responsable</h4>
-              <p>Somos más que una web de predicciones deportivas. Nuestro objetivo principal es combatir la ludopatía ofreciendo:</p>
+              <h4>{{ 'HOME.PLATFORM_TITLE' | translate }}</h4>
+              <p>{{ 'HOME.PLATFORM_DESCRIPTION' | translate }}</p>
               <ul>
-                <li>Herramientas de autocontrol con límites de tiempo y predicciones personalizables</li>
-                <li>Sistema de premios diseñados para fomentar actividades fuera de casa</li>
-                <li>Experiencias reales que te ayudan a reconectar con el mundo exterior</li>
+                <li>{{ 'HOME.PLATFORM_FEATURE_1' | translate }}</li>
+                <li>{{ 'HOME.PLATFORM_FEATURE_2' | translate }}</li>
+                <li>{{ 'HOME.PLATFORM_FEATURE_3' | translate }}</li>
                 <li>Entradas a eventos deportivos, culturales y actividades al aire libre</li>
-                <li>Apoyo profesional y recursos para quienes necesitan ayuda</li>
+                <li>{{ 'HOME.PLATFORM_FEATURE_4' | translate }}</li>
               </ul>
             </div>
 
             <!-- En la sección del banner, actualizar el enlace para que coincida con el ID correcto -->
             <div class="banner-actions">
-              <a href="/responsible-gaming" class="banner-link">Obtener ayuda ahora</a>
-              <a href="#premios-destacados" class="banner-link secondary" id="premios-link">Descubre nuestros premios de actividades</a>
+              <a href="/responsible-gaming" class="banner-link">{{ 'HOME.GET_HELP_NOW' | translate }}</a>
+              <a href="#premios-destacados" class="banner-link secondary" id="premios-link">{{ 'HOME.DISCOVER_PRIZES' | translate }}</a>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@
         <!-- Carousel de Promociones -->
         <section class="promociones-carousel">
           <div class="carousel-container">
-            <h2 class="carousel-title">Promociones Destacadas</h2>
+            <h2 class="carousel-title">{{ 'HOME.FEATURED_PROMOTIONS' | translate }}</h2>
 
             <div class="carousel-wrapper" *ngIf="promociones.length > 0">
               <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPromocionIndex) + '%)'">
@@ -176,20 +176,20 @@
       </div>
 
       <!-- Título de deportes - Siempre visible -->
-      <h1>Deportes Disponibles</h1>
+      <h1>{{ 'HOME.AVAILABLE_SPORTS' | translate }}</h1>
 
       <div *ngIf="error" class="alert alert-danger">
         {{ error }}
       </div>
 
       <div *ngIf="loading" class="alert alert-info">
-        Cargando datos...
+        {{ 'HOME.LOADING_DATA' | translate }}
       </div>
 
       <!-- El resto del contenido permanece igual -->
       <!-- Partidos destacados - Solo se muestran cuando no hay liga seleccionada -->
       <div class="featured-matches" *ngIf="!selectedSportKey && featuredMatches.length > 0">
-        <h3>Partidos Destacados</h3>
+        <h3>{{ 'HOME.FEATURED_MATCHES' | translate }}</h3>
 
         <div class="matches-grid">
           @for (event of featuredMatches; track event.home_team) {
@@ -241,8 +241,10 @@
                   <div class="odds-container-new">
                     @for (outcome of getOrderedOutcomes(event.bookmakers[0].markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
                       <div class="odd-column" [class.active]="isSelectionActive(event.id || '', outcome.name)">
-                        <div class="odd-label-new">{{ outcome.name === 'Draw' ? 'EMPATE' : (outcome.name === event.home_team ? 'LOCAL' : 'VISITANTE') }}</div>
-                        <!-- Fix the button in the featured matches section -->
+                        <div class="odd-label-new">
+                          {{ outcome.name === 'Draw' ? ('HOME.DRAW' | translate) : (outcome.name === event.home_team ? ('HOME.HOME' | translate) : ('HOME.AWAY' | translate)) }}
+                        </div>
+                                                <!-- Fix the button in the featured matches section -->
                         <button
                           class="odd-button-new"
                           [class.active]="isSelectionActive(event.id || '', outcome.name)"
@@ -263,7 +265,7 @@
                   </div>
                 } @else {
                   <div class="no-odds-message">
-                    No hay cuotas disponibles para este partido.
+                    {{ 'HOME.NO_ODDS_AVAILABLE' | translate }}
                   </div>
                 }
               </div>
@@ -274,14 +276,14 @@
 
       <!-- Mensaje cuando no hay partidos seleccionados ni destacados -->
       <div class="welcome-message" *ngIf="!selectedSportKey && featuredMatches.length === 0">
-        <h3>¡Bienvenido a PNW!</h3>
-        <p>Selecciona una competición de la izquierda para ver los partidos disponibles.</p>
+        <h3>{{ 'HOME.WELCOME_TITLE' | translate }}</h3>
+        <p>{{ 'HOME.WELCOME_TEXT' | translate }}</p>
       </div>
 
       <!-- Partidos de la liga seleccionada -->
       @if (selectedSportKey) {
         <div class="selected-league">
-          <h3>Cuotas para {{ getSelectedSportTitle() }}</h3>
+          <h3>{{ 'HOME.ODDS_FOR' | translate }} {{ getSelectedSportTitle() }}</h3>
 
           <div *ngIf="selectedSportKey && odds.length > 0" class="matches-container">
             <h2>{{ getSelectedSportTitle() }}</h2>
@@ -290,8 +292,8 @@
               @for (event of odds; track event.id) {
                 <div class="match-card">
                   <div class="match-header">
-                    <span class="match-date">{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
                     <span class="match-league">{{ event.league || event.sport_title }}</span>
+                    <span class="match-date">{{ event.commence_time | date:'dd/MM/yyyy HH:mm' }}</span>
                   </div>
 
                   <!-- Special handling for tennis matches -->
@@ -312,7 +314,7 @@
                       </div>
                       <div class="team-name">{{ event.home_team }}</div>
                     </div>
-                    <div class="vs">VS</div>
+                    <div class="vs">{{ 'HOME.VS' | translate }}</div>
                     <div class="team away-team">
                       <!-- For selected league section - away team -->
                       <div class="team-logo">
@@ -337,8 +339,10 @@
                       <div class="odds-container-new">
                         @for (outcome of getOrderedOutcomes(event.bookmakers[0].markets[0].outcomes, event.home_team, event.away_team); track outcome.name) {
                           <div class="odd-column">
-                            <div class="odd-label-new">{{ outcome.name === 'Draw' ? 'EMPATE' : (outcome.name === event.home_team ? 'LOCAL' : 'VISITANTE') }}</div>
-                            <!-- Fix the button in the selected league section -->
+                            <div class="odd-label-new">
+                              {{ outcome.name === 'Draw' ? ('HOME.DRAW' | translate) : (outcome.name === event.home_team ? ('HOME.HOME' | translate) : ('HOME.AWAY' | translate)) }}
+                            </div>
+                                                        <!-- Fix the button in the selected league section -->
                             <button
                               class="odd-button-new"
                               [class.active]="isSelectionActive(event.id || '', outcome.name)"
@@ -359,7 +363,7 @@
                       </div>
                     } @else {
                       <div class="no-odds-message">
-                        No hay cuotas disponibles para este partido.
+                        {{ 'HOME.NO_ODDS_AVAILABLE' | translate }}
                       </div>
                     }
                   </div>
@@ -392,39 +396,3 @@
   <!-- match content -->
 </div>
 
-<div class="user-menu" *ngIf="isMenuOpen">
-  <ul>
-    <li>
-      <a routerLink="/profile">
-        <i class="fas fa-user"></i> Mi Perfil
-      </a>
-    </li>
-    <li>
-      <a routerLink="/bets">
-        <i class="fas fa-gamepad"></i> Mis Apuestas
-      </a>
-    </li>
-    <li>
-      <a routerLink="/history">
-        <i class="fas fa-history"></i> Historial
-      </a>
-    </li>
-    <li>
-      <a routerLink="/profile/edit">
-        <i class="fas fa-edit"></i> Editar Perfil
-      </a>
-    </li>
-    <!-- Add Admin Dashboard option if user is admin -->
-    <li *ngIf="authService.isAdmin()">
-      <a routerLink="/admin/dashboard">
-        <i class="fas fa-tachometer-alt"></i> Admin
-      </a>
-    </li>
-    <li class="divider"></li>
-    <li>
-      <a (click)="logout()">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </a>
-    </li>
-  </ul>
-</div>
