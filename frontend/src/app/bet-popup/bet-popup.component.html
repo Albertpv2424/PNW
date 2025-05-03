@@ -11,24 +11,24 @@
         </div>
       </div>
     </div>
-    
+
     <div class="bet-popup-content">
       <div class="bet-amount-container">
         <label for="betAmount">Establecer cantidad</label>
-        <input 
+        <input
           type="number"
-          [(ngModel)]="betAmount" 
-          min="1" 
+          [(ngModel)]="betAmount"
+          min="1"
           step="1"
           class="bet-amount-input"
         >
       </div>
-      
+
       <div class="potential-win">
         <span>Ganancia potencial:</span>
         <span class="win-amount">{{ betAmount * odds | number:'1.2-2' }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></span>
       </div>
-      
+
       <div class="bet-actions">
         <label class="remember-toggle">
           <input type="checkbox">

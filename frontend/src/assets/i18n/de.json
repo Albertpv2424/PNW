@@ -79,6 +79,15 @@
     "INPUT_PLACEHOLDER": "Nachricht eingeben...",
     "INITIAL_MESSAGE": "你好！我需要帮助。"
   },
+  "COMBINED_BET": {
+  "SIMPLE_BET": "EINFACHE WETTE",
+  "COMBINED_BET": "KOMBINIERTE WETTE",
+  "CLEAR": "Löschen",
+  "TOTAL_ODDS": "Gesamtquote",
+  "AMOUNT": "Betrag",
+  "POTENTIAL_WIN": "Möglicher Gewinn",
+  "PLACE_BET": "WETTE PLATZIEREN"
+},
   "COMMON": {
     "HOME": "Startseite",
     "BACK": "Zurück",

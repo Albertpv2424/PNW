@@ -79,6 +79,15 @@
     "INPUT_PLACEHOLDER": "Écrivez un message...",
     "INITIAL_MESSAGE": "Bonjour ! J'ai besoin d'aide."
   },
+  "COMBINED_BET": {
+  "SIMPLE_BET": "PARI SIMPLE",
+  "COMBINED_BET": "PARI COMBINÉ",
+  "CLEAR": "Effacer",
+  "TOTAL_ODDS": "Cote totale",
+  "AMOUNT": "Montant",
+  "POTENTIAL_WIN": "Gain potentiel",
+  "PLACE_BET": "PLACER LE PARI"
+},
   "COMMON": {
     "HOME": "Accueil",
     "BACK": "Retour",

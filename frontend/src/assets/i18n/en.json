@@ -79,6 +79,15 @@
     "INPUT_PLACEHOLDER": "Type a message...",
     "INITIAL_MESSAGE": "Hello! I need help."
   },
+  "COMBINED_BET": {
+  "SIMPLE_BET": "SINGLE BET",
+  "COMBINED_BET": "COMBINED BET",
+  "CLEAR": "Clear",
+  "TOTAL_ODDS": "Total odds",
+  "AMOUNT": "Amount",
+  "POTENTIAL_WIN": "Potential win",
+  "PLACE_BET": "PLACE BET"
+},
   "COMMON": {
     "HOME": "Home",
     "BACK": "Back",

@@ -1,15 +1,15 @@
-<div class="combined-bet-panel" 
-     *ngIf="selections.length > 0" 
+<div class="combined-bet-panel"
+     *ngIf="selections.length > 0"
      [class.minimized]="isMinimized"
      [class.menu-open]="menuOpen">
   <div class="panel-header">
     <button class="toggle-panel" (click)="toggleMinimize()">
       {{ isMinimized ? '▼' : '▲' }}
     </button>
-    <h3>{{ selections.length === 1 ? 'APUESTA SIMPLE' : 'APUESTA COMBINADA' }}</h3>
-    <button class="clear-button" (click)="clearSelections()">Limpiar</button>
+    <h3>{{ selections.length === 1 ? ('COMBINED_BET.SIMPLE_BET' | translate) : ('COMBINED_BET.COMBINED_BET' | translate) }}</h3>
+    <button class="clear-button" (click)="clearSelections()">{{ 'COMBINED_BET.CLEAR' | translate }}</button>
   </div>
-  
+
   <div class="selections-list">
     <!-- Fixed the div structure and added trackBy -->
     <div *ngFor="let selection of selections; trackBy: trackBySelection">
@@ -26,19 +26,19 @@
 
   <div class="total-section">
     <div class="total-odds">
-      <span>Cuota total:</span>
+      <span>{{ 'COMBINED_BET.TOTAL_ODDS' | translate }}:</span>
       <span>{{ totalOdds | number:'1.2-2' }}</span>
     </div>
     <div class="bet-amount">
-      <label>Cantidad:</label>
+      <label>{{ 'COMBINED_BET.AMOUNT' | translate }}:</label>
       <input type="number" [(ngModel)]="betAmount" min="1" step="1">
     </div>
     <div class="potential-win">
-      <span>Ganancia potencial:</span>
+      <span>{{ 'COMBINED_BET.POTENTIAL_WIN' | translate }}:</span>
       <span class="win-amount">{{ betAmount * totalOdds | number:'1.2-2' }} <img src="assets/monedapnw.png" alt="Moneda PNW" class="coin-icon"></span>
     </div>
     <button class="place-bet-button" (click)="placeBet()" [disabled]="!betAmount || betAmount <= 0">
-      REALIZAR APUESTA
+      {{ 'COMBINED_BET.PLACE_BET' | translate }}
     </button>
   </div>
 </div>

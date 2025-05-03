@@ -79,6 +79,15 @@
     "INPUT_PLACEHOLDER": "输入消息...",
     "INITIAL_MESSAGE": "你好！我需要帮助。"
   },
+  "COMBINED_BET": {
+  "SIMPLE_BET": "单注投注",
+  "COMBINED_BET": "组合投注",
+  "CLEAR": "清除",
+  "TOTAL_ODDS": "总赔率",
+  "AMOUNT": "金额",
+  "POTENTIAL_WIN": "可能赢利",
+  "PLACE_BET": "下投注"
+},
   "COMMON": {
     "HOME": "首页",
     "BACK": "返回",
