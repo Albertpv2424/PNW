@@ -133,7 +133,7 @@
         <!-- Premios Destacados section -->
         <section class="premios-carousel" id="premios-destacados">
           <div class="carousel-container">
-            <h2 class="carousel-title">Premios Destacados</h2>
+            <h2 class="carousel-title">{{ 'HOME.FEATURED_PRIZES' | translate }}</h2>
 
             <div class="carousel-wrapper" *ngIf="premios.length > 0">
               <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPremioIndex) + '%)'">
