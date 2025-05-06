@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OddsService } from '../services/odds.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
@@ -10,6 +10,7 @@ import { TeamBadgeService } from '../services/team-badge.service';
 import { HeaderComponent } from '../header/header.component';
 import { TennisPlayersService } from '../services/tennis-players.service';
 import { PredictionsService } from '../services/predictions.service';
+import { PremiosService } from '../services/premios.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 interface Sport {
@@ -55,7 +56,7 @@ import { BettingTimerComponent } from '../betting-timer/betting-timer.component'
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   sports: Sport[] = [];
   odds: OddEvent[] = [];
   selectedSportKey: string = '';
@@ -102,9 +103,10 @@ export class HomeComponent implements OnInit {
     public authService: AuthService,
     private betSelectionsService: BetSelectionsService,
     public teamBadgeService: TeamBadgeService,
-    private router: Router,  // Add Router to constructor
-    public tennisPlayersService: TennisPlayersService, // Add this line
-    private predictionsService: PredictionsService
+    private router: Router,
+    public tennisPlayersService: TennisPlayersService,
+    private predictionsService: PredictionsService,
+    private premiosService: PremiosService  // Add this line to inject PremiosService
   ) {}
 
   // Añadir al ngOnInit del HomeComponent
@@ -543,7 +545,7 @@ export class HomeComponent implements OnInit {
 
   // Add this method to load premios with random selection
   loadPremios(): void {
-    this.predictionsService.getPremios().subscribe({
+    this.premiosService.premios$.subscribe({
       next: (data: any[]) => {
         // Map all prizes
         const allPremios = data.map(premio => ({

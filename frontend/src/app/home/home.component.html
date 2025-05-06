@@ -146,7 +146,10 @@
                       <h3 class="premio-title">{{ premio.name }}</h3>
                       <p class="premio-description">{{ premio.description }}</p>
                       <div class="premio-footer">
-                        <span class="premio-points">{{ premio.points }} puntos</span>
+                        <span class="premio-points">
+                          {{ premio.points }}
+                            <img src="assets/monedapnw.png" alt="Moneda" class="coin-icon">
+                        </span>
                         <button class="premio-button" (click)="viewPremio(premio.id)">CANJEAR</button>
                       </div>
                     </div>
@@ -395,4 +398,3 @@
 <div *ngFor="let match of featuredMatches; trackBy: trackByMatch">
   <!-- match content -->
 </div>
-
