@@ -80,7 +80,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
         this.procesarPromociones(data);
       },
       error: (error) => {
-        console.error('Error cargando promociones:', error);
         this.translateService.get('PROMOTIONS.ERROR_LOADING').subscribe((message: string) => {
           this.errorMessage = message;
         });
@@ -113,7 +112,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
   }
 
   procesarPromociones(data: PromocionAPI[]) {
-    console.log('Promociones recibidas del servidor:', data.length);
     
     this.promociones = data.map((promo: PromocionAPI): PromocionUI => {
       // Verificar si la promoción ha expirado
@@ -142,7 +140,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
       };
     });
     
-    console.log('Promociones procesadas:', this.promociones.length);
     
     // Si el usuario está autenticado, verificar inscripciones
     if (this.authService.isLoggedIn()) {
@@ -171,7 +168,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         const inscripciones = response.inscripciones || [];
         
-        console.log('Inscripciones recibidas:', inscripciones.length);
         
         // Actualizar el estado de inscripción de cada promoción
         this.promociones = this.promociones.map(promo => {
@@ -191,7 +187,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
         });
       },
       error: (error) => {
-        console.error('Error al obtener inscripciones:', error);
       }
     });
   }
@@ -247,7 +242,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
         }
       },
       error: (error) => {
-        console.error('Error al inscribirse en la promoción:', error);
         
         if (error.status === 401) {
           this.translateService.get('PROMOTIONS.ERROR_SESSION_EXPIRED').subscribe((message: string) => {
@@ -274,7 +268,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
 
   // Método para manejar errores de carga de imágenes
   handleImageError(event: any, promocion: PromocionUI): void {
-    console.log('Error al cargar la imagen de la promoción:', promocion.id);
     // Usar una imagen en base64 para evitar problemas de 404
     event.target.src = this.getDefaultImageUrl();
   }

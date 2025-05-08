@@ -138,7 +138,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     // Suscribirse a cambios de idioma
     this.langChangeSubscription = this.languageService.currentLang.subscribe(lang => {
-      console.log('Idioma cambiado en Home:', lang);
       this.currentLanguage = lang;
       
       // Recargar datos que dependen del idioma si es necesario
@@ -780,7 +779,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         //   this.swiper.update();
         // }
         
-        console.log('Carrusel actualizado después del cambio de idioma');
       }, 100);
     }
   
