@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { CombinedBetComponent } from '../combined-bet/combined-bet.component';
@@ -6,6 +6,10 @@ import { PredictionsService } from '../services/predictions.service';
 import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { environment } from '../../environments/environment';
+import { Subscription } from 'rxjs';
+import { PromocionesService } from '../services/promociones.service';
 
 // Define interfaces for our data structures
 interface PromocionAPI {
@@ -20,8 +24,6 @@ interface PromocionAPI {
     titol: string;
   };
 }
-
-// Cerca del inicio del archivo, donde se definen las interfaces
 
 interface PromocionUI {
   id: number;
@@ -42,63 +44,35 @@ interface PromocionUI {
   imports: [
     CommonModule,
     HeaderComponent,
-    CombinedBetComponent
+    CombinedBetComponent,
+    TranslateModule
   ],
   templateUrl: './promociones.component.html',
   styleUrls: ['./promociones.component.css']
 })
-export class PromocionesComponent implements OnInit {
+export class PromocionesComponent implements OnInit, OnDestroy {
   promociones: PromocionUI[] = [];
-  isLoading = true;
+  isLoading = false; // Cambiado a false para que no muestre el mensaje de carga
   errorMessage = '';
+  
+  // Suscripciones
+  private langChangeSubscription: Subscription | null = null;
+  private promocionesSubscription: Subscription | null = null;
 
   constructor(
     private predictionsService: PredictionsService,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private translateService: TranslateService,
+    private promocionesService: PromocionesService // Añadido el servicio de promociones
   ) {}
 
   ngOnInit() {
-    this.loadPromociones();
-  }
-
-  loadPromociones() {
-    this.isLoading = true;
-    this.predictionsService.getPromociones().subscribe({
+    // Usar el servicio de promociones en lugar de cargar directamente
+    this.promocionesSubscription = this.promocionesService.promociones$.subscribe({
       next: (data: PromocionAPI[]) => {
-        console.log('Promociones recibidas del servidor:', data.length);
-        
-        this.promociones = data.map((promo: PromocionAPI): PromocionUI => {
-          // Verificar si la promoción ha expirado
-          const isExpired = new Date(promo.data_final) < new Date();
-          
-          // Verificar si el usuario está inscrito (esto se actualizará después)
-          const isInscrito = false;
-          
-          return {
-            id: promo.id,
-            title: promo.titol,
-            description: promo.descripcio,
-            startDate: new Date(promo.data_inici),
-            endDate: new Date(promo.data_final),
-            type: promo.tipoPromocion ? promo.tipoPromocion.titol : 'General',
-            // Usar imagen del servidor o la imagen base64 por defecto
-            image: promo.image ? `http://localhost:8000/${promo.image}` : this.getDefaultImageUrl(),
-            buttonText: isInscrito ? 'INSCRITO' : 'INSCRIBIRSE',
-            isExpired: isExpired,
-            isInscrito: isInscrito
-          };
-        });
-        
-        console.log('Promociones procesadas:', this.promociones.length);
-        
-        // Si el usuario está autenticado, verificar inscripciones
-        if (this.authService.isLoggedIn()) {
-          this.checkUserInscriptions();
-        }
-        
-        this.isLoading = false;
+        this.procesarPromociones(data);
       },
       error: (error) => {
         console.error('Error cargando promociones:', error);
@@ -106,6 +80,59 @@ export class PromocionesComponent implements OnInit {
         this.isLoading = false;
       }
     });
+    
+    // Suscribirse a cambios de idioma
+    this.langChangeSubscription = this.translateService.onLangChange.subscribe(() => {
+      // El servicio de promociones ya maneja el cambio de idioma
+    });
+    
+    // Si el usuario está autenticado, verificar inscripciones
+    if (this.authService.isLoggedIn()) {
+      this.checkUserInscriptions();
+    }
+  }
+  
+  ngOnDestroy() {
+    // Limpiar suscripciones al destruir el componente
+    if (this.langChangeSubscription) {
+      this.langChangeSubscription.unsubscribe();
+    }
+    if (this.promocionesSubscription) {
+      this.promocionesSubscription.unsubscribe();
+    }
+  }
+
+  procesarPromociones(data: PromocionAPI[]) {
+    console.log('Promociones recibidas del servidor:', data.length);
+    
+    this.promociones = data.map((promo: PromocionAPI): PromocionUI => {
+      // Verificar si la promoción ha expirado
+      const isExpired = new Date(promo.data_final) < new Date();
+      
+      // Verificar si el usuario está inscrito (esto se actualizará después)
+      const isInscrito = false;
+      
+      return {
+        id: promo.id,
+        title: promo.titol,
+        description: promo.descripcio,
+        startDate: new Date(promo.data_inici),
+        endDate: new Date(promo.data_final),
+        type: promo.tipoPromocion ? promo.tipoPromocion.titol : 'General',
+        // Usar imagen del servidor o la imagen base64 por defecto
+        image: promo.image ? `${environment.apiUrl.replace('/api', '')}/${promo.image}` : this.getDefaultImageUrl(),
+        buttonText: isInscrito ? 'INSCRITO' : 'INSCRIBIRSE',
+        isExpired: isExpired,
+        isInscrito: isInscrito
+      };
+    });
+    
+    console.log('Promociones procesadas:', this.promociones.length);
+    
+    // Si el usuario está autenticado, verificar inscripciones
+    if (this.authService.isLoggedIn()) {
+      this.checkUserInscriptions();
+    }
   }
 
   // Método para verificar inscripciones del usuario
@@ -113,51 +140,29 @@ export class PromocionesComponent implements OnInit {
     const token = this.authService.getToken();
     if (!token) return;
     
-    // Hacer una petición para obtener las inscripciones del usuario
-    const url = `http://localhost:8000/api/user/inscripciones`;
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-    xhr.setRequestHeader('Accept', 'application/json');
-    
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          // Añadir verificación para asegurarse de que la respuesta es JSON
-          const contentType = xhr.getResponseHeader('Content-Type');
-          if (!contentType || !contentType.includes('application/json')) {
-            return;
-          }
-          
-          const response = JSON.parse(xhr.responseText);
-          const inscripciones = response.inscripciones || [];
-          
-          console.log('Inscripciones recibidas:', inscripciones.length);
-          
-          // Actualizar el estado de inscripción de cada promoción
-          this.promociones = this.promociones.map(promo => {
-            const inscrito = inscripciones.some((insc: any) => insc.promo_id === promo.id);
-            return {
-              ...promo,
-              isInscrito: inscrito,
-              buttonText: inscrito ? 'INSCRITO' : 'INSCRIBIRSE'
-            };
-          });
-        } catch (e) {
-          console.error('Error al procesar las inscripciones:', e);
-          console.error('Respuesta recibida:', xhr.responseText.substring(0, 150) + '...');
-        }
-      } else {
-        console.error('Error en la solicitud de inscripciones:', xhr.status, xhr.statusText);
-        console.error('Respuesta de error:', xhr.responseText.substring(0, 150) + '...');
+    // Usar HttpClient en lugar de XMLHttpRequest para mantener consistencia
+    this.http.get(`${environment.apiUrl}/user/inscripciones`, {
+      headers: this.authService.getAuthHeaders()
+    }).subscribe({
+      next: (response: any) => {
+        const inscripciones = response.inscripciones || [];
+        
+        console.log('Inscripciones recibidas:', inscripciones.length);
+        
+        // Actualizar el estado de inscripción de cada promoción
+        this.promociones = this.promociones.map(promo => {
+          const inscrito = inscripciones.some((insc: any) => insc.promo_id === promo.id);
+          return {
+            ...promo,
+            isInscrito: inscrito,
+            buttonText: inscrito ? 'INSCRITO' : 'INSCRIBIRSE'
+          };
+        });
+      },
+      error: (error) => {
+        console.error('Error al obtener inscripciones:', error);
       }
-    };
-    
-    xhr.onerror = () => {
-      console.error('Error de red al obtener inscripciones');
-    };
-    
-    xhr.send();
+    });
   }
 
   onInscribir(promocionId: number) {
@@ -181,66 +186,36 @@ export class PromocionesComponent implements OnInit {
       }
     }
     
-    // Verificar que el token existe
-    const token = this.authService.getToken();
-    if (!token) {
-      this.notificationService.showError('No se encontró tu token de autenticación. Por favor, inicia sesión nuevamente.');
-      this.authService.logout();
-      return;
-    }
+    // Usar HttpClient en lugar de XMLHttpRequest
+    this.http.post(`${environment.apiUrl}/promociones/${promocionId}/inscribir`, {}, {
+      headers: this.authService.getAuthHeaders()
+    }).subscribe({
+      next: (response: any) => {
+        this.notificationService.showSuccess(response.message || 'Te has inscrito a la promoción con éxito');
 
-    console.log('Token antes de la solicitud:', token);
-    console.log('Usuario actual:', currentUser);
-
-    // Intentar una solicitud directa al backend
-    const url = `http://localhost:8000/api/promociones/${promocionId}/inscribir`;
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
-    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Accept', 'application/json');
-
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          const response = JSON.parse(xhr.responseText);
-          this.notificationService.showSuccess(response.message || 'Te has inscrito a la promoción con éxito');
-
-          // Update user balance if it was changed (e.g., welcome bonus)
-          if (response.saldo_actual !== undefined) {
-            this.authService.updateUserSaldo(response.saldo_actual);
-          }
-
-          // Actualizar el texto del botón y el estado de inscripción
-          const promocionIndex = this.promociones.findIndex(p => p.id === promocionId);
-          if (promocionIndex !== -1) {
-            this.promociones[promocionIndex].buttonText = 'INSCRITO';
-            this.promociones[promocionIndex].isInscrito = true;
-          }
-        } catch (e) {
-          this.notificationService.showError('Error al procesar la respuesta del servidor');
+        // Update user balance if it was changed (e.g., welcome bonus)
+        if (response.saldo_actual !== undefined) {
+          this.authService.updateUserSaldo(response.saldo_actual);
         }
-      } else {
-        console.error('Error en la solicitud:', xhr.status, xhr.statusText);
-        if (xhr.status === 401) {
+
+        // Actualizar el texto del botón y el estado de inscripción
+        const promocionIndex = this.promociones.findIndex(p => p.id === promocionId);
+        if (promocionIndex !== -1) {
+          this.promociones[promocionIndex].buttonText = 'INSCRITO';
+          this.promociones[promocionIndex].isInscrito = true;
+        }
+      },
+      error: (error) => {
+        console.error('Error al inscribirse en la promoción:', error);
+        
+        if (error.status === 401) {
           this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
           this.authService.logout();
         } else {
-          try {
-            const errorResponse = JSON.parse(xhr.responseText);
-            this.notificationService.showError(errorResponse.message || 'Error al inscribirse en la promoción');
-          } catch (e) {
-            this.notificationService.showError('Error al inscribirse en la promoción. Por favor, intenta de nuevo.');
-          }
+          this.notificationService.showError(error.error?.message || 'Error al inscribirse en la promoción');
         }
       }
-    };
-
-    xhr.onerror = () => {
-      this.notificationService.showError('Error de red al realizar la solicitud');
-    };
-
-    xhr.send(JSON.stringify({}));
+    });
   }
 
   // Método para formatear fechas
