@@ -11,7 +11,9 @@ import { HeaderComponent } from '../header/header.component';
 import { TennisPlayersService } from '../services/tennis-players.service';
 import { PredictionsService } from '../services/predictions.service';
 import { PremiosService } from '../services/premios.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { LanguageService } from '../services/language.service';
 
 interface Sport {
   key: string;
@@ -65,6 +67,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   username: string = '';
   profileImage: string | null = null; // Add this property
   featuredMatches: OddEvent[] = [];
+  
+  // Add these property declarations
+  langChangeSubscription: Subscription | null = null;
+  currentLanguage: string = '';
+
 
   // Lista de ligas permitidas
   allowedLeagues = [
@@ -106,10 +113,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private router: Router,
     public tennisPlayersService: TennisPlayersService,
     private predictionsService: PredictionsService,
-    private premiosService: PremiosService  // Add this line to inject PremiosService
+    private premiosService: PremiosService,
+    private translateService: TranslateService,
+    private languageService: LanguageService // Añadir el servicio de idioma
   ) {}
 
   // Añadir al ngOnInit del HomeComponent
+  // Modificar ngOnInit para limpiar todas las suscripciones
   ngOnInit() {
     // Check if user is admin and redirect to dashboard
     const currentUser = this.authService.getCurrentUser();
@@ -126,6 +136,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadPremios();
     this.loadPromociones(); // Add this line to load promotions
     
+    // Suscribirse a cambios de idioma
+    this.langChangeSubscription = this.languageService.currentLang.subscribe(lang => {
+      console.log('Idioma cambiado en Home:', lang);
+      this.currentLanguage = lang;
+      
+      // Recargar datos que dependen del idioma si es necesario
+      this.loadFeaturedMatches();
+      this.loadPremios(); // Recargar premios cuando cambia el idioma
+      this.loadPromociones(); // Recargar promociones cuando cambia el idioma
+      
+      // Forzar actualización del carrusel cuando cambia el idioma
+      this.refreshCarousel();
+    });
+    
     // Escuchar el evento para resetear la selección de deportes
     window.addEventListener('reset-sport-selection', () => {
       this.selectedSportKey = '';
@@ -134,10 +158,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Asegúrate de limpiar el event listener en ngOnDestroy
+  // Modificar ngOnDestroy para limpiar todas las suscripciones
   ngOnDestroy() {
     // Eliminar el event listener para evitar memory leaks
     window.removeEventListener('reset-sport-selection', () => {});
+    
+    // Limpiar suscripción al cambio de idioma
+    if (this.langChangeSubscription) {
+      this.langChangeSubscription.unsubscribe();
+    }
   }
 
   // Make sure this method is defined in the class
@@ -541,6 +570,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Add these properties for the premios carousel
   premios: any[] = [];
+  promociones: any[] = []; // Añadir esta propiedad para almacenar las promociones
   currentPremioIndex: number = 0;
 
   // Add this method to load premios with random selection
@@ -647,7 +677,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   viewPromocion(id: number): void {
     this.router.navigate(['/promociones', id]);
   }
-  promociones: Promocion[] = [];
   currentPromocionIndex: number = 0;
 
   // Methods for carousel navigation
@@ -735,5 +764,26 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+    // Añadir este método para refrescar el carrusel
+    refreshCarousel(): void {
+      // Esperar a que el DOM se actualice
+      setTimeout(() => {
+        // Emitir un evento personalizado que puede ser capturado por el código del carrusel
+        const event = new CustomEvent('carousel-refresh');
+        window.dispatchEvent(event);
+        
+        // Alternativa: si estás usando una biblioteca específica para el carrusel
+        // puedes intentar reinicializarla directamente aquí
+        // Por ejemplo, si usas Swiper:
+        // if (this.swiper) {
+        //   this.swiper.update();
+        // }
+        
+        console.log('Carrusel actualizado después del cambio de idioma');
+      }, 100);
+    }
+  
   }
+
 
