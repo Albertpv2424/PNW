@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\ApuestaController;
-use App\Http\Controllers\PromocionController;
+// use App\Http\Controllers\PromocionController; // Comentamos esta línea
 use App\Http\Controllers\DailyWheelController;
 use App\Http\Controllers\VideoRewardsController;
 use App\Http\Controllers\OddsController;
@@ -16,8 +16,8 @@ use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\BetVerificationController;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\PremiosController; // Importar PremiosController
-// use App\Http\Controllers\PremioController; // Comentamos esta línea ya que usaremos PremiosController
+use App\Http\Controllers\PremiosController;
+use App\Http\Controllers\PromocionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,9 +59,15 @@ Route::post('/reset-password-with-token', [AuthController::class, 'resetPassword
 Route::get('/premios', [PremiosController::class, 'index']);
 Route::get('/premios/{id}', [PremiosController::class, 'show']);
 
+// Comentamos estas rutas ya que las reemplazamos por las de abajo
+// Route::get('/promociones', [PromocionController::class, 'index']);
+// Route::get('/promociones/{id}', [PromocionController::class, 'show']);
+
 // Rutas para promociones (acceso público)
-Route::get('/promociones', [PromocionController::class, 'index']);
-Route::get('/promociones/{id}', [PromocionController::class, 'show']);
+Route::get('/promociones', [PromocionesController::class, 'index']);
+Route::get('/promociones/{id}', [PromocionesController::class, 'show']);
+Route::post('/promociones/{id}/inscribir', [PromocionesController::class, 'inscribir'])->middleware('auth:sanctum');
+Route::get('/user/promociones', [PromocionesController::class, 'userInscripciones'])->middleware('auth:sanctum');
 
 // Rutas protegidas por autenticación
 Route::middleware('auth:sanctum')->group(function () {
@@ -76,7 +82,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/premios/translated', [PremiosController::class, 'userPremiosTranslated']);
 
     // Promociones de usuario
-    Route::post('/promociones/{id}/inscribir', [PromocionController::class, 'inscribir']);
+    Route::post('/promociones/{id}/inscribir', [PromocionesController::class, 'inscribir']);
 
     // Daily Wheel y Video Rewards
     Route::post('/daily-wheel/spin', [DailyWheelController::class, 'spin']);

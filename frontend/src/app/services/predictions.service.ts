@@ -67,8 +67,11 @@ export class PredictionsService {
   }
 
   getPromociones(): Observable<any> {
-    // Volvemos a la ruta original que sí está definida en el backend
-    return this.http.get(`${this.apiUrl}/promociones`)
+    // Obtener el idioma actual del localStorage
+    const currentLang = localStorage.getItem('preferredLanguage') || 'es';
+    
+    // Incluir el parámetro de idioma en la solicitud
+    return this.http.get(`${this.apiUrl}/promociones?lang=${currentLang}`)
       .pipe(
         tap(response => {
           console.log('Promociones response:', response);

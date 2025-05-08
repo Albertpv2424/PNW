@@ -14,12 +14,24 @@ class Premio extends Model
         'descripcio',
         'cost',
         'condicio',
-        'image' // Añadiremos este campo a la migración
+        'image'
     ];
     
     // Relación con premios de usuarios
     public function premiosUsuarios()
     {
         return $this->hasMany(PremioUsuario::class, 'premi_id');
+    }
+    
+    // Relación con traducciones
+    public function traducciones()
+    {
+        return $this->hasMany(PremioTraduccion::class, 'premi_id');
+    }
+    
+    // Obtener traducción para un idioma específico
+    public function getTraduccion($idiomaId)
+    {
+        return $this->traducciones()->where('idioma_id', $idiomaId)->first();
     }
 }
