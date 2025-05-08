@@ -346,7 +346,18 @@
   },
   "PROMOTIONS": {
     "TITLE": "Promozioni Attive",
-    "VALID": "Valido: "
+    "VALID": "Valido: ",
+    "TITLES": "Promozioni",
+  "ERROR_LOADING": "Impossibile caricare le promozioni. Riprova più tardi.",
+  "INSCRITO": "ISCRITTO",
+  "INSCRIBIRSE": "ISCRIVITI",
+  "TIPO_DEFAULT": "Generale",
+  "ERROR_LOGIN_REQUIRED": "Devi accedere per iscriverti alle promozioni",
+  "ERROR_YA_INSCRITO": "Sei già iscritto a questa promozione",
+  "ERROR_PROMOCION_FINALIZADA": "Questa promozione è terminata",
+  "SUCCESS_INSCRIPCION": "Ti sei iscritto con successo alla promozione",
+  "ERROR_SESSION_EXPIRED": "La tua sessione è scaduta. Effettua nuovamente l'accesso.",
+  "ERROR_INSCRIPCION": "Errore durante l'iscrizione alla promozione"
   },
   "RESPONSIBLE_GAMING": {
     "TITLE": "Gioco Responsabile",

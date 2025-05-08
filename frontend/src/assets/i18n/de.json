@@ -346,7 +346,18 @@
   },
   "PROMOTIONS": {
     "TITLE": "Verfügbare Aktionen",
-    "VALID": "Gültig: "
+    "VALID": "Gültig: ",
+    "TITLES": "Aktionen",
+  "ERROR_LOADING": "Die Aktionen konnten nicht geladen werden. Bitte versuche es später erneut.",
+  "INSCRITO": "ANGEMELDET",
+  "INSCRIBIRSE": "ANMELDEN",
+  "TIPO_DEFAULT": "Allgemein",
+  "ERROR_LOGIN_REQUIRED": "Du musst dich einloggen, um dich für Aktionen anzumelden",
+  "ERROR_YA_INSCRITO": "Du bist bereits für diese Aktion angemeldet",
+  "ERROR_PROMOCION_FINALIZADA": "Diese Aktion ist beendet",
+  "SUCCESS_INSCRIPCION": "Du hast dich erfolgreich für die Aktion angemeldet",
+  "ERROR_SESSION_EXPIRED": "Deine Sitzung ist abgelaufen. Bitte logge dich erneut ein.",
+  "ERROR_INSCRIPCION": "Fehler bei der Anmeldung zur Aktion"
   },
   "RESPONSIBLE_GAMING": {
     "TITLE": "Verantwortungsbewusstes Spielen",

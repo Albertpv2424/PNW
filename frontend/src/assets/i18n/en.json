@@ -346,7 +346,18 @@
   },
   "PROMOTIONS": {
     "TITLE": "Avilable Promotions",
-    "VALID": "Valid: "
+    "VALID": "Valid: ",
+    "TITLES": "Promotions",
+  "ERROR_LOADING": "Promotions could not be loaded. Please try again later.",
+  "INSCRITO": "ENROLLED",
+  "INSCRIBIRSE": "ENROLL",
+  "TIPO_DEFAULT": "General",
+  "ERROR_LOGIN_REQUIRED": "You must log in to enroll in promotions",
+  "ERROR_YA_INSCRITO": "You are already enrolled in this promotion",
+  "ERROR_PROMOCION_FINALIZADA": "This promotion has ended",
+  "SUCCESS_INSCRIPCION": "You have successfully enrolled in the promotion",
+  "ERROR_SESSION_EXPIRED": "Your session has expired. Please log in again.",
+  "ERROR_INSCRIPCION": "Error enrolling in the promotion"
   },
   "RESPONSIBLE_GAMING": {
     "TITLE": "Responsible Gaming",

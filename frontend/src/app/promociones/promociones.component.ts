@@ -52,7 +52,7 @@ interface PromocionUI {
 })
 export class PromocionesComponent implements OnInit, OnDestroy {
   promociones: PromocionUI[] = [];
-  isLoading = false; // Cambiado a false para que no muestre el mensaje de carga
+  isLoading = false;
   errorMessage = '';
   
   // Suscripciones
@@ -65,10 +65,15 @@ export class PromocionesComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private http: HttpClient,
     private translateService: TranslateService,
-    private promocionesService: PromocionesService // Añadido el servicio de promociones
+    private promocionesService: PromocionesService
   ) {}
 
   ngOnInit() {
+    // Establecer el título de la página basado en el idioma actual
+    this.translateService.get('PROMOTIONS.TITLE').subscribe((title: string) => {
+      document.title = `PNW - ${title}`;
+    });
+
     // Usar el servicio de promociones en lugar de cargar directamente
     this.promocionesSubscription = this.promocionesService.promociones$.subscribe({
       next: (data: PromocionAPI[]) => {
@@ -76,14 +81,19 @@ export class PromocionesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error cargando promociones:', error);
-        this.errorMessage = 'No se pudieron cargar las promociones. Por favor, intenta de nuevo más tarde.';
+        this.translateService.get('PROMOTIONS.ERROR_LOADING').subscribe((message: string) => {
+          this.errorMessage = message;
+        });
         this.isLoading = false;
       }
     });
     
     // Suscribirse a cambios de idioma
     this.langChangeSubscription = this.translateService.onLangChange.subscribe(() => {
-      // El servicio de promociones ya maneja el cambio de idioma
+      // Actualizar el título de la página cuando cambia el idioma
+      this.translateService.get('PROMOTIONS.TITLE').subscribe((title: string) => {
+        document.title = `PNW - ${title}`;
+      });
     });
     
     // Si el usuario está autenticado, verificar inscripciones
@@ -112,16 +122,21 @@ export class PromocionesComponent implements OnInit, OnDestroy {
       // Verificar si el usuario está inscrito (esto se actualizará después)
       const isInscrito = false;
       
+      // Obtener textos traducidos para los botones
+      let buttonText = '';
+      this.translateService.get(isInscrito ? 'PROMOTIONS.INSCRITO' : 'PROMOTIONS.INSCRIBIRSE').subscribe((text: string) => {
+        buttonText = text;
+      });
+      
       return {
         id: promo.id,
         title: promo.titol,
         description: promo.descripcio,
         startDate: new Date(promo.data_inici),
         endDate: new Date(promo.data_final),
-        type: promo.tipoPromocion ? promo.tipoPromocion.titol : 'General',
-        // Usar imagen del servidor o la imagen base64 por defecto
+        type: promo.tipoPromocion ? promo.tipoPromocion.titol : this.getDefaultTypeText(),
         image: promo.image ? `${environment.apiUrl.replace('/api', '')}/${promo.image}` : this.getDefaultImageUrl(),
-        buttonText: isInscrito ? 'INSCRITO' : 'INSCRIBIRSE',
+        buttonText: buttonText,
         isExpired: isExpired,
         isInscrito: isInscrito
       };
@@ -133,6 +148,15 @@ export class PromocionesComponent implements OnInit, OnDestroy {
     if (this.authService.isLoggedIn()) {
       this.checkUserInscriptions();
     }
+  }
+
+  // Método para obtener el texto por defecto para el tipo de promoción
+  getDefaultTypeText(): string {
+    let defaultText = 'General';
+    this.translateService.get('PROMOTIONS.TIPO_DEFAULT').subscribe((text: string) => {
+      defaultText = text;
+    });
+    return defaultText;
   }
 
   // Método para verificar inscripciones del usuario
@@ -152,10 +176,17 @@ export class PromocionesComponent implements OnInit, OnDestroy {
         // Actualizar el estado de inscripción de cada promoción
         this.promociones = this.promociones.map(promo => {
           const inscrito = inscripciones.some((insc: any) => insc.promo_id === promo.id);
+          
+          // Obtener texto traducido para el botón
+          let buttonText = '';
+          this.translateService.get(inscrito ? 'PROMOTIONS.INSCRITO' : 'PROMOTIONS.INSCRIBIRSE').subscribe((text: string) => {
+            buttonText = text;
+          });
+          
           return {
             ...promo,
             isInscrito: inscrito,
-            buttonText: inscrito ? 'INSCRITO' : 'INSCRIBIRSE'
+            buttonText: buttonText
           };
         });
       },
@@ -168,7 +199,9 @@ export class PromocionesComponent implements OnInit, OnDestroy {
   onInscribir(promocionId: number) {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
-      this.notificationService.showError('Debes iniciar sesión para inscribirte en promociones');
+      this.translateService.get('PROMOTIONS.ERROR_LOGIN_REQUIRED').subscribe((message: string) => {
+        this.notificationService.showError(message);
+      });
       return;
     }
     
@@ -176,12 +209,16 @@ export class PromocionesComponent implements OnInit, OnDestroy {
     const promocion = this.promociones.find(p => p.id === promocionId);
     if (promocion) {
       if (promocion.isInscrito) {
-        this.notificationService.showError('Ya estás inscrito en esta promoción');
+        this.translateService.get('PROMOTIONS.ERROR_YA_INSCRITO').subscribe((message: string) => {
+          this.notificationService.showError(message);
+        });
         return;
       }
       
       if (promocion.isExpired) {
-        this.notificationService.showError('Esta promoción ha finalizado');
+        this.translateService.get('PROMOTIONS.ERROR_PROMOCION_FINALIZADA').subscribe((message: string) => {
+          this.notificationService.showError(message);
+        });
         return;
       }
     }
@@ -191,7 +228,9 @@ export class PromocionesComponent implements OnInit, OnDestroy {
       headers: this.authService.getAuthHeaders()
     }).subscribe({
       next: (response: any) => {
-        this.notificationService.showSuccess(response.message || 'Te has inscrito a la promoción con éxito');
+        this.translateService.get('PROMOTIONS.SUCCESS_INSCRIPCION').subscribe((message: string) => {
+          this.notificationService.showSuccess(response.message || message);
+        });
 
         // Update user balance if it was changed (e.g., welcome bonus)
         if (response.saldo_actual !== undefined) {
@@ -201,7 +240,9 @@ export class PromocionesComponent implements OnInit, OnDestroy {
         // Actualizar el texto del botón y el estado de inscripción
         const promocionIndex = this.promociones.findIndex(p => p.id === promocionId);
         if (promocionIndex !== -1) {
-          this.promociones[promocionIndex].buttonText = 'INSCRITO';
+          this.translateService.get('PROMOTIONS.INSCRITO').subscribe((text: string) => {
+            this.promociones[promocionIndex].buttonText = text;
+          });
           this.promociones[promocionIndex].isInscrito = true;
         }
       },
@@ -209,10 +250,14 @@ export class PromocionesComponent implements OnInit, OnDestroy {
         console.error('Error al inscribirse en la promoción:', error);
         
         if (error.status === 401) {
-          this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          this.translateService.get('PROMOTIONS.ERROR_SESSION_EXPIRED').subscribe((message: string) => {
+            this.notificationService.showError(message);
+          });
           this.authService.logout();
         } else {
-          this.notificationService.showError(error.error?.message || 'Error al inscribirse en la promoción');
+          this.translateService.get('PROMOTIONS.ERROR_INSCRIPCION').subscribe((message: string) => {
+            this.notificationService.showError(error.error?.message || message);
+          });
         }
       }
     });
@@ -220,7 +265,7 @@ export class PromocionesComponent implements OnInit, OnDestroy {
 
   // Método para formatear fechas
   formatDate(date: Date): string {
-    return date.toLocaleDateString('es-ES', {
+    return date.toLocaleDateString(this.translateService.currentLang === 'en' ? 'en-US' : 'es-ES', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'

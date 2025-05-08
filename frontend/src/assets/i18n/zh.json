@@ -346,7 +346,18 @@
   },
   "PROMOTIONS": {
     "TITLE": "可用优惠",
-    "VALID": "有效: "
+    "VALID": "有效: ",
+    "TITLES": "促销活动",
+  "ERROR_LOADING": "无法加载促销活动，请稍后再试。",
+  "INSCRITO": "已报名",
+  "INSCRIBIRSE": "报名",
+  "TIPO_DEFAULT": "通用",
+  "ERROR_LOGIN_REQUIRED": "您必须登录才能报名参加促销活动",
+  "ERROR_YA_INSCRITO": "您已报名该促销活动",
+  "ERROR_PROMOCION_FINALIZADA": "该促销活动已结束",
+  "SUCCESS_INSCRIPCION": "您已成功报名该促销活动",
+  "ERROR_SESSION_EXPIRED": "您的会话已过期，请重新登录。",
+  "ERROR_INSCRIPCION": "报名促销活动时出错"
   },
   "RESPONSIBLE_GAMING": {
     "TITLE": "负责任游戏",

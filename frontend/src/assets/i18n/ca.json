@@ -346,7 +346,18 @@
   },
   "PROMOTIONS": {
     "TITLE": "Promocions Disponibles",
-    "VALID": "Vàlid: "
+    "VALID": "Vàlid: ",
+    "TITLES": "Promocions",
+  "ERROR_LOADING": "No s'han pogut carregar les promocions. Si us plau, intenta-ho més tard.",
+  "INSCRITO": "INSCRIT",
+  "INSCRIBIRSE": "INSCRIURE'S",
+  "TIPO_DEFAULT": "General",
+  "ERROR_LOGIN_REQUIRED": "Has d'iniciar sessió per inscriure't a les promocions",
+  "ERROR_YA_INSCRITO": "Ja estàs inscrit en aquesta promoció",
+  "ERROR_PROMOCION_FINALIZADA": "Aquesta promoció ha finalitzat",
+  "SUCCESS_INSCRIPCION": "T'has inscrit a la promoció amb èxit",
+  "ERROR_SESSION_EXPIRED": "La teva sessió ha expirat. Si us plau, inicia sessió de nou.",
+  "ERROR_INSCRIPCION": "Error en inscriure's a la promoció"
   },
   "RESPONSIBLE_GAMING": {
     "TITLE": "Joc Responsable",
