@@ -10,13 +10,12 @@
 }
 
 /* Ajusta el grid para que se vea como en la imagen */
-/* Asegurarnos de que el grid muestre todas las promociones */
 .promociones-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  gap: 30px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 /* Estilo para promociones expiradas */
@@ -63,14 +62,18 @@
 .promocion-card {
   position: relative;
   background-color: #1e1e30;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .promocion-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
 }
 
 .promocion-card.inscrito .inscribir-button:hover {
@@ -85,17 +88,17 @@
 
 .promocion-image {
   width: 100%;
-  height: 280px;
+  height: 200px;
   overflow: hidden;
   position: relative;
-  background-color: #f0f0f0;
+  background-color: #151525;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .promocion-info {
-  padding: 15px;
+  padding: 20px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -108,62 +111,73 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .promocion-card:hover .promocion-image img {
-  transform: scale(1.05);
-}
-
-.promocion-info {
-  padding: 15px;
-  text-align: center;
+  transform: scale(1.08);
 }
 
 .promocion-type {
   font-size: 14px;
-  color: #ccc;
-  margin-bottom: 5px;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .promocion-info h3 {
-  margin: 0 0 10px 0;
-  font-size: 18px;
+  margin: 0 0 12px 0;
+  font-size: 20px;
   color: white;
+  font-weight: 700;
 }
 
 .description {
-  color: #ccc;
-  margin-bottom: 15px;
+  color: #b8b8b8;
+  margin-bottom: 20px;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .promocion-dates {
-  color: #ccc;
-  font-size: 12px;
-  margin-bottom: 15px;
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 20px;
+  font-style: italic;
 }
 
 /* Cambiar el botón para que coincida con el estilo de premios */
 .inscribir-button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #00b341;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
 }
 
 .inscribir-button:hover {
   background-color: #009935;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.inscribir-button:active {
+  transform: translateY(0);
 }
 
 .inscribir-button:disabled {
   background-color: #666;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Añadir estilos de header como en premios */
@@ -171,7 +185,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  /* Eliminamos la línea de borde inferior */
+  padding-bottom: 15px;
+}
+
+.promociones-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
 }
 
 /* Estilos para la moneda (por si se necesita en el futuro) */
@@ -183,4 +206,88 @@
   position: relative;
   top: -1px;
   object-fit: contain;
+}
+
+/* Estilos para mensajes vacíos */
+.empty-message {
+  text-align: center;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: #888;
+  font-size: 16px;
+}
+
+/* Estilos para el spinner de carga */
+.loading-spinner {
+  text-align: center;
+  padding: 40px;
+  color: #00b341;
+  font-size: 16px;
+}
+
+/* Nuevos estilos para alinear con la segunda imagen */
+.bienvenida {
+  background-color: rgba(30, 30, 50, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.bienvenida h3 {
+  color: #00b341;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.bienvenida p {
+  color: #cccccc;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Estilos para las tarjetas de promoción como en la segunda imagen */
+.promocion-card {
+  background-color: #1e1e2d;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.promocion-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.promocion-type {
+  display: inline-block;
+  background-color: #00b341;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.promocion-info h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.promocion-dates {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.inscribir-button {
+  text-transform: uppercase;
+  font-size: 14px;
+  border-radius: 4px;
 }
