@@ -344,6 +344,10 @@
     "TYPE_DELETE": "Escriu DELETE per confirmar la eliminació de la teva compte",
     "CONFIRM_DELETION": "ESBORRAR"
   },
+  "PROMOTIONS": {
+    "TITLE": "Promocions Disponibles",
+    "VALID": "Vàlid: "
+  },
   "RESPONSIBLE_GAMING": {
     "TITLE": "Joc Responsable",
     "INTRO_1": "A PNW, ens comprometem a promoure un entorn de joc segur i responsable. Creiem que les apostes esportives han de ser una forma d'entreteniment, no una font de problemes.",

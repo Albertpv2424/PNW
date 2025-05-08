@@ -344,6 +344,10 @@
     "TYPE_DELETE": "输入'DELETE'以确认",
     "CONFIRM_DELETION": "删除"
   },
+  "PROMOTIONS": {
+    "TITLE": "可用优惠",
+    "VALID": "有效: "
+  },
   "RESPONSIBLE_GAMING": {
     "TITLE": "负责任游戏",
     "INTRO_1": "在PNW，我们致力于提供一个安全、负责任的游戏环境。我们相信体育博彩应该是一种娱乐方式，而不是问题的来源。",

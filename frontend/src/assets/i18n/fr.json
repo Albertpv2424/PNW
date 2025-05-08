@@ -344,6 +344,10 @@
     "TYPE_DELETE": "Tapez 'DELETE' pour confirmer",
     "CONFIRM_DELETION": "SUPPRIMER"
   },
+  "PROMOTIONS": {
+    "TITLE": "Promotions disponibles",
+    "VALID": "Valable: "
+  },
   "RESPONSIBLE_GAMING": {
     "TITLE": "Jeu Responsable",
     "INTRO_1": "Chez PNW, nous nous engageons à promouvoir un environnement de jeu sûr et responsable. Nous croyons que les paris sportifs doivent être une forme de divertissement, pas une source de problèmes.",

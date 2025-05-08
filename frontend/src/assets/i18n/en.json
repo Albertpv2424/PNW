@@ -344,6 +344,10 @@
     "TYPE_DELETE": "Type 'DELETE' to confirm",
     "CONFIRM_DELETION": "DELETE"
   },
+  "PROMOTIONS": {
+    "TITLE": "Avilable Promotions",
+    "VALID": "Valid: "
+  },
   "RESPONSIBLE_GAMING": {
     "TITLE": "Responsible Gaming",
     "INTRO_1": "At PNW, we are committed to promoting a safe and responsible gaming environment. We believe that sports betting should be a form of entertainment, not a source of problems.",

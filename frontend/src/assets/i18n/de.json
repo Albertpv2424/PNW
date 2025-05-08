@@ -344,6 +344,10 @@
     "TYPE_DELETE": "Geben Sie 'DELETE' ein, um zu bestätigen",
     "CONFIRM_DELETION": "LÖSCHEN"
   },
+  "PROMOTIONS": {
+    "TITLE": "Verfügbare Aktionen",
+    "VALID": "Gültig: "
+  },
   "RESPONSIBLE_GAMING": {
     "TITLE": "Verantwortungsbewusstes Spielen",
     "INTRO_1": "Bei PNW engagieren wir uns für die Förderung eines sicheren und verantwortungsbewussten Spielumfelds. Wir glauben, dass Sportwetten eine Form der Unterhaltung sein sollten, nicht eine Quelle von Problemen.",
