@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { LanguageService } from './language.service';
+import { AuthService } from './auth.service'; // Add this import
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,17 @@ import { LanguageService } from './language.service';
 export class PromocionesService {
   private apiUrl = environment.apiUrl;
   private currentLang = 'es';
-  
+
   // BehaviorSubject para almacenar y emitir datos de promociones
   private promocionesSubject = new BehaviorSubject<any[]>([]);
-  
+
   // Observable al que los componentes pueden suscribirse
   promociones$ = this.promocionesSubject.asObservable();
-  
+
   constructor(
     private http: HttpClient,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private authService: AuthService // Add this dependency
   ) {
     // Suscribirse a los cambios de idioma
     this.languageService.currentLang.subscribe(lang => {
@@ -28,7 +30,7 @@ export class PromocionesService {
       this.currentLang = lang;
       this.refreshPromociones();
     });
-    
+
     // Carga inicial
     this.refreshPromociones();
   }
@@ -78,7 +80,7 @@ export class PromocionesService {
    */
   inscribirEnPromocion(promocionId: number): Observable<any> {
     console.log('PromocionesService: Inscribiendo en promoción con ID', promocionId);
-    
+
     return this.http.post<any>(`${this.apiUrl}/promociones/${promocionId}/inscribir`, {})
       .pipe(
         tap(response => {
@@ -103,6 +105,27 @@ export class PromocionesService {
         }),
         catchError(error => {
           console.error('PromocionesService: Error al obtener promociones del usuario', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  // Add this new method to your PromocionesService
+  inscribirEnBonoBienvenida(): Observable<any> {
+    console.log('PromocionesService: Inscribiendo en bono de bienvenida');
+
+    return this.http.post<any>(`${this.apiUrl}/promociones/bono-bienvenida`, {})
+      .pipe(
+        tap(response => {
+          console.log('PromocionesService: Respuesta de inscripción a bono de bienvenida', response);
+
+          // Update user balance if provided in the response
+          if (response.saldo_actual !== undefined) {
+            this.authService.updateUserSaldo(response.saldo_actual);
+          }
+        }),
+        catchError(error => {
+          console.error('PromocionesService: Error al inscribirse en bono de bienvenida', error);
           return throwError(() => error);
         })
       );

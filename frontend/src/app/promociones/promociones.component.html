@@ -11,7 +11,7 @@
         <div class="promociones-header">
           <h2>{{ 'PROMOTIONS.TITLE' | translate }}</h2>
         </div>
-        
+
         @if (isLoading) {
           <div class="loading-spinner">Cargando promociones...</div>
         } @else if (errorMessage) {
@@ -21,7 +21,7 @@
         } @else {
           <div class="promociones-grid">
             @for (promocion of promociones; track promocion.id) {
-              <div class="promocion-card" 
+              <div class="promocion-card"
                    [class.expired]="promocion.isExpired"
                    [class.inscrito]="promocion.isInscrito">
                 <div class="promocion-image">
@@ -34,8 +34,9 @@
                   <div class="promocion-dates">
                     <span>{{ 'PROMOTIONS.VALID' | translate }} {{ formatDate(promocion.startDate) }} - {{ formatDate(promocion.endDate) }}</span>
                   </div>
-                  <button class="inscribir-button" 
-                          (click)="onInscribir(promocion.id)"
+                  <!-- Change this line in your HTML file -->
+                  <button class="inscribir-button"
+                          (click)="onInscribir(promocion)"
                           [disabled]="promocion.isInscrito || promocion.isExpired">
                     {{ promocion.buttonText }}
                   </button>

@@ -67,6 +67,8 @@ Route::get('/premios/{id}', [PremiosController::class, 'show']);
 Route::get('/promociones', [PromocionesController::class, 'index']);
 Route::get('/promociones/{id}', [PromocionesController::class, 'show']);
 Route::post('/promociones/{id}/inscribir', [PromocionesController::class, 'inscribir'])->middleware('auth:sanctum');
+// Add this route for the welcome bonus
+Route::post('/promociones/bono-bienvenida', [PromocionesController::class, 'inscribirBonoBienvenida'])->middleware('auth:sanctum');
 Route::get('/user/promociones', [PromocionesController::class, 'userInscripciones'])->middleware('auth:sanctum');
 
 // Rutas protegidas por autenticación
@@ -151,7 +153,7 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::get('/stats/users', [StatsController::class, 'userStats']);
     Route::get('/stats/bets', [StatsController::class, 'betStats']);
     Route::get('/stats/prizes', [StatsController::class, 'prizeStats']);
-    
+
     // Gestión de limitaciones de usuarios
     Route::get('/user-limitations', 'App\Http\Controllers\Admin\UserLimitationsController@getAllUsersLimitations');
     Route::get('/user-limitations/{username}', 'App\Http\Controllers\Admin\UserLimitationsController@getUserLimitations');
