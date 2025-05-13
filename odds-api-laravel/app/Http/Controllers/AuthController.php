@@ -454,74 +454,77 @@ class AuthController extends Controller
     }
 
     public function deleteAccount(Request $request)
-{
-    try {
-        // Obtener el usuario autenticado
-        $user = auth()->user();
-
-        if (!$user) {
+    {
+        try {
+            // Obtener el usuario autenticado
+            $user = auth()->user();
+    
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Usuario no autenticado'
+                ], 401);
+            }
+    
+            // Guardar el nick para el log
+            $userNick = $user->nick;
+    
+            // Eliminar mensajes de chat relacionados con el usuario
+            DB::table('chat_messages')->where('user_id', $userNick)->delete();
+    
+            // Eliminar sesiones de chat donde el usuario es el propietario o el administrador
+            DB::table('chat_sessions')->where('user_id', $userNick)->orWhere('admin_id', $userNick)->delete();
+    
+            // Eliminar la imagen de perfil si existe
+            if ($user->profile_image && file_exists(public_path($user->profile_image))) {
+                unlink(public_path($user->profile_image));
+            }
+    
+            // Eliminar el usuario 
+            $user->delete();
+    
+            // Registrar la eliminación en el log
+            \Illuminate\Support\Facades\Log::info('Cuenta eliminada', [
+                'user_nick' => $userNick
+            ]);
+    
             return response()->json([
-                'message' => 'Usuario no autenticado'
-            ], 401);
+                'message' => 'Cuenta eliminada correctamente'
+            ]);
+    
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error al eliminar cuenta: ' . $e->getMessage());
+    
+            return response()->json([
+                'message' => 'Error al eliminar la cuenta: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Guardar el nick para el log
-        $userNick = $user->nick;
-
-        // Eliminar registros relacionados (ajustar según tu estructura de BD)
-        // Por ejemplo, eliminar apuestas, premios canjeados, etc.
-
-        // Eliminar la imagen de perfil si existe
-        if ($user->profile_image && file_exists(public_path($user->profile_image))) {
-            unlink(public_path($user->profile_image));
-        }
-
-        // Eliminar el usuario 
-        $user->delete();
-
-        // Registrar la eliminación en el log
-        \Illuminate\Support\Facades\Log::info('Cuenta eliminada', [
-            'user_nick' => $userNick
-        ]);
-
-        return response()->json([
-            'message' => 'Cuenta eliminada correctamente'
-        ]);
-
-    } catch (\Exception $e) {
-        \Illuminate\Support\Facades\Log::error('Error al eliminar cuenta: ' . $e->getMessage());
-
-        return response()->json([
-            'message' => 'Error al eliminar la cuenta: ' . $e->getMessage()
-        ], 500);
     }
-}
 
-public function addPoints(Request $request)
-{
-    try {
-        $request->validate([
-            'points' => 'required|integer|min:1|max:100',
-        ]);
+    public function addPoints(Request $request)
+    {
+        try {
+            $request->validate([
+                'points' => 'required|integer|min:1|max:100',
+            ]);
 
-        $user = auth()->user();
-        if (!$user) {
-            return response()->json(['message' => 'Usuario no autenticado'], 401);
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json(['message' => 'Usuario no autenticado'], 401);
+            }
+
+            // Actualizar el saldo del usuario
+            $newSaldo = $user->saldo + $request->points;
+            $user->saldo = $newSaldo;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Puntos añadidos correctamente',
+                'saldo' => $newSaldo
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al añadir puntos: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al procesar la solicitud'], 500);
         }
-
-        // Actualizar el saldo del usuario
-        $newSaldo = $user->saldo + $request->points;
-        $user->saldo = $newSaldo;
-        $user->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Puntos añadidos correctamente',
-            'saldo' => $newSaldo
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Error al añadir puntos: ' . $e->getMessage());
-        return response()->json(['message' => 'Error al procesar la solicitud'], 500);
     }
-}
 }

@@ -401,7 +401,7 @@ export class ProfileComponent implements OnInit {
 
   // Método para eliminar la cuenta - modificado para usar POST en lugar de DELETE
   deleteAccount(): void {
-    if (this.deleteConfirmText !== 'DELETE') {
+    if (this.deleteConfirmText !== 'ELIMINAR') {
       return;
     }
 
@@ -411,6 +411,9 @@ export class ProfileComponent implements OnInit {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
+
+    // Mostrar notificación de proceso
+    this.notificationService.showInfo('Procesando eliminación de cuenta...');
 
     // Usar POST en lugar de DELETE
     this.http.post('http://localhost:8000/api/delete-account', {}, { headers })
@@ -428,6 +431,8 @@ export class ProfileComponent implements OnInit {
             errorMessage = 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.';
           } else if (error.error?.message) {
             errorMessage = error.error.message;
+          } else if (error.status === 500 && error.error && error.error.toString().includes('foreign key constraint fails')) {
+            errorMessage = 'No se puede eliminar la cuenta porque tiene mensajes de chat asociados. Por favor, contacta con el administrador.';
           }
 
           this.notificationService.showError(errorMessage);
