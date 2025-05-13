@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Promocion;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class PromocionController extends Controller
 {
@@ -66,8 +67,25 @@ class PromocionController extends Controller
                 ], 400);
             }
 
+            // Obtener la promoción
+            $promocion = Promocion::findOrFail($id);
+            
+            // Verificar si es un bono de bienvenida (comprobando el título)
+            $esBonoBienvenida = false;
+            
+            // Verificar por título (más permisivo)
+            if (stripos($promocion->titol, 'bienvenida') !== false || 
+                stripos($promocion->titol, 'benvenuto') !== false ||
+                $promocion->titol === 'Bono de Bienvenida' ||
+                $promocion->titol === 'Bonus di Benvenuto') {
+                $esBonoBienvenida = true;
+            }
+            
+            Log::info("Promoción ID {$id} - ¿Es bono de bienvenida?: " . ($esBonoBienvenida ? 'Sí' : 'No'));
+            Log::info("Título de la promoción: {$promocion->titol}");
+            
             // Verificar si el usuario ya está inscrito
-            $inscripcion = \App\Models\InscripcionPromocion::where('usuari_nick', $user->nick)
+            $inscripcion = InscripcioAPromo::where('usuari_nick', $user->nick)
                 ->where('promo_id', $id)
                 ->first();
 
@@ -93,44 +111,57 @@ class PromocionController extends Controller
                 $promocion->load('tipoPromocion');
             }
 
-            // Verificar si es un bono de bienvenida (comprobando el título o el ID)
-            $esBonoBienvenida = false;
-
-            if ($promocion->tipoPromocion) {
-                $esBonoBienvenida = $promocion->tipoPromocion->titol === 'Bono de Bienvenida';
-            } else if ($promocion->titol === 'Bono de Bienvenida') {
-                $esBonoBienvenida = true;
-            }
+            // Verificar si es un bono de bienvenida (usando la verificación anterior)
+            // Mantenemos la variable $esBonoBienvenida que ya se definió arriba
+            Log::info("Segunda verificación - Promoción ID {$id} - ¿Es bono de bienvenida?: " . ($esBonoBienvenida ? 'Sí' : 'No'));
 
             // Añadir puntos si es bono de bienvenida
             if ($esBonoBienvenida) {
                 // Registrar el saldo actual antes de la modificación
                 Log::info("Saldo actual del usuario {$user->nick} antes de añadir puntos: {$user->saldo}");
 
-                // Añadir 500 puntos directamente en la base de datos
-                $oldSaldo = $user->saldo;
-                $newSaldo = $oldSaldo + 500;
-
-                // Actualizar el saldo directamente con una consulta DB para evitar problemas con el modelo
-                $updated = \Illuminate\Support\Facades\DB::table('usuaris')
-                    ->where('nick', $user->nick)
-                    ->update(['saldo' => $newSaldo]);
-
-                if (!$updated) {
-                    Log::error("Error al actualizar el saldo del usuario {$user->nick}");
-                } else {
-                    $saldo_actual = $newSaldo;
+                try {
+                    // Usar una transacción para garantizar la integridad de los datos
+                    DB::beginTransaction();
+                    
+                    // Actualizar el saldo directamente con una consulta DB usando raw para evitar problemas de concurrencia
+                    $updated = DB::table('usuaris')
+                        ->where('nick', $user->nick)
+                        ->update(['saldo' => DB::raw('saldo + 500')]);
+                    
+                    if (!$updated) {
+                        throw new \Exception("Error al actualizar el saldo del usuario {$user->nick}");
+                    }
+                    
+                    // Obtener el saldo actualizado directamente de la base de datos
+                    $updatedUser = DB::table('usuaris')->where('nick', $user->nick)->first();
+                    $saldo_actual = $updatedUser->saldo;
+                    
+                    // Marcar como cumplidos los requisitos
+                    DB::table('inscripcio_a_promos')
+                        ->where('usuari_nick', $user->nick)
+                        ->where('promo_id', $id)
+                        ->update(['compleix_requisits' => true]);
+                    
+                    // Confirmar la transacción
+                    DB::commit();
+                    
                     Log::info("Saldo actualizado correctamente: {$saldo_actual}");
+                    
+                    // Devolver respuesta con el saldo actualizado
+                    return response()->json([
+                        'message' => 'Te has inscrito correctamente al bono de bienvenida y has recibido 500 puntos',
+                        'saldo_actual' => $saldo_actual
+                    ]);
+                } catch (\Exception $e) {
+                    // Revertir la transacción en caso de error
+                    DB::rollBack();
+                    
+                    Log::error("Error en la transacción del bono de bienvenida: " . $e->getMessage());
+                    return response()->json([
+                        'message' => 'Error al procesar el bono de bienvenida: ' . $e->getMessage()
+                    ], 500);
                 }
-
-                // Marcar como cumplidos los requisitos usando la clave primaria compuesta
-                \Illuminate\Support\Facades\DB::table('inscripcio_a_promos')
-                    ->where('usuari_nick', $user->nick)
-                    ->where('promo_id', $id)
-                    ->update(['compleix_requisits' => true]);
-
-                // Registrar en el log que se han añadido puntos
-                Log::info("Añadidos 500 puntos al usuario {$user->nick} por inscripción a bono de bienvenida");
             } else {
                 Log::info("Inscripción a promoción que no es bono de bienvenida: {$promocion->titol}");
             }

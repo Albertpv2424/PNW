@@ -283,38 +283,47 @@ export class PromocionesComponent implements OnInit, OnDestroy {
 
 
 onInscribir(promocion: any): void {
-  // Check if this is the welcome bonus - safely check properties
-  const isWelcomeBonus =
+  // Verificar explícitamente si es el bono de bienvenida por su título
+  const isWelcomeBonus = 
+    (promocion.title && promocion.title.toLowerCase().includes('bienvenida')) || 
     (promocion.titol && promocion.titol.toLowerCase().includes('bienvenida')) ||
-    (promocion.title && promocion.title.toLowerCase().includes('bienvenida')) ||
-    (promocion.tipo_promocio && promocion.tipo_promocio.titol &&
-     promocion.tipo_promocio.titol.toLowerCase().includes('bienvenida')) ||
-    (promocion.tipoPromocion && promocion.tipoPromocion.titol &&
-     promocion.tipoPromocion.titol.toLowerCase().includes('bienvenida'));
+    (promocion.title && promocion.title.toLowerCase().includes('benvenuto')) || 
+    (promocion.titol && promocion.titol.toLowerCase().includes('benvenuto'));
 
-  console.log('Promotion object:', promocion); // Add this for debugging
-  console.log('Is welcome bonus:', isWelcomeBonus); // Add this for debugging
+  console.log('Inscribiendo en promoción:', promocion);
+  console.log('¿Es bono de bienvenida?:', isWelcomeBonus);
 
+  // Llamada directa al endpoint específico para el bono de bienvenida
   if (isWelcomeBonus) {
-    // Use the dedicated endpoint for welcome bonus
+    // Usar el servicio específico para el bono de bienvenida
     this.promocionesService.inscribirEnBonoBienvenida().subscribe({
-      next: (response) => {
-        this.notificationService.showSuccess(response.message);
+      next: (response: any) => {
+        console.log('Respuesta de inscripción al bono:', response);
+        this.notificationService.showSuccess(response.message || 'Te has inscrito correctamente al bono de bienvenida');
+        
+        // Actualizar el saldo del usuario si se devolvió en la respuesta
+        if (response.saldo_actual !== undefined) {
+          console.log('Actualizando saldo a:', response.saldo_actual);
+          this.authService.updateUserSaldo(response.saldo_actual);
+        }
+        
+        // Actualizar el estado de la promoción
         promocion.isInscrito = true;
-        // Update button text if needed
         this.translateService.get('PROMOTIONS.INSCRITO').subscribe((text: string) => {
           promocion.buttonText = text;
         });
       },
-      error: (error) => this.handleError(error)
+      error: (error) => {
+        console.error('Error en inscripción al bono:', error);
+        this.handleError(error);
+      }
     });
   } else {
-    // Regular promotion inscription
+    // Promoción regular - usar el servicio normal
     this.promocionesService.inscribirEnPromocion(promocion.id).subscribe({
       next: (response) => {
         this.notificationService.showSuccess(response.message);
         promocion.isInscrito = true;
-        // Update button text if needed
         this.translateService.get('PROMOTIONS.INSCRITO').subscribe((text: string) => {
           promocion.buttonText = text;
         });

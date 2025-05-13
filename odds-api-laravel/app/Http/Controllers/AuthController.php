@@ -501,7 +501,7 @@ public function addPoints(Request $request)
 {
     try {
         $request->validate([
-            'points' => 'required|integer|min:1|max:100',
+            'points' => 'required|integer|min:1|max:10000', // Aumentado el máximo para permitir 500 puntos
         ]);
 
         $user = auth()->user();
@@ -510,18 +510,35 @@ public function addPoints(Request $request)
         }
 
         // Actualizar el saldo del usuario
-        $newSaldo = $user->saldo + $request->points;
-        $user->saldo = $newSaldo;
-        $user->save();
+        $oldSaldo = $user->saldo;
+        $newSaldo = $oldSaldo + $request->points;
+        
+        // Usar DB::statement para asegurar la actualización
+        $updated = DB::statement("UPDATE usuaris SET saldo = ? WHERE nick = ?", [$newSaldo, $user->nick]);
+        
+        if (!$updated) {
+            throw new \Exception('No se pudo actualizar el saldo del usuario');
+        }
+        
+        // Verificar que la actualización funcionó
+        $verifiedUser = DB::table('usuaris')->where('nick', $user->nick)->first();
+        
+        Log::info('Puntos añadidos manualmente', [
+            'user' => $user->nick,
+            'old_saldo' => $oldSaldo,
+            'points_added' => $request->points,
+            'new_saldo' => $verifiedUser->saldo
+        ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Puntos añadidos correctamente',
-            'saldo' => $newSaldo
+            'saldo' => $verifiedUser->saldo
         ]);
     } catch (\Exception $e) {
         Log::error('Error al añadir puntos: ' . $e->getMessage());
-        return response()->json(['message' => 'Error al procesar la solicitud'], 500);
+        return response()->json(['message' => 'Error al procesar la solicitud: ' . $e->getMessage()], 500);
     }
+}
 }
 }
