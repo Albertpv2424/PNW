@@ -184,6 +184,76 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/chat/sessions/{sessionId}', [ChatController::class, 'deleteSession'])->middleware('auth:sanctum');
     Route::delete('/chat/sessions/old/{days?}', [ChatController::class, 'deleteOldSessions'])->middleware('auth:sanctum');
 });
+// Admin routes
+Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+    // User management
+    Route::get('/users', 'App\Http\Controllers\Admin\UserController@index');
+    Route::get('/users/{id}', 'App\Http\Controllers\Admin\UserController@show');
+    Route::post('/users', 'App\Http\Controllers\Admin\UserController@store');
+    Route::put('/users/{id}', 'App\Http\Controllers\Admin\UserController@update');
+    Route::delete('/users/{id}', 'App\Http\Controllers\Admin\UserController@destroy');
+    Route::post('/users/{id}/balance', 'App\Http\Controllers\Admin\UserController@updateBalance');
+    Route::delete('/users/{id}/delete-all-data', 'App\Http\Controllers\Admin\UserController@deleteAllData');
+
+    // Gestión de premios
+    Route::get('/prizes', [PrizeController::class, 'index']);
+    Route::get('/prizes/{id}', [PrizeController::class, 'show']);
+    Route::post('/prizes', [PrizeController::class, 'store']);
+    Route::post('/prizes/{id}', [PrizeController::class, 'update']);
+    Route::delete('/prizes/{id}', [PrizeController::class, 'destroy']);
+
+    // Verificación de premios canjeados
+    Route::get('/prize-redemptions', [PrizeController::class, 'getRedemptions']);
+    Route::post('/prize-redemptions/{id}/verify', [PrizeController::class, 'verifyRedemption']);
+
+    // Gestión de promociones
+    Route::get('/promotions', [PromotionController::class, 'index']);
+    Route::get('/promotions/{id}', [PromotionController::class, 'show']);
+    Route::post('/promotions', [PromotionController::class, 'store']);
+    Route::post('/promotions/{id}', [PromotionController::class, 'update']);
+    Route::delete('/promotions/{id}', [PromotionController::class, 'destroy']);
+    Route::get('/tipos-promocion', [PromotionController::class, 'getTiposPromocion']);
+
+    // Verificación de apuestas
+    Route::get('/bets/pending', [BetVerificationController::class, 'getPendingBets']);
+    Route::get('/bets/verified', [BetVerificationController::class, 'getVerifiedBets']);
+    Route::post('/bets/{id}/verify', [BetVerificationController::class, 'verifyBet']);
+
+    // Estadísticas
+    Route::get('/stats', [StatsController::class, 'index']);
+    Route::get('/stats/users', [StatsController::class, 'userStats']);
+    Route::get('/stats/bets', [StatsController::class, 'betStats']);
+    Route::get('/stats/prizes', [StatsController::class, 'prizeStats']);
+
+    // Gestión de limitaciones de usuarios
+    Route::get('/user-limitations', 'App\Http\Controllers\Admin\UserLimitationsController@getAllUsersLimitations');
+    Route::get('/user-limitations/{username}', 'App\Http\Controllers\Admin\UserLimitationsController@getUserLimitations');
+    Route::put('/user-limitations/{username}', 'App\Http\Controllers\Admin\UserLimitationsController@updateUserLimitations');
+    Route::post('/user-limitations/{username}/reset', 'App\Http\Controllers\Admin\UserLimitationsController@resetUserLimitations');
+    Route::put('/user-limitations/{username}/toggle', 'App\Http\Controllers\Admin\UserLimitationsController@toggleUserLimitations');
+    Route::get('/user-limitations/defaults', 'App\Http\Controllers\Admin\UserLimitationsController@getDefaultLimitations');
+    Route::post('/user-limitations/global', 'App\Http\Controllers\Admin\UserLimitationsController@setGlobalLimitations');
+});
+
+// Añade esta ruta junto a tus otras rutas de API
+Route::get('/check-translations', [PremiosController::class, 'checkTranslations']);
+// Contact form route
+// Update the contact route to use the same endpoint
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'sendContactForm']);
+
+// Rutas para el chat en vivo (requieren autenticación)
+// Add these routes if they don't exist
+Route::middleware('auth:sanctum')->group(function () {
+    // Chat routes
+    Route::post('/chat/start', [ChatController::class, 'startSession']);
+    Route::post('/chat/messages', [ChatController::class, 'sendMessage']);
+    Route::get('/chat/messages/{sessionId}', [ChatController::class, 'getMessages']);
+    Route::get('/chat/read/{sessionId}', [ChatController::class, 'markAsRead']);
+    Route::get('/chat/sessions', [ChatController::class, 'getActiveSessions']);
+    // Rutas para administración de chat
+    Route::delete('/chat/sessions/{sessionId}', [ChatController::class, 'deleteSession'])->middleware('auth:sanctum');
+    Route::delete('/chat/sessions/old/{days?}', [ChatController::class, 'deleteOldSessions'])->middleware('auth:sanctum');
+});
 // Find this section in your api.php file (around line 206)
 Route::middleware('auth:sanctum')->group(function () {
     // Existing routes...

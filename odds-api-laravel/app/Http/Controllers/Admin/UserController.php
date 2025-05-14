@@ -94,47 +94,44 @@ class UserController extends Controller
             'nick' => 'required|string|max:255|unique:usuaris,nick',
             'email' => 'required|string|email|max:255|unique:usuaris,email',
             'password' => 'required|string|min:8',
-            'nom' => 'nullable|string|max:255',
-            'cognoms' => 'nullable|string|max:255',
-            'data_naixement' => 'nullable|date',
-            'tipus_acc' => 'nullable|string',
-            'dni' => 'nullable|string|max:20',
+            'dni' => 'required|string|max:20|unique:usuaris,dni',
             'telefon' => 'nullable|string|max:20',
-            'saldo' => 'nullable|numeric|min:0',
-            'profile_image' => 'nullable|image|max:2048'
+            'data_naixement' => 'required|date',
+            'saldo' => 'nullable|numeric|min:0'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Crear el usuario
-        $user = new User();
-        $user->nick = $request->nick;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->nom = $request->input('nom', '');
-        $user->cognoms = $request->input('cognoms', '');
-        $user->data_naix = $request->input('data_naixement');
-        $user->tipus_acc = $request->input('tipus_acc', 'Usuari');
-        $user->dni = $request->input('dni', '');
-        $user->telefon = $request->input('telefon', '');
-        $user->saldo = $request->input('saldo', 0);
+        try {
+            // Crear el usuario - IMPORTANTE: usar 'pswd' en lugar de 'password'
+            $user = new User();
+            $user->nick = $request->nick;
+            $user->email = $request->email;
+            $user->pswd = Hash::make($request->password); // Cambio de password a pswd
+            $user->dni = $request->dni;
+            $user->telefon = $request->telefon;
+            $user->data_naixement = $request->data_naixement;
+            $user->tipus_acc = 'Usuari'; // Crear como usuario normal
+            $user->saldo = $request->saldo ?? 0;
+            $user->save();
 
-        // Procesar la imagen de perfil si se proporciona
-        if ($request->hasFile('profile_image')) {
-            $path = $request->file('profile_image')->store('profile_images', 'public');
-            $user->profile_image = $path;
+            return response()->json([
+                'message' => 'Usuario creado con éxito',
+                'user' => $user
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('Error al crear usuario: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error al crear el usuario: ' . $e->getMessage()
+            ], 500);
         }
-
-        $user->save();
-
-        return response()->json([
-            'message' => 'Usuario creado con éxito',
-            'user' => $user
-        ], 201);
     }
 
+    /**
+     * Actualizar un usuario existente
+     */
     /**
      * Actualizar un usuario existente
      */
@@ -146,7 +143,7 @@ class UserController extends Controller
         }
 
         // Buscar el usuario
-        $user = User::find($id);
+        $user = User::where('nick', $id)->first();
 
         if (!$user) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
@@ -154,50 +151,45 @@ class UserController extends Controller
 
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:usuaris,email,' . $user->id,
-            'nom' => 'required|string|max:255',
-            'cognoms' => 'required|string|max:255',
-            'data_naix' => 'required|date',
+            'email' => 'required|string|email|max:255|unique:usuaris,email,' . $user->nick . ',nick',
             'password' => 'nullable|string|min:8',
-            'saldo' => 'nullable|numeric|min:0',
-            'profile_image' => 'nullable|image|max:2048' // Permitir actualizar imagen de perfil
+            'dni' => 'required|string|max:20|unique:usuaris,dni,' . $user->nick . ',nick',
+            'telefon' => 'nullable|string|max:20',
+            'data_naixement' => 'required|date',
+            'saldo' => 'nullable|numeric|min:0'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Actualizar el usuario
-        $user->email = $request->email;
-        $user->nom = $request->nom;
-        $user->cognoms = $request->cognoms;
-        $user->data_naix = $request->data_naix;
+        try {
+            // Actualizar el usuario
+            $user->email = $request->email;
+            $user->dni = $request->dni;
+            $user->telefon = $request->telefon;
+            $user->data_naixement = $request->data_naixement;
 
-        if ($request->has('password') && !empty($request->password)) {
-            $user->password = Hash::make($request->password);
-        }
-
-        if ($request->has('saldo')) {
-            $user->saldo = $request->saldo;
-        }
-
-        // Procesar la imagen de perfil si se proporciona
-        if ($request->hasFile('profile_image')) {
-            // Eliminar la imagen anterior si existe
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
+            if ($request->has('password') && !empty($request->password)) {
+                $user->pswd = Hash::make($request->password); // Cambio de password a pswd
             }
 
-            $path = $request->file('profile_image')->store('profile_images', 'public');
-            $user->profile_image = $path;
+            if ($request->has('saldo')) {
+                $user->saldo = $request->saldo;
+            }
+
+            $user->save();
+
+            return response()->json([
+                'message' => 'Usuario actualizado con éxito',
+                'user' => $user
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar usuario: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error al actualizar el usuario: ' . $e->getMessage()
+            ], 500);
         }
-
-        $user->save();
-
-        return response()->json([
-            'message' => 'Usuario actualizado con éxito',
-            'user' => $user
-        ]);
     }
 
     /**

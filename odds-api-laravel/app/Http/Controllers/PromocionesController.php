@@ -300,19 +300,19 @@ class PromocionesController extends Controller
             $oldSaldo = $user->saldo;
 
             // Actualizar el saldo directamente en la base de datos
-            \DB::table('usuaris')
+            DB::table('usuaris')
                 ->where('nick', $user->nick)
-                ->update(['saldo' => \DB::raw('saldo + 500')]);
+                ->update(['saldo' => DB::raw('saldo + 500')]);
 
             // Obtener el saldo actualizado
-            $updatedUser = \DB::table('usuaris')->where('nick', $user->nick)->first();
+            $updatedUser = DB::table('usuaris')->where('nick', $user->nick)->first();
             $newSaldo = $updatedUser->saldo;
 
             // Actualizar el modelo del usuario
             $user->saldo = $newSaldo;
 
             // Registrar en el log
-            \Log::info("BONO BIENVENIDA: Añadidos 500 puntos al usuario {$user->nick}. Saldo anterior: {$oldSaldo}, Nuevo saldo: {$newSaldo}");
+            Log::info("BONO BIENVENIDA: Añadidos 500 puntos al usuario {$user->nick}. Saldo anterior: {$oldSaldo}, Nuevo saldo: {$newSaldo}");
 
             return response()->json([
                 'message' => 'Te has inscrito correctamente al bono de bienvenida y has recibido 500 puntos',
@@ -320,8 +320,8 @@ class PromocionesController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            \Log::error('Error al inscribirse en bono de bienvenida: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            Log::error('Error al inscribirse en bono de bienvenida: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
 
             return response()->json([
                 'message' => 'Error al inscribirse en la promoción: ' . $e->getMessage()

@@ -194,13 +194,18 @@ export class UsersComponent implements OnInit {
     this.userForm.reset();
   }
 
+  // Update the submitUserForm method to properly handle both create and edit
   submitUserForm(): void {
     if (this.userForm.invalid) {
       this.notificationService.showError('Por favor, completa todos los campos requeridos correctamente');
       return;
     }
 
+    // Get form values and enable tipus_acc if it was disabled
+    this.userForm.get('tipus_acc')?.enable();
     const userData = this.userForm.value;
+    
+    console.log('Submitting user form with data:', userData);
 
     if (this.isEditing && this.selectedUser) {
       // If password is empty, remove it from the data
@@ -208,31 +213,32 @@ export class UsersComponent implements OnInit {
         delete userData.password;
       }
 
-      this.http.put(`${environment.apiUrl}/admin/users/${this.selectedUser.id}`, userData, {
-        headers: this.authService.getAuthHeaders()
-      }).subscribe({
+      this.adminService.updateUser(this.selectedUser.id, userData).subscribe({
         next: (response) => {
+          console.log('User updated successfully:', response);
           this.notificationService.showSuccess('Usuario actualizado correctamente');
-          this.loadUsers();
           this.closeUserForm();
+          this.loadUsers();
         },
         error: (error) => {
           console.error('Error updating user:', error);
-          this.notificationService.showError('Error al actualizar el usuario');
+          this.notificationService.showError('Error al actualizar el usuario: ' + 
+            (error.error?.message || error.message || 'Error desconocido'));
         }
       });
     } else {
-      this.http.post(`${environment.apiUrl}/admin/users`, userData, {
-        headers: this.authService.getAuthHeaders()
-      }).subscribe({
+      // Creating a new user
+      this.adminService.createUser(userData).subscribe({
         next: (response) => {
+          console.log('User created successfully:', response);
           this.notificationService.showSuccess('Usuario creado correctamente');
-          this.loadUsers();
           this.closeUserForm();
+          this.loadUsers();
         },
         error: (error) => {
           console.error('Error creating user:', error);
-          this.notificationService.showError('Error al crear el usuario');
+          this.notificationService.showError('Error al crear el usuario: ' + 
+            (error.error?.message || error.message || 'Error desconocido'));
         }
       });
     }

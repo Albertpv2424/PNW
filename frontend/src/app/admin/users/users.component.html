@@ -82,85 +82,72 @@
     </table>
   </div>
 
-  <!-- Modal para crear/editar usuario -->
+  <!-- User Form Modal -->
   <div class="modal" *ngIf="showUserForm">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>{{ isEditing ? 'Editar Usuario' : 'Crear Usuario' }}</h2>
-        <button class="close-btn" (click)="closeUserForm()">&times;</button>
+        <h3>{{ isEditing ? 'Editar Usuario' : 'Crear Nuevo Usuario' }}</h3>
+        <button class="close-btn" (click)="closeUserForm()">×</button>
       </div>
       <div class="modal-body">
-        <!-- Contenido del formulario -->
         <form [formGroup]="userForm" (ngSubmit)="submitUserForm()">
-          <!-- Add profile image preview at the top of the form -->
-          <div class="form-group profile-image-group">
-            <label>Imagen de perfil:</label>
-            <div class="profile-preview">
-              <div class="user-avatar large-avatar"
-                     [style.background-image]="selectedUser && selectedUser.profile_image ? (selectedUser.profile_image.startsWith('http') ? 'url(' + selectedUser.profile_image + ')' : 'url(http://localhost:8000/' + selectedUser.profile_image + ')') : 'none'">
-                <span *ngIf="!selectedUser || !selectedUser.profile_image">{{ selectedUser ? getUserInitials(selectedUser.nick) : '' }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Continue with the rest of the form fields -->
           <div class="form-group">
-            <label for="nick">Nick:</label>
-            <input type="text" id="nick" formControlName="nick">
-            <div class="error" *ngIf="userForm.get('nick')?.invalid && userForm.get('nick')?.touched">
-              El nick es requerido
+            <label for="nick">Nombre de Usuario</label>
+            <input type="text" id="nick" formControlName="nick" [readonly]="isEditing">
+            <div class="error-message" *ngIf="userForm.get('nick')?.invalid && userForm.get('nick')?.touched">
+              El nombre de usuario es obligatorio
             </div>
           </div>
 
           <div class="form-group">
-            <label for="email">Email:</label>
+            <label for="email">Email</label>
             <input type="email" id="email" formControlName="email">
-            <div class="error" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
-              Email inválido
+            <div class="error-message" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+              Introduce un email válido
             </div>
           </div>
 
           <div class="form-group">
-            <label for="password">{{ isEditing ? 'Contraseña (dejar en blanco para mantener)' : 'Contraseña:' }}</label>
+            <label for="password">Contraseña {{ isEditing ? '(dejar en blanco para mantener la actual)' : '' }}</label>
             <input type="password" id="password" formControlName="password">
-            <div class="error" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
-              La contraseña es requerida
+            <div class="error-message" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+              La contraseña es obligatoria
             </div>
           </div>
 
           <div class="form-group">
-            <label for="dni">DNI:</label>
+            <label for="dni">DNI</label>
             <input type="text" id="dni" formControlName="dni">
-            <div class="error" *ngIf="userForm.get('dni')?.invalid && userForm.get('dni')?.touched">
-              El DNI es requerido
+            <div class="error-message" *ngIf="userForm.get('dni')?.invalid && userForm.get('dni')?.touched">
+              El DNI es obligatorio
             </div>
           </div>
 
           <div class="form-group">
-            <label for="telefon">Teléfono:</label>
+            <label for="telefon">Teléfono</label>
             <input type="text" id="telefon" formControlName="telefon">
           </div>
 
           <div class="form-group">
-            <label for="data_naixement">Fecha de nacimiento:</label>
+            <label for="data_naixement">Fecha de Nacimiento</label>
             <input type="date" id="data_naixement" formControlName="data_naixement">
-            <div class="error" *ngIf="userForm.get('data_naixement')?.invalid && userForm.get('data_naixement')?.touched">
-              La fecha de nacimiento es requerida
+            <div class="error-message" *ngIf="userForm.get('data_naixement')?.invalid && userForm.get('data_naixement')?.touched">
+              La fecha de nacimiento es obligatoria
             </div>
           </div>
 
           <div class="form-group">
-            <label for="saldo">Saldo:</label>
+            <label for="saldo">Saldo Inicial</label>
             <input type="number" id="saldo" formControlName="saldo" min="0">
-            <div class="error" *ngIf="userForm.get('saldo')?.invalid && userForm.get('saldo')?.touched">
+            <div class="error-message" *ngIf="userForm.get('saldo')?.invalid && userForm.get('saldo')?.touched">
               El saldo debe ser un número positivo
             </div>
           </div>
 
           <div class="form-actions">
-            <button type="button" class="cancel-btn" (click)="closeUserForm()">Cancelar</button>
-            <button type="submit" class="submit-btn" [disabled]="userForm.invalid">
-              {{ isEditing ? 'Actualizar' : 'Crear' }}
+            <button type="button" class="secondary-btn" (click)="closeUserForm()">Cancelar</button>
+            <button type="submit" class="primary-btn" [disabled]="userForm.invalid">
+              {{ isEditing ? 'Actualizar' : 'Crear' }} Usuario
             </button>
           </div>
         </form>

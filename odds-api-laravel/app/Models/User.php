@@ -33,42 +33,40 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    // Add this to your User model if it's not already there
     protected $fillable = [
         'nick',
         'email',
-        'pswd',
-        'tipus_acc',
-        'saldo',
+        'pswd', // Note: using pswd instead of password
         'dni',
         'telefon',
         'data_naixement',
-        'profile_image',
+        'tipus_acc',
+        'saldo',
+        'profile_image'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    // Make sure the password attribute is set to 'pswd'
     protected $hidden = [
         'pswd',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'pswd' => 'hashed',
-    ];
-
-    // Override the getAuthPassword method to use 'pswd' instead of 'password'
+    // Add this method to ensure password hashing works correctly
     public function getAuthPassword()
     {
         return $this->pswd;
+    }
+
+    // Add this if you want to use Laravel's password reset functionality
+    public function getPasswordAttribute()
+    {
+        return $this->pswd;
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['pswd'] = $value;
     }
 
     /**
