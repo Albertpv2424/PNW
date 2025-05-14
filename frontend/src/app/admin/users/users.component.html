@@ -146,7 +146,7 @@
 
           <div class="form-actions">
             <button type="button" class="cancel-btn" (click)="closeUserForm()">Cancelar</button>
-            <button type="submit" class="primary-btn" [disabled]="userForm.invalid">
+            <button type="submit" class="submit-btn" [disabled]="userForm.invalid">
               {{ isEditing ? 'Actualizar' : 'Crear' }} Usuario
             </button>
           </div>
@@ -206,8 +206,8 @@
       <p><strong>Esta acción no se puede deshacer.</strong></p>
 
       <div class="form-actions">
-        <button type="button" class="cancel-btn" (click)="cancelDeleteUser()">Cancelar</button>
-        <button type="button" class="delete-btn" (click)="deleteUser()">Eliminar Todo</button>
+        <button type="button" class="primary-btn" (click)="cancelDeleteUser()">Cancelar</button>
+        <button type="button" class="cancel-btn" (click)="deleteUser()">Eliminar Todo</button>
       </div>
     </div>
   </div>
