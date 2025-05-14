@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -119,13 +120,13 @@ class UserController extends Controller
         $user->dni = $request->input('dni', '');
         $user->telefon = $request->input('telefon', '');
         $user->saldo = $request->input('saldo', 0);
-        
+
         // Procesar la imagen de perfil si se proporciona
         if ($request->hasFile('profile_image')) {
             $path = $request->file('profile_image')->store('profile_images', 'public');
             $user->profile_image = $path;
         }
-        
+
         $user->save();
 
         return response()->json([
@@ -179,14 +180,14 @@ class UserController extends Controller
         if ($request->has('saldo')) {
             $user->saldo = $request->saldo;
         }
-        
+
         // Procesar la imagen de perfil si se proporciona
         if ($request->hasFile('profile_image')) {
             // Eliminar la imagen anterior si existe
             if ($user->profile_image) {
                 Storage::disk('public')->delete($user->profile_image);
             }
-            
+
             $path = $request->file('profile_image')->store('profile_images', 'public');
             $user->profile_image = $path;
         }
@@ -211,34 +212,34 @@ class UserController extends Controller
         if (!$this->isAdmin()) {
             return response()->json(['message' => 'No tienes permisos de administrador'], 403);
         }
-    
+
         // Registrar información de depuración
         Log::info('Intento de eliminar usuario con ID: ' . $id);
-    
+
         // Buscar el usuario
         $user = User::find($id);
-    
+
         if (!$user) {
             Log::error('Usuario no encontrado con ID: ' . $id);
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
-    
+
         // No permitir eliminar usuarios administradores
         if (strtolower($user->tipus_acc) === 'administrador' || strtolower($user->tipus_acc) === 'admin') {
             Log::warning('Intento de eliminar un usuario administrador: ' . $user->nick);
             return response()->json(['message' => 'No se pueden eliminar usuarios administradores'], 403);
         }
-    
+
         try {
             // Eliminar la imagen de perfil si existe
             if ($user->profile_image) {
                 Storage::disk('public')->delete($user->profile_image);
             }
-    
+
             // Eliminar el usuario
             $user->delete();
             Log::info('Usuario eliminado correctamente: ' . $user->nick);
-    
+
             return response()->json(['message' => 'Usuario eliminado con éxito']);
         } catch (\Exception $e) {
             Log::error('Error al eliminar usuario: ' . $e->getMessage());
@@ -323,5 +324,133 @@ class UserController extends Controller
             'user' => $user,
             'profile_image_url' => url('storage/' . $path)
         ]);
+    }
+
+    /**
+     * Eliminar un usuario y todos sus datos asociados
+     */
+    public function deleteAllData($id)
+    {
+        try {
+            // Verificar si el usuario tiene permisos de administrador
+            if (!$this->isAdmin()) {
+                return response()->json(['message' => 'No tienes permisos de administrador'], 403);
+            }
+
+            // Buscar el usuario por nick (no por ID ya que la tabla no tiene columna 'id')
+            $user = User::where('nick', $id)->first();
+
+            if (!$user) {
+                return response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+
+            // No permitir eliminar usuarios administradores
+            if (strtolower($user->tipus_acc) === 'administrador' || strtolower($user->tipus_acc) === 'admin') {
+                Log::warning('Intento de eliminar un usuario administrador: ' . $user->nick);
+                return response()->json(['message' => 'No se pueden eliminar usuarios administradores'], 403);
+            }
+
+            // Guardar el nick para el log
+            $userNick = $user->nick;
+
+            // Use try-catch blocks for each deletion to handle missing tables
+            try {
+                // 1. Delete chat messages where the user is involved
+                DB::table('chat_messages')
+                    ->where('user_id', $userNick)
+                    ->orWhere('admin_id', $userNick)
+                    ->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar chat_messages: ' . $e->getMessage());
+            }
+
+            try {
+                // 2. Get all session IDs where the user is involved
+                $sessionIds = DB::table('chat_sessions')
+                    ->where('user_id', $userNick)
+                    ->orWhere('admin_id', $userNick)
+                    ->pluck('session_id')
+                    ->toArray();
+
+                // 3. Delete all messages from these sessions (even if not directly from the user)
+                if (!empty($sessionIds)) {
+                    DB::table('chat_messages')
+                        ->whereIn('chat_session_id', $sessionIds)
+                        ->delete();
+                }
+            } catch (\Exception $e) {
+                Log::warning('Error al obtener o eliminar mensajes de sesiones: ' . $e->getMessage());
+            }
+
+            try {
+                // 4. Now delete the chat sessions
+                DB::table('chat_sessions')
+                    ->where('user_id', $userNick)
+                    ->orWhere('admin_id', $userNick)
+                    ->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar chat_sessions: ' . $e->getMessage());
+            }
+
+            // Try to delete from prediccions_sist instead of apuestas
+            try {
+                DB::table('prediccions_sist')->where('usuari_nick', $userNick)->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar prediccions_sist: ' . $e->getMessage());
+            }
+
+            try {
+                DB::table('prediccio_proposada')->where('usuari_nick', $userNick)->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar prediccio_proposada: ' . $e->getMessage());
+            }
+
+            // Try to delete from inscripcio_a_promos instead of promociones_users
+            try {
+                DB::table('inscripcio_a_promos')->where('usuari_nick', $userNick)->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar inscripcio_a_promos: ' . $e->getMessage());
+            }
+
+            try {
+                // Delete user limitations
+                DB::table('limitacio')->where('usuari_nick', $userNick)->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar limitacio: ' . $e->getMessage());
+            }
+
+            try {
+                // Delete daily rewards tracking
+                DB::table('daily_rewards_tracking')->where('usuari_nick', $userNick)->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar daily_rewards_tracking: ' . $e->getMessage());
+            }
+
+            try {
+                // Delete prize redemptions
+                DB::table('premis_usuaris')->where('usuari_nick', $userNick)->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar premis_usuaris: ' . $e->getMessage());
+            }
+
+            try {
+                // Delete user tokens
+                DB::table('personal_access_tokens')
+                    ->where('tokenable_type', 'App\\Models\\User')
+                    ->where('tokenable_id', $userNick)
+                    ->delete();
+            } catch (\Exception $e) {
+                Log::warning('Error al eliminar personal_access_tokens: ' . $e->getMessage());
+            }
+
+            // Delete the user
+            $user->delete();
+
+            Log::info('Usuario eliminado completamente: ' . $userNick);
+            return response()->json(['message' => 'Usuario y todos sus datos eliminados correctamente']);
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar usuario y sus datos: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al eliminar el usuario y sus datos: ' . $e->getMessage()], 500);
+        }
     }
 }

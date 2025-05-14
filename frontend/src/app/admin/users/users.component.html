@@ -3,10 +3,10 @@
     <h2>Usuarios Registrados</h2>
     <div class="actions">
       <div class="search-container">
-        <input 
-          type="text" 
-          [(ngModel)]="searchTerm" 
-          (input)="searchUsers()" 
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="searchUsers()"
           placeholder="Buscar usuarios..."
         >
         <i class="fas fa-search search-icon"></i>
@@ -44,7 +44,7 @@
           <td class="id-cell">{{ user.id }}</td>
           <td>
             <div class="user-cell">
-              <div class="user-avatar" 
+              <div class="user-avatar"
                    [style.background-image]="user.profile_image ? (user.profile_image.startsWith('http') ? 'url(' + user.profile_image + ')' : 'url(http://localhost:8000/' + user.profile_image + ')') : 'none'">
                 <span *ngIf="!user.profile_image">{{ getUserInitials(user.nick) }}</span>
               </div>
@@ -71,7 +71,8 @@
               <button class="action-btn balance-btn" (click)="openBalanceForm(user)" title="Saldo">
                 <i class="fas fa-coins"></i>
               </button>
-              <button class="action-btn delete-btn" (click)="confirmDeleteUser(user.id)" title="Eliminar">
+              <!-- Make sure your delete button looks like this -->
+              <button class="action-btn delete-btn" (click)="confirmDeleteUser(user)" title="Eliminar">
                 <i class="fas fa-trash"></i>
               </button>
             </div>
@@ -95,13 +96,13 @@
           <div class="form-group profile-image-group">
             <label>Imagen de perfil:</label>
             <div class="profile-preview">
-              <div class="user-avatar large-avatar" 
+              <div class="user-avatar large-avatar"
                      [style.background-image]="selectedUser && selectedUser.profile_image ? (selectedUser.profile_image.startsWith('http') ? 'url(' + selectedUser.profile_image + ')' : 'url(http://localhost:8000/' + selectedUser.profile_image + ')') : 'none'">
                 <span *ngIf="!selectedUser || !selectedUser.profile_image">{{ selectedUser ? getUserInitials(selectedUser.nick) : '' }}</span>
               </div>
             </div>
           </div>
-          
+
           <!-- Continue with the rest of the form fields -->
           <div class="form-group">
             <label for="nick">Nick:</label>
@@ -110,7 +111,7 @@
               El nick es requerido
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" id="email" formControlName="email">
@@ -118,7 +119,7 @@
               Email inválido
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="password">{{ isEditing ? 'Contraseña (dejar en blanco para mantener)' : 'Contraseña:' }}</label>
             <input type="password" id="password" formControlName="password">
@@ -126,7 +127,7 @@
               La contraseña es requerida
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="dni">DNI:</label>
             <input type="text" id="dni" formControlName="dni">
@@ -134,12 +135,12 @@
               El DNI es requerido
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="telefon">Teléfono:</label>
             <input type="text" id="telefon" formControlName="telefon">
           </div>
-          
+
           <div class="form-group">
             <label for="data_naixement">Fecha de nacimiento:</label>
             <input type="date" id="data_naixement" formControlName="data_naixement">
@@ -147,7 +148,7 @@
               La fecha de nacimiento es requerida
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="saldo">Saldo:</label>
             <input type="number" id="saldo" formControlName="saldo" min="0">
@@ -155,7 +156,7 @@
               El saldo debe ser un número positivo
             </div>
           </div>
-          
+
           <div class="form-actions">
             <button type="button" class="cancel-btn" (click)="closeUserForm()">Cancelar</button>
             <button type="submit" class="submit-btn" [disabled]="userForm.invalid">
@@ -178,7 +179,7 @@
     <div class="modal-body">
       <p>Usuario: <strong>{{ selectedUser?.nick }}</strong></p>
       <p>Saldo actual: <strong>{{ selectedUser?.saldo }}</strong></p>
-      
+
       <form [formGroup]="balanceForm" (ngSubmit)="submitBalanceForm()">
         <div class="form-group">
           <label for="amount">Nuevo saldo:</label>
@@ -187,7 +188,7 @@
             El saldo debe ser un número positivo
           </div>
         </div>
-        
+
         <div class="form-actions">
           <button type="button" class="cancel-btn" (click)="closeBalanceForm()">Cancelar</button>
           <button type="submit" class="submit-btn" [disabled]="balanceForm.invalid">Actualizar</button>
@@ -201,15 +202,25 @@
 <div class="modal" *ngIf="showDeleteConfirm">
   <div class="modal-content">
     <div class="modal-header">
-      <h2>Confirmar Eliminación</h2>
+      <h2>Confirmar Eliminación Completa</h2>
       <button class="close-btn" (click)="cancelDeleteUser()">&times;</button>
     </div>
     <div class="modal-body">
-      <p>¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.</p>
-      
+      <p>¿Estás seguro de que deseas eliminar al usuario <strong>{{ selectedUser?.nick }}</strong>?</p>
+      <p>Esta acción eliminará:</p>
+      <ul>
+        <li>Todos los mensajes de chat del usuario</li>
+        <li>Todas las apuestas realizadas</li>
+        <li>Todas las sesiones de chat</li>
+        <li>Todos los registros de actividad</li>
+        <li>La imagen de perfil del usuario</li>
+        <li>La cuenta del usuario</li>
+      </ul>
+      <p><strong>Esta acción no se puede deshacer.</strong></p>
+
       <div class="form-actions">
         <button type="button" class="cancel-btn" (click)="cancelDeleteUser()">Cancelar</button>
-        <button type="button" class="delete-btn" (click)="deleteUser()">Eliminar</button>
+        <button type="button" class="delete-btn" (click)="deleteUser()">Eliminar Todo</button>
       </div>
     </div>
   </div>

@@ -75,29 +75,30 @@ export class AdminService {
   }
 
   // Eliminar un usuario
-  deleteUser(id: number): Observable<any> {
+  // Update or add the deleteUser method to handle complete deletion
+  deleteUser(id: number | string): Observable<any> {
     if (!id) {
       console.error('ID de usuario inválido:', id);
       return throwError(() => new Error('ID de usuario no válido'));
     }
-    
-    console.log(`Intentando eliminar usuario con ID: ${id}`);
-    console.log('URL completa:', `${this.apiUrl}/users/${id}`);
-    
-    return this.http.delete<any>(`${this.apiUrl}/users/${id}`, {
+
+    console.log(`Intentando eliminar usuario con ID/nick: ${id}`);
+
+    // Use the delete-all-data endpoint
+    return this.http.delete<any>(`${this.apiUrl}/users/${id}/delete-all-data`, {
       headers: this.getAuthHeaders()
     }).pipe(
       tap(response => console.log('Respuesta de eliminación:', response)),
       catchError(error => {
-        console.error('Error detallado al eliminar usuario:', {
+        console.error('Error detallado al eliminar datos de usuario:', {
           status: error.status,
           statusText: error.statusText,
           error: error.error,
           message: error.message
         });
-        
+
         // Mensaje de error más descriptivo
-        const errorMessage = error.error?.message || 'Error al eliminar el usuario';
+        const errorMessage = error.error?.message || 'Error al eliminar los datos del usuario';
         return throwError(() => new Error(errorMessage));
       })
     );
@@ -188,12 +189,12 @@ export class AdminService {
   // Add this helper method after the getAuthHeaders method
   getFullImageUrl(imagePath: string | null): string {
     if (!imagePath) return '';
-    
+
     // Check if the image path already includes http or https
     if (imagePath.startsWith('http')) {
       return imagePath;
     }
-    
+
     // Otherwise, prepend the base URL
     return `http://localhost:8000/${imagePath}`;
   }

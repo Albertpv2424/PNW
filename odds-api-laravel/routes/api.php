@@ -123,6 +123,7 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::post('/users/{nick}/balance', [UserController::class, 'updateBalance']);
     Route::post('/users/{nick}/role', [UserController::class, 'changeRole']);
+    Route::delete('/users/{nick}/delete-all-data', [UserController::class, 'deleteAllData']);
 
     // Gestión de premios
     Route::get('/prizes', [PrizeController::class, 'index']);
@@ -183,11 +184,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/chat/sessions/{sessionId}', [ChatController::class, 'deleteSession'])->middleware('auth:sanctum');
     Route::delete('/chat/sessions/old/{days?}', [ChatController::class, 'deleteOldSessions'])->middleware('auth:sanctum');
 });
-
-// Add these routes to your api.php file
-
-// Rutas para limitaciones de usuario
+// Find this section in your api.php file (around line 206)
 Route::middleware('auth:sanctum')->group(function () {
+    // Existing routes...
     Route::get('/user/limitations', 'App\Http\Controllers\UserLimitationsController@getCurrentUserLimitations');
     Route::post('/user/update-time-spent', 'App\Http\Controllers\UserLimitationsController@updateTimeSpent');
 });

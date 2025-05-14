@@ -28,7 +28,8 @@ export class UsersComponent implements OnInit {
   showBalanceForm: boolean = false;
   balanceForm: FormGroup;
   showDeleteConfirm: boolean = false;
-  deleteUserId: number | null = null;
+  // Update the property type to allow string values
+  deleteUserId: number | string | null = null;
 
   constructor(
     private http: HttpClient,
@@ -291,33 +292,76 @@ export class UsersComponent implements OnInit {
     return;
   }
 
-  // Fix the confirmDeleteUser method to handle the ID directly
-  confirmDeleteUser(userId: number): void {
-    console.log('Confirming deletion of user with ID:', userId);
-    
-    // Store the ID directly instead of trying to access user.id
-    this.deleteUserId = userId;
+  // Update the property type to allow string values
+
+  // Update the confirmDeleteUser method
+  confirmDeleteUser(user: any): void {
+    console.log('Confirming deletion of user:', user);
+
+    if (!user) {
+      console.error('Invalid user object received');
+      this.notificationService.showError('Error: Usuario no válido para eliminar');
+      return;
+    }
+
+    // Store the entire user object
+    this.selectedUser = user;
+
+    // Check if the user has an ID property
+    if (user.id) {
+      this.deleteUserId = user.id;
+      console.log('User ID to delete:', this.deleteUserId);
+    } else {
+      // If no ID is available, use the nick as identifier
+      this.deleteUserId = user.nick;
+      console.log('Using nick as ID for deletion:', this.deleteUserId);
+    }
+
+    if (!this.deleteUserId) {
+      console.error('No valid identifier found for user deletion');
+      this.notificationService.showError('Error: No se pudo identificar al usuario para eliminar');
+      return;
+    }
+
     this.showDeleteConfirm = true;
   }
-  
+
+  // Update the deleteUser method
   deleteUser(): void {
     if (!this.deleteUserId) {
+      console.error('No valid user ID for deletion');
       this.notificationService.showError('Error: ID de usuario no válido');
       return;
     }
-  
-    console.log('Deleting user with ID:', this.deleteUserId);
-  
+
+    console.log('Deleting user with ID/nick:', this.deleteUserId);
+
+    // Show loading notification
+    this.notificationService.showInfo('Eliminando usuario y todos sus datos asociados...');
+
     this.adminService.deleteUser(this.deleteUserId).subscribe({
-      next: () => {
-        this.notificationService.showSuccess('Usuario eliminado correctamente');
+      next: (response) => {
+        console.log('User and all associated data deleted successfully:', response);
+        this.notificationService.showSuccess('Usuario y todos sus datos eliminados correctamente');
         this.loadUsers(); // Reload the user list
         this.showDeleteConfirm = false;
         this.deleteUserId = null;
+        this.selectedUser = null;
       },
       error: (error) => {
         console.error('Error deleting user:', error);
-        const errorMsg = error.error?.message || 'Error desconocido al eliminar el usuario';
+        let errorMsg = 'Error al eliminar el usuario';
+
+        if (error.message) {
+          errorMsg = error.message;
+        } else if (error.status === 404) {
+          errorMsg = 'Usuario no encontrado';
+        } else if (error.status === 500) {
+          errorMsg = 'Error interno del servidor al eliminar el usuario y sus datos asociados.';
+        } else if (error.error?.message) {
+          errorMsg = error.error.message;
+        }
+
         this.notificationService.showError('Error: ' + errorMsg);
       }
     });
@@ -344,20 +388,20 @@ export class UsersComponent implements OnInit {
   // Add this method to the UsersComponent class
   getProfileImageUrl(imagePath: string | null): string {
     if (!imagePath) return '';
-    
+
     // Check if the image path already includes http or https
     if (imagePath.startsWith('http')) {
       return imagePath;
     }
-    
+
     // Otherwise, prepend the base URL
     return `http://localhost:8000/${imagePath}`;
   }
-  
+
   // Make sure you have the getUserInitials method
   getUserInitials(name: string): string {
     if (!name) return '';
-    
+
     const names = name.split(' ');
     if (names.length === 1) {
       return names[0].charAt(0).toUpperCase();
