@@ -224,7 +224,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid #eee;
+  background-color: #1a1a2e;
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: none; /* Removed the bottom border */
 }
 
 .close-btn {
@@ -232,10 +236,11 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+  color: white;
 }
 
-.modal-body {
-  padding: 1rem;
+.close-btn:hover {
+  color: #e63946;
 }
 
 /* Formularios */
@@ -272,19 +277,30 @@
 
 .cancel-btn {
   padding: 0.5rem 1rem;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
+  background-color: #f44336; /* Changed to red color */
+  color: white; /* Changed text color to white for better contrast */
+  border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #d32f2f; /* Darker red on hover */
 }
 
 .submit-btn {
   padding: 0.5rem 1rem;
-  background-color: #e94560;
+  background-color: #00b341; /* Changed to green */
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #009935; /* Darker green on hover */
 }
 
 .submit-btn:disabled {
@@ -377,15 +393,6 @@
 .type-2 {
   background-color: #e8f5e9;
   color: #1b5e20;
-}
-
-/* Estilos para el saldo */
-.points-cell {
-  font-weight: 600;
-  color: #ff6f00;
-  display: flex;
-  align-items: center;
-  gap: 5px;
 }
 
 .coin-icon {
