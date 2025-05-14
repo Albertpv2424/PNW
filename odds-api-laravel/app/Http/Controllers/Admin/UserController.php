@@ -149,7 +149,7 @@ class UserController extends Controller
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
 
-        // Validar los datos de entrada
+        // Validar los datos de entrada - no incluir 'nick' ya que es la clave primaria
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:usuaris,email,' . $user->nick . ',nick',
             'password' => 'nullable|string|min:8',
@@ -164,14 +164,14 @@ class UserController extends Controller
         }
 
         try {
-            // Actualizar el usuario
+            // Actualizar el usuario - no actualizar 'nick' ya que es la clave primaria
             $user->email = $request->email;
             $user->dni = $request->dni;
             $user->telefon = $request->telefon;
             $user->data_naixement = $request->data_naixement;
 
             if ($request->has('password') && !empty($request->password)) {
-                $user->pswd = Hash::make($request->password); // Cambio de password a pswd
+                $user->pswd = Hash::make($request->password);
             }
 
             if ($request->has('saldo')) {

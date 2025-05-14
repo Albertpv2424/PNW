@@ -158,6 +158,7 @@ export class UsersComponent implements OnInit {
 
   openUserForm(user: any = null): void {
     this.isEditing = !!user;
+    this.selectedUser = user;
 
     if (user) {
       // Editing existing user
@@ -170,6 +171,10 @@ export class UsersComponent implements OnInit {
         data_naixement: user.data_naixement,
         saldo: user.saldo
       });
+
+      // Make nick field read-only when editing
+      this.userForm.get('nick')?.disable();
+
       // Password is optional when editing
       this.userForm.get('password')?.setValidators(null);
     } else {
@@ -178,6 +183,10 @@ export class UsersComponent implements OnInit {
         tipus_acc: 'Usuario', // Always set to Usuario
         saldo: 0
       });
+
+      // Enable nick field for new users
+      this.userForm.get('nick')?.enable();
+
       // Password is required when creating
       this.userForm.get('password')?.setValidators([Validators.required]);
     }
@@ -187,24 +196,36 @@ export class UsersComponent implements OnInit {
 
     this.userForm.get('password')?.updateValueAndValidity();
     this.showUserForm = true;
-  }
+}
 
+  // Add this method to fix the error
   closeUserForm(): void {
     this.showUserForm = false;
     this.userForm.reset();
   }
 
-  // Update the submitUserForm method to properly handle both create and edit
+  // Update submitUserForm to handle disabled fields
   submitUserForm(): void {
     if (this.userForm.invalid) {
       this.notificationService.showError('Por favor, completa todos los campos requeridos correctamente');
       return;
     }
 
-    // Get form values and enable tipus_acc if it was disabled
+    // Enable disabled fields temporarily to include them in the form value
+    if (this.isEditing) {
+      this.userForm.get('nick')?.enable();
+    }
     this.userForm.get('tipus_acc')?.enable();
+
+    // Get form values
     const userData = this.userForm.value;
-    
+
+    // Re-disable fields
+    if (this.isEditing) {
+      this.userForm.get('nick')?.disable();
+    }
+    this.userForm.get('tipus_acc')?.disable();
+
     console.log('Submitting user form with data:', userData);
 
     if (this.isEditing && this.selectedUser) {
@@ -213,7 +234,7 @@ export class UsersComponent implements OnInit {
         delete userData.password;
       }
 
-      this.adminService.updateUser(this.selectedUser.id, userData).subscribe({
+      this.adminService.updateUser(this.selectedUser.nick, userData).subscribe({
         next: (response) => {
           console.log('User updated successfully:', response);
           this.notificationService.showSuccess('Usuario actualizado correctamente');
@@ -222,7 +243,7 @@ export class UsersComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error updating user:', error);
-          this.notificationService.showError('Error al actualizar el usuario: ' + 
+          this.notificationService.showError('Error al actualizar el usuario: ' +
             (error.error?.message || error.message || 'Error desconocido'));
         }
       });
@@ -237,12 +258,12 @@ export class UsersComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error creating user:', error);
-          this.notificationService.showError('Error al crear el usuario: ' + 
+          this.notificationService.showError('Error al crear el usuario: ' +
             (error.error?.message || error.message || 'Error desconocido'));
         }
       });
     }
-  }
+}
 
   openBalanceForm(user: any): void {
     this.selectedUser = user;

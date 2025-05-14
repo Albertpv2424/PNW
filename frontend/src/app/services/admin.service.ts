@@ -68,7 +68,7 @@ export class AdminService {
   }
 
   // Actualizar un usuario existente
-  updateUser(id: number, userData: any): Observable<any> {
+  updateUser(id: string, userData: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/users/${id}`, userData, {
       headers: this.getAuthHeaders()
     });
