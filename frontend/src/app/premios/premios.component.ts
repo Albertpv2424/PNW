@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
 import { PremiosService } from '../services/premios.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { environment } from '../../environments/environment';
 
 // Define interfaces for our data structures
 interface PremioAPI {
@@ -64,7 +65,7 @@ export class PremiosComponent implements OnInit {
           name: premio.titol,
           description: premio.descripcio,
           points: premio.cost, // Asegúrate de que este campo coincida con el backend
-          image: premio.image ? `http://localhost:8000/${premio.image}` : 'assets/premios/default.png',
+          image: this.getImageUrl(premio.image), // Use the getImageUrl method instead of hardcoding
           buttonText: 'CANJEAR'
         }));
         this.premiosFiltrados = [...this.premios];
@@ -92,7 +93,7 @@ export class PremiosComponent implements OnInit {
     // Force refresh the user data from localStorage
     const storedUser = localStorage.getItem('currentUser');
     let currentUser = this.authService.getCurrentUser();
-  
+
     if (storedUser) {
       // Parse the stored user data to ensure we have the latest
       const parsedUser = JSON.parse(storedUser);
@@ -104,33 +105,33 @@ export class PremiosComponent implements OnInit {
         }
       }
     }
-  
+
     if (!currentUser) {
       this.notificationService.showError('Debes iniciar sesión para canjear premios');
       return;
     }
-  
+
     const premio = this.premios.find(p => p.id === premioId);
     if (!premio) return;
-  
+
     // Log both values for debugging
     console.log('User balance:', currentUser.saldo, 'Prize cost:', premio.points);
-  
+
     // Use saldo instead of points for the user's balance
     if (currentUser.saldo < premio.points) {
       this.notificationService.showError(`No tienes suficientes puntos para canjear este premio. Tienes ${currentUser.saldo} puntos y necesitas ${premio.points}.`);
       return;
     }
-  
+
     // Show info notification
     this.notificationService.showInfo('Procesando tu solicitud...');
-  
+
     // Use the PremiosService instead of PredictionsService
     this.premiosService.redeemPremio(premioId).subscribe({
       next: (response) => {
         console.log('Full redemption response:', response);
         this.notificationService.showSuccess('Premio canjeado con éxito');
-  
+
         // Update the user's balance with the new value from the response
         if (response && response.saldo_actual !== undefined) {
           console.log('New balance from server:', response.saldo_actual);
@@ -142,7 +143,7 @@ export class PremiosComponent implements OnInit {
           console.log('New calculated balance:', newBalance);
           this.authService.updateUserSaldo(newBalance);
         }
-  
+
         // Reload the page after a short delay to reflect changes
         setTimeout(() => {
           window.location.reload();
@@ -151,13 +152,37 @@ export class PremiosComponent implements OnInit {
       error: (error) => {
         console.error('Error al canjear premio:', error);
         let errorMessage = 'Error al canjear el premio. Por favor, intenta de nuevo.';
-  
+
         if (error.error && error.error.message) {
           errorMessage = error.error.message;
         }
-  
+
         this.notificationService.showError(errorMessage);
       }
     });
+  }
+
+  // Add these methods to the PremiosComponent class
+  getImageUrl(imagePath: string | null): string {
+    if (!imagePath) return 'assets/premios/default.png';
+
+    // Check if the image path already includes http or https
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+
+    // If it's a relative path, prepend the API base URL
+    if (!imagePath.startsWith('assets/')) {
+      return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
+    }
+
+    return imagePath;
+  }
+
+  handleImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      target.src = 'assets/premios/default.png';
+    }
   }
 }

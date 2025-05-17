@@ -20,7 +20,7 @@
             </button>
           </div>
         </div>
-        
+
         @if (isLoading) {
           <div class="loading-spinner">{{ 'PRIZES.LOADING' | translate }}</div>
         } @else if (errorMessage) {
@@ -36,8 +36,10 @@
             } @else {
               @for (premio of premiosFiltrados; track premio.id) {
                 <div class="premio-card">
+                  <!-- Replace the existing image tag with this one -->
                   <div class="premio-image">
-                    <img [src]="premio.image" [alt]="premio.name">
+                    <!-- Find the image tag and make sure it's using the handleImageError method -->
+                    <img [src]="premio.image" [alt]="premio.name" (error)="handleImageError($event)">
                   </div>
                   <div class="premio-info">
                     <h3>{{ premio.name }}</h3>
