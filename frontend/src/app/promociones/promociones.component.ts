@@ -112,7 +112,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
   }
 
   procesarPromociones(data: PromocionAPI[]) {
-
     this.promociones = data.map((promo: PromocionAPI): PromocionUI => {
       // Verificar si la promoción ha expirado
       const isExpired = new Date(promo.data_final) < new Date();
@@ -133,7 +132,7 @@ export class PromocionesComponent implements OnInit, OnDestroy {
         startDate: new Date(promo.data_inici),
         endDate: new Date(promo.data_final),
         type: promo.tipoPromocion ? promo.tipoPromocion.titol : this.getDefaultTypeText(),
-        image: promo.image ? `${environment.apiUrl.replace('/api', '')}/${promo.image}` : this.getDefaultImageUrl(),
+        image: this.getImageUrl(promo.image), // Use the getImageUrl method here
         buttonText: buttonText,
         isExpired: isExpired,
         isInscrito: isInscrito
@@ -335,7 +334,7 @@ private handleError(error: any): void {
   }
 }
 
-// Add these methods to handle promotion images
+// Add these methods to handle promotion images properly
 getImageUrl(imagePath: string | null): string {
   if (!imagePath) return this.getDefaultImageUrl();
 
