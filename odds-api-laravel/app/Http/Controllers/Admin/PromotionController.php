@@ -53,31 +53,86 @@ class PromotionController extends Controller
     /**
      * Crear una nueva promoción
      */
-    
-     public function store(Request $request)
-     {
-         $request->validate([
-             'titol' => 'required|string|max:255',
-             'descripcio' => 'nullable|string',
-             'data_inici' => 'required|date',
-             'data_final' => 'required|date|after_or_equal:data_inici',
-             'tipus_promocio' => 'required|exists:tipus_promocio,id',
-             'image' => 'nullable|string' // Nom del fitxer o URL de la imatge
-         ]);
- 
-         $promocio = Promocion::create($request->all());
- 
-         return response()->json(['message' => 'Promoció creada correctament!', 'data' => $promocio], 201);
-     }
+    public function store(Request $request)
+    {
+        // Verify admin permissions
+        if (!$this->isAdmin()) {
+            return response()->json(['message' => 'No tienes permisos de administrador'], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'titol' => 'required|string|max:255',
+            'descripcio' => 'required|string',
+            'data_inici' => 'required|date',
+            'data_final' => 'required|date|after_or_equal:data_inici',
+            'tipus_promocio_id' => 'required|exists:tipus_promocio,id', // Changed from tipus_promocions to tipus_promocio
+            'image' => 'nullable|string|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        try {
+            // Debug the incoming request
+            Log::info('Promotion creation request received', [
+                'all_data' => $request->all(),
+                'image' => $request->image
+            ]);
+
+            $promotion = new Promocion();
+            $promotion->titol = $request->titol;
+            $promotion->descripcio = $request->descripcio;
+            $promotion->data_inici = $request->data_inici;
+            $promotion->data_final = $request->data_final;
+            $promotion->tipus_promocio = $request->tipus_promocio_id; // Changed from tipus_promocio_id to tipus_promocio
+
+            // Process the image URL - ensure it's stored properly
+            if ($request->image) {
+                // If it's already a full URL, store it as is
+                if (filter_var($request->image, FILTER_VALIDATE_URL)) {
+                    $promotion->image = $request->image;
+                }
+                // If it's a relative path, store it as is
+                else {
+                    $promotion->image = $request->image;
+                }
+            }
+
+            $promotion->save();
+
+            // Debug the saved promotion
+            Log::info('Promotion created successfully', [
+                'id' => $promotion->id,
+                'image' => $promotion->image
+            ]);
+
+            return response()->json($promotion, 201);
+        } catch (\Exception $e) {
+            Log::error('Error creating promotion', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'message' => 'Error al crear la promoción: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
     /**
      * Actualizar una promoción existente
      */
     public function update(Request $request, $id)
     {
-        $promocion = Promocion::find($id);
+        // Verify admin permissions
+        if (!$this->isAdmin()) {
+            return response()->json(['message' => 'No tienes permisos de administrador'], 403);
+        }
 
-        if (!$promocion) {
+        $promotion = Promocion::find($id);
+
+        if (!$promotion) {
             return response()->json(['message' => 'Promoción no encontrada'], 404);
         }
 
@@ -86,33 +141,60 @@ class PromotionController extends Controller
             'descripcio' => 'required|string',
             'data_inici' => 'required|date',
             'data_final' => 'required|date|after_or_equal:data_inici',
-            'tipus_promocio' => 'required|exists:tipus_promocio,id', // Changed from tipo_promocion_id
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'tipus_promocio_id' => 'required|exists:tipus_promocio,id', // Changed from tipus_promocions to tipus_promocio
+            'image' => 'nullable|string|max:2048',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'Error de validación', 'errors' => $validator->errors()], 422);
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $promocion->titol = $request->titol;
-        $promocion->descripcio = $request->descripcio;
-        $promocion->data_inici = $request->data_inici;
-        $promocion->data_final = $request->data_final;
-        $promocion->tipus_promocio = $request->tipus_promocio; // Changed from tipo_promocion_id
+        try {
+            // Debug the incoming request
+            Log::info('Promotion update request received', [
+                'id' => $id,
+                'all_data' => $request->all(),
+                'image' => $request->image
+            ]);
 
-        if ($request->hasFile('image')) {
-            // Eliminar imagen anterior si existe
-            if ($promocion->image && Storage::exists(str_replace('storage/', 'public/', $promocion->image))) {
-                Storage::delete(str_replace('storage/', 'public/', $promocion->image));
+            $promotion->titol = $request->titol;
+            $promotion->descripcio = $request->descripcio;
+            $promotion->data_inici = $request->data_inici;
+            $promotion->data_final = $request->data_final;
+            $promotion->tipus_promocio = $request->tipus_promocio_id; // Changed from tipus_promocio_id to tipus_promocio
+
+            // Process the image URL - ensure it's stored properly
+            if ($request->image) {
+                // If it's already a full URL, store it as is
+                if (filter_var($request->image, FILTER_VALIDATE_URL)) {
+                    $promotion->image = $request->image;
+                }
+                // If it's a relative path, store it as is
+                else {
+                    $promotion->image = $request->image;
+                }
             }
 
-            $imagePath = $request->file('image')->store('public/promociones');
-            $promocion->image = str_replace('public/', 'storage/', $imagePath);
+            $promotion->save();
+
+            // Debug the saved promotion
+            Log::info('Promotion updated successfully', [
+                'id' => $promotion->id,
+                'image' => $promotion->image
+            ]);
+
+            return response()->json($promotion);
+        } catch (\Exception $e) {
+            Log::error('Error updating promotion', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'message' => 'Error al actualizar la promoción: ' . $e->getMessage()
+            ], 500);
         }
-
-        $promocion->save();
-
-        return response()->json(['message' => 'Promoción actualizada con éxito', 'promocion' => $promocion]);
     }
 
     /**
@@ -151,5 +233,13 @@ class PromotionController extends Controller
                 'message' => 'Error al cargar los tipos de promoción: ' . $e->getMessage()
             ], 500);
         }
+    }
+    /**
+     * Check if the current user is an admin
+     */
+    private function isAdmin()
+    {
+        $user = Auth::user();
+        return $user && in_array(strtolower($user->tipus_acc), ['admin', 'administrador', 'administrator']);
     }
 }

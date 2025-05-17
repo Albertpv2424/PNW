@@ -38,6 +38,7 @@ export class PrizesComponent implements OnInit {
   imagePreview: string | null = null;
   selectedFile: File | null = null;
 
+  // Update the form initialization in the constructor
   constructor(
     private http: HttpClient,
     public authService: AuthService,
@@ -49,14 +50,12 @@ export class PrizesComponent implements OnInit {
       titol: ['', [Validators.required]],
       descripcio: ['', [Validators.required]],
       cost: [100, [Validators.required, Validators.min(1)]],
-      condicio: [1]
+      condicio: [1],
+      imageUrl: [''] // New field for image URL instead of file upload
     });
   }
 
   ngOnInit(): void {
-
-
-
     const isLoggedIn = this.authService.isLoggedIn();
     console.log('User is logged in:', isLoggedIn);
 
@@ -103,10 +102,27 @@ export class PrizesComponent implements OnInit {
     }).subscribe({
       next: (data: Prize[]) => {
         console.log('Prizes loaded successfully:', data.length);
-        this.prizes = data.map(prize => ({
-          ...prize,
-          image: prize.image ? `http://localhost:8000/${prize.image}` : 'assets/premios/default.png'
-        }));
+        this.prizes = data.map(prize => {
+          let imageUrl = 'assets/premios/default.png';
+
+          if (prize.image) {
+            // If it's already a full URL, use it as is
+            if (prize.image.startsWith('http')) {
+              imageUrl = prize.image;
+            }
+            // If it's a relative path, prepend the API base URL
+            else if (!prize.image.startsWith('assets/')) {
+              imageUrl = `${environment.apiUrl.replace('/api', '')}/${prize.image}`;
+            }
+          }
+
+          return {
+            ...prize,
+            image: imageUrl
+          };
+        });
+
+        console.log('Processed prizes:', this.prizes);
         this.filteredPrizes = [...this.prizes];
         this.isLoading = false;
       },
@@ -124,7 +140,6 @@ export class PrizesComponent implements OnInit {
         } else {
           this.notificationService.showError('Error al cargar los premios: ' + (error.error?.message || 'Error desconocido'));
         }
-
         this.isLoading = false;
       }
     });
@@ -148,10 +163,10 @@ export class PrizesComponent implements OnInit {
     console.log('openPrizeForm called with prize:', prize);
     this.selectedPrize = prize || null;
     this.isEditing = !!prize;
-    
+
     this.imagePreview = null;
     this.selectedFile = null;
-  
+
     if (prize) {
       // Editing existing prize
       this.prizeForm.patchValue({
@@ -202,89 +217,87 @@ export class PrizesComponent implements OnInit {
 
   submitPrizeForm(): void {
     if (this.prizeForm.invalid) {
-      this.notificationService.showError('Por favor, completa todos los campos requeridos correctamente');
+      // Mark all fields as touched to trigger validation messages
+      Object.keys(this.prizeForm.controls).forEach(key => {
+        this.prizeForm.get(key)?.markAsTouched();
+      });
       return;
     }
 
-    // Debug form values
-    console.log('Form values:', this.prizeForm.value);
+    const formData = this.prizeForm.value;
 
-    const prizeData = this.prizeForm.value;
-    
-    // Check if we're using FormData or JSON
-    if (this.selectedFile) {
-      // Use FormData for file uploads
-      const formData = new FormData();
-      
-      // Add form fields to FormData - ensure string conversion
-      formData.append('titol', prizeData.titol || '');
-      formData.append('descripcio', prizeData.descripcio || '');
-      formData.append('cost', prizeData.cost ? prizeData.cost.toString() : '');
-      formData.append('condicio', prizeData.condicio ? prizeData.condicio.toString() : '1');
-      formData.append('image', this.selectedFile);
-      
-      console.log('Using FormData for submission with image');
-      
-      // For FormData, don't set Content-Type header
-      const options = {
-        headers: {
-          'Authorization': `Bearer ${this.authService.getToken()}`,
-          'Accept': 'application/json'
-        }
-      };
-      
-      this.submitRequest(formData, options);
+    // Create the data object to send
+    const prizeData = {
+      titol: formData.titol,
+      descripcio: formData.descripcio,
+      cost: formData.cost,
+      condicio: formData.condicio,
+      image: formData.imageUrl // Make sure this matches the field name in the form
+    };
+
+    console.log('Submitting prize data:', prizeData);
+
+    // Set up request options
+    const options = {
+      headers: this.authService.getAuthHeaders()
+    };
+
+    // Submit the request
+    if (this.isEditing && this.selectedPrize) {
+      // Update existing prize
+      this.http.put(`${environment.apiUrl}/admin/prizes/${this.selectedPrize.id}`, prizeData, options)
+        .subscribe({
+          next: (response) => {
+            console.log('Prize operation successful:', response);
+            this.notificationService.showSuccess(
+              this.isEditing ? 'Premio actualizado correctamente' : 'Premio creado correctamente'
+            );
+            this.loadPrizes();
+            this.closePrizeForm();
+          },
+          error: (error) => {
+            console.error('Error in prize operation:', error);
+            this.notificationService.showError(
+              'Error: ' + (error.error?.message || 'No se pudo procesar la solicitud')
+            );
+          }
+        });
     } else {
-      // Use JSON for regular submissions
-      console.log('Using JSON for submission without image');
-      
-      // Ensure all required fields are included
-      const jsonData = {
-        titol: prizeData.titol,
-        descripcio: prizeData.descripcio,
-        cost: prizeData.cost,
-        condicio: prizeData.condicio || 1
-      };
-      
-      console.log('JSON data to submit:', jsonData);
-      
-      // For JSON, set Content-Type header
-      const options = {
-        headers: {
-          'Authorization': `Bearer ${this.authService.getToken()}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      };
-      
-      this.submitRequest(jsonData, options);
+      // Create new prize
+      this.http.post(`${environment.apiUrl}/admin/prizes`, prizeData, options)
+        .subscribe({
+          next: (response) => {
+            console.log('Prize operation successful:', response);
+            this.notificationService.showSuccess(
+              this.isEditing ? 'Premio actualizado correctamente' : 'Premio creado correctamente'
+            );
+            this.loadPrizes();
+            this.closePrizeForm();
+          },
+          error: (error) => {
+            console.error('Error in prize operation:', error);
+            this.notificationService.showError(
+              'Error: ' + (error.error?.message || 'No se pudo procesar la solicitud')
+            );
+          }
+        });
     }
   }
 
-  // Helper method to submit the request
-  private submitRequest(data: any, options: any): void {
-    const endpoint = this.isEditing && this.selectedPrize 
-      ? `${environment.apiUrl}/admin/prizes/${this.selectedPrize.id}`
-      : `${environment.apiUrl}/admin/prizes`;
-      
-    this.http.post(endpoint, data, options).subscribe({
-      next: (response) => {
-        console.log('Prize operation successful:', response);
-        this.notificationService.showSuccess(
-          this.isEditing ? 'Premio actualizado correctamente' : 'Premio creado correctamente'
-        );
-        this.loadPrizes();
-        this.closePrizeForm();
-      },
-      error: (error) => {
-        console.error('Error with prize operation:', error);
-        this.notificationService.showError(
-          `Error al ${this.isEditing ? 'actualizar' : 'crear'} el premio: ` + 
-          (error.error?.message || error.statusText || 'Error desconocido')
-        );
-      }
-    });
+  // Add this method to handle image URL changes
+  // Find and remove the duplicate onImageUrlChange and handleImageError methods
+  // Keep only one implementation of each
+
+  onImageUrlChange(): void {
+    const imageUrl = this.prizeForm.get('imageUrl')?.value;
+    if (imageUrl && imageUrl.trim() !== '') {
+      this.imagePreview = imageUrl;
+    } else {
+      this.imagePreview = null;
+    }
   }
+
+  // Remove any other duplicate implementations of these methods
 
   confirmDeletePrize(id: number): void {
     console.log('confirmDeletePrize called with id:', id);

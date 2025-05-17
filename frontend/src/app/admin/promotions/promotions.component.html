@@ -3,10 +3,10 @@
     <h2>Gestión de Promociones</h2>
     <div class="actions">
       <div class="search-container">
-        <input 
-          type="text" 
-          [(ngModel)]="searchTerm" 
-          (input)="searchPromociones()" 
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="searchPromociones()"
           placeholder="Buscar promociones..."
         >
         <i class="fas fa-search search-icon"></i>
@@ -43,8 +43,8 @@
           <td class="id-cell">{{ promocion.id }}</td>
           <td>
             <div class="promotion-image-container">
-              <img 
-                [src]="promocion.image ? (promocion.image.startsWith('http') ? promocion.image : 'http://localhost:8000/' + promocion.image) : 'assets/promociones/default.png'" 
+              <img
+                [src]="promocion.image ? (promocion.image.startsWith('http') ? promocion.image : 'http://localhost:8000/' + promocion.image) : 'assets/promociones/default.png'"
                 alt="{{ promocion.titol }}"
                 class="promotion-thumbnail"
                 (error)="handleImageError($event)"
@@ -90,7 +90,7 @@
               El título es requerido
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="descripcio">Descripción:</label>
             <textarea id="descripcio" formControlName="descripcio" rows="3" class="form-control"></textarea>
@@ -98,7 +98,7 @@
               La descripción es requerida
             </div>
           </div>
-          
+
           <div class="form-group">
             <label for="tipus_promocio">Tipo de Promoción:</label>
             <select id="tipus_promocio" formControlName="tipus_promocio" class="form-control">
@@ -109,7 +109,7 @@
               El tipo de promoción es requerido
             </div>
           </div>
-          
+
           <div class="form-row">
             <div class="form-group half-width">
               <label for="data_inici">Fecha de Inicio:</label>
@@ -118,7 +118,7 @@
                 La fecha de inicio es requerida
               </div>
             </div>
-            
+
             <div class="form-group half-width">
               <label for="data_final">Fecha de Fin:</label>
               <input type="date" id="data_final" formControlName="data_final" class="form-control">
@@ -127,29 +127,28 @@
               </div>
             </div>
           </div>
-          
+
+          <!-- Replace the file upload section with an image URL input -->
           <div class="form-group">
-            <label for="image">Imagen:</label>
-            <div class="image-upload-container">
-              <div class="image-preview-container" *ngIf="imagePreview">
-                <img [src]="imagePreview" alt="Vista previa" class="preview-image">
-              </div>
-              <div class="file-input-container">
-                <input 
-                  type="file" 
-                  id="image" 
-                  (change)="onFileSelected($event)" 
-                  accept="image/*"
-                  class="file-input"
-                >
-                <label for="image" class="file-label">
-                  <i class="fas fa-upload"></i> 
-                  {{ selectedFileName || 'Seleccionar imagen' }}
-                </label>
-              </div>
+            <label for="imageUrl">URL de la imagen:</label>
+            <input
+              type="text"
+              id="imageUrl"
+              formControlName="imageUrl"
+              class="form-control"
+              placeholder="https://ejemplo.com/imagen.jpg"
+              (input)="onImageUrlChange()"
+            >
+            <small class="form-text text-muted">
+              Introduce la URL de una imagen existente. Ejemplo: https://ejemplo.com/imagen.jpg
+            </small>
+
+            <!-- Image preview -->
+            <div class="image-preview" *ngIf="imagePreview">
+              <img [src]="imagePreview" alt="Vista previa" (error)="handleImageError($event)">
             </div>
           </div>
-          
+
           <div class="form-actions">
             <button type="button" class="cancel-btn" (click)="closePromocionForm()">Cancelar</button>
             <button type="submit" class="submit-btn" [disabled]="promocionForm.invalid">

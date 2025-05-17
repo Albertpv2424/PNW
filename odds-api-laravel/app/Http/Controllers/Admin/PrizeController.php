@@ -83,28 +83,6 @@ class PrizeController extends Controller
     /**
      * Create a new prize
      */
-    // Add this method to your PrizeController class
-
-    /**
-     * Debug the incoming request data
-     */
-    private function debugRequest(Request $request, $message = 'Request data')
-    {
-        $requestData = $request->all();
-        $hasImage = $request->hasFile('image');
-
-        // Log the request data
-        Log::info($message, [
-            'request_data' => $requestData,
-            'has_image' => $hasImage,
-            'content_type' => $request->header('Content-Type'),
-            'request_headers' => $request->headers->all()
-        ]);
-
-        return $requestData;
-    }
-
-    // Then update your store method to use this:
     public function store(Request $request)
     {
         // Verify admin permissions
@@ -112,13 +90,10 @@ class PrizeController extends Controller
             return response()->json(['message' => 'No tienes permisos de administrador'], 403);
         }
 
-        // Debug the request
-        $this->debugRequest($request, 'Prize creation request received with detailed info');
-
-        // Log the incoming request for debugging
+        // Debug the incoming request
         Log::info('Prize creation request received', [
-            'request_data' => $request->except('image'),
-            'has_image' => $request->hasFile('image')
+            'all_data' => $request->all(),
+            'image' => $request->image
         ]);
 
         $validator = Validator::make($request->all(), [
@@ -126,13 +101,11 @@ class PrizeController extends Controller
             'descripcio' => 'required|string',
             'cost' => 'required|numeric|min:1',
             'condicio' => 'required|numeric|min:1',
-            'image' => 'nullable|image|max:2048', // 2MB max
+            'image' => 'nullable|string|max:2048', // Changed to string for URL
         ]);
 
         if ($validator->fails()) {
-            Log::error('Prize validation failed', [
-                'errors' => $validator->errors()->toArray()
-            ]);
+            Log::error('Prize validation failed', ['errors' => $validator->errors()]);
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
@@ -143,33 +116,24 @@ class PrizeController extends Controller
             $prize->cost = $request->cost;
             $prize->condicio = $request->condicio;
 
-            // Handle image upload
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-
-                // Ensure directory exists - FIXED: Changed from 'prizes' to 'premios'
-                $uploadPath = public_path('uploads/premios');
-                if (!file_exists($uploadPath)) {
-                    mkdir($uploadPath, 0755, true);
+            // Process the image URL - ensure it's stored properly
+            if ($request->image) {
+                // If it's already a full URL, store it as is
+                if (filter_var($request->image, FILTER_VALIDATE_URL)) {
+                    $prize->image = $request->image;
                 }
-
-                $image->move($uploadPath, $imageName);
-                $prize->image = 'uploads/premios/' . $imageName; // FIXED: Changed from 'prizes' to 'premios'
-
-                Log::info('Image uploaded successfully', [
-                    'path' => $prize->image
-                ]);
-            } else {
-                $prize->image = null;
-                Log::info('No image provided for prize');
+                // If it's a relative path, store it as is
+                else {
+                    $prize->image = $request->image;
+                }
             }
 
             $prize->save();
 
             Log::info('Prize created successfully', [
                 'prize_id' => $prize->id,
-                'prize_title' => $prize->titol
+                'prize_title' => $prize->titol,
+                'prize_image' => $prize->image
             ]);
 
             return response()->json($prize, 201);
@@ -206,35 +170,55 @@ class PrizeController extends Controller
             'descripcio' => 'required|string',
             'cost' => 'required|numeric|min:1',
             'condicio' => 'required|numeric|min:1',
-            'image' => 'nullable|image|max:2048', // 2MB max
+            'image' => 'nullable|string|max:2048', // Changed to string for URL
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $prize->titol = $request->titol;
-        $prize->descripcio = $request->descripcio;
-        $prize->cost = $request->cost;
-        $prize->condicio = $request->condicio;
+        try {
+            Log::info('Prize update request received', [
+                'id' => $id,
+                'all_data' => $request->all(),
+                'image' => $request->image
+            ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($prize->image && file_exists(public_path($prize->image))) {
-                unlink(public_path($prize->image));
+            $prize->titol = $request->titol;
+            $prize->descripcio = $request->descripcio;
+            $prize->cost = $request->cost;
+            $prize->condicio = $request->condicio;
+
+            // Process the image URL - ensure it's stored properly
+            if ($request->image) {
+                // If it's already a full URL, store it as is
+                if (filter_var($request->image, FILTER_VALIDATE_URL)) {
+                    $prize->image = $request->image;
+                }
+                // If it's a relative path, store it as is
+                else {
+                    $prize->image = $request->image;
+                }
             }
 
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            // FIXED: Changed from 'prizes' to 'premios'
-            $image->move(public_path('uploads/premios'), $imageName);
-            $prize->image = 'uploads/premios/' . $imageName; // FIXED: Changed from 'prizes' to 'premios'
+            $prize->save();
+
+            Log::info('Prize updated successfully', [
+                'prize_id' => $prize->id,
+                'prize_image' => $prize->image
+            ]);
+
+            return response()->json($prize);
+        } catch (\Exception $e) {
+            Log::error('Error updating prize', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'message' => 'Error al actualizar el premio: ' . $e->getMessage()
+            ], 500);
         }
-
-        $prize->save();
-
-        return response()->json($prize);
     }
 
     /**

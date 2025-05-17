@@ -3,10 +3,10 @@
     <h2>Gestión de Premios</h2>
     <div class="actions">
       <div class="search-container">
-        <input 
-          type="text" 
-          [(ngModel)]="searchTerm" 
-          (input)="searchPrizes()" 
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="searchPrizes()"
           placeholder="Buscar premios..."
         >
         <i class="fas fa-search search-icon"></i>
@@ -42,8 +42,8 @@
           <td class="id-cell">{{ prize.id }}</td>
           <td>
             <div class="image-container">
-              <img 
-                [src]="prize.image ? (prize.image.startsWith('http') ? prize.image : 'http://localhost:8000/' + prize.image) : 'assets/prizes/default.png'" 
+              <img
+                [src]="prize.image ? (prize.image.startsWith('http') ? prize.image : 'http://localhost:8000/' + prize.image) : 'assets/prizes/default.png'"
                 alt="{{ prize.titol }}"
                 class="thumbnail"
                 (error)="handleImageError($event)"
@@ -85,7 +85,7 @@
             El título es requerido
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="descripcio">Descripción:</label>
           <textarea id="descripcio" formControlName="descripcio" rows="3" class="form-control"></textarea>
@@ -93,7 +93,7 @@
             La descripción es requerida
           </div>
         </div>
-        
+
         <div class="form-row">
           <div class="form-group half-width">
             <label for="cost">Puntos:</label>
@@ -102,22 +102,34 @@
               El valor de puntos debe ser mayor a 0
             </div>
           </div>
-          
+
           <div class="form-group half-width">
             <label for="condicio">Condición:</label>
             <input type="number" id="condicio" formControlName="condicio" class="form-control">
           </div>
         </div>
-        
+
+        <!-- Replace the file upload section with an image URL input -->
         <div class="form-group">
-          <label for="image">Imagen:</label>
-          <input type="file" id="image" (change)="onFileSelected($event)" class="form-control">
-          
+          <label for="imageUrl">URL de la imagen:</label>
+          <input
+            type="text"
+            id="imageUrl"
+            formControlName="imageUrl"
+            class="form-control"
+            placeholder="https://ejemplo.com/imagen.jpg"
+            (input)="onImageUrlChange()"
+          >
+          <small class="form-text text-muted">
+            Introduce la URL de una imagen existente. Ejemplo: https://ejemplo.com/imagen.jpg
+          </small>
+
+          <!-- Image preview -->
           <div class="image-preview" *ngIf="imagePreview">
-            <img [src]="imagePreview" alt="Vista previa">
+            <img [src]="imagePreview" alt="Vista previa" (error)="handleImageError($event)">
           </div>
         </div>
-        
+
         <div class="form-actions">
           <button type="button" class="cancel-btn" (click)="closePrizeForm()">Cancelar</button>
           <button type="submit" class="submit-btn">
@@ -138,7 +150,7 @@
     </div>
     <div class="modal-body">
       <p>¿Estás seguro de que deseas eliminar este premio? Esta acción no se puede deshacer.</p>
-      
+
       <div class="form-actions">
         <button type="button" class="cancel-btn" (click)="cancelDeletePrize()">Cancelar</button>
         <button type="button" class="delete-confirm-btn" (click)="deletePrize()">
