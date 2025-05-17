@@ -74,9 +74,10 @@
         <div class="prizes-grid">
           @for (prize of redeemedPrizes; track prize.id) {
           <div class="prize-card">
+            <!-- Find the section where redeemed prizes are displayed and update the image tag -->
             <div class="prize-image">
-              <img [src]="prize.image ? 'http://localhost:8000/' + prize.image : 'assets/premios/default.png'"
-                [alt]="prize.titulo">
+              <!-- Change this line -->
+              <img [src]="getImageUrl(prize.image)" [alt]="prize.titulo" (error)="handleImageError($event)">
             </div>
             <div class="prize-info">
               <h4>{{ prize.titulo }}</h4>

@@ -24,8 +24,9 @@
               <div class="promocion-card"
                    [class.expired]="promocion.isExpired"
                    [class.inscrito]="promocion.isInscrito">
+                <!-- Find the image tag for promotions and update it -->
                 <div class="promocion-image">
-                  <img [src]="promocion.image" [alt]="promocion.title" (error)="handleImageError($event, promocion)">
+                  <img [src]="getImageUrl(promocion.image)" [alt]="promocion.title" (error)="handleImageError($event)">
                 </div>
                 <div class="promocion-info">
                   <div class="promocion-type">{{ promocion.type }}</div>

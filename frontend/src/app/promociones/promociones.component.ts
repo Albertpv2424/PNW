@@ -268,13 +268,6 @@ export class PromocionesComponent implements OnInit, OnDestroy {
       year: 'numeric'
     });
   }
-
-  // Método para manejar errores de carga de imágenes
-  handleImageError(event: any, promocion: PromocionUI): void {
-    // Usar una imagen en base64 para evitar problemas de 404
-    event.target.src = this.getDefaultImageUrl();
-  }
-
   // Método para obtener una URL de imagen por defecto en base64
   getDefaultImageUrl(): string {
     // Imagen simple en base64 (un rectángulo oscuro con texto "Promoción")
@@ -284,10 +277,10 @@ export class PromocionesComponent implements OnInit, OnDestroy {
 
 onInscribir(promocion: any): void {
   // Verificar explícitamente si es el bono de bienvenida por su título
-  const isWelcomeBonus = 
-    (promocion.title && promocion.title.toLowerCase().includes('bienvenida')) || 
+  const isWelcomeBonus =
+    (promocion.title && promocion.title.toLowerCase().includes('bienvenida')) ||
     (promocion.titol && promocion.titol.toLowerCase().includes('bienvenida')) ||
-    (promocion.title && promocion.title.toLowerCase().includes('benvenuto')) || 
+    (promocion.title && promocion.title.toLowerCase().includes('benvenuto')) ||
     (promocion.titol && promocion.titol.toLowerCase().includes('benvenuto'));
 
   console.log('Inscribiendo en promoción:', promocion);
@@ -300,13 +293,13 @@ onInscribir(promocion: any): void {
       next: (response: any) => {
         console.log('Respuesta de inscripción al bono:', response);
         this.notificationService.showSuccess(response.message || 'Te has inscrito correctamente al bono de bienvenida');
-        
+
         // Actualizar el saldo del usuario si se devolvió en la respuesta
         if (response.saldo_actual !== undefined) {
           console.log('Actualizando saldo a:', response.saldo_actual);
           this.authService.updateUserSaldo(response.saldo_actual);
         }
-        
+
         // Actualizar el estado de la promoción
         promocion.isInscrito = true;
         this.translateService.get('PROMOTIONS.INSCRITO').subscribe((text: string) => {
@@ -342,42 +335,31 @@ private handleError(error: any): void {
   }
 }
 
-// REMOVE THIS ENTIRE BLOCK - it's causing the error
-// this.promocionesService.getPromociones().subscribe({
-//   next: (data) => {
-//     this.promociones = data.map(promo => {
-//       // Map backend properties to frontend properties
-//       return {
-//         id: promo.id,
-//         title: promo.titol, // Map titol to title for frontend use
-//         description: promo.descripcio,
-//         startDate: new Date(promo.data_inici),
-//         endDate: new Date(promo.data_final),
-//         type: promo.tipoPromocion?.titol || 'PROMOTIONS.TIPO_DEFAULT',
-//         image: promo.image ? `${environment.apiUrl}/${promo.image}` : 'assets/images/default-promotion.jpg',
-//         isExpired: new Date(promo.data_final) < new Date(),
-//         isInscrito: false, // Will be updated later
-//         buttonText: 'PROMOTIONS.INSCRIBIRSE',
-//         // Keep original properties for backend compatibility
-//         titol: promo.titol,
-//         tipo_promocio: promo.tipus_promocio,
-//         tipoPromocion: promo.tipoPromocion
-//       };
-//     });
-//
-//     // Check which promotions the user is already enrolled in
-//     if (this.authService.isLoggedIn()) {
-//       this.checkUserInscripciones();
-//     }
-//
-//     this.isLoading = false;
-//   },
-//   error: (error) => {
-//     console.error('Error loading promotions:', error);
-//     this.errorMessage = 'PROMOTIONS.ERROR_LOADING';
-//     this.isLoading = false;
-//   }
-// });
+// Add these methods to handle promotion images
+getImageUrl(imagePath: string | null): string {
+  if (!imagePath) return this.getDefaultImageUrl();
+
+  // Check if the image path already includes http or https
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+
+  // If it's a relative path, prepend the API base URL
+  if (!imagePath.startsWith('assets/') && !imagePath.startsWith('data:')) {
+    return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
+  }
+
+  return imagePath;
+}
+
+handleImageError(event: Event): void {
+  const target = event.target as HTMLImageElement;
+  if (target) {
+    target.src = this.getDefaultImageUrl();
+  }
+}
 
 }
+
+
 

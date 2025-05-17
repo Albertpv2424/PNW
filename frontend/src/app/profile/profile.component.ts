@@ -10,7 +10,8 @@ import { NotificationService } from '../services/notification.service';
 import { FormsModule } from '@angular/forms';
 import { BetService } from '../services/bet.service';
 import { ProfileHeaderComponent } from '../profile-header/profile-header.component';
-import { TranslateModule } from '@ngx-translate/core'; // Add this import
+import { TranslateModule } from '@ngx-translate/core';
+import { environment } from '../../environments/environment'; // Add this import
 
 // Añadir la interfaz RedeemedPrize que falta
 interface RedeemedPrize {
@@ -97,12 +98,12 @@ export class ProfileComponent implements OnInit {
   passwordMatchValidator(form: FormGroup) {
     const newPassword = form.get('new_password')?.value;
     const confirmPassword = form.get('confirm_password')?.value;
-    
+
     if (newPassword && confirmPassword && newPassword !== confirmPassword) {
       form.get('confirm_password')?.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
     }
-    
+
     return null;
   }
 
@@ -203,7 +204,7 @@ export class ProfileComponent implements OnInit {
 
   updateProfile(): void {
     console.log('Form submission started');
-    
+
     if (this.profileForm.invalid) {
       // Show validation errors
       Object.keys(this.profileForm.controls).forEach(key => {
@@ -217,19 +218,19 @@ export class ProfileComponent implements OnInit {
 
     // Check if we need to upload a file
     const hasFile = !!this.selectedFile;
-    
+
     // In the updateProfile method, replace the problematic code:
     if (hasFile) {
     // Use FormData approach for file uploads
     const formData = new FormData();
-    
 
-    
+
+
     // Check password fields
     const currentPassword = this.profileForm.value.current_password;
     const newPassword = this.profileForm.value.new_password;
     const confirmPassword = this.profileForm.value.confirm_password;
-    
+
     if (currentPassword && newPassword) {
       formData.append('current_password', currentPassword);
       formData.append('new_password', newPassword);
@@ -238,42 +239,42 @@ export class ProfileComponent implements OnInit {
       this.notificationService.showError('Debes completar ambos campos de contraseña');
       return;
     }
-    
+
     // Fix the TypeScript error by ensuring selectedFile is not null
     if (this.selectedFile) {
       formData.append('profile_image', this.selectedFile);
     }
-    
+
     // Get the token and create headers
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    
+
     // Send the request with FormData
     this.http.post('http://localhost:8000/api/update-profile', formData, { headers })
       .subscribe({
         next: (response: any) => {
           this.notificationService.showSuccess('Perfil actualizado correctamente');
-    
+
           // Update user data in localStorage and service
           if (response.user) {
             localStorage.setItem('currentUser', JSON.stringify(response.user));
             this.authService.updateCurrentUser(response.user);
-    
+
             // Update local data
             this.username = response.user.nick;
             this.email = response.user.email;
             this.profileImage = response.user.profile_image || null;
             this.telefon = response.user.telefon || '';
-    
+
             // Clear password fields
             this.profileForm.patchValue({
               current_password: '',
               new_password: '',
               confirm_password: ''
             });
-    
+
             // Return to profile view and navigate to profile page
             this.editMode = false;
             this.router.navigate(['/profile']);
@@ -281,22 +282,22 @@ export class ProfileComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error updating profile:', error);
-          
+
           // Handle validation errors from Laravel
           if (error.status === 422 && error.error && error.error.errors) {
             // Laravel validation errors
             const validationErrors = error.error.errors;
             console.log('Validation errors:', validationErrors);
-            
+
             let errorMessage = 'Por favor corrige los siguientes errores:';
-            
+
             // Build error message from validation errors
             for (const field in validationErrors) {
               if (validationErrors.hasOwnProperty(field)) {
                 errorMessage += `\n- ${validationErrors[field][0]}`;
               }
             }
-            
+
             this.notificationService.showError(errorMessage);
           } else if (error.error && error.error.message) {
             // Show specific error message from server
@@ -323,11 +324,11 @@ export class ProfileComponent implements OnInit {
         email: this.profileForm.value.email,
         telefon: this.profileForm.value.telefon || ''
       };
-      
+
       // Check password fields
       const currentPassword = this.profileForm.value.current_password;
       const newPassword = this.profileForm.value.new_password;
-      
+
       if (currentPassword && newPassword) {
         updateData.current_password = currentPassword;
         updateData.new_password = newPassword;
@@ -336,40 +337,40 @@ export class ProfileComponent implements OnInit {
         this.notificationService.showError('Debes completar ambos campos de contraseña');
         return;
       }
-      
+
       // Get the token and create headers
       const token = localStorage.getItem('token');
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       });
-      
+
       console.log('Sending profile update with JSON data:', updateData);
-      
+
       // Send the request with JSON data
       this.http.post('http://localhost:8000/api/update-profile', updateData, { headers })
         .subscribe({
           next: (response: any) => {
             this.notificationService.showSuccess('Perfil actualizado correctamente');
-    
+
             // Update user data in localStorage and service
             if (response.user) {
               localStorage.setItem('currentUser', JSON.stringify(response.user));
               this.authService.updateCurrentUser(response.user);
-    
+
               // Update local data
               this.username = response.user.nick;
               this.email = response.user.email;
               this.profileImage = response.user.profile_image || null;
               this.telefon = response.user.telefon || '';
-    
+
               // Clear password fields
               this.profileForm.patchValue({
                 current_password: '',
                 new_password: '',
                 confirm_password: ''
               });
-    
+
               // Return to profile view and navigate to profile page
               this.editMode = false;
               this.router.navigate(['/profile']);
@@ -478,7 +479,7 @@ export class ProfileComponent implements OnInit {
     if (statusLower === 'perdida') return 'status-lost';
     return 'status-pending';
   }
-  
+
   // Add this method to translate bet status
   getTranslatedStatus(status: string): string {
     const statusLower = status.toLowerCase();
@@ -488,4 +489,30 @@ export class ProfileComponent implements OnInit {
     if (statusLower === 'cancelada') return 'BETS.CANCELED';
     return status;
   }
+
+  // Add these methods to handle prize images
+getImageUrl(imagePath: string | null): string {
+  if (!imagePath) return 'assets/premios/default.png';
+
+  // Check if the image path already includes http or https
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+
+  // If it's a relative path, prepend the API base URL
+  if (!imagePath.startsWith('assets/')) {
+    return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
+  }
+
+  return imagePath;
 }
+
+handleImageError(event: Event): void {
+  const target = event.target as HTMLImageElement;
+  if (target) {
+    target.src = 'assets/premios/default.png';
+  }
+}
+
+}
+
