@@ -78,13 +78,13 @@
   <div class="modal" *ngIf="showPromocionForm">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>{{ isEditing ? 'Editar' : 'Nueva' }} Promoción</h2>
-        <button class="close-btn" (click)="closePromocionForm()">&times;</button>
+        <h2>{{ isEditing ? 'Editar Promoción' : 'Crear Nueva Promoción' }}</h2>
+        <button class="close-btn" (click)="closePromocionForm()">×</button>
       </div>
       <div class="modal-body">
         <form [formGroup]="promocionForm" (ngSubmit)="submitPromocionForm()">
           <div class="form-group">
-            <label for="titol">Título:</label>
+            <label for="titol">Título</label>
             <input type="text" id="titol" formControlName="titol" class="form-control">
             <div class="error" *ngIf="promocionForm.get('titol')?.invalid && promocionForm.get('titol')?.touched">
               El título es requerido
@@ -92,7 +92,7 @@
           </div>
 
           <div class="form-group">
-            <label for="descripcio">Descripción:</label>
+            <label for="descripcio">Descripción</label>
             <textarea id="descripcio" formControlName="descripcio" rows="3" class="form-control"></textarea>
             <div class="error" *ngIf="promocionForm.get('descripcio')?.invalid && promocionForm.get('descripcio')?.touched">
               La descripción es requerida
@@ -100,9 +100,8 @@
           </div>
 
           <div class="form-group">
-            <label for="tipus_promocio">Tipo de Promoción:</label>
+            <label for="tipus_promocio">Tipo de Promoción</label>
             <select id="tipus_promocio" formControlName="tipus_promocio" class="form-control">
-              <option value="">Selecciona un tipo</option>
               <option *ngFor="let tipo of tiposPromocion" [value]="tipo.id">{{ tipo.titol }}</option>
             </select>
             <div class="error" *ngIf="promocionForm.get('tipus_promocio')?.invalid && promocionForm.get('tipus_promocio')?.touched">
@@ -110,27 +109,24 @@
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group half-width">
-              <label for="data_inici">Fecha de Inicio:</label>
-              <input type="date" id="data_inici" formControlName="data_inici" class="form-control">
-              <div class="error" *ngIf="promocionForm.get('data_inici')?.invalid && promocionForm.get('data_inici')?.touched">
-                La fecha de inicio es requerida
-              </div>
-            </div>
-
-            <div class="form-group half-width">
-              <label for="data_final">Fecha de Fin:</label>
-              <input type="date" id="data_final" formControlName="data_final" class="form-control">
-              <div class="error" *ngIf="promocionForm.get('data_final')?.invalid && promocionForm.get('data_final')?.touched">
-                La fecha de fin es requerida
-              </div>
+          <div class="form-group">
+            <label for="data_inici">Fecha de Inicio</label>
+            <input type="date" id="data_inici" formControlName="data_inici" class="form-control">
+            <div class="error" *ngIf="promocionForm.get('data_inici')?.invalid && promocionForm.get('data_inici')?.touched">
+              La fecha de inicio es requerida
             </div>
           </div>
 
-          <!-- In the modal form section, update the image input -->
           <div class="form-group">
-            <label for="imageUrl">URL de la imagen:</label>
+            <label for="data_final">Fecha de Finalización</label>
+            <input type="date" id="data_final" formControlName="data_final" class="form-control">
+            <div class="error" *ngIf="promocionForm.get('data_final')?.invalid && promocionForm.get('data_final')?.touched">
+              La fecha de finalización es requerida
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="imageUrl">URL de la imagen</label>
             <input
               type="text"
               id="imageUrl"
@@ -139,11 +135,7 @@
               placeholder="https://ejemplo.com/imagen.jpg"
               (input)="onImageUrlChange()"
             >
-            <small class="form-text text-muted">
-              Introduce la URL de una imagen existente. Ejemplo: https://ejemplo.com/imagen.jpg
-            </small>
 
-            <!-- Image preview -->
             <div class="image-preview" *ngIf="imagePreview">
               <img [src]="imagePreview" alt="Vista previa" (error)="handleImageError($event)">
             </div>
@@ -152,7 +144,7 @@
           <div class="form-actions">
             <button type="button" class="cancel-btn" (click)="closePromocionForm()">Cancelar</button>
             <button type="submit" class="submit-btn" [disabled]="promocionForm.invalid">
-              {{ isEditing ? 'Guardar Cambios' : 'Crear Promoción' }}
+              {{ isEditing ? 'Actualizar Promoción' : 'Crear Promoción' }}
             </button>
           </div>
         </form>
@@ -161,19 +153,21 @@
   </div>
 
   <!-- Modal de confirmación para eliminar -->
-  <div class="confirmation-modal" *ngIf="showDeleteConfirm">
-    <div class="confirmation-content">
-      <div class="confirmation-header">
-        <h3>Confirmar Eliminación</h3>
-        <button class="close-btn" (click)="cancelDelete()">&times;</button>
+  <div class="modal" *ngIf="showDeleteConfirm">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h2>Confirmar Eliminación</h2>
+        <button class="close-btn" (click)="cancelDelete()">×</button>
       </div>
-      <div class="confirmation-body">
-        <p>¿Estás seguro de que deseas eliminar esta promoción?</p>
-        <p class="warning">Esta acción no se puede deshacer.</p>
-      </div>
-      <div class="confirmation-actions">
-        <button class="cancel-btn" (click)="cancelDelete()">Cancelar</button>
-        <button class="delete-confirm-btn" (click)="deletePromocion()">Eliminar</button>
+      <div class="modal-body">
+        <p>¿Estás seguro de que deseas eliminar esta promoción? Esta acción no se puede deshacer.</p>
+
+        <div class="form-actions">
+          <button type="button" class="admin-btn" (click)="cancelDelete()">Cancelar</button>
+          <button type="button" class="delete-confirm-btn" (click)="deletePromocion()">
+            Eliminar
+          </button>
+        </div>
       </div>
     </div>
   </div>
