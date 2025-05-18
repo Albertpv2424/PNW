@@ -73,13 +73,13 @@
 <div class="modal" *ngIf="showPrizeForm">
   <div class="modal-content">
     <div class="modal-header">
-      <h2>{{ isEditing ? 'Editar' : 'Nuevo' }} Premio</h2>
-      <button class="close-btn" (click)="closePrizeForm()">&times;</button>
+      <h2>{{ isEditing ? 'Editar Premio' : 'Crear Nuevo Premio' }}</h2>
+      <button class="close-btn" (click)="closePrizeForm()">×</button>
     </div>
     <div class="modal-body">
       <form [formGroup]="prizeForm" (ngSubmit)="submitPrizeForm()">
         <div class="form-group">
-          <label for="titol">Título:</label>
+          <label for="titol">Título</label>
           <input type="text" id="titol" formControlName="titol" class="form-control">
           <div class="error" *ngIf="prizeForm.get('titol')?.invalid && prizeForm.get('titol')?.touched">
             El título es requerido
@@ -87,31 +87,29 @@
         </div>
 
         <div class="form-group">
-          <label for="descripcio">Descripción:</label>
+          <label for="descripcio">Descripción</label>
           <textarea id="descripcio" formControlName="descripcio" rows="3" class="form-control"></textarea>
           <div class="error" *ngIf="prizeForm.get('descripcio')?.invalid && prizeForm.get('descripcio')?.touched">
             La descripción es requerida
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group half-width">
-            <label for="cost">Puntos:</label>
-            <input type="number" id="cost" formControlName="cost" class="form-control">
-            <div class="error" *ngIf="prizeForm.get('cost')?.invalid && prizeForm.get('cost')?.touched">
-              El valor de puntos debe ser mayor a 0
-            </div>
+        <div class="form-group">
+          <label for="cost">Puntos</label>
+          <input type="number" id="cost" formControlName="cost" class="form-control">
+          <div class="error" *ngIf="prizeForm.get('cost')?.invalid && prizeForm.get('cost')?.touched">
+            El valor de puntos debe ser mayor a 0
           </div>
+        </div>
 
-          <div class="form-group half-width">
-            <label for="condicio">Condición:</label>
-            <input type="number" id="condicio" formControlName="condicio" class="form-control">
-          </div>
+        <div class="form-group">
+          <label for="condicio">Condición</label>
+          <input type="number" id="condicio" formControlName="condicio" class="form-control">
         </div>
 
         <!-- Replace the file upload section with an image URL input -->
         <div class="form-group">
-          <label for="imageUrl">URL de la imagen:</label>
+          <label for="imageUrl">URL de la imagen</label>
           <input
             type="text"
             id="imageUrl"
@@ -120,9 +118,6 @@
             placeholder="https://ejemplo.com/imagen.jpg"
             (input)="onImageUrlChange()"
           >
-          <small class="form-text text-muted">
-            Introduce la URL de una imagen existente. Ejemplo: https://ejemplo.com/imagen.jpg
-          </small>
 
           <!-- Image preview -->
           <div class="image-preview" *ngIf="imagePreview">
@@ -132,8 +127,8 @@
 
         <div class="form-actions">
           <button type="button" class="cancel-btn" (click)="closePrizeForm()">Cancelar</button>
-          <button type="submit" class="submit-btn">
-            {{ isEditing ? 'Actualizar' : 'Crear' }}
+          <button type="submit" class="submit-btn" [disabled]="prizeForm.invalid">
+            {{ isEditing ? 'Actualizar Premio' : 'Crear Premio' }}
           </button>
         </div>
       </form>
@@ -146,13 +141,13 @@
   <div class="modal-content" style="max-width: 400px;">
     <div class="modal-header">
       <h2>Confirmar Eliminación</h2>
-      <button class="close-btn" (click)="cancelDeletePrize()">&times;</button>
+      <button class="close-btn" (click)="cancelDeletePrize()">×</button>
     </div>
     <div class="modal-body">
       <p>¿Estás seguro de que deseas eliminar este premio? Esta acción no se puede deshacer.</p>
 
       <div class="form-actions">
-        <button type="button" class="cancel-btn" (click)="cancelDeletePrize()">Cancelar</button>
+        <button type="button" class="admin-btn" (click)="cancelDeletePrize()">Cancelar</button>
         <button type="button" class="delete-confirm-btn" (click)="deletePrize()">
           Eliminar
         </button>
