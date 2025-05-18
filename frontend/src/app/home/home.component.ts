@@ -39,10 +39,6 @@ interface OddEvent {
   commence_time?: string;
   // ... otros campos que vengan de la API
 }
-
-// Add BettingTimerComponent to the imports
-import { BettingTimerComponent } from '../betting-timer/betting-timer.component';
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -52,7 +48,6 @@ import { BettingTimerComponent } from '../betting-timer/betting-timer.component'
     BetPopupComponent,
     CombinedBetComponent,
     HeaderComponent,
-    BettingTimerComponent,
     TranslateModule // Añadir el módulo de traducción aquí
   ],
   templateUrl: './home.component.html',
@@ -67,7 +62,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   username: string = '';
   profileImage: string | null = null; // Add this property
   featuredMatches: OddEvent[] = [];
-  
+
   // Add these property declarations
   langChangeSubscription: Subscription | null = null;
   currentLanguage: string = '';
@@ -135,20 +130,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadFeaturedMatches();
     this.loadPremios();
     this.loadPromociones(); // Add this line to load promotions
-    
+
     // Suscribirse a cambios de idioma
     this.langChangeSubscription = this.languageService.currentLang.subscribe(lang => {
       this.currentLanguage = lang;
-      
+
       // Recargar datos que dependen del idioma si es necesario
       this.loadFeaturedMatches();
       this.loadPremios(); // Recargar premios cuando cambia el idioma
       this.loadPromociones(); // Recargar promociones cuando cambia el idioma
-      
+
       // Forzar actualización del carrusel cuando cambia el idioma
       this.refreshCarousel();
     });
-    
+
     // Escuchar el evento para resetear la selección de deportes
     window.addEventListener('reset-sport-selection', () => {
       this.selectedSportKey = '';
@@ -161,7 +156,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // Eliminar el event listener para evitar memory leaks
     window.removeEventListener('reset-sport-selection', () => {});
-    
+
     // Limpiar suscripción al cambio de idioma
     if (this.langChangeSubscription) {
       this.langChangeSubscription.unsubscribe();
@@ -771,17 +766,17 @@ export class HomeComponent implements OnInit, OnDestroy {
         // Emitir un evento personalizado que puede ser capturado por el código del carrusel
         const event = new CustomEvent('carousel-refresh');
         window.dispatchEvent(event);
-        
+
         // Alternativa: si estás usando una biblioteca específica para el carrusel
         // puedes intentar reinicializarla directamente aquí
         // Por ejemplo, si usas Swiper:
         // if (this.swiper) {
         //   this.swiper.update();
         // }
-        
+
       }, 100);
     }
-  
+
   }
 
 

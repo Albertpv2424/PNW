@@ -12,7 +12,6 @@ export class OddsService {
 
   getSports(): Observable<any> {
     return this.http.get(`${this.apiUrl}/sports`).pipe(
-      tap(data => console.log('Sports data:', data)),
       catchError(this.handleError)
     );
   }
@@ -20,26 +19,25 @@ export class OddsService {
   getOdds(sportKey: string): Observable<any> {
     // Special handling for tennis and baseball
     let endpoint = `${this.apiUrl}/odds/${sportKey}`;
-    
+
     // Add special parameters for tennis and baseball
-    if (sportKey === 'tennis_atp_miami_open' || 
-        sportKey === 'tennis_grand_slam_masters_1000' || 
+    if (sportKey === 'tennis_atp_miami_open' ||
+        sportKey === 'tennis_grand_slam_masters_1000' ||
         sportKey === 'baseball_mlb') {
       endpoint += '?regions=us&markets=h2h';
     }
-    
+
     return this.http.get(endpoint).pipe(
-      tap(data => console.log(`Odds for ${sportKey}:`, data)),
       catchError(this.handleError)
     );
   }
-  
+
   getScores(sportKey: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/scores/${sportKey}`).pipe(
       catchError(this.handleError)
     );
   }
-  
+
   getEventResults(eventId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/events/${eventId}/results`).pipe(
       catchError(this.handleError)
@@ -56,7 +54,6 @@ export class OddsService {
       // Server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 }
