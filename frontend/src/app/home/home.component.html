@@ -400,21 +400,3 @@
 <div *ngFor="let match of featuredMatches; trackBy: trackByMatch">
   <!-- match content -->
 </div>
-
-<!-- Update the competitions list section -->
-<div class="competitions-list">
-  @for (sport of sports; track sport.key) {
-    <div 
-      class="competition-item" 
-      [class.active]="selectedSportKey === sport.key"
-      (click)="loadOdds(sport.key)">
-      <div class="competition-icon">
-        <i class="fas fa-futbol" *ngIf="sport.key.includes('soccer')"></i>
-        <i class="fas fa-basketball-ball" *ngIf="sport.key.includes('basketball')"></i>
-        <i class="fas fa-baseball-ball" *ngIf="sport.key.includes('baseball')"></i>
-        <i class="fas fa-table-tennis" *ngIf="sport.key.includes('tennis')"></i>
-      </div>
-      <span class="competition-name">{{ sport.title }}</span>
-    </div>
-  }
-</div>

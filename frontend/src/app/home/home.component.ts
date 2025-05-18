@@ -568,27 +568,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   promociones: any[] = []; // Añadir esta propiedad para almacenar las promociones
   currentPremioIndex: number = 0;
 
-  // Add this method to load premios with random selection
-  loadPremios(): void {
-    this.premiosService.premios$.subscribe({
-      next: (data: any[]) => {
-        // Map all prizes
-        const allPremios = data.map(premio => ({
-          id: premio.id,
-          name: premio.titol,
-          description: premio.descripcio,
-          points: premio.cost,
-          image: premio.image ? `http://localhost:8000/${premio.image}` : 'assets/premios/default.png'
-        }));
-
-        // Shuffle and take only 2 random prizes
-        this.premios = this.shuffleArray([...allPremios]).slice(0, 5);
-
-      },
-      error: (error) => {
-      }
-    });
-  }
+  
 
   // Add these methods for premio carousel navigation
   nextPremio(): void {
@@ -688,7 +668,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   loadPromociones(): void {
     this.predictionsService.getPromociones().subscribe({
       next: (data) => {
-
         // Map the API response to the format needed for the carousel
         this.promociones = data.map((promo: any) => {
           // Check if we have a tipo_promocio object or just a string
@@ -707,24 +686,67 @@ export class HomeComponent implements OnInit, OnDestroy {
             type = 'GENERAL';
           }
 
+          // Properly format the image URL
+          let imageUrl = promo.image || '';
+
+          // If image doesn't start with http, assets/, uploads/ or data:, assume it's a relative path
+          if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('assets/') &&
+              !imageUrl.startsWith('uploads/') && !imageUrl.startsWith('data:')) {
+            imageUrl = `uploads/promociones/${imageUrl}`;
+          }
+
           const mappedPromo = {
             id: promo.id,
             title: promo.titol || promo.titulo || promo.title || 'Apuesta Segura',
             description: promo.descripcio || promo.descripcion || promo.description || 'Recupera tu apuesta si pierdes en tu primera predicción',
             type: type,
-            image_url: promo.image ? `http://localhost:8000/${promo.image}` : 'assets/promociones/default.png',
+            image_url: imageUrl || 'assets/promociones/default.png',
             end_date: promo.data_final || promo.fecha_fin || promo.end_date || ''
           };
 
           return mappedPromo;
         });
 
-        if (this.promociones.length === 0) {
-        }
+        console.log('Promociones loaded:', this.promociones);
       },
       error: (error) => {
-        // Initialize with empty array in case of error
+        console.error('Error loading promociones:', error);
         this.promociones = [];
+      }
+    });
+  }
+
+  // Update the loadPremios method
+  loadPremios(): void {
+    this.premiosService.premios$.subscribe({
+      next: (data: any[]) => {
+        // Map all prizes
+        const allPremios = data.map(premio => {
+          // Properly format the image URL
+          let imageUrl = premio.image || '';
+
+          // If image doesn't start with http, assets/, uploads/ or data:, assume it's a relative path
+          if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('assets/') &&
+              !imageUrl.startsWith('uploads/') && !imageUrl.startsWith('data:')) {
+            imageUrl = `uploads/premios/${imageUrl}`;
+          }
+
+          return {
+            id: premio.id,
+            name: premio.titol,
+            description: premio.descripcio,
+            points: premio.cost,
+            image: imageUrl || 'assets/premios/default.png'
+          };
+        });
+
+        // Shuffle and take only 5 random prizes
+        this.premios = this.shuffleArray([...allPremios]).slice(0, 5);
+        console.log('Premios loaded:', this.premios);
+      },
+      error: (error) => {
+        console.error('Error loading premios:', error);
+        this.premios = [];
       }
     });
   }
@@ -781,12 +803,23 @@ getPromocionImageUrl(imagePath: string | null): string {
     return imagePath;
   }
 
-  // If it's a relative path, prepend the API base URL
-  if (!imagePath.startsWith('assets/') && !imagePath.startsWith('data:')) {
+  // If it's a base64 image, return it directly
+  if (imagePath.startsWith('data:')) {
+    return imagePath;
+  }
+
+  // If it's a relative path starting with 'uploads/', prepend the API base URL without '/api'
+  if (imagePath.startsWith('uploads/')) {
     return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
   }
 
-  return imagePath;
+  // If it's a relative path starting with 'assets/', use it directly
+  if (imagePath.startsWith('assets/')) {
+    return imagePath;
+  }
+
+  // For any other path format, try with the API base URL
+  return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
 }
 
 /**
@@ -801,12 +834,23 @@ getPremioImageUrl(imagePath: string | null): string {
     return imagePath;
   }
 
-  // If it's a relative path, prepend the API base URL
-  if (!imagePath.startsWith('assets/') && !imagePath.startsWith('data:')) {
+  // If it's a base64 image, return it directly
+  if (imagePath.startsWith('data:')) {
+    return imagePath;
+  }
+
+  // If it's a relative path starting with 'uploads/', prepend the API base URL without '/api'
+  if (imagePath.startsWith('uploads/')) {
     return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
   }
 
-  return imagePath;
+  // If it's a relative path starting with 'assets/', use it directly
+  if (imagePath.startsWith('assets/')) {
+    return imagePath;
+  }
+
+  // For any other path format, try with the API base URL
+  return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
 }
 
 /**
