@@ -107,7 +107,6 @@
           <input type="number" id="condicio" formControlName="condicio" class="form-control">
         </div>
 
-        <!-- Replace the file upload section with an image URL input -->
         <div class="form-group">
           <label for="imageUrl">URL de la imagen</label>
           <input
@@ -119,7 +118,6 @@
             (input)="onImageUrlChange()"
           >
 
-          <!-- Image preview -->
           <div class="image-preview" *ngIf="imagePreview">
             <img [src]="imagePreview" alt="Vista previa" (error)="handleImageError($event)">
           </div>
