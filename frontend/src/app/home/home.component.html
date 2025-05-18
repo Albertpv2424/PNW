@@ -94,8 +94,9 @@
               <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPromocionIndex) + '%)'">
                 <div class="promocion-slide" *ngFor="let promocion of promociones; let i = index">
                   <div class="promocion-card">
+                    <!-- Update the promotion image in the carousel (around line 98) -->
                     <div class="promocion-image">
-                      <img [src]="promocion.image_url" [alt]="promocion.title" (error)="handlePromocionImageError($event, promocion)">
+                      <img [src]="getPromocionImageUrl(promocion.image_url)" [alt]="promocion.title" (error)="handlePromocionImageError($event)">
                     </div>
                     <div class="promocion-content">
                       <span class="promocion-type">{{ promocion.type }}</span>
@@ -139,8 +140,9 @@
               <div class="carousel-track" [style.transform]="'translateX(' + (-100 * currentPremioIndex) + '%)'">
                 <div class="premio-slide" *ngFor="let premio of premios; let i = index">
                   <div class="premio-card">
+                    <!-- Update the prize image in the carousel (around line 135) -->
                     <div class="premio-image">
-                      <img [src]="premio.image" [alt]="premio.name" (error)="handlePremioImageError($event, premio)">
+                      <img [src]="getPremioImageUrl(premio.image)" [alt]="premio.name" (error)="handlePremioImageError($event)">
                     </div>
                     <div class="premio-content">
                       <h3 class="premio-title">{{ premio.name }}</h3>
@@ -397,4 +399,22 @@
 <!-- Update your ngFor to use the new tracking function -->
 <div *ngFor="let match of featuredMatches; trackBy: trackByMatch">
   <!-- match content -->
+</div>
+
+<!-- Update the competitions list section -->
+<div class="competitions-list">
+  @for (sport of sports; track sport.key) {
+    <div 
+      class="competition-item" 
+      [class.active]="selectedSportKey === sport.key"
+      (click)="loadOdds(sport.key)">
+      <div class="competition-icon">
+        <i class="fas fa-futbol" *ngIf="sport.key.includes('soccer')"></i>
+        <i class="fas fa-basketball-ball" *ngIf="sport.key.includes('basketball')"></i>
+        <i class="fas fa-baseball-ball" *ngIf="sport.key.includes('baseball')"></i>
+        <i class="fas fa-table-tennis" *ngIf="sport.key.includes('tennis')"></i>
+      </div>
+      <span class="competition-name">{{ sport.title }}</span>
+    </div>
+  }
 </div>

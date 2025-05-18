@@ -1464,3 +1464,50 @@ section[id] {
   animation: highlight 1s ease-in-out;
   border-radius: 8px;
 }
+
+/* ... existing code ... */
+
+/* Improve the competitions display */
+.competitions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.competition-item {
+  background-color: #1e1e30;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.competition-item:hover {
+  background-color: #2a2a40;
+  transform: translateY(-2px);
+}
+
+.competition-item.active {
+  background-color: #00c853;
+  color: #000;
+}
+
+.competition-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.competition-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ... existing code ... */

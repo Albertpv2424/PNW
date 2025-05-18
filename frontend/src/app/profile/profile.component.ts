@@ -491,6 +491,10 @@ export class ProfileComponent implements OnInit {
   }
 
   // Add these methods to handle prize images
+/**
+ * Gets the proper image URL for display
+ * Handles both relative paths and full URLs
+ */
 getImageUrl(imagePath: string | null): string {
   if (!imagePath) return 'assets/premios/default.png';
 
@@ -507,11 +511,11 @@ getImageUrl(imagePath: string | null): string {
   return imagePath;
 }
 
-handleImageError(event: Event): void {
-  const target = event.target as HTMLImageElement;
-  if (target) {
-    target.src = 'assets/premios/default.png';
-  }
+/**
+ * Handle image loading errors
+ */
+handleImageError(event: any): void {
+  event.target.src = 'assets/premios/default.png';
 }
 
 }

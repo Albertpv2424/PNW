@@ -14,6 +14,7 @@ import { PremiosService } from '../services/premios.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { LanguageService } from '../services/language.service';
+import { environment } from '../../environments/environment';
 
 interface Sport {
   key: string;
@@ -607,10 +608,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['/premios', id]);
   }
 
-  handlePremioImageError(event: any, premio: any): void {
-    event.target.src = 'assets/premios/default.png';
-  }
-
   // Add this method to handle sport selection
   selectSport(sportKey: string): void {
   // Call the existing loadOdds method which already sets selectedSportKey
@@ -731,11 +728,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
   }
-  // Add this method to handle promotion image errors
-  handlePromocionImageError(event: any, promocion: any): void {
-    // Set a default image
-    event.target.src = 'assets/promociones/default.png';
-  }
 
   ngAfterViewInit() {
     // Configurar el desplazamiento suave para los enlaces de anclaje
@@ -777,6 +769,67 @@ export class HomeComponent implements OnInit, OnDestroy {
       }, 100);
     }
 
+    /**
+ * Gets the proper image URL for promotions
+ * Handles both relative paths and full URLs
+ */
+getPromocionImageUrl(imagePath: string | null): string {
+  if (!imagePath) return this.getDefaultPromocionImage();
+
+  // Check if the image path already includes http or https
+  if (imagePath.startsWith('http')) {
+    return imagePath;
   }
 
+  // If it's a relative path, prepend the API base URL
+  if (!imagePath.startsWith('assets/') && !imagePath.startsWith('data:')) {
+    return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
+  }
+
+  return imagePath;
+}
+
+/**
+ * Gets the proper image URL for prizes
+ * Handles both relative paths and full URLs
+ */
+getPremioImageUrl(imagePath: string | null): string {
+  if (!imagePath) return 'assets/premios/default.png';
+
+  // Check if the image path already includes http or https
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+
+  // If it's a relative path, prepend the API base URL
+  if (!imagePath.startsWith('assets/') && !imagePath.startsWith('data:')) {
+    return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
+  }
+
+  return imagePath;
+}
+
+/**
+ * Handle prize image loading errors
+ */
+handlePremioImageError(event: any): void {
+  event.target.src = 'assets/premios/default.png';
+}
+
+/**
+ * Gets a default base64 image for promotions
+ */
+getDefaultPromocionImage(): string {
+  // Fixed base64 image for promotions
+  return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMxZTFlMzAiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZmlsbD0iI2NjYyI+UHJvbW9jacOzbjwvdGV4dD48L3N2Zz4=';
+}
+
+/**
+ * Handle promotion image loading errors
+ */
+handlePromocionImageError(event: any): void {
+  // Use the fixed default image
+  event.target.src = this.getDefaultPromocionImage();
+}
+}
 

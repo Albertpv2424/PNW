@@ -44,12 +44,14 @@
           <td class="id-cell">{{ user.id }}</td>
           <td>
             <div class="user-cell">
-              <div class="user-avatar"
-                   [style.background-image]="user.profile_image ? (user.profile_image.startsWith('http') ? 'url(' + user.profile_image + ')' : 'url(http://localhost:8000/' + user.profile_image + ')') : 'none'">
-                <span *ngIf="!user.profile_image">{{ getUserInitials(user.nick) }}</span>
+              <!-- Find the user profile image tag and update it -->
+              <!-- Replace the existing image tag with: -->
+              <img [src]="getProfileImageUrl(user.profile_image)"
+                   alt="{{ user.username }}"
+                   class="user-avatar"
+                   (error)="handleProfileImageError($event)">
               </div>
               {{ user.nick }}
-            </div>
           </td>
           <td>{{ user.email }}</td>
           <td>{{ user.dni }}</td>
@@ -136,6 +138,30 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label for="saldo">Saldo Inicial</label>
+            <input type="number" id="saldo" formControlName="saldo" min="0">
+            <div class="error-message" *ngIf="userForm.get('saldo')?.invalid && userForm.get('saldo')?.touched">
+              El saldo debe ser un número positivo
+            </div>
+          </div>
+
+          <!-- In your user edit form, add: -->
+          <div class="form-group">
+            <label for="imageUrl">URL de la imagen de perfil</label>
+            <input
+              type="text"
+              id="imageUrl"
+              formControlName="imageUrl"
+              class="form-control"
+              placeholder="https://ejemplo.com/imagen.jpg"
+              (input)="onImageUrlChange()"
+            >
+
+            <div class="image-preview" *ngIf="imagePreview">
+              <img [src]="imagePreview" alt="Vista previa" (error)="handleProfileImageError($event)">
+            </div>
+          </div>
           <div class="form-group">
             <label for="saldo">Saldo Inicial</label>
             <input type="number" id="saldo" formControlName="saldo" min="0">

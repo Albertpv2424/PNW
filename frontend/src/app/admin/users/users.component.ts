@@ -413,16 +413,42 @@ export class UsersComponent implements OnInit {
   }
 
   // Add this method to the UsersComponent class
-  getProfileImageUrl(imagePath: string | null): string {
-    if (!imagePath) return '';
+  imagePreview: string | null = null;
 
+  onImageUrlChange(): void {
+    const imageUrl = this.userForm.get('imageUrl')?.value;
+    if (imageUrl && imageUrl.trim() !== '') {
+      this.imagePreview = imageUrl;
+    } else {
+      this.imagePreview = null;
+    }
+  }
+
+  /**
+   * Gets the proper image URL for display
+   * Handles both relative paths and full URLs
+   */
+  getProfileImageUrl(imagePath: string | null): string {
+    if (!imagePath) return 'assets/default-avatar.png';
+  
     // Check if the image path already includes http or https
     if (imagePath.startsWith('http')) {
       return imagePath;
     }
-
-    // Otherwise, prepend the base URL
-    return `http://localhost:8000/${imagePath}`;
+  
+    // If it's a relative path, prepend the API base URL
+    if (!imagePath.startsWith('assets/')) {
+      return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
+    }
+  
+    return imagePath;
+  }
+  
+  /**
+   * Handle image loading errors
+   */
+  handleProfileImageError(event: any): void {
+    event.target.src = 'assets/default-avatar.png';
   }
 
   // Make sure you have the getUserInitials method
