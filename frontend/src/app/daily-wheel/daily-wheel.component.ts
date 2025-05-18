@@ -263,12 +263,13 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
     animate();
   }
 
+  // Find the checkLastSpin method and update it:
   checkLastSpin() {
     if (!this.authService.isLoggedIn()) {
       this.canSpin = true;
       return;
     }
-
+  
     // Corregir el problema de headers
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
@@ -276,11 +277,10 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
-
+  
     // Check with the server instead of localStorage
     this.http.get(`${this.apiUrl}/daily-wheel/status`, { headers }).subscribe({
       next: (response: any) => {
-        console.log('Wheel status response:', response);
         this.canSpin = response.canSpin;
         
         // Store the points earned from the response
@@ -289,22 +289,15 @@ export class DailyWheelComponent implements OnInit, AfterViewInit {
           // Only show the last earned points if the user can't spin today
           this.showLastEarnedPoints = !response.canSpin;
         }
-
+  
         if (!this.canSpin) {
           const today = new Date().toISOString().split('T')[0];
           this.lastSpinDate = today;
         }
       },
       error: (error) => {
-        console.error('Error checking wheel status:', error);
         // Default to allowing spin if there's an error
         this.canSpin = true;
-
-        // Check if it's an authentication error
-        if (error.status === 401) {
-          this.notificationService.showError('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-          this.authService.logout();
-        }
       }
     });
   }

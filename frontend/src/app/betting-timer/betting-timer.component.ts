@@ -118,11 +118,9 @@ export class BettingTimerComponent implements OnInit, OnDestroy {
   loadBetsPlacedToday(): void {
     this.betsSubscription = this.betService.getTodayBetsCount().subscribe({
       next: (count) => {
-        console.log('Apuestas realizadas hoy:', count);
         this.betsPlaced = count;
       },
       error: (error) => {
-        console.error('Error loading bets count:', error);
         this.betsPlaced = 0;
       }
     });
@@ -145,7 +143,6 @@ export class BettingTimerComponent implements OnInit, OnDestroy {
         }
       },
       error: (error) => {
-        console.error('Error al cargar límites de usuario:', error);
       }
     });
   }

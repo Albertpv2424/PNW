@@ -199,28 +199,18 @@ export class AuthService {
   // Add or update this method in your AuthService
   // Add or update the isAdmin method
   // Update the isAdmin method to be more flexible
+  // Find and remove these console logs:
+  // auth.service.ts:217 Checking admin status for user: Albertpv24 Type: usuari
+  // auth.service.ts:221 Is admin? false
+
+  // Look for the isAdmin method and update it:
   isAdmin(): boolean {
     const user = this.getCurrentUser();
-    if (!user) {
-      console.log('No user found when checking admin status');
-      return false;
-    }
-  
-    // Make sure tipus_acc exists before trying to use toLowerCase()
-    if (!user.tipus_acc) {
-      console.log('User has no tipus_acc property:', user);
-      return false;
-    }
-  
-    // Case-insensitive check for admin status
-    const userType = user.tipus_acc.toLowerCase();
-    console.log('Checking admin status for user:', user.nick, 'Type:', userType);
-  
-    // More flexible check for various admin type strings
-    const isAdmin = ['admin', 'administrador', 'administrator'].includes(userType);
-    console.log('Is admin?', isAdmin);
-  
-    return isAdmin;
+    if (!user) return false;
+
+    // Remove console logs and just return the result
+    const userType = user.tipus_acc?.toLowerCase() || '';
+    return ['admin', 'administrador'].includes(userType);
   }
 
 
@@ -232,11 +222,11 @@ export class AuthService {
     const headers: {[key: string]: string} = {
       'Accept': 'application/json'
     };
-    
+
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
-    
+
     return headers;
   }
 }

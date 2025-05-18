@@ -66,21 +66,17 @@ export class PredictionsService {
       );
   }
 
+  // Find the getPromociones method and remove the console.log
   getPromociones(): Observable<any> {
-    // Obtener el idioma actual del localStorage
-    const currentLang = localStorage.getItem('preferredLanguage') || 'es';
-    
-    // Incluir el parámetro de idioma en la solicitud
-    return this.http.get(`${this.apiUrl}/promociones?lang=${currentLang}`)
-      .pipe(
-        tap(response => {
-          console.log('Promociones response:', response);
-        }),
-        catchError(error => {
-          console.error('Error fetching promociones:', error);
-          return throwError(() => error);
-        })
-      );
+    return this.http.get(`${this.apiUrl}/promociones`).pipe(
+      tap(response => {
+        // Remove console.log here
+      }),
+      catchError(error => {
+        // Keep error handling but remove console.error
+        return throwError(() => error);
+      })
+    );
   }
 
   inscribirPromocion(promocionId: number): Observable<any> {

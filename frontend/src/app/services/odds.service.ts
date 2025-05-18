@@ -44,7 +44,6 @@ export class OddsService {
     );
   }
 
-  // Add the missing handleError method
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

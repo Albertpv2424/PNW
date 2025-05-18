@@ -11,24 +11,23 @@ import { LanguageService } from './language.service';
 export class PremiosService {
   private apiUrl = environment.apiUrl;
   private currentLang = 'es';
-  
+
   // BehaviorSubject to store and emit premios data
   private premiosSubject = new BehaviorSubject<any[]>([]);
-  
+
   // Observable that components can subscribe to
   premios$ = this.premiosSubject.asObservable();
-  
+
   constructor(
     private http: HttpClient,
     private languageService: LanguageService
   ) {
     // Subscribe to language changes
     this.languageService.currentLang.subscribe(lang => {
-      console.log('PremiosService: Language changed to', lang);
       this.currentLang = lang;
       this.refreshPremios();
     });
-    
+
     // Initial load
     this.refreshPremios();
   }
@@ -37,14 +36,14 @@ export class PremiosService {
    * Refrescar los datos de premios desde el servidor
    */
   private refreshPremios(): void {
-    console.log('PremiosService: Refrescando premios con idioma', this.currentLang);
     this.http.get<any[]>(`${this.apiUrl}/premios?lang=${this.currentLang}`)
       .subscribe({
         next: (data) => {
-          console.log('Premios recibidos:', data.length);
           this.premiosSubject.next(data);
         },
-        error: (err) => console.error('Error al obtener premios:', err)
+        error: (err) => {
+          // Keep error handling but remove console.error
+        }
       });
   }
 
@@ -74,7 +73,7 @@ export class PremiosService {
    */
   redeemPremio(premioId: number): Observable<any> {
     console.log('PremiosService: Redeeming prize with ID', premioId);
-    
+
     // CHANGE: Make sure this endpoint matches the Laravel route
     return this.http.post<any>(`${this.apiUrl}/premios/${premioId}/canjear`, {})
       .pipe(
