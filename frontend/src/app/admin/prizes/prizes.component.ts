@@ -242,46 +242,29 @@ export class PrizesComponent implements OnInit {
       headers: this.authService.getAuthHeaders()
     };
 
-    // Submit the request
-    if (this.isEditing && this.selectedPrize) {
-      // Update existing prize
-      this.http.put(`${environment.apiUrl}/admin/prizes/${this.selectedPrize.id}`, prizeData, options)
-        .subscribe({
-          next: (response) => {
-            console.log('Prize operation successful:', response);
-            this.notificationService.showSuccess(
-              this.isEditing ? 'Premio actualizado correctamente' : 'Premio creado correctamente'
-            );
-            this.loadPrizes();
-            this.closePrizeForm();
-          },
-          error: (error) => {
-            console.error('Error in prize operation:', error);
-            this.notificationService.showError(
-              'Error: ' + (error.error?.message || 'No se pudo procesar la solicitud')
-            );
-          }
-        });
-    } else {
-      // Create new prize
-      this.http.post(`${environment.apiUrl}/admin/prizes`, prizeData, options)
-        .subscribe({
-          next: (response) => {
-            console.log('Prize operation successful:', response);
-            this.notificationService.showSuccess(
-              this.isEditing ? 'Premio actualizado correctamente' : 'Premio creado correctamente'
-            );
-            this.loadPrizes();
-            this.closePrizeForm();
-          },
-          error: (error) => {
-            console.error('Error in prize operation:', error);
-            this.notificationService.showError(
-              'Error: ' + (error.error?.message || 'No se pudo procesar la solicitud')
-            );
-          }
-        });
-    }
+    // Submit the request - use the same pattern as promotions
+    const endpoint = this.isEditing && this.selectedPrize
+      ? `${environment.apiUrl}/admin/prizes/${this.selectedPrize.id}`
+      : `${environment.apiUrl}/admin/prizes`;
+
+    // Always use POST method, as defined in the Laravel routes
+    this.http.post(endpoint, prizeData, options)
+      .subscribe({
+        next: (response) => {
+          console.log('Prize operation successful:', response);
+          this.notificationService.showSuccess(
+            this.isEditing ? 'Premio actualizado correctamente' : 'Premio creado correctamente'
+          );
+          this.loadPrizes();
+          this.closePrizeForm();
+        },
+        error: (error) => {
+          console.error('Error in prize operation:', error);
+          this.notificationService.showError(
+            'Error: ' + (error.error?.message || 'No se pudo procesar la solicitud')
+          );
+        }
+      });
   }
 
   // Add this method to handle image URL changes

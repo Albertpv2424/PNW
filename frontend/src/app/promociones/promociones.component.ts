@@ -10,6 +10,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
 import { Subscription } from 'rxjs';
 import { PromocionesService } from '../services/promociones.service';
+// Add these imports for form handling
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 // Define interfaces for our data structures
 interface PromocionAPI {
@@ -45,7 +47,8 @@ interface PromocionUI {
     CommonModule,
     HeaderComponent,
     CombinedBetComponent,
-    TranslateModule
+    TranslateModule,
+    ReactiveFormsModule // Add this import
   ],
   templateUrl: './promociones.component.html',
   styleUrls: ['./promociones.component.css']
@@ -59,14 +62,31 @@ export class PromocionesComponent implements OnInit, OnDestroy {
   private langChangeSubscription: Subscription | null = null;
   private promocionesSubscription: Subscription | null = null;
 
+  // Add these properties to your component class
+  imagePreview: string | null = null;
+  promocionForm: FormGroup;
+  isEditing: boolean = false;
+  selectedPromocion: any = null;
+
   constructor(
     private predictionsService: PredictionsService,
     private authService: AuthService,
     private notificationService: NotificationService,
     private http: HttpClient,
     private translateService: TranslateService,
-    private promocionesService: PromocionesService
-  ) {}
+    private promocionesService: PromocionesService,
+    private fb: FormBuilder // Add FormBuilder
+  ) {
+    // Initialize the form
+    this.promocionForm = this.fb.group({
+      titol: ['', Validators.required],
+      descripcio: ['', Validators.required],
+      data_inici: ['', Validators.required],
+      data_final: ['', Validators.required],
+      tipus_promocio: [1, Validators.required],
+      imageUrl: ['']
+    });
+  }
 
   ngOnInit() {
     // Establecer el título de la página basado en el idioma actual
@@ -111,6 +131,7 @@ export class PromocionesComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Keep only one version of procesarPromociones
   procesarPromociones(data: PromocionAPI[]) {
     this.promociones = data.map((promo: PromocionAPI): PromocionUI => {
       // Verificar si la promoción ha expirado
@@ -132,18 +153,17 @@ export class PromocionesComponent implements OnInit, OnDestroy {
         startDate: new Date(promo.data_inici),
         endDate: new Date(promo.data_final),
         type: promo.tipoPromocion ? promo.tipoPromocion.titol : this.getDefaultTypeText(),
-        image: this.getImageUrl(promo.image), // Use the getImageUrl method here
+        image: this.getImageUrl(promo.image), // Use getImageUrl here
         buttonText: buttonText,
         isExpired: isExpired,
         isInscrito: isInscrito
       };
     });
 
-
-    // Si el usuario está autenticado, verificar inscripciones
-    if (this.authService.isLoggedIn()) {
-      this.checkUserInscriptions();
-    }
+  // Si el usuario está autenticado, verificar inscripciones
+  if (this.authService.isLoggedIn()) {
+    this.checkUserInscriptions();
+  }
   }
 
   // Método para obtener el texto por defecto para el tipo de promoción
@@ -334,7 +354,118 @@ private handleError(error: any): void {
   }
 }
 
-// Add these methods to handle promotion images properly
+// Add these methods for form handling
+// Replace the loadPromociones method with this implementation
+loadPromociones(): void {
+// This will trigger a reload of promotions
+this.isLoading = true;
+this.http.get(`${environment.apiUrl}/promociones`, {
+headers: {
+'Accept-Language': this.translateService.currentLang
+}
+}).subscribe({
+next: (data: any) => {
+this.promocionesService.updatePromociones(data.promociones || []);
+this.isLoading = false;
+},
+error: (error) => {
+console.error('Error loading promotions:', error);
+this.isLoading = false;
+this.translateService.get('PROMOTIONS.ERROR_LOADING').subscribe((message: string) => {
+this.errorMessage = message;
+});
+}
+});
+}
+
+closePromocionForm(): void {
+  this.showPromocionForm = false;
+  this.isEditing = false;
+  this.selectedPromocion = null;
+  this.imagePreview = null;
+  this.promocionForm.reset();
+}
+
+// Add this property
+showPromocionForm: boolean = false;
+
+// Método para formatear fechas
+onImageUrlChange(): void {
+  const imageUrl = this.promocionForm.get('imageUrl')?.value;
+  if (imageUrl) {
+    this.imagePreview = imageUrl;
+  } else {
+    this.imagePreview = null;
+  }
+}
+
+// Update the submitPromocionForm method to properly handle the image URL
+submitPromocionForm(): void {
+  if (this.promocionForm.invalid) {
+    // Mark all fields as touched to trigger validation messages
+    Object.keys(this.promocionForm.controls).forEach(key => {
+      this.promocionForm.get(key)?.markAsTouched();
+    });
+    return;
+  }
+
+  const formData = this.promocionForm.value;
+
+  // Create the data object to send
+  const promocionData = {
+    titol: formData.titol,
+    descripcio: formData.descripcio,
+    data_inici: formData.data_inici,
+    data_final: formData.data_final,
+    tipus_promocio: formData.tipus_promocio,
+    image: formData.imageUrl // Use the imageUrl field from the form
+  };
+
+  console.log('Submitting promotion data:', promocionData);
+
+  // Set up request options
+  const options = {
+    headers: this.authService.getAuthHeaders()
+  };
+
+  // Submit the request
+  if (this.isEditing && this.selectedPromocion) {
+    // Update existing promotion
+    this.http.put(`${environment.apiUrl}/admin/promotions/${this.selectedPromocion.id}`, promocionData, options)
+      .subscribe({
+        next: (response) => {
+          console.log('Promotion updated successfully:', response);
+          this.notificationService.showSuccess('Promoción actualizada correctamente');
+          this.loadPromociones();
+          this.closePromocionForm();
+        },
+        error: (error) => {
+          console.error('Error updating promotion:', error);
+          this.notificationService.showError(
+            'Error: ' + (error.error?.message || 'No se pudo actualizar la promoción')
+          );
+        }
+      });
+  } else {
+    // Create new promotion
+    this.http.post(`${environment.apiUrl}/admin/promotions`, promocionData, options)
+      .subscribe({
+        next: (response) => {
+          console.log('Promotion created successfully:', response);
+          this.notificationService.showSuccess('Promoción creada correctamente');
+          this.loadPromociones();
+          this.closePromocionForm();
+        },
+        error: (error) => {
+          console.error('Error creating promotion:', error);
+          this.notificationService.showError(
+            'Error: ' + (error.error?.message || 'No se pudo crear la promoción')
+          );
+        }
+      });
+  }
+}
+
 getImageUrl(imagePath: string | null): string {
   if (!imagePath) return this.getDefaultImageUrl();
 
@@ -351,6 +482,7 @@ getImageUrl(imagePath: string | null): string {
   return imagePath;
 }
 
+// Make sure this method is implemented
 handleImageError(event: Event): void {
   const target = event.target as HTMLImageElement;
   if (target) {
@@ -358,6 +490,7 @@ handleImageError(event: Event): void {
   }
 }
 
+// Remove the duplicate procesarPromociones method
 }
 
 

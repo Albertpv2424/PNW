@@ -10,6 +10,9 @@ import { AuthService } from './auth.service'; // Add this import
   providedIn: 'root'
 })
 export class PromocionesService {
+  updatePromociones(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = environment.apiUrl;
   private currentLang = 'es';
 
