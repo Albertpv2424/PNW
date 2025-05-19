@@ -48,7 +48,8 @@ export class UsersComponent implements OnInit {
       dni: ['', [Validators.required]],
       telefon: [''],
       data_naixement: ['', [Validators.required]],
-      saldo: [0, [Validators.required, Validators.min(0)]]
+      saldo: [0, [Validators.required, Validators.min(0)]],
+      imageUrl: [''] // Añadir campo para la URL de la imagen
     });
 
     this.balanceForm = this.fb.group({
@@ -169,8 +170,12 @@ export class UsersComponent implements OnInit {
         dni: user.dni,
         telefon: user.telefon || '',
         data_naixement: user.data_naixement,
-        saldo: user.saldo
+        saldo: user.saldo,
+        imageUrl: user.profile_image || '' // Cargar la URL de la imagen existente
       });
+
+      // Actualizar la vista previa de la imagen
+      this.imagePreview = user.profile_image || null;
 
       // Make nick field read-only when editing
       this.userForm.get('nick')?.disable();
@@ -181,8 +186,12 @@ export class UsersComponent implements OnInit {
       // Creating new user
       this.userForm.reset({
         tipus_acc: 'Usuario', // Always set to Usuario
-        saldo: 0
+        saldo: 0,
+        imageUrl: ''
       });
+
+      // Resetear la vista previa
+      this.imagePreview = null;
 
       // Enable nick field for new users
       this.userForm.get('nick')?.enable();
@@ -205,6 +214,14 @@ export class UsersComponent implements OnInit {
   }
 
   // Update submitUserForm to handle disabled fields
+  // Fixing Profile Image Storage in the Database
+
+  // I see the issue. The problem is that the backend is expecting a file upload for the profile image, but you're trying to send a URL string. Let's modify the code to handle URL-based images properly.
+
+  // Looking at the Laravel controller, it's expecting a file upload through `$request->hasFile('profile_image')`, but your frontend is sending a URL string in the `profile_image` field.
+
+  // Update your code to handle this situation:
+  // Update submitUserForm to properly handle image URLs
   submitUserForm(): void {
     if (this.userForm.invalid) {
       this.notificationService.showError('Por favor, completa todos los campos requeridos correctamente');
@@ -218,7 +235,23 @@ export class UsersComponent implements OnInit {
     this.userForm.get('tipus_acc')?.enable();
 
     // Get form values
-    const userData = this.userForm.value;
+    const userData = { ...this.userForm.value };
+
+    // Asignar la URL de la imagen al campo profile_image
+    console.log('Image URL before assignment:', userData.imageUrl);
+
+    // Check if the imageUrl is a valid URL
+    if (userData.imageUrl && userData.imageUrl.trim() !== '') {
+      userData.profile_image = userData.imageUrl;
+
+      // Add a flag to indicate this is a URL, not a file upload
+      userData.is_profile_image_url = true;
+    }
+
+    // Eliminar el campo imageUrl ya que no existe en el modelo del servidor
+    delete userData.imageUrl;
+
+    console.log('Final user data with profile_image:', userData);
 
     // Re-disable fields
     if (this.isEditing) {
@@ -263,7 +296,7 @@ export class UsersComponent implements OnInit {
         }
       });
     }
-}
+  }
 
   openBalanceForm(user: any): void {
     this.selectedUser = user;
@@ -417,6 +450,8 @@ export class UsersComponent implements OnInit {
 
   onImageUrlChange(): void {
     const imageUrl = this.userForm.get('imageUrl')?.value;
+    console.log('Image URL changed to:', imageUrl);
+
     if (imageUrl && imageUrl.trim() !== '') {
       this.imagePreview = imageUrl;
     } else {
@@ -429,26 +464,33 @@ export class UsersComponent implements OnInit {
    * Handles both relative paths and full URLs
    */
   getProfileImageUrl(imagePath: string | null): string {
-    if (!imagePath) return 'assets/default-avatar.png';
-  
+    if (!imagePath) return 'assets/monedapnw.png'; // Change to an existing image
+
     // Check if the image path already includes http or https
     if (imagePath.startsWith('http')) {
       return imagePath;
     }
-  
+
     // If it's a relative path, prepend the API base URL
     if (!imagePath.startsWith('assets/')) {
       return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
     }
-  
+
     return imagePath;
   }
-  
+
   /**
    * Handle image loading errors
    */
   handleProfileImageError(event: any): void {
-    event.target.src = 'assets/default-avatar.png';
+    event.target.src = 'assets/monedapnw.png'; // Change to an existing image
+  }
+
+  /**
+   * Handle image errors in the preview form
+   */
+  handleImageError(event: any): void {
+    event.target.src = 'assets/monedapnw.png'; // Change to an existing image
   }
 
   // Make sure you have the getUserInitials method

@@ -170,6 +170,20 @@ class UserController extends Controller
             $user->telefon = $request->telefon;
             $user->data_naixement = $request->data_naixement;
 
+            // Process the profile_image URL - ensure it's stored properly
+            if ($request->has('profile_image')) {
+                // If it's already a full URL, store it as is
+                if (filter_var($request->profile_image, FILTER_VALIDATE_URL)) {
+                    $user->profile_image = $request->profile_image;
+                    Log::info('Storing URL as profile image: ' . $request->profile_image);
+                }
+                // If it's a relative path, store it as is
+                else if (is_string($request->profile_image)) {
+                    $user->profile_image = $request->profile_image;
+                    Log::info('Storing path as profile image: ' . $request->profile_image);
+                }
+            }
+
             if ($request->has('password') && !empty($request->password)) {
                 $user->pswd = Hash::make($request->password);
             }
