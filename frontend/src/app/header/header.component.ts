@@ -37,12 +37,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isProfileMenuOpen = false;
   saldo: number = 0;
 
+  // Fer públic l'URL de l'API per poder-lo utilitzar al template
+  public apiUrl = environment.apiUrl;
+
   // Search functionality
   searchQuery: string = '';
   searchResults: any[] = [];
   showSearchResults: boolean = false;
   private searchSubject = new Subject<string>();
-  private apiUrl = environment.apiUrl;
 
   // Add this property
   currentLanguage: string = 'es';
@@ -59,6 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (!this.username) {
         this.username = user ? user.nick : null;
       }
+      // Modificar aquesta línia per utilitzar l'URL de l'API
       this.profileImage = user && user.profile_image ? user.profile_image : null;
       this.saldo = user ? user.saldo : 0;
     });
@@ -215,4 +218,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Navegar a la página principal
     this.router.navigate(['/']);
   }
+
+
+// Afegir aquest nou mètode per processar la URL de la imatge
+getImageUrl(imagePath: string | null): string {
+  if (!imagePath) return 'assets/default-profile.png';
+
+  // Comprovar si la ruta de la imatge ja inclou http o https
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+
+  // Si és una ruta relativa, afegir l'URL base de l'API
+  if (!imagePath.startsWith('assets/')) {
+    return `${environment.apiUrl.replace('/api', '')}/${imagePath}`;
+  }
+
+  return imagePath;
+}
 }

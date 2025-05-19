@@ -57,13 +57,13 @@
       <div class="profile-dropdown" *ngIf="username" (click)="toggleProfileMenu()" (clickOutside)="closeProfileMenu()">
         <div class="profile-container">
           <div class="profile-image"
-            [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
+            [style.background-image]="profileImage ? 'url(' + getImageUrl(profileImage) + ')' : 'none'">
             <span *ngIf="!profileImage">{{ getInitials() }}</span>
           </div>
           <span class="username">{{ username }}</span>
           <span class="dropdown-arrow" [class.open]="isProfileMenuOpen">▼</span>
         </div>
-
+      
         <!-- Menú desplegable -->
         <div class="profile-menu" *ngIf="isProfileMenuOpen">
           <a routerLink="/profile" class="menu-item">
