@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-05-2025 a las 13:26:56
+-- Tiempo de generación: 19-05-2025 a las 11:59:52
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -155,9 +155,15 @@ INSERT INTO `daily_rewards_tracking` (`id`, `usuari_nick`, `date`, `wheel_spun`,
 (30, 'admin', '2025-05-10', 0, 0, 0, 0, 0, 5, 3462, 8000, '2025-05-10 14:41:53', '2025-05-10 16:31:23'),
 (31, 'admin', '2025-05-13', 0, 0, 0, 0, 0, 5, 3600, 3600, '2025-05-13 17:12:02', '2025-05-13 19:05:14'),
 (32, 'Albertpv24', '2025-05-13', 0, 0, 0, 0, 0, 5, 0, 3600, '2025-05-13 17:12:12', '2025-05-13 17:12:12'),
-(33, 'admin', '2025-05-14', 0, 0, 0, 0, 0, 5, 4757, 9000, '2025-05-14 07:03:35', '2025-05-14 09:26:49'),
+(33, 'admin', '2025-05-14', 0, 0, 0, 0, 0, 5, 2678, 9000, '2025-05-14 07:03:35', '2025-05-14 18:43:41'),
 (35, 'Juan', '2025-05-14', 0, 0, 0, 0, 0, 5, 0, 3600, '2025-05-14 08:35:23', '2025-05-14 08:35:23'),
-(36, 'Laura', '2025-05-14', 0, 0, 0, 0, 0, 5, 1, 3600, '2025-05-14 08:36:41', '2025-05-14 08:36:51');
+(36, 'Laura', '2025-05-14', 0, 0, 0, 0, 0, 5, 1, 3600, '2025-05-14 08:36:41', '2025-05-14 08:36:51'),
+(37, 'admin', '2025-05-17', 0, 0, 0, 0, 0, 5, 5832, 8000, '2025-05-17 07:38:04', '2025-05-17 09:47:51'),
+(38, 'Albertpv24', '2025-05-17', 0, 0, 0, 0, 0, 5, 1663, 3600, '2025-05-17 08:51:37', '2025-05-17 09:47:35'),
+(39, 'admin', '2025-05-18', 0, 0, 0, 0, 0, 5, 5413, 9000, '2025-05-18 08:41:10', '2025-05-18 17:19:51'),
+(40, 'Albertpv24', '2025-05-18', 0, 0, 0, 0, 0, 5, 9706, 18000, '2025-05-18 09:01:25', '2025-05-18 13:19:51'),
+(41, 'admin', '2025-05-19', 0, 0, 0, 0, 0, 5, 2782, 3600, '2025-05-19 06:53:28', '2025-05-19 07:59:45'),
+(42, 'Popi', '2025-05-19', 0, 0, 0, 0, 0, 5, 32, 3600, '2025-05-19 07:53:08', '2025-05-19 07:56:42');
 
 -- --------------------------------------------------------
 
@@ -465,7 +471,37 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (127, 'App\\Models\\User', 'admin', 'auth-token', '090970d42f8c97a5f1752e371a7baf8dfb4a69754ac282e390761e282bb02ae8', '[\"*\"]', '2025-05-14 08:36:19', NULL, '2025-05-14 08:35:46', '2025-05-14 08:36:19'),
 (128, 'App\\Models\\User', 'Laura', 'auth-token', 'a0fbcc1fa6ba5c29e38288f47b17c9d6d412124c45f16cc08999c597d83425b5', '[\"*\"]', '2025-05-14 08:36:55', NULL, '2025-05-14 08:36:31', '2025-05-14 08:36:55'),
 (129, 'App\\Models\\User', 'admin', 'auth-token', 'dd35ad427bf10152910492a48b020802096455b8e7c52185b6e985b7721d037f', '[\"*\"]', '2025-05-14 08:37:45', NULL, '2025-05-14 08:37:12', '2025-05-14 08:37:45'),
-(130, 'App\\Models\\User', 'admin', 'auth-token', 'f87ea3ba0c7bd8a038915fd59ad9d55be61e464ed58c2277f8c270ff5eaf08c5', '[\"*\"]', '2025-05-14 09:26:49', NULL, '2025-05-14 08:38:16', '2025-05-14 09:26:49');
+(130, 'App\\Models\\User', 'admin', 'auth-token', 'f87ea3ba0c7bd8a038915fd59ad9d55be61e464ed58c2277f8c270ff5eaf08c5', '[\"*\"]', '2025-05-19 07:18:23', NULL, '2025-05-14 08:38:16', '2025-05-19 07:18:23'),
+(131, 'App\\Models\\User', 'admin', 'auth-token', '3b504aefa979804a3741f31098099ea74f945d8d5db67ee9d41b743b4a9b490c', '[\"*\"]', '2025-05-18 13:36:27', NULL, '2025-05-14 17:46:11', '2025-05-18 13:36:27'),
+(132, 'App\\Models\\User', 'admin', 'auth-token', 'ccf6ce9c40ea5ff6923c34d7afd6162513cc381e781c1d2de2ea2eb81f61af36', '[\"*\"]', '2025-05-17 08:56:51', NULL, '2025-05-17 07:39:41', '2025-05-17 08:56:51'),
+(133, 'App\\Models\\User', 'Albertpv24', 'auth-token', '1430c2f7988166a12200ed85005e81b044971036ee59f6ae6684d8689e090b38', '[\"*\"]', '2025-05-17 09:19:21', NULL, '2025-05-17 08:51:32', '2025-05-17 09:19:21'),
+(134, 'App\\Models\\User', 'admin', 'auth-token', 'a9be6eba500869647df072cbc8447cbeee0a9e44e8c40d42e23d305bcf3c5868', '[\"*\"]', '2025-05-17 09:00:52', NULL, '2025-05-17 08:59:20', '2025-05-17 09:00:52'),
+(135, 'App\\Models\\User', 'admin', 'auth-token', 'f71108129a932f413d70e6a2d3dda317680a53e11b80eb549ef142ce6ce9a49d', '[\"*\"]', '2025-05-18 10:45:56', NULL, '2025-05-17 09:01:30', '2025-05-18 10:45:56'),
+(136, 'App\\Models\\User', 'Albertpv24', 'auth-token', '560ad195400049db7324fdf92730559571aa7cd94a30f8d993a7f7ec838cfddd', '[\"*\"]', '2025-05-17 09:47:36', NULL, '2025-05-17 09:23:17', '2025-05-17 09:47:36'),
+(137, 'App\\Models\\User', 'Albertpv24', 'auth-token', '9c28fb611ba216eea943ba788e594b1599084b1e7352c98e0d84a1342d7b4966', '[\"*\"]', '2025-05-18 10:08:56', NULL, '2025-05-18 09:01:19', '2025-05-18 10:08:56'),
+(138, 'App\\Models\\User', 'Albertpv24', 'auth-token', 'af9b8dc17b769d3258e25b3b4a48c58a3fc4974751ac66f62b7222c7fcd150d9', '[\"*\"]', '2025-05-18 10:15:11', NULL, '2025-05-18 10:11:56', '2025-05-18 10:15:11'),
+(139, 'App\\Models\\User', 'Albertpv24', 'auth-token', '20e6e30f576d445eeac4810c17d522c40278c9e99823f5c7239e5adbde244ae9', '[\"*\"]', '2025-05-18 12:18:57', NULL, '2025-05-18 10:15:18', '2025-05-18 12:18:57'),
+(140, 'App\\Models\\User', 'Albertpv24', 'auth-token', '65f13fdbcde0ee9f9e568777dd861d162a8c1ec228f111f9e69af8864315b594', '[\"*\"]', '2025-05-18 12:42:51', NULL, '2025-05-18 12:42:10', '2025-05-18 12:42:51'),
+(141, 'App\\Models\\User', 'admin', 'auth-token', '0490de0f135a3bc0d2504f7b30b225ce6760639c843a445f72fa78dbbc80ca7d', '[\"*\"]', '2025-05-18 12:46:51', NULL, '2025-05-18 12:45:42', '2025-05-18 12:46:51'),
+(142, 'App\\Models\\User', 'admin', 'auth-token', '9de6cb172df205f198fb5b68e53063e6454b6c0023922ee870cec8694126c512', '[\"*\"]', '2025-05-18 13:20:14', NULL, '2025-05-18 12:48:28', '2025-05-18 13:20:14'),
+(143, 'App\\Models\\User', 'Albertpv24', 'auth-token', '9c8372d542daf32c66d8aac6f821288bb036f57653360bbb417b243c34d2fd68', '[\"*\"]', '2025-05-18 13:20:14', NULL, '2025-05-18 12:50:07', '2025-05-18 13:20:14'),
+(144, 'App\\Models\\User', 'admin', 'auth-token', '3fc6ea43328332b151a8610ed8ed14edeb8cfb51720194f601e84198c0d04464', '[\"*\"]', '2025-05-18 13:33:46', NULL, '2025-05-18 13:33:41', '2025-05-18 13:33:46'),
+(145, 'App\\Models\\User', 'admin', 'auth-token', 'a6bfea75c9dc5bf58b99a3955204909546938fbdbc1ebee847067ae93998d0d8', '[\"*\"]', '2025-05-18 13:34:00', NULL, '2025-05-18 13:33:54', '2025-05-18 13:34:00'),
+(146, 'App\\Models\\User', 'admin', 'auth-token', 'e53dbcdf5be52e5c58a0f14266914900fdf696d50caf6fd9f0bc02c21a4e627d', '[\"*\"]', '2025-05-18 13:34:16', NULL, '2025-05-18 13:34:12', '2025-05-18 13:34:16'),
+(147, 'App\\Models\\User', 'admin', 'auth-token', 'dd3bd57ec74a057a98ac30c8318110afc9a370fd0f7d086196635dcaf1cf03e3', '[\"*\"]', '2025-05-18 13:35:50', NULL, '2025-05-18 13:35:44', '2025-05-18 13:35:50'),
+(148, 'App\\Models\\User', 'admin', 'auth-token', '1c9ef7f7417eef1053220b2db76a1a3ad38f60f642ac44d7eafd5e1ddbd4a343', '[\"*\"]', '2025-05-18 13:36:34', NULL, '2025-05-18 13:36:29', '2025-05-18 13:36:34'),
+(149, 'App\\Models\\User', 'admin', 'auth-token', '69d48a77ac0efe7de2fcd8da9fa02b8b17ead4474383fbec2c31274de4229208', '[\"*\"]', '2025-05-18 13:37:30', NULL, '2025-05-18 13:37:25', '2025-05-18 13:37:30'),
+(150, 'App\\Models\\User', 'admin', 'auth-token', '83c67a533e158202dc877310f02feea6fa215c4e363f00e9348b94f734d05f85', '[\"*\"]', '2025-05-18 13:37:48', NULL, '2025-05-18 13:37:43', '2025-05-18 13:37:48'),
+(151, 'App\\Models\\User', 'admin', 'auth-token', '2b5cc26cd96df56defab012576173760ae93c9e781e32697a190a1ffa58252db', '[\"*\"]', '2025-05-18 13:43:25', NULL, '2025-05-18 13:42:57', '2025-05-18 13:43:25'),
+(153, 'App\\Models\\User', 'admin', 'auth-token', '752cf5d2278f79b7a608e80e93d3eb0367b5779431d335568500bb7a5ce14fd3', '[\"*\"]', '2025-05-18 15:47:21', NULL, '2025-05-18 15:45:19', '2025-05-18 15:47:21'),
+(154, 'App\\Models\\User', 'Albertpv24', 'auth-token', '68d7922ba14491c45de6731e4ba92dd06d96a8f522793bbd76387370507b9a2d', '[\"*\"]', '2025-05-18 15:48:24', NULL, '2025-05-18 15:48:18', '2025-05-18 15:48:24'),
+(155, 'App\\Models\\User', 'Albertpv24', 'auth-token', '2005ca41ddef53a2bf444dc173ec2c4dc328b1654f947a74fbedf67028aee245', '[\"*\"]', '2025-05-18 16:13:22', NULL, '2025-05-18 16:12:51', '2025-05-18 16:13:22'),
+(156, 'App\\Models\\User', 'admin', 'auth-token', '49f8bf2b7ba4e30953443cbcb7f5796927e630a3e570a67e9ec81edaadc4535c', '[\"*\"]', '2025-05-19 07:54:57', NULL, '2025-05-18 16:16:36', '2025-05-19 07:54:57'),
+(157, 'App\\Models\\User', 'Albertpv24', 'auth-token', '5e7d6f6b8b78ce57763f5727cf8e9a1f791b562087ee4e4d888d01220a478324', '[\"*\"]', NULL, NULL, '2025-05-19 07:50:26', '2025-05-19 07:50:26'),
+(158, 'App\\Models\\User', 'Popi', 'auth-token', 'dec1495f79676a95edda88ebc96e84f4b6874b4a70ff2f47af869cfdfa5628ae', '[\"*\"]', '2025-05-19 07:53:11', NULL, '2025-05-19 07:53:03', '2025-05-19 07:53:11'),
+(159, 'App\\Models\\User', 'Popi', 'auth-token', '18bacf0467ed9302d8f2755b2f8aa269acc72fb5d5621fc279c4c1df5e6461a9', '[\"*\"]', '2025-05-19 07:56:42', NULL, '2025-05-19 07:55:40', '2025-05-19 07:56:42'),
+(160, 'App\\Models\\User', 'admin', 'auth-token', 'b5a2f4f7997054f8e48825dbc311e05986810e27d8247478fe7ae4d2cb3a60f7', '[\"*\"]', '2025-05-19 07:57:35', NULL, '2025-05-19 07:57:28', '2025-05-19 07:57:35'),
+(161, 'App\\Models\\User', 'admin', 'auth-token', '7dd4db36de8042bfc7b2b68bd89665c31df6fee6d47b8c161359b844d5bcd021', '[\"*\"]', '2025-05-19 07:59:45', NULL, '2025-05-19 07:58:21', '2025-05-19 07:59:45');
 
 -- --------------------------------------------------------
 
@@ -553,7 +589,8 @@ INSERT INTO `premis` (`id`, `titol`, `descripcio`, `cost`, `condicio`, `image`) 
 (9, 'Visita a la Sagrada Familia', 'Entrada con audioguía para visitar la Sagrada Familia en Barcelona', 2800.00, 1.00, 'uploads/premios/sagrada.png'),
 (10, 'Tour por Montserrat', 'Excursión guiada a la montaña de Montserrat con visita al monasterio', 3500.00, 1.00, 'uploads/premios/montserrat.png'),
 (11, 'Entrada Partido RCD Espanyol', 'Entrada para un partido del RCD Espanyol en el RCDE Stadium', 10000.00, 1.00, 'uploads/premios/espanyol.png'),
-(12, 'Festival Castell de Peralada', 'Entrada para el prestigioso festival de música y danza en el Castell de Peralada', 2200.00, 1.00, 'uploads/premios/peralada.png');
+(12, 'Festival Castell de Peralada', 'Entrada para el prestigioso festival de música y danza en el Castell de Peralada', 2200.00, 1.00, 'uploads/premios/peralada.png'),
+(18, 'barsaaaaaaaaafafafa', 'asddddddddddddddddafafafa', 10000001.00, 1.00, 'https://madrid-barcelona.com/filesedc/uploads/image/post/vinicius-barca_1200_800.webp');
 
 -- --------------------------------------------------------
 
@@ -695,7 +732,8 @@ INSERT INTO `premis_usuaris` (`id`, `usuari_nick`, `premi_id`, `data_reclamat`, 
 (15, 'Albertpv24', 4, '2025-04-13 14:52:00', 0),
 (16, 'Albertpv24', 1, '2025-04-13 14:52:06', 1),
 (18, 'Albertpv24', 4, '2025-05-10 11:53:47', 0),
-(19, 'Albertpv24', 2, '2025-05-10 11:54:06', 0);
+(19, 'Albertpv24', 2, '2025-05-10 11:54:06', 0),
+(21, 'Albertpv24', 18, '2025-05-18 10:13:08', 1);
 
 -- --------------------------------------------------------
 
@@ -735,7 +773,8 @@ INSERT INTO `promos` (`id`, `titol`, `descripcio`, `data_inici`, `data_final`, `
 (1, 'Bono de Bienvenida', 'Recibe 500 puntos al registrarte', '2023-01-01', '2025-12-31', 1, 'uploads/promociones/bienvenida.png'),
 (2, 'Apuesta Segura', 'Recupera tu apuesta si pierdes en tu primera predicción', '2023-06-01', '2024-12-31', 1, 'uploads/promociones/apuesta-segura.png'),
 (3, 'Copa del Rey 2024', 'Duplica tus puntos en apuestas para la Copa del Rey', '2024-01-01', '2024-04-30', 3, 'uploads/promociones/copa-rey.png'),
-(4, 'Liga 2023-2024', 'Gana puntos extra por cada 5 predicciones acertadas en La Liga', '2023-08-01', '2024-05-31', 2, 'uploads/promociones/liga.png');
+(4, 'Liga 2023-2024', 'Gana puntos extra por cada 5 predicciones acertadas en La Liga', '2023-08-01', '2024-05-31', 2, 'uploads/promociones/liga.png'),
+(7, 'Barsaaaaaaaaffafa', 'adssssssssssasdadfafa', '2025-05-02', '2025-05-24', 1, 'https://madrid-barcelona.com/filesedc/uploads/image/post/vinicius-barca_1200_800.webp');
 
 -- --------------------------------------------------------
 
@@ -839,10 +878,11 @@ CREATE TABLE `usuaris` (
 
 INSERT INTO `usuaris` (`nick`, `email`, `tipus_acc`, `pswd`, `profile_image`, `saldo`, `creat_at`, `actualitzat_el`, `apostes_realitzades`, `temps_diari`, `bloquejat`, `dni`, `telefon`, `data_naixement`) VALUES
 ('admin', 'admin@admin.com', 'Administrador', '$2y$12$Z/YcfH1M3uHsmFh4pAgs1Oak.8TyilxKpdRDHRrq2vYOyVxd8/41a', NULL, 0.00, '2025-03-18 19:40:11', NULL, 0, 3600, 0, '', NULL, '2025-03-18'),
-('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$C8mLq6F7Ukw8RQgZZk1R0uGcX.I.Vvu89oHJ.xxOU8kHyBM6AALLG', 'uploads/profiles/profile_1742315811_67d9a12336465.png', 10016576.60, '2025-03-18 16:36:51', NULL, 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
+('Albertpv24', 'albertpv24@gmail.com', 'Usuari', '$2y$12$b9nl.Ve93NLi471EidxOreAkPScWKqkbEHTGewR1dmwcJwAtDUOM2', 'uploads/profiles/profile_1742315811_67d9a12336465.png', 10000001.00, '2025-03-18 16:36:51', NULL, 0, 3600, 0, '48052260Q', '645554144', '2003-04-24'),
 ('Juan', 'juan@gmail.com', 'Usuari', '$2y$12$/m9CnTCkPkyXjdZL15CG..X7TAeirP15Ot90IBe6sMGXqpO/ihXeW', 'uploads/profiles/profile_1747218904_682471d8061f1.png', 0.00, '2025-05-14 10:35:04', NULL, 0, 3600, 0, '54637281A', '278394567', '2000-01-01'),
-('Laura', 'laura@gmail.com', 'Usuari', '$2y$12$EMP1P06sII/gweZTuL6.qu4us8le4SEsxtsoO24o/9M3LZeu/vi.S', NULL, 100000.00, '2025-05-14 10:32:53', NULL, 0, 3600, 0, '98723456D', '123456787', '2000-01-01'),
-('Popi', 'a@a.com', 'Usuari', '$2y$12$EApYi6YQh4muegSDO.5GQeh4zb0LOQjxagXS/LDEjenN2TFwCiCV2', NULL, 1000.00, '2025-05-14 10:26:22', NULL, 0, 3600, 0, '56748938B', '978675642', '2001-01-01'),
+('Laura', 'laura@gmail.com', 'Usuari', '$2y$12$EMP1P06sII/gweZTuL6.qu4us8le4SEsxtsoO24o/9M3LZeu/vi.S', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOhl_XBlFyQzsKeasO5o9i-8cgbWl8CFnrvw&s', 100000.00, '2025-05-14 10:32:53', NULL, 0, 3600, 0, '98723456D', '123456787', '2000-01-01'),
+('Popi', 'a@a.com', 'Usuari', '$2y$12$.xVBhGLsZPU8bF4y6apRxeWE0DeFyaPsi7kPBblGUVXniGwPGmzpK', 'https://summa.es/wp-content/uploads/2022/07/barc%CC%A7a-thumbnail-1.png', 1000.00, '2025-05-14 10:26:22', NULL, 0, 3600, 0, '56748938B', '978675642', '2001-01-01'),
+('prova1', 'prova@gmail.com', 'Usuari', '$2y$12$FTur1KFFUfUXttYA6aP2YepHSOsCWbRSFkHCvK5nPK3tLP3QsAVuW', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOhl_XBlFyQzsKeasO5o9i-8cgbWl8CFnrvw&s', 0.00, '2025-05-19 09:59:02', NULL, 0, 3600, 0, '48052260F', '937465281', '2000-01-01'),
 ('Wispy', 'paudomec@alumnes.ilerna.com', 'Usuari', '$2y$12$iVGmPHaf.eyGoThYf99u1u4iA3xVcDDa1Gj7gc7WJHrQJ7.2ANdOu', 'uploads/profiles/profile_1742315104_67d99e60222b0.png', 197.40, '2025-03-18 16:25:04', NULL, 0, 3600, 0, '48059629W', '611411604', '2004-11-30');
 
 --
@@ -1041,7 +1081,7 @@ ALTER TABLE `chat_sessions`
 -- AUTO_INCREMENT de la tabla `daily_rewards_tracking`
 --
 ALTER TABLE `daily_rewards_tracking`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_prediccio`
@@ -1065,7 +1105,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT de la tabla `prediccions_sist`
@@ -1083,7 +1123,7 @@ ALTER TABLE `prediccio_proposada`
 -- AUTO_INCREMENT de la tabla `premis`
 --
 ALTER TABLE `premis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `premis_traduccions`
@@ -1095,7 +1135,7 @@ ALTER TABLE `premis_traduccions`
 -- AUTO_INCREMENT de la tabla `premis_usuaris`
 --
 ALTER TABLE `premis_usuaris`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `promociones_users`
@@ -1107,7 +1147,7 @@ ALTER TABLE `promociones_users`
 -- AUTO_INCREMENT de la tabla `promos`
 --
 ALTER TABLE `promos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `promos_traduccions`
