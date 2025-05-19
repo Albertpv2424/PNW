@@ -44,7 +44,7 @@
 }
 
 .image-preview {
-  width: 100px;
+  width: 200px;
   height: 100px;
   border-radius: 50%;
   background-color: #e63946;
@@ -225,13 +225,14 @@
   color: white;
   font-weight: bold;
   font-size: 36px;
-  border: 0px solid rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(0, 179, 65, 0.3);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s;
+  transition: all 0.3s ease;
 }
 
 .image-preview:hover {
   transform: scale(1.05);
+  border-color: rgba(0, 179, 65, 0.6);
 }
 
 .image-upload {
@@ -1371,4 +1372,27 @@ input[type="password"] {
 .confirm-button:disabled {
   background-color: #e57373;
   cursor: not-allowed;
+}
+
+/* Estils millorats per al camp d'URL de la imatge */
+.url-input-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.url-input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+}
+
+.selected-url {
+  font-size: 12px;
+  color: #00b341;
+  margin-top: 5px;
+  font-style: italic;
 }

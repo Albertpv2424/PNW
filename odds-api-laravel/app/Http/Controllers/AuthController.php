@@ -69,11 +69,11 @@ class AuthController extends Controller
                 'dni' => 'required|string|size:9|unique:usuaris,dni',
                 'telefon' => 'nullable|string|max:15|unique:usuaris,telefon',
                 'data_naixement' => 'required|date',
-                'profile_image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+                'profile_image' => 'nullable|string', // Cambiado de 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048' a 'nullable|string'
             ]);
 
             // Process the profile image
-            $profileImagePath = $this->handleProfileImage($request);
+            $profileImagePath = $request->profile_image; // Ya no necesitamos procesamiento especial
 
             $user = new User([
                 'nick' => $request->nick,
@@ -82,7 +82,7 @@ class AuthController extends Controller
                 'dni' => $request->dni,
                 'telefon' => $request->telefon,
                 'data_naixement' => $request->data_naixement,
-                'profile_image' => $profileImagePath, // Add the profile image path
+                'profile_image' => $profileImagePath, // Ahora es directamente la URL
                 'tipus_acc' => 'Usuari',
                 'saldo' => 0,
                 'temps_diari' => 3600,
@@ -221,7 +221,7 @@ class AuthController extends Controller
                 'telefon' => 'nullable|string|max:15',
                 'current_password' => 'nullable|string',
                 'new_password' => 'nullable|string|min:8',
-                'profile_image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+                'profile_image' => 'nullable|string', // Cambiado de 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048' a 'nullable|string'
             ]);
 
             // Obtener el usuario por email
@@ -293,15 +293,10 @@ class AuthController extends Controller
             }
 
             // Procesar la imagen de perfil si se proporciona
-            if ($request->hasFile('profile_image')) {
-                $profileImagePath = $this->handleProfileImage($request);
-                if ($profileImagePath) {
-                    // Eliminar la imagen anterior si existe
-                    if ($user->profile_image && file_exists(public_path($user->profile_image))) {
-                        unlink(public_path($user->profile_image));
-                    }
-                    $user->profile_image = $profileImagePath;
-                }
+            // Modificar la parte donde se procesa la imagen de perfil
+            if ($request->profile_image) {
+            // Ya no necesitamos procesar el archivo, simplemente asignamos la URL
+            $user->profile_image = $request->profile_image;
             }
 
             // Actualizar los datos del usuario
@@ -527,4 +522,6 @@ class AuthController extends Controller
             return response()->json(['message' => 'Error al procesar la solicitud'], 500);
         }
     }
+
+
 }

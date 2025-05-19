@@ -86,6 +86,7 @@ export class ProfileComponent implements OnInit {
       nick: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       telefon: [''],
+        profileImageUrl: [''],
       current_password: [''],
       new_password: [''],
       confirm_password: ['']
@@ -150,7 +151,8 @@ export class ProfileComponent implements OnInit {
       this.profileForm.patchValue({
         nick: user.nick,
         email: user.email,
-        telefon: user.telefon || ''
+        telefon: user.telefon || '',
+        profileImageUrl: user.profile_image || ''
       });
     }
     this.loadUserPrizes();
@@ -202,6 +204,15 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // Reemplazar el método onImageSelected por previewImageUrl
+  previewImageUrl(): void {
+    const imageUrl = this.profileForm.get('profileImageUrl')?.value;
+    if (imageUrl) {
+      this.imagePreview = imageUrl;
+    }
+  }
+
+  // Modificar el método updateProfile para usar la URL de la imagen
   updateProfile(): void {
     console.log('Form submission started');
 
@@ -216,43 +227,51 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    // Check if we need to upload a file
-    const hasFile = !!this.selectedFile;
+    // Define the object with an interface or type that allows additional properties
+    const updateData: {
+      nick: any;
+      email: any;
+      telefon: any;
+      profile_image?: string;
+      current_password?: string;
+      new_password?: string;
+      password_confirmation?: string;
+      [key: string]: any; // This allows additional string properties
+    } = {
+      nick: this.profileForm.value.nick,
+      email: this.profileForm.value.email,
+      telefon: this.profileForm.value.telefon || ''
+    };
 
-    // In the updateProfile method, replace the problematic code:
-    if (hasFile) {
-    // Use FormData approach for file uploads
-    const formData = new FormData();
-
-
+    // Add image URL if provided
+    if (this.profileForm.value.profileImageUrl) {
+      updateData.profile_image = this.profileForm.value.profileImageUrl;
+    }
 
     // Check password fields
     const currentPassword = this.profileForm.value.current_password;
     const newPassword = this.profileForm.value.new_password;
-    const confirmPassword = this.profileForm.value.confirm_password;
 
     if (currentPassword && newPassword) {
-      formData.append('current_password', currentPassword);
-      formData.append('new_password', newPassword);
-      formData.append('password_confirmation', confirmPassword || newPassword);
+      updateData.current_password = currentPassword;
+      updateData.new_password = newPassword;
+      updateData.password_confirmation = this.profileForm.value.confirm_password || newPassword;
     } else if ((currentPassword && !newPassword) || (!currentPassword && newPassword)) {
       this.notificationService.showError('Debes completar ambos campos de contraseña');
       return;
     }
 
-    // Fix the TypeScript error by ensuring selectedFile is not null
-    if (this.selectedFile) {
-      formData.append('profile_image', this.selectedFile);
-    }
-
     // Get the token and create headers
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
     });
 
-    // Send the request with FormData
-    this.http.post('http://localhost:8000/api/update-profile', formData, { headers })
+    console.log('Sending profile update with JSON data:', updateData);
+
+    // Send the request with JSON data
+    this.http.post('http://localhost:8000/api/update-profile', updateData, { headers })
       .subscribe({
         next: (response: any) => {
           this.notificationService.showSuccess('Perfil actualizado correctamente');
@@ -308,76 +327,6 @@ export class ProfileComponent implements OnInit {
           }
         }
       });
-    } else {
-      // Use JSON approach for non-file updates
-      // Define the object with an interface or type that allows additional properties
-      const updateData: {
-        nick: any;
-        email: any;
-        telefon: any;
-        current_password?: string;
-        new_password?: string;
-        password_confirmation?: string;
-        [key: string]: any; // This allows additional string properties
-      } = {
-        nick: this.profileForm.value.nick,
-        email: this.profileForm.value.email,
-        telefon: this.profileForm.value.telefon || ''
-      };
-
-      // Check password fields
-      const currentPassword = this.profileForm.value.current_password;
-      const newPassword = this.profileForm.value.new_password;
-
-      if (currentPassword && newPassword) {
-        updateData.current_password = currentPassword;
-        updateData.new_password = newPassword;
-        updateData.password_confirmation = this.profileForm.value.confirm_password || newPassword;
-      } else if ((currentPassword && !newPassword) || (!currentPassword && newPassword)) {
-        this.notificationService.showError('Debes completar ambos campos de contraseña');
-        return;
-      }
-
-      // Get the token and create headers
-      const token = localStorage.getItem('token');
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      });
-
-      console.log('Sending profile update with JSON data:', updateData);
-
-      // Send the request with JSON data
-      this.http.post('http://localhost:8000/api/update-profile', updateData, { headers })
-        .subscribe({
-          next: (response: any) => {
-            this.notificationService.showSuccess('Perfil actualizado correctamente');
-
-            // Update user data in localStorage and service
-            if (response.user) {
-              localStorage.setItem('currentUser', JSON.stringify(response.user));
-              this.authService.updateCurrentUser(response.user);
-
-              // Update local data
-              this.username = response.user.nick;
-              this.email = response.user.email;
-              this.profileImage = response.user.profile_image || null;
-              this.telefon = response.user.telefon || '';
-
-              // Clear password fields
-              this.profileForm.patchValue({
-                current_password: '',
-                new_password: '',
-                confirm_password: ''
-              });
-
-              // Return to profile view and navigate to profile page
-              this.editMode = false;
-              this.router.navigate(['/profile']);
-            }
-          }
-        });
-    }
   }
 
   // Add these properties to your ProfileComponent class
@@ -496,7 +445,7 @@ export class ProfileComponent implements OnInit {
  * Handles both relative paths and full URLs
  */
 getImageUrl(imagePath: string | null): string {
-  if (!imagePath) return 'assets/premios/default.png';
+  if (!imagePath) return 'assets/default-profile.png';
 
   // Check if the image path already includes http or https
   if (imagePath.startsWith('http')) {

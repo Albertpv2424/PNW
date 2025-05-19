@@ -1,6 +1,6 @@
 <div class="profile-header">
   <div class="profile-avatar">
-    <div class="profile-image" [style.background-image]="profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none'">
+    <div class="profile-image" [style.background-image]="profileImage ? 'url(' + getImageUrl(profileImage) + ')' : 'none'">
       <span *ngIf="!profileImage">{{ getInitials() }}</span>
     </div>
   </div>

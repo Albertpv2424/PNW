@@ -342,7 +342,9 @@
     "ARE_YOU_SURE": "Sind Sie sicher?",
     "DELETE_CONFIRMATION_TEXT": "Sobald Ihr Konto gelöscht wurde, können Sie Ihre Daten nicht wiederherstellen. Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
     "TYPE_DELETE": "Geben Sie 'DELETE' ein, um zu bestätigen",
-    "CONFIRM_DELETION": "LÖSCHEN"
+    "CONFIRM_DELETION": "LÖSCHEN",
+    "IMAGE_URL_PREVIEW": "Vorschau des Bildes",
+    "IMAGE_URL_PLACEHOLDER": "Bild-URL eingeben"
   },
   "PROMOTIONS": {
     "TITLE": "Verfügbare Aktionen",

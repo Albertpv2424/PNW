@@ -342,7 +342,9 @@
     "ARE_YOU_SURE": "Êtes-vous sûr ?",
     "DELETE_CONFIRMATION_TEXT": "Une fois votre compte supprimé, vous ne pourrez pas récupérer vos données. Êtes-vous sûr de vouloir supprimer votre compte ?",
     "TYPE_DELETE": "Tapez 'DELETE' pour confirmer",
-    "CONFIRM_DELETION": "SUPPRIMER"
+    "CONFIRM_DELETION": "SUPPRIMER",
+    "IMAGE_URL_PREVIEW": "Aperçu de l'Image",
+    "IMAGE_URL_PLACEHOLDER": "Entrez l'URL de l'image"
   },
   "PROMOTIONS": {
     "TITLE": "Promotions disponibles",

@@ -162,19 +162,23 @@
             <h3>{{ 'PROFILE.PHOTO' | translate }}</h3>
             <div class="image-preview-container">
               <div class="image-preview"
-                [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : (profileImage ? 'url(http://localhost:8000/' + profileImage + ')' : 'none')">
+                [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : (profileImage ? 'url(' + getImageUrl(profileImage) + ')' : 'none')">
                 <span *ngIf="!imagePreview && !profileImage">{{ getInitials() }}</span>
               </div>
               <div class="image-upload">
-                <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*"
-                  class="file-input">
-                <label for="profile-image" class="file-label">{{ 'PROFILE.CHANGE_IMAGE' | translate }}</label>
-                <p *ngIf="selectedFile" class="selected-file-name">{{ selectedFile.name }}</p>
+                <div class="url-input-container">
+                  <input type="text" id="profile-image-url" formControlName="profileImageUrl" 
+                    placeholder="{{ 'PROFILE.ENTER_IMAGE_URL' | translate }}" class="form-control"
+                    (input)="previewImageUrl()">
+                  <div class="url-input-icon">🔗</div>
+                </div>
+                <p *ngIf="profileForm.get('profileImageUrl')?.value" class="selected-url">
+                  {{ 'PROFILE.IMAGE_URL_PREVIEW' | translate }}
+                </p>
               </div>
             </div>
           </div>
 
-          <!-- Update the form labels and buttons to use translations -->
           <div class="form-group">
             <label for="nick">{{ 'PROFILE.USERNAME' | translate }}</label>
             <input type="text" id="nick" formControlName="nick" class="form-control">

@@ -342,7 +342,9 @@
     "ARE_YOU_SURE": "您确定吗？",
     "DELETE_CONFIRMATION_TEXT": "一旦您的账户被删除，您将无法恢复您的数据。您确定要删除您的账户吗？",
     "TYPE_DELETE": "输入'DELETE'以确认",
-    "CONFIRM_DELETION": "删除"
+    "CONFIRM_DELETION": "删除",
+    "IMAGE_URL_PREVIEW": "图片预览",
+    "IMAGE_URL_PLACEHOLDER": "输入图片URL"
   },
   "PROMOTIONS": {
     "TITLE": "可用优惠",

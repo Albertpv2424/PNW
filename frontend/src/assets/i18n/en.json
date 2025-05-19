@@ -342,7 +342,9 @@
     "ARE_YOU_SURE": "Are you sure?",
     "DELETE_CONFIRMATION_TEXT": "Once your account is deleted, you will not be able to recover your data. Are you sure you want to delete your account?",
     "TYPE_DELETE": "Type 'DELETE' to confirm",
-    "CONFIRM_DELETION": "DELETE"
+    "CONFIRM_DELETION": "DELETE",
+    "IMAGE_URL_PREVIEW": "Image URL Preview",
+    "IMAGE_URL_PLACEHOLDER": "Enter the URL of the image you want to use"
   },
   "PROMOTIONS": {
     "TITLE": "Avilable Promotions",

@@ -342,7 +342,9 @@
     "ARE_YOU_SURE": "Estàs segur?",
     "DELETE_CONFIRMATION_TEXT": "Esborrar el teu compte és permanent. Si esborres el teu compte, no podràs recuperar les teves dades. Estàs segur?",
     "TYPE_DELETE": "Escriu DELETE per confirmar la eliminació de la teva compte",
-    "CONFIRM_DELETION": "ESBORRAR"
+    "CONFIRM_DELETION": "ESBORRAR",
+    "IMAGE_URL_PREVIEW": "Previsualització de la Imatge",
+    "CHANGE_IMAGE_TEXT": "Canviar la Imatge de Perfil"
   },
   "PROMOTIONS": {
     "TITLE": "Promocions Disponibles",

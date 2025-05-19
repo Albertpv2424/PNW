@@ -342,7 +342,9 @@
     "ARE_YOU_SURE": "¿Estás seguro?",
     "DELETE_CONFIRMATION_TEXT": "Una vez eliminada tu cuenta, no podrás recuperar tus datos. ¿Estás seguro de que deseas eliminar tu cuenta?",
     "TYPE_DELETE": "Escribe 'DELETE' para confirmar",
-    "CONFIRM_DELETION": "ELIMINAR"
+    "CONFIRM_DELETION": "ELIMINAR",
+    "IMAGE_URL_PREVIEW": "Vista previa de la URL de la imagen",
+    "IMAGE_URL_PLACEHOLDER": "URL de la imagen"
   },
   "PROMOTIONS": {
     "TITLE": "Promociones Disponibles",
