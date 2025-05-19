@@ -29,7 +29,7 @@
     <table class="data-table">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>Imagen</th>
           <th>Usuario</th>
           <th>Email</th>
           <th>DNI</th>
@@ -41,19 +41,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let user of filteredUsers">
-          <td class="id-cell">{{ user.id }}</td>
-          <td>
-            <div class="user-cell">
-              <!-- Find the user profile image tag and update it -->
-              <!-- Replace the existing image tag with: -->
-              <!-- Change this line in your HTML (around line 52) -->
-              <img [src]="getProfileImageUrl(user.profile_image)"
-                   alt="{{ user.username }}"
-                   class="user-avatar"
-                   (error)="handleProfileImageError($event)">
-              </div>
-              {{ user.nick }}
+          <td class="avatar-cell">
+            <img [src]="getProfileImageUrl(user.profile_image)"
+                 alt="{{ user.nick }}"
+                 class="user-avatar"
+                 (error)="handleProfileImageError($event)">
           </td>
+          <td>{{ user.nick }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.dni }}</td>
           <td>{{ user.telefon || 'N/A' }}</td>
@@ -74,7 +68,6 @@
               <button class="action-btn balance-btn" (click)="openBalanceForm(user)" title="Saldo">
                 <i class="fas fa-coins"></i>
               </button>
-              <!-- Make sure your delete button looks like this -->
               <button class="action-btn delete-btn" (click)="confirmDeleteUser(user)" title="Eliminar">
                 <i class="fas fa-trash"></i>
               </button>
@@ -139,20 +132,28 @@
             </div>
           </div>
 
-          <!-- Añadir esto dentro del formulario de usuario, antes del campo de saldo -->
+          <!-- Inside your user form, update the image upload section -->
           <div class="form-group">
-            <label for="imageUrl">URL de la imagen de perfil</label>
-            <input
-              type="text"
-              id="imageUrl"
-              formControlName="imageUrl"
-              class="form-control"
-              placeholder="https://ejemplo.com/imagen.jpg"
-              (input)="onImageUrlChange()"
-            >
-
-            <div class="image-preview" *ngIf="imagePreview">
-              <img [src]="imagePreview" alt="Vista previa" (error)="handleImageError($event)" class="profile-preview-img">
+            <label>Imagen de perfil</label>
+            <div class="image-upload-container">
+              <div class="profile-image-preview">
+                <img 
+                  *ngIf="imagePreview" 
+                  [src]="imagePreview" 
+                  (error)="handleImageError($event)" 
+                  alt="Vista previa de imagen"
+                >
+                <span *ngIf="!imagePreview">{{ getUserInitials(userForm.get('nick')?.value || '') }}</span>
+              </div>
+              
+              <div class="image-url-input">
+                <input 
+                  type="text" 
+                  placeholder="URL de la imagen (ej: https://ejemplo.com/imagen.jpg)" 
+                  formControlName="imageUrl"
+                  (input)="onImageUrlChange()"
+                >
+              </div>
             </div>
           </div>
           <div class="form-group">
