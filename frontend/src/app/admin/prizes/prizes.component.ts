@@ -57,25 +57,20 @@ export class PrizesComponent implements OnInit {
 
   ngOnInit(): void {
     const isLoggedIn = this.authService.isLoggedIn();
-    console.log('User is logged in:', isLoggedIn);
 
     // Check admin status
     const isAdmin = this.authService.isAdmin();
-    console.log('User is admin:', isAdmin);
 
     // Get current user
     const currentUser = this.authService.getCurrentUser();
-    console.log('Current user:', currentUser);
 
     // Check if user is admin before loading prizes
     if (!isAdmin) {
-      console.error('User is not admin, redirecting to home');
       this.notificationService.showError('No tienes permisos de administrador para acceder a esta sección.');
       this.router.navigate(['/']);
       return;
     }
 
-    console.log('Loading prizes from API');
     this.loadPrizes();
   }
 
@@ -87,21 +82,17 @@ export class PrizesComponent implements OnInit {
   loadPrizes(): void {
     this.isLoading = true;
 
-    console.log('Starting loadPrizes method');
 
     // Get token and log first 10 characters
     const token = this.authService.getToken();
-    console.log('Using token (first 10 chars):', token ? token.substring(0, 10) + '...' : 'No token');
 
     // Log headers being sent
     const headers = this.authService.getAuthHeaders();
-    console.log('Headers:', headers);
 
     this.http.get<Prize[]>(`${environment.apiUrl}/admin/prizes`, {
       headers: this.authService.getAuthHeaders()
     }).subscribe({
       next: (data: Prize[]) => {
-        console.log('Prizes loaded successfully:', data.length);
         this.prizes = data.map(prize => {
           let imageUrl = 'assets/premios/default.png';
 
@@ -122,14 +113,11 @@ export class PrizesComponent implements OnInit {
           };
         });
 
-        console.log('Processed prizes:', this.prizes);
         this.filteredPrizes = [...this.prizes];
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading prizes:', error);
-        console.error('Error status:', error.status);
-        console.error('Error message:', error.error?.message || 'Unknown error');
+
 
         if (error.status === 403) {
           this.notificationService.showError('No tienes permisos de administrador para acceder a esta sección.');
@@ -160,7 +148,6 @@ export class PrizesComponent implements OnInit {
 
   // Asegúrate de que estos métodos estén correctamente implementados
   openPrizeForm(prize?: Prize): void {
-    console.log('openPrizeForm called with prize:', prize);
     this.selectedPrize = prize || null;
     this.isEditing = !!prize;
 
@@ -235,7 +222,6 @@ export class PrizesComponent implements OnInit {
       image: formData.imageUrl // Make sure this matches the field name in the form
     };
 
-    console.log('Submitting prize data:', prizeData);
 
     // Set up request options
     const options = {
@@ -251,7 +237,6 @@ export class PrizesComponent implements OnInit {
     this.http.post(endpoint, prizeData, options)
       .subscribe({
         next: (response) => {
-          console.log('Prize operation successful:', response);
           this.notificationService.showSuccess(
             this.isEditing ? 'Premio actualizado correctamente' : 'Premio creado correctamente'
           );
@@ -259,7 +244,6 @@ export class PrizesComponent implements OnInit {
           this.closePrizeForm();
         },
         error: (error) => {
-          console.error('Error in prize operation:', error);
           this.notificationService.showError(
             'Error: ' + (error.error?.message || 'No se pudo procesar la solicitud')
           );
@@ -283,7 +267,6 @@ export class PrizesComponent implements OnInit {
   // Remove any other duplicate implementations of these methods
 
   confirmDeletePrize(id: number): void {
-    console.log('confirmDeletePrize called with id:', id);
     this.deletePrizeId = id;
     this.showDeleteConfirm = true;
   }
@@ -308,7 +291,6 @@ export class PrizesComponent implements OnInit {
         this.cancelDeletePrize();
       },
       error: (error) => {
-        console.error('Error deleting prize:', error);
         this.notificationService.showError('Error al eliminar el premio');
       }
     });

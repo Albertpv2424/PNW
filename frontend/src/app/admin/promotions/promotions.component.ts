@@ -93,12 +93,11 @@ export class PromotionsComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  // In the loadPromociones method, update the image handling logic
   loadPromociones(): void {
     this.isLoading = true;
 
-
     const token = this.authService.getToken();
-
     const headers = this.authService.getAuthHeaders();
 
     this.http.get<PromocionAPI[]>(`${environment.apiUrl}/admin/promotions`, {
@@ -106,22 +105,32 @@ export class PromotionsComponent implements OnInit {
     }).subscribe({
       next: (data) => {
         this.promociones = data.map(promocion => {
-          let imageUrl = 'assets/promociones/default.png';
+          // Start with default image
+          let imageUrl = promocion.image || '';
 
-          if (promocion.image) {
+          // Process image URL based on its format
+          if (imageUrl) {
             // If it's already a full URL, use it as is
-            if (promocion.image.startsWith('http')) {
-              imageUrl = promocion.image;
+            if (imageUrl.startsWith('http')) {
+              // No change needed
             }
-            // If it's a relative path, prepend the API base URL
-            else if (!promocion.image.startsWith('assets/')) {
-              imageUrl = `${environment.apiUrl.replace('/api', '')}/${promocion.image}`;
+            // If it's an asset path, use it directly
+            else if (imageUrl.startsWith('assets/')) {
+              // No change needed
+            }
+            // If it's a relative path from uploads, construct the full URL
+            else if (imageUrl.startsWith('uploads/')) {
+              imageUrl = `${environment.apiUrl.replace('/api', '')}/${imageUrl}`;
+            }
+            // If it doesn't have a path prefix, assume it's in uploads/promociones
+            else if (!imageUrl.startsWith('/')) {
+              imageUrl = `${environment.apiUrl.replace('/api', '')}/uploads/promociones/${imageUrl}`;
             }
           }
 
           return {
             ...promocion,
-            image_url: imageUrl // Add this for compatibility with existing code
+            image: imageUrl // Update the image property with the processed URL
           };
         });
 
@@ -222,9 +231,51 @@ export class PromotionsComponent implements OnInit {
   onImageUrlChange(): void {
     const imageUrl = this.promocionForm.get('imageUrl')?.value;
     if (imageUrl && imageUrl.trim() !== '') {
-      this.imagePreview = imageUrl;
+      // Process the image URL properly
+      if (imageUrl.startsWith('http')) {
+        // If it's already a full URL, use it as is
+        this.imagePreview = imageUrl;
+      } else if (imageUrl.startsWith('assets/')) {
+        // If it's an asset path
+        this.imagePreview = imageUrl;
+      } else if (imageUrl.startsWith('uploads/')) {
+        // If it's a relative path from the server
+        this.imagePreview = `${environment.apiUrl.replace('/api', '')}/${imageUrl}`;
+      } else {
+        // Try to use it as is
+        this.imagePreview = imageUrl;
+      }
     } else {
       this.imagePreview = null;
+    }
+  }
+
+  // Add this method to provide a base64 fallback image
+  getDefaultImageUrl(): string {
+    // Base64 encoded SVG image as fallback
+    return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMxZTFlMzAiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZmlsbD0iI2NjYyI+UHJvbW9jacOzbjwvdGV4dD48L3N2Zz4=';
+  }
+
+  // Update the handleImageError method to use the base64 fallback
+  handleImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      const originalSrc = target.src;
+
+      // Try different fallback paths before using the base64 image
+      if (originalSrc.includes('/uploads/promociones/')) {
+        // Try the assets folder instead
+        target.src = originalSrc.replace('/uploads/promociones/', '/assets/promociones/');
+
+        // Add an onerror handler to this new image to use base64 if it also fails
+        target.onerror = () => {
+          target.src = this.getDefaultImageUrl();
+          target.onerror = null; // Prevent infinite loop
+        };
+      } else {
+        // If not from uploads folder or already tried assets, use base64
+        target.src = this.getDefaultImageUrl();
+      }
     }
   }
 
@@ -332,10 +383,5 @@ private submitRequest(data: any, options: any): void {
     }
   });
 }
-handleImageError(event: Event): void {
-  const target = event.target as HTMLImageElement;
-  if (target) {
-    target.src = 'assets/promociones/default.png';
-  }
-}
+
 }

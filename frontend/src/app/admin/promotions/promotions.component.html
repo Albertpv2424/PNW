@@ -41,10 +41,11 @@
       <tbody>
         <tr *ngFor="let promocion of filteredPromociones">
           <td class="id-cell">{{ promocion.id }}</td>
+          <!-- In the table row for displaying promotion images -->
           <td>
             <div class="promotion-image-container">
               <img
-                [src]="promocion.image ? (promocion.image.startsWith('http') ? promocion.image : 'http://localhost:8000/' + promocion.image) : 'assets/promociones/default.png'"
+                [src]="promocion.image || getDefaultImageUrl()"
                 alt="{{ promocion.titol }}"
                 class="promotion-thumbnail"
                 (error)="handleImageError($event)"
@@ -125,6 +126,7 @@
             </div>
           </div>
 
+          <!-- Inside your form, update the image preview section -->
           <div class="form-group">
             <label for="imageUrl">URL de la imagen</label>
             <input
@@ -132,12 +134,12 @@
               id="imageUrl"
               formControlName="imageUrl"
               class="form-control"
-              placeholder="https://ejemplo.com/imagen.jpg"
+              placeholder="URL de la imagen o ruta relativa (ej: uploads/promociones/imagen.jpg)"
               (input)="onImageUrlChange()"
             >
 
             <div class="image-preview" *ngIf="imagePreview">
-              <img [src]="imagePreview" alt="Vista previa" (error)="handleImageError($event)">
+              <img [src]="imagePreview" (error)="handleImageError($event)" alt="Vista previa">
             </div>
           </div>
 
