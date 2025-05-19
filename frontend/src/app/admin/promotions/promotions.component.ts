@@ -71,18 +71,14 @@ export class PromotionsComponent implements OnInit {
 
   ngOnInit(): void {
     const isLoggedIn = this.authService.isLoggedIn();
-    console.log('User is logged in:', isLoggedIn);
 
     // Check admin status
     const isAdmin = this.authService.isAdmin();
-    console.log('User is admin:', isAdmin);
 
     // Get current user
     const currentUser = this.authService.getCurrentUser();
-    console.log('Current user:', currentUser);
 
     if (!isAdmin) {
-      console.error('User is not admin, redirecting to home');
       this.notificationService.showError('No tienes permisos de administrador para acceder a esta sección.');
       this.router.navigate(['/']);
       return;
@@ -100,19 +96,15 @@ export class PromotionsComponent implements OnInit {
   loadPromociones(): void {
     this.isLoading = true;
 
-    console.log('Starting loadPromociones method');
 
     const token = this.authService.getToken();
-    console.log('Using token (first 10 chars):', token ? token.substring(0, 10) + '...' : 'No token');
 
     const headers = this.authService.getAuthHeaders();
-    console.log('Headers:', headers);
 
     this.http.get<PromocionAPI[]>(`${environment.apiUrl}/admin/promotions`, {
       headers: this.authService.getAuthHeaders()
     }).subscribe({
       next: (data) => {
-        console.log('Promociones loaded successfully:', data);
         this.promociones = data.map(promocion => {
           let imageUrl = 'assets/promociones/default.png';
 
@@ -137,7 +129,6 @@ export class PromotionsComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading promociones:', error);
 
         if (error.status === 403) {
           this.notificationService.showError('No tienes permisos de administrador para acceder a esta sección.');
@@ -156,27 +147,22 @@ export class PromotionsComponent implements OnInit {
 
   loadTiposPromocion(): void {
     const token = this.authService.getToken();
-    console.log('Using token (first 10 chars):', token ? token.substring(0, 10) + '...' : 'No token');
 
     const headers = this.authService.getAuthHeaders();
-    console.log('Headers:', headers);
 
     // Try with the correct endpoint URL
     this.http.get<TipoPromocion[]>(`${environment.apiUrl}/admin/tipos-promocion`, {
       headers: this.authService.getAuthHeaders()
     }).subscribe({
       next: (data) => {
-        console.log('Tipos de promoción cargados:', data);
         if (Array.isArray(data) && data.length > 0) {
           this.tiposPromocion = data;
           // Force refresh of the promotion list
           this.filteredPromociones = [...this.promociones];
         } else {
-          console.error('Received empty or invalid tipos promocion data:', data);
         }
       },
       error: (error) => {
-        console.error('Error loading tipos promocion:', error);
         this.notificationService.showError('Error al cargar los tipos de promoción: ' + (error.error?.message || 'Error desconocido'));
       }
     });
@@ -264,7 +250,6 @@ export class PromotionsComponent implements OnInit {
       image: formValues.imageUrl // This is the field name expected by the controller
     };
 
-    console.log('Submitting promocion data:', promocionData);
 
     // Set up request options
     const options = {
@@ -287,14 +272,12 @@ export class PromotionsComponent implements OnInit {
 
   deletePromocion(): void {
     if (!this.deletePromocionId) {
-      console.error('No promocion selected for deletion');
       return;
     }
     this.http.delete(`${environment.apiUrl}/admin/promotions/${this.deletePromocionId}`, {
       headers: this.authService.getAuthHeaders()
     }).subscribe({
       next: (response) => {
-        console.log('Promocion deleted successfully');
         this.notificationService.showSuccess('Promoción eliminada correctamente');
         this.loadPromociones();
         this.cancelDelete();
@@ -302,7 +285,6 @@ export class PromotionsComponent implements OnInit {
         this.deletePromocionId = null;
       },
       error: (error) => {
-        console.error('Error deleting promocion:', error);
         this.notificationService.showError('Error al eliminar la promoción:'+ (error.error?.message || 'Error desconocido'));
       }
     });
@@ -310,8 +292,6 @@ export class PromotionsComponent implements OnInit {
 
   getTipoPromocionName(id: number): string {
     // Add debugging to see what's happening
-    console.log('Getting tipo promocion name for id:', id);
-    console.log('Available tipos promocion:', this.tiposPromocion);
 
     if (!id) return 'No especificado';
 
@@ -320,10 +300,8 @@ export class PromotionsComponent implements OnInit {
     const tipo = this.tiposPromocion.find(t => Number(t.id) === numericId);
 
     if (tipo) {
-      console.log('Found matching tipo:', tipo);
       return tipo.titol;
     } else {
-      console.log('No matching tipo found for id:', id);
       return 'No especificado';
     }
   }
@@ -340,7 +318,6 @@ private submitRequest(data: any, options: any): void {
 
   this.http.post(endpoint, data, options).subscribe({
     next: (response) => {
-      console.log('Promotion operation successful:', response);
       this.notificationService.showSuccess(
         this.isEditing ? 'Promoción actualizada correctamente' : 'Promoción creada correctamente'
       );
@@ -348,7 +325,6 @@ private submitRequest(data: any, options: any): void {
       this.closePromocionForm();
     },
     error: (error) => {
-      console.error('Error with promotion operation:', error);
       this.notificationService.showError(
         `Error al ${this.isEditing ? 'actualizar' : 'crear'} la promoción: ` +
         (error.error?.message || error.statusText || 'Error desconocido')

@@ -211,6 +211,10 @@
   z-index: 1000;
 }
 
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+
 .modal-content {
   background-color: #fff;
   width: 90%;
