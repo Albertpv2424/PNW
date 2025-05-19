@@ -49,7 +49,8 @@
     "ENTER_NEW_PASSWORD": "输入您的新密码",
     "NEW_PASSWORD": "新密码",
     "CONFIRM_PASSWORD": "确认密码",
-    "RESET_PASSWORD_BUTTON": "重置密码"
+    "RESET_PASSWORD_BUTTON": "重置密码",
+    "ENTER_IMAGE_URL": "输入图像URL"
   },
   "BETS": {
     "MY_BETS": "我的投注",

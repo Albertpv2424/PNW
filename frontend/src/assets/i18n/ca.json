@@ -49,7 +49,8 @@
     "ENTER_NEW_PASSWORD": "Introdueix la teva nova contrasenya",
     "NEW_PASSWORD": "Nova contrasenya",
     "CONFIRM_PASSWORD": "Confirmar contrasenya",
-    "RESET_PASSWORD_BUTTON": "Canviar contrasenya"
+    "RESET_PASSWORD_BUTTON": "Canviar contrasenya",
+    "ENTER_IMAGE_URL": "Introdueix l'URL de la imatge"
   },
   "BETS": {
     "MY_BETS": "Les Meves Apostes",

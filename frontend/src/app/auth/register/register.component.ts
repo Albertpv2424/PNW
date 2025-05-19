@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit {
       telefon: ['', Validators.pattern('^[0-9]{9,15}$')],
       data_naixement: ['', Validators.required],
       profile_image: [''], // This will be handled separately
+      profileImageUrl: [''], // Nuevo campo para URL de imagen
       terms: [false, Validators.requiredTrue]
     });
   }
@@ -81,6 +82,22 @@ export class RegisterComponent implements OnInit {
         this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
       };
       reader.readAsDataURL(file);
+      
+      // Clear URL input when file is selected
+      this.registerForm.patchValue({
+        profileImageUrl: ''
+      });
+    }
+  }
+  
+  // Nuevo método para manejar la entrada de URL de imagen
+  onImageUrlInput() {
+    const url = this.registerForm.get('profileImageUrl')?.value;
+    if (url && url.trim() !== '') {
+      // Crear vista previa desde URL
+      this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(url);
+      // Limpiar la selección de archivo cuando se usa URL
+      this.selectedImage = null;
     }
   }
 
@@ -102,14 +119,16 @@ export class RegisterComponent implements OnInit {
       
       // Add all form fields to FormData
       Object.keys(this.registerForm.value).forEach(key => {
-        if (key !== 'profile_image' && key !== 'terms') {
+        if (key !== 'profile_image' && key !== 'profileImageUrl' && key !== 'terms') {
           formData.append(key, this.registerForm.value[key]);
         }
       });
       
-      // Add the image file if selected
+      // Add the image file if selected or use URL
       if (this.selectedImage) {
         formData.append('profile_image', this.selectedImage, this.selectedImage.name);
+      } else if (this.registerForm.value.profileImageUrl) {
+        formData.append('profile_image', this.registerForm.value.profileImageUrl);
       }
       
       this.authService.register(formData).subscribe({

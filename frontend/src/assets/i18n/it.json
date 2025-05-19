@@ -49,7 +49,8 @@
     "ENTER_NEW_PASSWORD": "Inserisci la tua nuova password",
     "NEW_PASSWORD": "Nuova password",
     "CONFIRM_PASSWORD": "Conferma password",
-    "RESET_PASSWORD_BUTTON": "Reimposta password"
+    "RESET_PASSWORD_BUTTON": "Reimposta password",
+    "ENTER_IMAGE_URL": "URL dell'immagine"
   },
   "BETS": {
     "MY_BETS": "Le Mie Scommesse",

@@ -49,7 +49,8 @@
     "ENTER_NEW_PASSWORD": "Entrez votre nouveau mot de passe",
     "NEW_PASSWORD": "Nouveau mot de passe",
     "CONFIRM_PASSWORD": "Confirmer le mot de passe",
-    "RESET_PASSWORD_BUTTON": "Réinitialiser le mot de passe"
+    "RESET_PASSWORD_BUTTON": "Réinitialiser le mot de passe",
+    "ENTER_IMAGE_URL": "Entrez l'URL de l'image"
   },
   "BETS": {
     "MY_BETS": "Mes Paris",

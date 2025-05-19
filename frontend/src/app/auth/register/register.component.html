@@ -46,15 +46,19 @@
         <label>{{ 'AUTH.BIRTH_DATE' | translate }}</label>
       </div>
 
-      <!-- Add profile image upload field -->
+      <!-- Modificar la secció d'imatge de perfil per incloure opció de URL -->
       <div class="profile-image-container">
-        <label for="profile-image" class="profile-image-label">{{ 'AUTH.PROFILE_IMAGE' | translate }}</label>
+        <label class="profile-image-label">{{ 'AUTH.PROFILE_IMAGE' | translate }}</label>
         <div class="profile-preview" *ngIf="imagePreview">
           <img [src]="imagePreview" alt="{{ 'AUTH.PREVIEW' | translate }}" class="preview-image">
         </div>
-        <div class="profile-upload">
-          <input type="file" id="profile-image" (change)="onImageSelected($event)" accept="image/*">
-          <label for="profile-image" class="upload-button">{{ 'AUTH.SELECT_IMAGE' | translate }}</label>
+        
+        <!-- Afegir opció de URL d'imatge -->
+        <div class="input-container">
+          <input type="text" formControlName="profileImageUrl" 
+                 placeholder="{{ 'AUTH.ENTER_IMAGE_URL' | translate }}" 
+                 (input)="onImageUrlInput()">
+          <div class="url-input-icon">🔗</div>
         </div>
       </div>
 
