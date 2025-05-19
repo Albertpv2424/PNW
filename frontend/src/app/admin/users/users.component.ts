@@ -157,10 +157,11 @@ export class UsersComponent implements OnInit {
     this.selectedUser = user;
   }
 
+  // Update the openUserForm method to reset the imageUrl field when creating a new user
   openUserForm(user: any = null): void {
     this.isEditing = !!user;
     this.selectedUser = user;
-
+  
     if (user) {
       // Editing existing user
       this.userForm.patchValue({
@@ -171,15 +172,12 @@ export class UsersComponent implements OnInit {
         telefon: user.telefon || '',
         data_naixement: user.data_naixement,
         saldo: user.saldo,
-        imageUrl: user.profile_image || '' // Cargar la URL de la imagen existente
+        imageUrl: user.profile_image || '' // Set the image URL when editing
       });
-
-      // Actualizar la vista previa de la imagen
-      this.imagePreview = user.profile_image || null;
-
+  
       // Make nick field read-only when editing
       this.userForm.get('nick')?.disable();
-
+  
       // Password is optional when editing
       this.userForm.get('password')?.setValidators(null);
     } else {
@@ -187,25 +185,22 @@ export class UsersComponent implements OnInit {
       this.userForm.reset({
         tipus_acc: 'Usuario', // Always set to Usuario
         saldo: 0,
-        imageUrl: ''
+        imageUrl: '' // Reset the image URL when creating
       });
-
-      // Resetear la vista previa
-      this.imagePreview = null;
-
+  
       // Enable nick field for new users
       this.userForm.get('nick')?.enable();
-
+  
       // Password is required when creating
       this.userForm.get('password')?.setValidators([Validators.required]);
     }
-
+  
     // Disable the tipus_acc field to prevent changes
     this.userForm.get('tipus_acc')?.disable();
-
+  
     this.userForm.get('password')?.updateValueAndValidity();
     this.showUserForm = true;
-}
+  }
 
   // Add this method to fix the error
   closeUserForm(): void {
@@ -216,57 +211,47 @@ export class UsersComponent implements OnInit {
   // Update submitUserForm to handle disabled fields
   // Fixing Profile Image Storage in the Database
 
-  // I see the issue. The problem is that the backend is expecting a file upload for the profile image, but you're trying to send a URL string. Let's modify the code to handle URL-based images properly.
-
-  // Looking at the Laravel controller, it's expecting a file upload through `$request->hasFile('profile_image')`, but your frontend is sending a URL string in the `profile_image` field.
-
-  // Update your code to handle this situation:
-  // Update submitUserForm to properly handle image URLs
+  // Update the submitUserForm method to handle image URLs for both creation and updates
   submitUserForm(): void {
     if (this.userForm.invalid) {
       this.notificationService.showError('Por favor, completa todos los campos requeridos correctamente');
       return;
     }
-
+  
     // Enable disabled fields temporarily to include them in the form value
     if (this.isEditing) {
       this.userForm.get('nick')?.enable();
     }
     this.userForm.get('tipus_acc')?.enable();
-
+  
     // Get form values
     const userData = { ...this.userForm.value };
-
+  
     // Asignar la URL de la imagen al campo profile_image
     console.log('Image URL before assignment:', userData.imageUrl);
-
-    // Check if the imageUrl is a valid URL
     if (userData.imageUrl && userData.imageUrl.trim() !== '') {
       userData.profile_image = userData.imageUrl;
-
-      // Add a flag to indicate this is a URL, not a file upload
-      userData.is_profile_image_url = true;
     }
-
+  
     // Eliminar el campo imageUrl ya que no existe en el modelo del servidor
     delete userData.imageUrl;
-
+  
     console.log('Final user data with profile_image:', userData);
-
+  
     // Re-disable fields
     if (this.isEditing) {
       this.userForm.get('nick')?.disable();
     }
     this.userForm.get('tipus_acc')?.disable();
-
+  
     console.log('Submitting user form with data:', userData);
-
+  
     if (this.isEditing && this.selectedUser) {
       // If password is empty, remove it from the data
       if (!userData.password) {
         delete userData.password;
       }
-
+  
       this.adminService.updateUser(this.selectedUser.nick, userData).subscribe({
         next: (response) => {
           console.log('User updated successfully:', response);

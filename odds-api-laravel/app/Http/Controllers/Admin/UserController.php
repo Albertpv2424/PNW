@@ -82,13 +82,14 @@ class UserController extends Controller
     /**
      * Crear un nuevo usuario
      */
+    // In the store method, add image URL handling similar to the update method
     public function store(Request $request)
     {
         // Verificar si el usuario tiene permisos de administrador
         if (!$this->isAdmin()) {
             return response()->json(['message' => 'No tienes permisos de administrador'], 403);
         }
-
+    
         // Validar los datos de entrada
         $validator = Validator::make($request->all(), [
             'nick' => 'required|string|max:255|unique:usuaris,nick',
@@ -99,11 +100,11 @@ class UserController extends Controller
             'data_naixement' => 'required|date',
             'saldo' => 'nullable|numeric|min:0'
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
+    
         try {
             // Crear el usuario - IMPORTANTE: usar 'pswd' en lugar de 'password'
             $user = new User();
@@ -115,8 +116,23 @@ class UserController extends Controller
             $user->data_naixement = $request->data_naixement;
             $user->tipus_acc = 'Usuari'; // Crear como usuario normal
             $user->saldo = $request->saldo ?? 0;
+            
+            // Process the profile_image URL - ensure it's stored properly
+            if ($request->has('profile_image')) {
+                // If it's already a full URL, store it as is
+                if (filter_var($request->profile_image, FILTER_VALIDATE_URL)) {
+                    $user->profile_image = $request->profile_image;
+                    Log::info('Storing URL as profile image: ' . $request->profile_image);
+                }
+                // If it's a relative path, store it as is
+                else if (is_string($request->profile_image)) {
+                    $user->profile_image = $request->profile_image;
+                    Log::info('Storing path as profile image: ' . $request->profile_image);
+                }
+            }
+            
             $user->save();
-
+    
             return response()->json([
                 'message' => 'Usuario creado con éxito',
                 'user' => $user
