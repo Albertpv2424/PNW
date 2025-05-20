@@ -50,7 +50,8 @@
     "NEW_PASSWORD": "Nueva contraseña",
     "CONFIRM_PASSWORD": "Confirmar contraseña",
     "RESET_PASSWORD_BUTTON": "Cambiar contraseña",
-    "ENTER_IMAGE_URL": "Introduce la URL de la imagen"
+    "ENTER_IMAGE_URL": "Introduce la URL de la imagen",
+    "AGE_RESTRICTION": "Debes ser mayor de 18 años para registrarte."
   },
   "BETS": {
     "MY_BETS": "Mis Apuestas",

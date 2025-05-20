@@ -68,9 +68,18 @@ class AuthController extends Controller
                 'pswd' => 'required|string|min:8',
                 'dni' => 'required|string|size:9|unique:usuaris,dni',
                 'telefon' => 'nullable|string|max:15|unique:usuaris,telefon',
-                'data_naixement' => 'required|date',
-                'profile_image' => 'nullable|string', // Cambiado de 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048' a 'nullable|string'
+                'data_naixement' => 'required|date|before_or_equal:'.now()->subYears(18)->format('Y-m-d'), // Ensure user is at least 18
+                'profile_image' => 'nullable|string',
             ]);
+
+            // Check age again to be sure (double validation)
+            $birthDate = new \DateTime($request->data_naixement);
+            $today = new \DateTime();
+            $age = $birthDate->diff($today)->y;
+
+            if ($age < 18) {
+                return response()->json(['error' => 'Debes ser mayor de 18 años para registrarte.'], 400);
+            }
 
             // Process the profile image
             $profileImagePath = $request->profile_image; // Ya no necesitamos procesamiento especial
@@ -453,42 +462,42 @@ class AuthController extends Controller
         try {
             // Obtener el usuario autenticado
             $user = auth()->user();
-    
+
             if (!$user) {
                 return response()->json([
                     'message' => 'Usuario no autenticado'
                 ], 401);
             }
-    
+
             // Guardar el nick para el log
             $userNick = $user->nick;
-    
+
             // Eliminar mensajes de chat relacionados con el usuario
             DB::table('chat_messages')->where('user_id', $userNick)->delete();
-    
+
             // Eliminar sesiones de chat donde el usuario es el propietario o el administrador
             DB::table('chat_sessions')->where('user_id', $userNick)->orWhere('admin_id', $userNick)->delete();
-    
+
             // Eliminar la imagen de perfil si existe
             if ($user->profile_image && file_exists(public_path($user->profile_image))) {
                 unlink(public_path($user->profile_image));
             }
-    
-            // Eliminar el usuario 
+
+            // Eliminar el usuario
             $user->delete();
-    
+
             // Registrar la eliminación en el log
             \Illuminate\Support\Facades\Log::info('Cuenta eliminada', [
                 'user_nick' => $userNick
             ]);
-    
+
             return response()->json([
                 'message' => 'Cuenta eliminada correctamente'
             ]);
-    
+
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error al eliminar cuenta: ' . $e->getMessage());
-    
+
             return response()->json([
                 'message' => 'Error al eliminar la cuenta: ' . $e->getMessage()
             ], 500);

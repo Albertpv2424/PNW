@@ -4,17 +4,17 @@
     <div class="top-right-language">
       <app-language-slider></app-language-slider>
     </div>
-    
+
     <!-- Actualizar el logo para que sea clickable y tenga márgenes -->
-    <img src="../../../assets/logo.jpg" alt="Logo" class="logo logo-clickable" 
-         (click)="navigateToHome()" 
+    <img src="../../../assets/logo.jpg" alt="Logo" class="logo logo-clickable"
+         (click)="navigateToHome()"
          (error)="handleImageError($event)">
-    
+
     <h1>{{ 'AUTH.WELCOME' | translate }}</h1>
 
     <!-- Resto del formulario se mantiene igual -->
     <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-       
+
       <div class="input-container">
         <input type="text" formControlName="nick" placeholder="{{ 'AUTH.USERNAME' | translate }}">
         <label>{{ 'AUTH.USERNAME' | translate }}</label>
@@ -44,6 +44,11 @@
       <div class="input-container">
         <input type="date" formControlName="data_naixement" placeholder="{{ 'AUTH.BIRTH_DATE' | translate }}">
         <label>{{ 'AUTH.BIRTH_DATE' | translate }}</label>
+
+        <!-- Add error message for underage users -->
+        <div class="error-message" *ngIf="registerForm.get('data_naixement')?.touched && registerForm.get('data_naixement')?.hasError('underage')">
+          {{ 'AUTH.AGE_RESTRICTION' | translate }}
+        </div>
       </div>
 
       <!-- Modificar la secció d'imatge de perfil per incloure opció de URL -->
@@ -52,11 +57,11 @@
         <div class="profile-preview" *ngIf="imagePreview">
           <img [src]="imagePreview" alt="{{ 'AUTH.PREVIEW' | translate }}" class="preview-image">
         </div>
-        
+
         <!-- Afegir opció de URL d'imatge -->
         <div class="input-container">
-          <input type="text" formControlName="profileImageUrl" 
-                 placeholder="{{ 'AUTH.ENTER_IMAGE_URL' | translate }}" 
+          <input type="text" formControlName="profileImageUrl"
+                 placeholder="{{ 'AUTH.ENTER_IMAGE_URL' | translate }}"
                  (input)="onImageUrlInput()">
           <div class="url-input-icon">🔗</div>
         </div>
@@ -68,7 +73,7 @@
       </div>
 
       <button type="submit" class="submit-button">{{ 'AUTH.CREATE_ACCOUNT' | translate }}</button>
-      
+
       <!-- Update login link section to match login component style -->
       <div class="register-link">
         <span>{{ 'AUTH.ALREADY_ACCOUNT' | translate }}</span>
